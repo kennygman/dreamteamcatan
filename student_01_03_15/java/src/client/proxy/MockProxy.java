@@ -1,0 +1,444 @@
+package client.proxy;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import model.board.Settlement;
+import model.player.Player;
+
+import com.google.gson.Gson;
+
+import model.Game;
+import shared.Translator;
+import shared.definitions.CatanColor;
+import shared.locations.HexLocation;
+import shared.locations.VertexDirection;
+import shared.locations.VertexLocation;
+import shared.parameters.*;
+import shared.response.*;
+
+public class MockProxy implements IProxy
+{
+
+    private Game fakeGame;
+    private GameListObject proxyGame;
+    private GameListObject[] games ;
+
+    
+    public MockProxy()
+    {
+   	 	readGameFile();
+    }
+    
+    private void readGameFile()
+    {
+   	 /*
+   	 fakeGame = new Game();
+   	 
+   	 fakeGame.setVersion(0);
+   	 fakeGame.setTitle("Default Game");
+   	 
+   	 fakeGame.getPlayers()[0].setColor(CatanColor.ORANGE);
+   	 fakeGame.getPlayers()[0].setName("Sam");
+   	 fakeGame.getPlayers()[0].setPlayerID(0);
+   	 
+   	 fakeGame.getPlayers()[1].setColor(CatanColor.BLUE);
+   	 fakeGame.getPlayers()[1].setName("Brooke");
+   	 fakeGame.getPlayers()[1].setPlayerID(1);
+   	 
+   	 fakeGame.getPlayers()[2].setColor(CatanColor.GREEN);
+   	 fakeGame.getPlayers()[2].setName("Mark");
+   	 fakeGame.getPlayers()[2].setPlayerID(2);
+   	 */
+   	 try
+   	 {
+   		 StringBuffer gameBuilder = new StringBuffer();
+
+   		 BufferedReader reader = new BufferedReader(new FileReader("modelJson"));
+   		 String game;
+   	 
+   		 while((game = reader.readLine()) != null)
+   		 {
+   			 
+   			 gameBuilder.append(game);
+   			 
+   		 }
+   		 
+   		 
+   		 game = gameBuilder.toString();
+   		 
+   		 Translator t =  new Translator();
+   		 GameModelResponse g = new GameModelResponse();
+   		 
+   		 g = t.translateGetGameModel(game);
+   		
+   		 
+   		 fakeGame = g.getGame();
+   		 fakeGame.setTitle("loosers");
+   		 
+   		 
+   		 //We need to fix add settlement in Map
+   		 //Settlement s = new Settlement(0,new VertexLocation(new HexLocation(0,0),VertexDirection.SouthEast).getNormalizedLocation());
+   		 //fakeGame.getMap().setSettlement(s);
+   	 
+   	 }
+   	 catch(IOException e)
+   	 {
+   		 System.err.println(e.getMessage());
+   	 }
+   	 /*
+   	 PostCommandsParam commandParam = new PostCommandsParam(game);
+   	 proxy.postGameCommands(commandParam);
+   	 proxy.saveGame(new SaveGameParam(game.getGameId(),"junit"));
+   	 games[0] = proxyGame;
+   	  */
+    }
+    @Override
+    public StandardResponse login(CredentialsParam input)
+    {
+//   	 if(input.getUser() == "hank" && input.getPassword() == "test")
+//   	 {
+//   		 return new StandardResponse(true);
+//   	 }
+//   	 else
+//   	 {
+//   		 return new StandardResponse(false);
+//   	 }
+   	 return null;
+    }
+
+    @Override
+    public StandardResponse register(CredentialsParam input)
+    {
+//   	 
+//   	 if(input.getUser() != null || input.getPassword() != null || input.getUser() == "hank")
+//   	 {
+//
+//   		 return new StandardResponse(false);
+//   	 }
+//   	 else
+//   	 {
+//   		 return new StandardResponse(true);
+//   	 }
+   	 return null;
+
+    }
+
+    @Override
+    public ListGamesResponse listGames()
+    {
+   	 
+   	 boolean b = true;
+   	 
+   	 ListGamesResponse result = new ListGamesResponse(games,b);
+   	 
+   	 return result;
+    }
+
+    @Override
+    public CreateGameResponse createGame(CreateGameParam input)
+    {
+   	 String title =  input.getName();
+   	 int id = 1;
+   	 boolean b = true;
+   	 
+   	 Player[] players = fakeGame.getPlayers();
+   	 
+   	 CreateGameResponse result = new CreateGameResponse(title,id,players,b);
+   	 
+   	 
+   	 return result;
+    }
+
+    @Override
+    public StandardResponse joinGame(JoinGameParam input)
+    {
+   	 StandardResponse result = new StandardResponse(true);
+   	 
+   	 
+   	 
+   	 
+   	 return result;
+    }
+
+    @Override
+    public StandardResponse saveGame(SaveGameParam input)
+    {
+   	 StandardResponse result = new StandardResponse(true);
+    
+   	 return result;
+    }
+
+    @Override
+    public StandardResponse loadGame(LoadGameParam input)
+    {
+   	 StandardResponse result = new StandardResponse(false);
+   	 
+   	 if(input.getName()=="loosers")
+   	 {
+   		 result.setValid(true);
+   	 }
+    
+   	 return result;
+    }
+
+    @Override
+    public GameModelResponse getGameModel()
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+   	 
+   	 return result;
+    }
+
+    @Override
+    public GameModelResponse resetGame()
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse postGameCommands(PostCommandsParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public CommandResponse getGameCommands()
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public StandardResponse addAi(AddAiParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public ListAIResponse listAi()
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse sendChat(SendChatParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 String translation = "How can you tell a blonde's been using the computer? \n There's white-out all over the screen.";
+   	 
+   	 
+   	 return result;
+    }
+
+    @Override
+    public GameModelResponse rollNumber(RollNumParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+   	 return result;
+    }
+
+    @Override
+    public GameModelResponse robPlayer(RobPlayerParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse finishTurn(FinishTurnParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse buyDevCard(BuyDevCardParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse playYearOfPlenty(PlayYearOfPlentyParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse playRoadBuilding(PlayRoadBuildingParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse playSoldier(PlaySoldierParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse playMonopoly(PlayMonopolyParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse playMonument(PlayMonumentParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse buildRoad(BuildRoadParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse buildSettlement(BuildSettlementParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse buildCity(BuildCityParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse offerTrade(OfferTradeParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   		 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse acceptTrade(AcceptTradeParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+   	 return result;
+    }
+
+    @Override
+    public GameModelResponse maritimeTrade(MaritimeTradeParam input)
+    {
+   	 GameModelResponse result = new GameModelResponse();
+   	 
+   	 result.setGame(fakeGame);
+   	 result.setValid(true);
+    
+   	 return null;
+    }
+
+    @Override
+    public GameModelResponse discardCards(DiscardCardsParam input)
+    {
+   	 
+   		 GameModelResponse result = new GameModelResponse();
+   	 
+   		 result.setGame(fakeGame);
+   		 result.setValid(true);
+   	 
+   		 return null;
+    }
+
+    @Override
+    public StandardResponse ChangeLogLevel(ChangeLogLevelParam input) {
+   	 // TODO Auto-generated method stub
+   	 return null;
+    }    
+
+}

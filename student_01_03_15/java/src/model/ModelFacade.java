@@ -118,16 +118,10 @@ public class ModelFacade implements IModelFacade
 	}
 
 	//--------------------------------------------------------------------------------
-	public boolean canAcceptTrade(Player player)
+	public void acceptTrade(TradeOffer offer)
 	{
-		return true;
-	}
-	
-	//--------------------------------------------------------------------------------
-	public void acceptTrade(Player player, boolean response)
-	{
-		if (!canAcceptTrade(player)) return;
-		proxy.acceptTrade(new AcceptTradeParam(player.getPlayerIndex(), response));
+		boolean accept = canAcceptTrade(offer);
+		proxy.acceptTrade(new AcceptTradeParam(offer.getReciever(), accept));
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -136,14 +130,6 @@ public class ModelFacade implements IModelFacade
 		proxy.createGame(new CreateGameParam(name, randTiles, randNumbers, randPorts));
 	}
 	
-	//--------------------------------------------------------------------------------
-	@Override
-	public boolean CanDiscardCards(Player player)
-	{
-		if (!isPlayerTurn(player)) return false;
-		return player.getResources().size() > 7;
-	}
-
 	//--------------------------------------------------------------------------------
 	public void discardCards(Player player, Resources resources)
 	{
@@ -478,16 +464,34 @@ public class ModelFacade implements IModelFacade
 		}
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void playSoldierCard() {
-		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void playRoadBuildingCard() {
-		// TODO Auto-generated method stub
 		
+	}
+
+	//--------------------------------------------------------------------------------
+	@Override
+	public boolean canAcceptTrade(TradeOffer offer)
+	{
+		Player recipient = game.getPlayers()[offer.getReciever()];
+		return (recipient.getResources().compare(offer.getOffer()));
+	}
+
+	//--------------------------------------------------------------------------------
+	@Override
+	public boolean CanDiscardCards()
+	{
+/*		if (!isPlayerTurn(player)) return false;
+		return player.getResources().size() > 7;
+*/	
+		return false;
 	}
 
 	

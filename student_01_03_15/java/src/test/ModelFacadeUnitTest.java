@@ -8,6 +8,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import shared.definitions.ResourceType;
+import shared.locations.EdgeLocation;
+import shared.locations.VertexLocation;
 import model.board.*;
 import model.player.*;
 import client.proxy.MockProxy;
@@ -33,14 +36,88 @@ public class ModelFacadeUnitTest {
 	public void teardown() {}
 	
 	
-	/*@Test
-	public void testCanPlaceRoad()
+	//This is testing the can do and the post conditions
+	@Test
+	public void testCanBuildRoad()
 	{
-		Road road = game.getMap().getRoads()[0];
-		boolean result = facade.canPlaceRoad(road.getEdgeLocation());
-		assertEquals(result, false);
+		boolean result = true;
+		
+		//Road road = game.getMap().getRoads()[0];
+		EdgeLocation edge = new EdgeLocation(0, 0, "N");
+		
+		boolean canBuild = facade.canPlaceRoad(edge);
+		
+		Player currentPlayer = game.getPlayers()[0];
+		
+		Resources hand = currentPlayer.getResources();
+		
+		int wood = hand.getResourceAmount(ResourceType.WOOD);
+		int brick = hand.getResourceAmount(ResourceType.BRICK);
+		int roadCount = currentPlayer.getRoads();
+		
+		
+		if(canBuild)
+		{
+			boolean free = false;
+			
+			
+			facade.buildRoad(edge, free);
+			
+			currentPlayer = game.getPlayers()[0];
+			Resources postHand = currentPlayer.getResources();
+			
+			int postWood = postHand.getResourceAmount(ResourceType.WOOD);
+			int postBrick = postHand.getResourceAmount(ResourceType.BRICK);
+			int postRoadCount = currentPlayer.getRoads();
+			
+			if(postWood != wood-1)	
+			{
+				result = false;
+			}
+			if(postBrick != brick-1)
+			{
+				result = false;
+			}
+			if(postRoadCount != roadCount-1)
+			{
+				result = false;
+			}
+			
+			
+		}
+		else
+		{
+			result = false;
+		}
+		
+		assertEquals(result, true);
 	}
 	
+	
+	//This is testing to make sure that the Can Build road won't let me build when I shouldn't
+	@Test
+	public void testCanBuildRoad2()
+	{
+		boolean result = true;
+		
+		//Road road = game.getMap().getRoads()[0];
+		EdgeLocation edge = new EdgeLocation(1, 1, "N");
+		
+		boolean canBuild = facade.canPlaceRoad(edge);
+		
+		
+		if(!canBuild)
+		{
+			result = true;
+		}
+		else
+		{
+			result = false;
+		}
+		
+		assertEquals(result, true);
+	}
+	/*
 	@Test
 	public void testCanPlaceSettlement()
 	{
@@ -179,6 +256,7 @@ public class ModelFacadeUnitTest {
 		boolean result = facade.CanUseMonument(player);
 		assertEquals(result,true);
 	}
+
 
 }
 

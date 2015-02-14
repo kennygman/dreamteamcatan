@@ -33,24 +33,7 @@ public class MockProxy implements IProxy
     
     private void readGameFile()
     {
-   	 /*
-   	 fakeGame = new Game();
    	 
-   	 fakeGame.setVersion(0);
-   	 fakeGame.setTitle("Default Game");
-   	 
-   	 fakeGame.getPlayers()[0].setColor(CatanColor.ORANGE);
-   	 fakeGame.getPlayers()[0].setName("Sam");
-   	 fakeGame.getPlayers()[0].setPlayerID(0);
-   	 
-   	 fakeGame.getPlayers()[1].setColor(CatanColor.BLUE);
-   	 fakeGame.getPlayers()[1].setName("Brooke");
-   	 fakeGame.getPlayers()[1].setPlayerID(1);
-   	 
-   	 fakeGame.getPlayers()[2].setColor(CatanColor.GREEN);
-   	 fakeGame.getPlayers()[2].setName("Mark");
-   	 fakeGame.getPlayers()[2].setPlayerID(2);
-   	 */
    	 try
    	 {
    		 StringBuffer gameBuilder = new StringBuffer();
@@ -78,9 +61,9 @@ public class MockProxy implements IProxy
    		 fakeGame.setTitle("loosers");
    		 
    		 
-   		 //We need to fix add settlement in Map
-   		 //Settlement s = new Settlement(0,new VertexLocation(new HexLocation(0,0),VertexDirection.SouthEast).getNormalizedLocation());
-   		 //fakeGame.getMap().setSettlement(s);
+   		 Settlement s = new Settlement(0,new VertexLocation(new HexLocation(0,0),VertexDirection.NorthEast
+   				 ).getNormalizedLocation());
+   		 fakeGame.getMap().setSettlement(s);
    	 
    	 }
    	 catch(IOException e)

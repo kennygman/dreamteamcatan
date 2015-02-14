@@ -10,11 +10,17 @@ import model.player.Player;
 public interface IModelFacade
 {
 	/**
+	 * This method is called when a player sends a trade offer to another player
+	 * @param offer the offer
+	 * @return if the recipient of the trade has sufficient resources for the trade
+	 */
+	boolean canAcceptTrade(TradeOffer offer);
+	/**
 	 * This method is called whenever a 7 is rolled by the dice.
 	 * @param player the player
 	 * @return True if player has more than 7 cards: False otherwise
 	 */
-	boolean CanDiscardCards(Player player);
+	boolean CanDiscardCards();
 
 	/**
 	 * This method is called each time the dice is rolled

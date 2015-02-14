@@ -118,5 +118,25 @@ public class Resources {
 		return amount;
 		
 	}
-
+	
+	/**
+	 * This method compares each resource in each list
+	 * @param r the resources to compare with
+	 * @return true if each resource is greater than or equal to the amount in the comparison
+	 */
+	public boolean compare(Resources r)
+	{
+		boolean valid = true;
+		if (r.getResourceAmount(ResourceType.WOOD) < 0
+				&& this.wood < Math.abs(r.getResourceAmount(ResourceType.WOOD))) valid = false;
+		if (r.getResourceAmount(ResourceType.WHEAT) < 0
+				&& this.wheat < Math.abs(r.getResourceAmount(ResourceType.WHEAT))) valid = false;
+		if (r.getResourceAmount(ResourceType.SHEEP) < 0
+				&& this.sheep < Math.abs(r.getResourceAmount(ResourceType.SHEEP))) valid = false;
+		if (r.getResourceAmount(ResourceType.BRICK) < 0
+				&& this.brick < Math.abs(r.getResourceAmount(ResourceType.BRICK))) valid = false;
+		if (r.getResourceAmount(ResourceType.ORE) < 0
+				&& this.ore < Math.abs(r.getResourceAmount(ResourceType.ORE))) valid = false;
+		return valid;
+	}
 }

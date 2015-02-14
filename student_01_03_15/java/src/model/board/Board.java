@@ -138,7 +138,9 @@ public class Board
 		EdgeLocation edge = road.getEdgeLocation().getNormalizedLocation();
 		roadHexes.put(edge, road);
 		
-		List<Road> roadList = Arrays.asList(roads);
+		List<Road> roadList = new ArrayList<>();
+		for (Road r : roads)
+			roadList.add(r);
 		roadList.add(road);
 		Road[] arr = roadList.toArray(new Road[0]);
 		this.setRoads(arr);
@@ -148,7 +150,9 @@ public class Board
 		VertexLocation vertex = settlement.getLocation().getNormalizedLocation();
 		settlementHexes.put(vertex, settlement);
 
-		List<Settlement> setList = Arrays.asList(settlements);
+		List<Settlement> setList = new ArrayList<>();
+		for (Settlement s : settlements)
+			setList.add(s);
 		setList.add(settlement);
 		Settlement[] arr = setList.toArray(new Settlement[0]);
 		this.setSettlements(arr);
@@ -158,7 +162,9 @@ public class Board
 		VertexLocation vertex = city.getLocation().getNormalizedLocation();
 		cityHexes.put(vertex, city);
 
-		List<City> cityList = Arrays.asList(cities);
+		List<City> cityList = new ArrayList<>();
+		for (City c : cities)
+			cityList.add(c);
 		cityList.add(city);
 		City[] arr = cityList.toArray(new City[0]);
 		this.setCities(arr);

@@ -11,7 +11,8 @@ public class Resources {
 	private int brick;
 	private int ore;
 	
-	public Resources(int wood, int sheep, int wheat, int brick, int ore) {
+	public Resources(int wood, int sheep, int wheat, int brick, int ore) 
+	{
 		this.wood = wood;
 		this.sheep = sheep;
 		this.wheat = wheat;

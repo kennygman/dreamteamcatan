@@ -39,7 +39,7 @@ public class ModelFacade implements IModelFacade
 	}
 
 	// ===============================================================================
-	// CAN-DO METHODS
+	// CAN-DO METHODS & PRECONDITIONS
 	// ===============================================================================
 
 	//--------------------------------------------------------------------------------
@@ -71,18 +71,23 @@ public class ModelFacade implements IModelFacade
 		return valid;
 	}
 
+	// Playing Preconditions ================================================================================
+	private boolean canPlay()
+	{
+		return this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Playing");
+	}
 	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanRollNumber(int n)
 	{
-		if (!this.isPlayerTurn()) return false;
-		return game.getTurnTracker().getStatus().equals("Rolling");
+		return (this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Rolling"));
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public boolean canPlaceRoad(EdgeLocation edgeLoc, boolean free)
 	{
+		if (!canPlay()) return false;
 		EdgeLocation edge = edgeLoc.getNormalizedLocation();
 		if (game.getBoard().contains(edge) ||
 			!free && !CanBuyRoad() ||
@@ -106,6 +111,7 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean canPlaceSettlement(VertexLocation vertLoc, boolean free)
 	{
+		if (!canPlay()) return false;
 		VertexLocation vert = vertLoc.getNormalizedLocation();
 		Object structure = game.getBoard().getStructure(vert);
 		boolean setup = false;
@@ -134,13 +140,12 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean canPlaceCity(VertexLocation vertLoc)
 	{
+		if (!canPlay()) return false;
 		if (!CanBuyCity()) return false;
 
 		Object obj = game.getBoard().getStructure(vertLoc);
 		if (obj == null) return false;
 		if (obj instanceof City) return false;
-
-		// Check if current player owns a settlement at the Vertex Location
 		if (((Settlement)(obj)).getOwner() == game.getTurnTracker().getCurrentTurn()) return true;
 
 		return false;
@@ -150,7 +155,7 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanBuyRoad()
 	{
-		if (!isPlayerTurn() || game.getPlayer().getRoads() < 1) return false;
+		if (game.getPlayer().getRoads() < 1) return false;
 		Resources hand = game.getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WOOD) > 0 &&
 				hand.getResourceAmount(ResourceType.BRICK) > 0;
@@ -160,7 +165,7 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanBuySettlement()
 	{
-		if (!isPlayerTurn() || game.getPlayer().getSettlements() < 1) return false;
+		if (game.getPlayer().getSettlements() < 1) return false;
 		Resources hand = game.getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WOOD) > 0 &&
 				hand.getResourceAmount(ResourceType.SHEEP) > 0 &&
@@ -172,7 +177,7 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanBuyCity()
 	{
-		if (!isPlayerTurn() || game.getPlayer().getCities() < 1) return false;
+		if (game.getPlayer().getCities() < 1) return false;
 		Resources hand = game.getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WHEAT) > 1 &&
 				hand.getResourceAmount(ResourceType.ORE) > 2;
@@ -182,9 +187,9 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanOfferTrade()
 	{
+		if (!canPlay()) return false;
 		Resources offer = game.getTradeOffer().getOffer();
-		if (!isPlayerTurn() ||
-			game.getTradeOffer().getSender() != game.getPlayer().getPlayerIndex()) return false;
+		if (game.getTradeOffer().getSender() != game.getPlayer().getPlayerIndex()) return false;
 		offer.invert();
 		boolean valid = game.getPlayer().getResources().contains(offer);
 		offer.invert();
@@ -195,7 +200,7 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanMaritimeTrade(int ratio, String inputResource, String outResource)
 	{
-		if (!isPlayerTurn()) return false;
+		if (!canPlay()) return false;
 		if (game.getPlayer().getResources().getResourceAmount(outResource) < ratio) return false;
 		if (game.getBoard().hasPort(game.getPlayer().getPlayerIndex(), outResource)) return true;
 		return false;
@@ -212,6 +217,7 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean canRobPlayer(HexLocation location, int victimIndex)
 	{
+		if (!canPlay()) return false;
 		if (!canPlaceRobber(location) ||
 		game.getPlayers()[victimIndex].getResources().size()<1) return false;
 		return true;
@@ -221,27 +227,27 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanFinishTurn()
 	{
-		return isPlayerTurn();
+		return !canPlay();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanBuyDevCard()
 	{
-		if (!isPlayerTurn() ||
-				game.getBank().size() < 1) return false;
+		if (!canPlay()) return false;
+		if (game.getBank().size() < 1) return false;
 		Resources hand = game.getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WHEAT) > 0 &&
 				hand.getResourceAmount(ResourceType.SHEEP) > 0 &&
 				hand.getResourceAmount(ResourceType.ORE) > 0;
 	}
 	
-	//--------------------------------------------------------------------------------
-	private boolean canPlayDevCard(DevCardType devCard)
+	// DevCard Preconditions ================================================================================
+	private boolean canPlayDevCard(DevCardType devCard, boolean monument)
 	{
 		if (!isPlayerTurn() ||
 			!game.getTurnTracker().getStatus().equals("Playing") ||
-			!game.getPlayer().getOldDevCards().hasDevCard(devCard) ||
+			!monument && !game.getPlayer().getOldDevCards().hasDevCard(devCard) ||  
 			game.getPlayer().isPlayedDevCard()
 			) return false;
 		return true;
@@ -249,9 +255,19 @@ public class ModelFacade implements IModelFacade
 	
 	//--------------------------------------------------------------------------------
 	@Override
+	public boolean CanUseSoldier(int victimIndex, HexLocation location)
+	{
+		if (!canPlayDevCard(DevCardType.SOLDIER, false) ||
+			!canRobPlayer(location, victimIndex)
+			) return false;
+		return true;
+	}
+
+	//--------------------------------------------------------------------------------
+	@Override
 	public boolean CanUseYearOfPlenty(String resource1, String resource2)
 	{
-		if (!canPlayDevCard(DevCardType.YEAR_OF_PLENTY)) return false;
+		if (!canPlayDevCard(DevCardType.YEAR_OF_PLENTY, false)) return false;
 		if (game.getBank().getResourceAmount(resource1) > 0 &&
 			game.getBank().getResourceAmount(resource2) > 0
 			) return true;
@@ -262,74 +278,61 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanUseRoadBuilder(EdgeLocation spot1, EdgeLocation spot2)
 	{
-		if (!canPlayDevCard(DevCardType.ROAD_BUILD) ||
-			!canPlaceRoad(spot1.getNormalizedLocation(), true) ||
-			game.getPlayer().getRoads() < 2
+		if (!canPlayDevCard(DevCardType.ROAD_BUILD, false) ||
+			!canPlaceRoad(spot1, true) ||
+			game.getPlayer().getRoads() < 2 ||
+			game.getBoard().contains(spot2) ||
+			spot1.equals(spot2)
 			) return false;
-		return true;
+		
+		if (game.getBoard().hasNeighborRoad(spot2, game.getPlayer().getPlayerIndex(), false) ||
+			game.getBoard().areNeighbors(spot1, spot2)
+			) return true;
+		return false;
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
-	public boolean CanUseSoldier()
+	public boolean CanUseMonopoly(String resource)
 	{
-		if (!canPlayDevCard(DevCardType.SOLDIER)
-			) return false;
-		return true;
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public boolean CanUseMonopoly()
-	{
-		if (!isPlayerTurn()) return false;
-		return game.getPlayer().getNewDevCards().getMonopoly() > 0;
+		return canPlayDevCard(DevCardType.MONOPOLY, false);
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanUseMonument()
 	{
-		if (!isPlayerTurn()) return false;
-		return game.getPlayer().getNewDevCards().getMonument() > 0;
+		if (!canPlayDevCard(DevCardType.MONUMENT, true)) return false;
+		if ( game.getPlayer().getVictoryPoints() +
+				game.getPlayer().getNewDevCards().getMonument() +
+				game.getPlayer().getOldDevCards().getMonument() >= 10) return true;
+		return false;
 	}
 
 	
 	// ===============================================================================
-	// PROXY FUNCTIONS
+	// PROXY METHODS & POST CONDITIONS
 	// ===============================================================================
 
 	//--------------------------------------------------------------------------------
 	@Override
-	public void placeRoad(EdgeLocation edgeLoc)
+	public void sendChat()
 	{
-		game.getBoard().setRoad(new Road(game.getTurnTracker().getCurrentTurn(), edgeLoc));
+		Game newGame = proxy.sendChat(new SendChatParam(
+			game.getTurnTracker().getCurrentTurn(),
+			game.getChat().toString())).getGame();
+
+		game.getChat().setLines(newGame.getChat().getLines());
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
-	public void placeSettlement(VertexLocation vertLoc)
+	public void acceptTrade(boolean accept)
 	{
-		game.getBoard().setSettlement(new Settlement(game.getTurnTracker().getCurrentTurn(), vertLoc));
+		Game newGame = proxy.acceptTrade(new AcceptTradeParam(
+				game.getTradeOffer().getReciever(), accept)).getGame();
 	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void placeCity(VertexLocation vertLoc)
-	{
-		game.getBoard().setCity(new City(game.getTurnTracker().getCurrentTurn(), vertLoc));
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void placeRobber(HexLocation hexLoc)
-	{
-		if (this.canPlaceRobber(hexLoc))
-		{
-			game.getBoard().setRobber(hexLoc);
-		}
-	}
-
+	
 	//--------------------------------------------------------------------------------
 	@Override
 	public void startMove(PieceType pieceType, boolean isFree,
@@ -345,22 +348,6 @@ public class ModelFacade implements IModelFacade
 		
 	}
 
-	//--------------------------------------------------------------------------------
-	@Override
-	public void sendChat()
-	{
-		proxy.sendChat(new SendChatParam(
-				game.getTurnTracker().getCurrentTurn(),
-				game.getChat().toString()));
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void acceptTrade(boolean accept)
-	{
-		proxy.acceptTrade(new AcceptTradeParam(game.getTradeOffer().getReciever(), accept));
-	}
-	
 	//--------------------------------------------------------------------------------
 	@Override
 	public void createGame(String name, boolean randTiles, boolean randNumbers, boolean randPorts)
@@ -474,8 +461,7 @@ public class ModelFacade implements IModelFacade
 	{
 		proxy.robPlayer(new RobPlayerParam(game.getPlayer().getPlayerIndex(), victimIndex, location));
 	}
-
-	//--------------------------------------------------------------------------------
-	// END
-	//--------------------------------------------------------------------------------
 }
+	//================================================================================
+	// END
+	//================================================================================

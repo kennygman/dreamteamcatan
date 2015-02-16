@@ -144,6 +144,7 @@ public class Board extends Observable
 		}
 		return obj;
 	}
+	
 	//--------------------------------------------------------------------------------
 	public void setRoad(Road road)
 	{
@@ -157,6 +158,8 @@ public class Board extends Observable
 		Road[] arr = roadList.toArray(new Road[0]);
 		this.setRoads(arr);
 	}
+	
+	//--------------------------------------------------------------------------------
 	public void setSettlement(Settlement settlement)
 	{
 		VertexLocation vertex = settlement.getLocation().getNormalizedLocation();
@@ -169,6 +172,8 @@ public class Board extends Observable
 		Settlement[] arr = setList.toArray(new Settlement[0]);
 		this.setSettlements(arr);
 	}
+
+	//--------------------------------------------------------------------------------
 	public void setCity(City city)
 	{
 		VertexLocation vertex = city.getLocation().getNormalizedLocation();
@@ -183,8 +188,9 @@ public class Board extends Observable
 	}
 	
 	//--------------------------------------------------------------------------------
-	public List<VertexLocation> getVertices(EdgeLocation edge)
+	public List<VertexLocation> getVertices(EdgeLocation location)
 	{
+ 		EdgeLocation edge = location.getNormalizedLocation();
 		List<VertexLocation> vertList = new ArrayList<>();
 		
 		if(edge.getDir().equals(EdgeDirection.NorthWest))
@@ -207,8 +213,9 @@ public class Board extends Observable
 	}
 
 	//--------------------------------------------------------------------------------
-	public List<EdgeLocation> getEdges(VertexLocation vert)
+	public List<EdgeLocation> getEdges(VertexLocation location)
 	{
+ 		VertexLocation vert = location.getNormalizedLocation();
 		List<EdgeLocation> edgeList = new ArrayList<>();
 		
 		// North Edge
@@ -229,8 +236,9 @@ public class Board extends Observable
 		return edgeList;
 	}
 	//--------------------------------------------------------------------------------
- 	public boolean hasNeighborSettlement(EdgeLocation edge, int index)
+ 	public boolean hasNeighborSettlement(EdgeLocation location, int index)
  	{
+ 		EdgeLocation edge = location.getNormalizedLocation();
 		List<VertexLocation> vertLoc = this.getVertices(edge);
 		for (VertexLocation v : vertLoc)
 		{
@@ -246,8 +254,9 @@ public class Board extends Observable
 		return false;
  	}
 	//--------------------------------------------------------------------------------
- 	public boolean hasNeighborRoad(EdgeLocation edge, int index, boolean setup)
+ 	public boolean hasNeighborRoad(EdgeLocation location, int index, boolean setup)
  	{
+ 		EdgeLocation edge = location.getNormalizedLocation();
 		List<VertexLocation> vertLoc = this.getVertices(edge);
 		for (VertexLocation v : vertLoc)
 		{
@@ -256,8 +265,9 @@ public class Board extends Observable
  		return false;
  	}
 	//--------------------------------------------------------------------------------
- 	public boolean hasNeighborRoad(VertexLocation vert, int index, boolean setup)
+ 	public boolean hasNeighborRoad(VertexLocation location, int index, boolean setup)
  	{
+ 		VertexLocation vert = location.getNormalizedLocation();
 		List<EdgeLocation> edges = this.getEdges(vert);
 		for (EdgeLocation e : edges)
 		{
@@ -277,8 +287,9 @@ public class Board extends Observable
  		return false;
  	}
 	//--------------------------------------------------------------------------------
- 	public boolean hasNeighborStructure(VertexLocation vert)
+ 	public boolean hasNeighborStructure(VertexLocation location)
  	{
+ 		VertexLocation vert = location.getNormalizedLocation();
 		if (vert.getDir().equals(VertexDirection.NorthWest))
 		{
 			if (	this.getStructure(new VertexLocation(vert.getHexLoc(),
@@ -308,12 +319,37 @@ public class Board extends Observable
  		return Math.abs(hex.getX()) < 3 && Math.abs(hex.getY()) < 3;
  	}
 	
+	//--------------------------------------------------------------------------------
  	public List<Port> getPorts(int index)
  	{
  		List<Port> playerPorts = new ArrayList<>();
  		return playerPorts;
  	}
 	
+	//--------------------------------------------------------------------------------
+ 	/**
+ 	 * This method checks if one edge neighbors another edge
+ 	 * Get the vertices of the second edge then locate the edges connected to that vertex
+ 	 * Check if one of the connected edges is the same as the first edge
+ 	 * @param e1 the first edge
+ 	 * @param e2 the second edge
+ 	 * @return true if the edges are neighbors, false otherwise
+ 	 */
+ 	public boolean areNeighbors(EdgeLocation e1, EdgeLocation e2)
+ 	{
+ 		EdgeLocation neighbor = e1.getNormalizedLocation();
+ 		EdgeLocation edge = e2.getNormalizedLocation();
+		List<VertexLocation> vertLoc = this.getVertices(edge);
+		for (VertexLocation v : vertLoc)
+		{
+			List<EdgeLocation> neighbors = this.getEdges(v);
+			for (EdgeLocation e : neighbors)
+				if (e.equals(neighbor)) return true;
+		}
+ 		
+ 		return false;
+ 	}
+ 	
 	//--------------------------------------------------------------------------------
 	// JSON Getters & Setters
  	//--------------------------------------------------------------------------------

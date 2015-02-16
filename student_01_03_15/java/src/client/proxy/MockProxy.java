@@ -59,12 +59,12 @@ public class MockProxy implements IProxy
    		 
    		 fakeGame = g.getGame();
    		 fakeGame.setTitle("loosers");
-   		 
+   		 fakeGame.setPlayerId(0);
    		 
    		HexLocation location = new HexLocation(0,0);
 		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthEast);
   		Settlement settlement = new Settlement(0,vertex.getNormalizedLocation());
-   		// fakeGame.getMap().setSettlement(settlement);
+   		fakeGame.getMap().setSettlement(settlement);
    	 
    	 }
    	 catch(IOException e)

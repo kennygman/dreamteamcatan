@@ -1,7 +1,6 @@
 package model;
 
 import java.util.List;
-
 import model.player.*;
 
 public class TurnTracker 

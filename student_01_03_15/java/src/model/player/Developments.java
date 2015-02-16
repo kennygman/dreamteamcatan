@@ -1,13 +1,35 @@
 package model.player;
 
+import shared.definitions.DevCardType;
+
 public class Developments
 {
 	int monopoly;
 	int monument;
 	int roadBuilding;
-	int solider;
+	int soldier;
 	int yearOfPlenty;
 	
+	public boolean hasDevCard(DevCardType devCard)
+	{
+		switch(devCard)
+		{
+		case SOLDIER :
+			return soldier > 0;
+		case YEAR_OF_PLENTY :
+			return yearOfPlenty > 0;
+		case MONOPOLY :
+			return monopoly > 0;
+		case ROAD_BUILD :
+			return roadBuilding > 0;
+		case MONUMENT :
+			return monument > 0;
+		default :
+			assert false;
+			return false;
+
+		}
+	}
 	public int getMonopoly()
 	{
 		return monopoly;
@@ -32,13 +54,13 @@ public class Developments
 	{
 		this.roadBuilding = roadBuilding;
 	}
-	public int getSolider()
+	public int getSoldier()
 	{
-		return solider;
+		return soldier;
 	}
-	public void setSolider(int solider)
+	public void setSolider(int soldier)
 	{
-		this.solider = solider;
+		this.soldier = soldier;
 	}
 	public int getYearOfPlenty()
 	{

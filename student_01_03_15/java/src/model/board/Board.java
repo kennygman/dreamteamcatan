@@ -1,10 +1,10 @@
 package model.board;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 
 import shared.locations.EdgeDirection;
 import shared.locations.EdgeLocation;
@@ -12,13 +12,13 @@ import shared.locations.HexLocation;
 import shared.locations.VertexDirection;
 import shared.locations.VertexLocation;
 
-public class Board
+public class Board extends Observable
 {
 	private transient Map<Integer, List<Hex>> hexNumbers;
-	private transient Map<HexLocation, List<Port>> hexPorts;
-	private transient Map<VertexLocation, Settlement> settlementHexes;
-	private transient Map<VertexLocation, City> cityHexes;
-	private transient Map<EdgeLocation, Road> roadHexes;
+	private transient Map<VertexLocation, Settlement> settlementLocation;
+	private transient Map<VertexLocation, City> cityLocation;
+	private transient Map<EdgeLocation, Road> roadLocation;
+	private transient Map<Integer, List<Port>> playerPorts;
 	
 	private Hex[] hexes;
 	private Port[] ports;
@@ -28,15 +28,6 @@ public class Board
 	private HexLocation robber;
 	private int radius;
 	
-	public Board()
-	{
-		hexNumbers = new HashMap<>();
-		hexPorts = new HashMap<>();
-		roadHexes = new HashMap<>();
-		settlementHexes = new HashMap<>();
-		cityHexes = new HashMap<>();
-	}
-
 	//--------------------------------------------------------------------------------
 	/**
 	 * This function is called after JSON initializations
@@ -44,10 +35,17 @@ public class Board
 	 */
 	public void sort()
 	{
+		hexNumbers = new HashMap<>();
+		roadLocation = new HashMap<>();
+		settlementLocation = new HashMap<>();
+		cityLocation = new HashMap<>();
+		playerPorts = new HashMap<>();
+		for (int i = 0; i < 4; i++)
+			playerPorts.put(i, null);
 		sortNumbers();
 		sortRoads();
-		sortStructures();
 		sortPorts();
+		sortStructures();
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -70,7 +68,7 @@ public class Board
 		for(Road road : roads)
 		{
 			EdgeLocation edge = road.getEdgeLocation().getNormalizedLocation();
-			roadHexes.put(edge, road);
+			roadLocation.put(edge, road);
 		}
 	}
 
@@ -80,13 +78,13 @@ public class Board
 		for(Settlement settlement : settlements)
 		{
 			VertexLocation vertex = settlement.getLocation().getNormalizedLocation();
-			settlementHexes.put(vertex, settlement);
+			settlementLocation.put(vertex, settlement);
 		}
 		
 		for(City city :cities)
 		{
 			VertexLocation vertex = city.getLocation().getNormalizedLocation();
-			cityHexes.put(vertex, city);
+			cityLocation.put(vertex, city);
 		}
 	}
 
@@ -94,24 +92,38 @@ public class Board
 	public void sortPorts()
 	{
 		List<Port> portList;
+		int index;
 		for(Port port : ports)
 		{
-			HexLocation loc = port.getLocation();
-			portList = hexPorts.get(loc);
-			if (portList==null) portList = new ArrayList<>();
-			portList.add(port);
-			hexPorts.put(loc, portList);
+			VertexLocation v = new VertexLocation(port.getLocation().getX(),port.getLocation().getY(), port.getDirection());
+			if (cityLocation.containsKey(v))
+			{
+				index = cityLocation.get(v).getOwner();
+				portList = playerPorts.get(index);
+				if (portList == null) portList = new ArrayList<>();
+				portList.add(port);
+				playerPorts.put(index, portList);
+			}
 		}
 	}
 
+	public boolean hasPort(int index, String resource)
+	{
+		List<Port> portList = playerPorts.get(index);
+		for (Port p : portList)
+			if (p.getResource().equals(resource)) return true;
+		return false;
+	}
+	//--------------------------------------------------------------------------------
 	public Road getRoad(EdgeLocation edge)
 	{
-		return roadHexes.get(edge);
+		return roadLocation.get(edge);
 	}
 	
+	//--------------------------------------------------------------------------------
 	public boolean contains(EdgeLocation edge)
 	{
-		return roadHexes.containsKey(edge);
+		return roadLocation.containsKey(edge);
 	}
 	
 	/**
@@ -122,13 +134,13 @@ public class Board
 	public Object getStructure(VertexLocation vert)
 	{
 		Object obj = null;
-		if (cityHexes.containsKey(vert))
+		if (cityLocation.containsKey(vert))
 		{
-			obj = cityHexes.get(vert);
+			obj = cityLocation.get(vert);
 		}
-		else if (settlementHexes.containsKey(vert))
+		else if (settlementLocation.containsKey(vert))
 		{
-			obj = settlementHexes.get(vert);
+			obj = settlementLocation.get(vert);
 		}
 		return obj;
 	}
@@ -136,7 +148,7 @@ public class Board
 	public void setRoad(Road road)
 	{
 		EdgeLocation edge = road.getEdgeLocation().getNormalizedLocation();
-		roadHexes.put(edge, road);
+		roadLocation.put(edge, road);
 		
 		List<Road> roadList = new ArrayList<>();
 		for (Road r : roads)
@@ -148,7 +160,7 @@ public class Board
 	public void setSettlement(Settlement settlement)
 	{
 		VertexLocation vertex = settlement.getLocation().getNormalizedLocation();
-		settlementHexes.put(vertex, settlement);
+		settlementLocation.put(vertex, settlement);
 
 		List<Settlement> setList = new ArrayList<>();
 		for (Settlement s : settlements)
@@ -160,7 +172,7 @@ public class Board
 	public void setCity(City city)
 	{
 		VertexLocation vertex = city.getLocation().getNormalizedLocation();
-		cityHexes.put(vertex, city);
+		cityLocation.put(vertex, city);
 
 		List<City> cityList = new ArrayList<>();
 		for (City c : cities)
@@ -191,7 +203,6 @@ public class Board
 			vertList.add(new VertexLocation(edge.getHexLoc(), VertexDirection.East).getNormalizedLocation());
 		}
 		
-		
 		return vertList;
 	}
 
@@ -218,13 +229,94 @@ public class Board
 		return edgeList;
 	}
 	//--------------------------------------------------------------------------------
-	
-	
+ 	public boolean hasNeighborSettlement(EdgeLocation edge, int index)
+ 	{
+		List<VertexLocation> vertLoc = this.getVertices(edge);
+		for (VertexLocation v : vertLoc)
+		{
+			Object structure = this.getStructure(v);
+			if (structure != null &&
+				structure instanceof Settlement &&
+				(((Settlement) structure).getOwner() == index))
+			{
+				return true;
+			}
+			
+		}
+		return false;
+ 	}
 	//--------------------------------------------------------------------------------
+ 	public boolean hasNeighborRoad(EdgeLocation edge, int index, boolean setup)
+ 	{
+		List<VertexLocation> vertLoc = this.getVertices(edge);
+		for (VertexLocation v : vertLoc)
+		{
+			if (this.hasNeighborRoad(v, index, setup)) return true;
+		}
+ 		return false;
+ 	}
 	//--------------------------------------------------------------------------------
+ 	public boolean hasNeighborRoad(VertexLocation vert, int index, boolean setup)
+ 	{
+		List<EdgeLocation> edges = this.getEdges(vert);
+		for (EdgeLocation e : edges)
+		{
+			Road road = this.getRoad(e);
+			if (setup)
+			{
+				if (road != null) return true;
+			}
+			else
+			{
+				if (road != null && road.getOwner() == index)
+				{
+					return true;
+				}
+			}
+		}
+ 		return false;
+ 	}
 	//--------------------------------------------------------------------------------
+ 	public boolean hasNeighborStructure(VertexLocation vert)
+ 	{
+		if (vert.getDir().equals(VertexDirection.NorthWest))
+		{
+			if (	this.getStructure(new VertexLocation(vert.getHexLoc(),
+							VertexDirection.NorthEast)) == null &&
+					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.NorthWest),
+							VertexDirection.NorthEast)) == null &&
+					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.SouthWest),
+							VertexDirection.NorthEast)) == null
+				) return true;
+		}
+		else
+		{
+			if (	this.getStructure(new VertexLocation(vert.getHexLoc(),
+							VertexDirection.NorthWest)) == null &&
+					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.NorthEast),
+							VertexDirection.NorthWest)) == null &&
+					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.SouthEast),
+							VertexDirection.NorthWest)) == null
+				) return true;
+		}
 
-	// JSON Getters & Setters --------------------------------------------------------------------------------
+ 		return false;
+ 	}
+	//--------------------------------------------------------------------------------
+ 	public boolean hasNeighborWater(HexLocation hex)
+ 	{
+ 		return Math.abs(hex.getX()) < 3 && Math.abs(hex.getY()) < 3;
+ 	}
+	
+ 	public List<Port> getPorts(int index)
+ 	{
+ 		List<Port> playerPorts = new ArrayList<>();
+ 		return playerPorts;
+ 	}
+	
+	//--------------------------------------------------------------------------------
+	// JSON Getters & Setters
+ 	//--------------------------------------------------------------------------------
 	public Hex[] getHexes()
 	{
 		return hexes;

@@ -48,11 +48,9 @@ public class ModelFacadeUnitTest
 		
 		//Road road = game.getMap().getRoads()[0];
 		EdgeLocation edge = new EdgeLocation(0, 0, "N");
-		
 		boolean canBuild = facade.canPlaceRoad(edge,false);
 		
 		Player currentPlayer = game.getPlayers()[0];
-		
 		Resources hand = currentPlayer.getResources();
 		
 		int wood = hand.getResourceAmount(ResourceType.WOOD);
@@ -120,10 +118,10 @@ public class ModelFacadeUnitTest
 		
 		if(canBuild)
 		{
-			boolean free = false;
 			
 			
-			facade.buildRoad(edge, free);
+			
+			facade.buildRoad(edge, false);
 			
 			currentPlayer = game.getPlayers()[0];
 			Resources postHand = currentPlayer.getResources();
@@ -173,11 +171,72 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanBuildSettlement()
 	{
+		boolean result = false;
+		
+		//build 2 roads to build connecting settlement
+		EdgeLocation edge = new EdgeLocation(0, 0, "N");
+		EdgeLocation secondEdge = new EdgeLocation(0, 0, "NW");
+		
+		facade.buildRoad(edge,true);
+		facade.buildRoad(secondEdge,true);
+		
 		HexLocation location = new HexLocation(0,0);
-		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthEast);
+		VertexLocation vertex = new VertexLocation(location,VertexDirection.West);
   		Settlement settlement = new Settlement(0,vertex.getNormalizedLocation());
 		
-		boolean result = facade.canPlaceSettlement(settlement.getLocation(),false);
+  		//Get Player's currentStatus
+		
+  		Player currentPlayer = game.getPlayers()[0];
+		
+		Resources hand = currentPlayer.getResources();
+		
+		int wood = hand.getResourceAmount(ResourceType.WOOD);
+		int brick = hand.getResourceAmount(ResourceType.BRICK);
+		int wheat = hand.getResourceAmount(ResourceType.WHEAT);
+		int sheep = hand.getResourceAmount(ResourceType.SHEEP);
+		int settlementCount = currentPlayer.getSettlements();
+  		
+  		
+		if(facade.canPlaceSettlement(settlement.getLocation(),false))
+		{
+			facade.buildSettlement(vertex, false);
+			
+			//Get post player and his conditions
+			currentPlayer = game.getPlayers()[0];
+			Resources postHand = currentPlayer.getResources();
+			
+			int postWood = postHand.getResourceAmount(ResourceType.WOOD);
+			int postBrick = postHand.getResourceAmount(ResourceType.BRICK);
+			int postWheat = postHand.getResourceAmount(ResourceType.WHEAT);
+			int postSheep = postHand.getResourceAmount(ResourceType.SHEEP);
+			int postSettlementCount = currentPlayer.getSettlements();
+			
+			//Test post conditions
+			if(postWood != wood-1)	
+			{
+				result = false;
+			}
+			if(postBrick != brick-1)
+			{
+				result = false;
+			}
+			if(postWheat != wheat-1)	
+			{
+				result = false;
+			}
+			if(postSheep != sheep-1)
+			{
+				result = false;
+			}
+			if(postSettlementCount != settlementCount-1)
+			{
+				result = false;
+			}
+		}
+		else
+		{
+			result = false;
+		}
 		
 		assertEquals(result, true);
 	}
@@ -187,21 +246,90 @@ public class ModelFacadeUnitTest
 	{
 	
 		HexLocation location = new HexLocation(0,0);
-		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthEast);
+		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthWest);
   		Settlement settlement = new Settlement(0,vertex);
 		
 		boolean result = facade.canPlaceSettlement(settlement.getLocation(),false);
+		assertEquals(result, false);
+	}
+	
+	@Test
+	public void testCanBuildCity()
+	{
+		boolean result = true;
+		
+		//build a new city object
+		HexLocation location = new HexLocation(0,0);
+		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthEast);
+		
+		//Gather player's information
+		Player currentPlayer = game.getPlayers()[0];
+		
+		Resources hand = currentPlayer.getResources();
+		int wheat = hand.getResourceAmount(ResourceType.WHEAT);
+		int ore = hand.getResourceAmount(ResourceType.ORE);
+		int cityCount = currentPlayer.getCities();
+		
+		
+		if(facade.canPlaceCity(vertex))
+		{
+			facade.buildCity(vertex);
+			
+			currentPlayer = game.getPlayers()[0];
+			Resources postHand = currentPlayer.getResources();
+			
+			int postWheat = postHand.getResourceAmount(ResourceType.WHEAT);
+			int postOre = postHand.getResourceAmount(ResourceType.ORE);
+			int postCityCount = currentPlayer.getCities();
+			
+			if(postWheat != wheat-2)	
+			{
+				result = false;
+			}
+			if(postOre != ore-3)
+			{
+				result = false;
+			}
+			if(postCityCount != cityCount-1)
+			{
+				result = false;
+			}
+			
+			
+		}
+		else
+		{
+			result = false;
+		}
+	
+		
 		assertEquals(result, true);
 	}
-	/*
 	@Test
-	public void testCanPlaceCity()
+	public void testCantBuildCity()
 	{
-		Settlement settlement = game.getMap().getSettlements()[0];
-		boolean result = facade.canPlaceCity(settlement.getLocation());
-		assertEquals(result, true);
-	}*/
+		
+		HexLocation location = new HexLocation(1,1);
+		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthEast);
+		
+		boolean result = facade.canPlaceCity(vertex);
+		
+		assertEquals(result, false);
+	}
 	
+	@Test
+	public void testCanRollNumber()
+	{
+		boolean result = facade.CanRollNumber(5);
+		assertEquals(result,true);
+	}
+
+	@Test
+	public void testCanNOTRollNumber()
+	{
+		boolean result = facade.CanRollNumber(1);
+		assertEquals(result,false);
+	}
 	@Test
 	public void testCanAcceptTrade()
 	{
@@ -219,43 +347,7 @@ public class ModelFacadeUnitTest
 		assertEquals(result,true);
 	}
 
-	@Test
-	public void testCanRollNumber()
-	{
-		boolean result = facade.CanRollNumber(5);
-		assertEquals(result,true);
-	}
 
-	@Test
-	public void testCanNOTRollNumber()
-	{
-		boolean result = facade.CanRollNumber(1);
-		assertEquals(result,false);
-	}
-
-	/*@Test
-	public void testCanBuildRoad()
-	{
-		Player player = game.getPlayers()[0];
-		boolean result = facade.CanBuildRoad(player);
-		assertEquals(result,true);
-	}
-
-	@Test
-	public void testCanBuildSettlement()
-	{
-		Player player = game.getPlayers()[0];
-		boolean result = facade.CanBuildRoad(player);
-		assertEquals(result,true);
-	}
-
-	@Test
-	public void testCanBuildCity()
-	{
-		Player player = game.getPlayers()[0];
-		boolean result = facade.CanBuildRoad(player);
-		assertEquals(result,true);
-	}*/
 
 	@Test
 	public void testCanOfferTrade()

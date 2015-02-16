@@ -61,9 +61,10 @@ public class MockProxy implements IProxy
    		 fakeGame.setTitle("loosers");
    		 
    		 
-   		 Settlement s = new Settlement(0,new VertexLocation(new HexLocation(0,0),VertexDirection.NorthEast
-   				 ).getNormalizedLocation());
-   		 fakeGame.getMap().setSettlement(s);
+   		HexLocation location = new HexLocation(0,0);
+		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthEast);
+  		Settlement settlement = new Settlement(0,vertex.getNormalizedLocation());
+   		// fakeGame.getMap().setSettlement(settlement);
    	 
    	 }
    	 catch(IOException e)
@@ -300,8 +301,8 @@ public class MockProxy implements IProxy
     @Override
     public GameModelResponse playRoadBuilding(PlayRoadBuildingParam input)
     {
+    	
    	 GameModelResponse result = new GameModelResponse();
-   	 
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     

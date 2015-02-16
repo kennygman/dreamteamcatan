@@ -119,8 +119,6 @@ public class ModelFacadeUnitTest
 		if(canBuild)
 		{
 			
-			
-			
 			facade.buildRoad(edge, false);
 			
 			currentPlayer = game.getPlayers()[0];
@@ -294,8 +292,6 @@ public class ModelFacadeUnitTest
 			{
 				result = false;
 			}
-			
-			
 		}
 		else
 		{

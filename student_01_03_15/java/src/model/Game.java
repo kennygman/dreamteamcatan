@@ -8,14 +8,8 @@ import model.board.Board;
 
 public class Game 
 {
-
+	private int playerId;
 	private Resources bank;
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
 	private Chat chat;
 	private Log log;
 	private Board map;
@@ -24,11 +18,35 @@ public class Game
 	private TurnTracker turnTracker;
 	private String title;
 	private int version;
-
 	private int winner;
 	private Dice dice;
 //	private Board board;
 	
+	public Player getPlayer()
+	{
+		for (Player p : players)
+		{
+			if (p.getPlayerID()==playerId) return p;
+		}
+
+		assert false;
+		return null;
+	}
+	public int getPlayerId()
+	{
+		return playerId;
+	}
+	public void setPlayerId(int id)
+	{
+		this.playerId=id;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public boolean canInitGame()
 	{
 		//returns false if it cant initialize

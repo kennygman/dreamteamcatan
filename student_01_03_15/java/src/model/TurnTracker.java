@@ -31,6 +31,10 @@ public class TurnTracker
 	{
 		this.currentTurn = currentTurn;
 	}
-
+	
+	public String getStatus()
+	{
+		return status;
+	}
 	
 }

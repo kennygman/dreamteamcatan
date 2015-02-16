@@ -119,24 +119,42 @@ public class Resources {
 		
 	}
 	
+	public int getResourceAmount(String type)
+	{
+		int amount = 0;
+		switch(type)
+		{
+		case "wood": amount = wood; 
+		break;
+		case "brick": amount = brick;
+		break;
+		case "wheat": amount = wheat;
+		break;
+		case "sheep": amount = sheep;
+		break;
+		case "ore": amount = ore;
+		break;
+			default:
+				break;
+		}
+		return amount;
+		
+	}
 	/**
-	 * This method compares each resource in each list
+	 * This method verifies that the player has at least the same amount of resources in
+	 * the specified list
 	 * @param r the resources to compare with
 	 * @return true if each resource is greater than or equal to the amount in the comparison
 	 */
-	public boolean compare(Resources r)
+	public boolean contains(Resources r)
 	{
-		boolean valid = true;
-		if (r.getResourceAmount(ResourceType.WOOD) < 0
-				&& this.wood < Math.abs(r.getResourceAmount(ResourceType.WOOD))) valid = false;
-		if (r.getResourceAmount(ResourceType.WHEAT) < 0
-				&& this.wheat < Math.abs(r.getResourceAmount(ResourceType.WHEAT))) valid = false;
-		if (r.getResourceAmount(ResourceType.SHEEP) < 0
-				&& this.sheep < Math.abs(r.getResourceAmount(ResourceType.SHEEP))) valid = false;
-		if (r.getResourceAmount(ResourceType.BRICK) < 0
-				&& this.brick < Math.abs(r.getResourceAmount(ResourceType.BRICK))) valid = false;
-		if (r.getResourceAmount(ResourceType.ORE) < 0
-				&& this.ore < Math.abs(r.getResourceAmount(ResourceType.ORE))) valid = false;
-		return valid;
+		ResourceType[] list = {ResourceType.WHEAT, ResourceType.WOOD,
+				ResourceType.BRICK, ResourceType.ORE, ResourceType.SHEEP};
+		for (ResourceType res : list)
+		{
+			int amount = r.getResourceAmount(res);
+			if (amount > 0 && this.getResourceAmount(res) < amount) return false;
+		}
+		return true;
 	}
 }

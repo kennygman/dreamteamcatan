@@ -77,7 +77,11 @@ public class Board extends Observable
 	{
 		for(Settlement settlement : settlements)
 		{
+			
 			VertexLocation vertex = settlement.getLocation().getNormalizedLocation();
+			
+			
+			
 			settlementLocation.put(vertex, settlement);
 		}
 		
@@ -162,7 +166,24 @@ public class Board extends Observable
 	//--------------------------------------------------------------------------------
 	public void setSettlement(Settlement settlement)
 	{
+		
+	
 		VertexLocation vertex = settlement.getLocation().getNormalizedLocation();
+		
+		if(vertex == null)
+		{
+			System.out.println("vertex is null");
+		}
+		if(settlementLocation == null)
+		{
+			System.out.println("hasMap is null");
+		}
+	
+		if(settlement == null)
+		{
+			System.out.println("settlement is null");
+		}
+		
 		settlementLocation.put(vertex, settlement);
 
 		List<Settlement> setList = new ArrayList<>();

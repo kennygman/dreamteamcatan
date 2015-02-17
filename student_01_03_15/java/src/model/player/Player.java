@@ -6,10 +6,8 @@ import shared.definitions.DevCardType;
 public class Player
 {
 	private String name;
-	private String color;
 	private int playerIndex;
 	private int playerID;
-	private CatanColor catanColor;
 	private boolean isTurn;
 
 	private int victoryPoints;
@@ -19,9 +17,7 @@ public class Player
 	private int settlements;
 	private int cities;
 
-	private Developments developmentHand;
 	private Resources resources;
-	private Ports portList;
 
 	private boolean discarded;
 	private boolean playedDevCard;
@@ -29,6 +25,8 @@ public class Player
 
 	private Developments newDevCards;
 	private Developments oldDevCards;
+//	private String color;
+//	private CatanColor catanColor;
 
 	/**
 	 * All players will begin with boolean isTurn as false,0 VP
@@ -210,16 +208,6 @@ public class Player
 		this.cities = cities;
 	}
 
-	public Developments getDevelopmentHand()
-	{
-		return developmentHand;
-	}
-
-	public void setDevelopmentHand(Developments developmentHand)
-	{
-		this.developmentHand = developmentHand;
-	}
-
 	public Resources getResources()
 	{
 		return resources;
@@ -228,16 +216,6 @@ public class Player
 	public void setResources(Resources resources)
 	{
 		this.resources = resources;
-	}
-
-	public Ports getPortList()
-	{
-		return portList;
-	}
-
-	public void setPortList(Ports portList)
-	{
-		this.portList = portList;
 	}
 
 	public String getName()

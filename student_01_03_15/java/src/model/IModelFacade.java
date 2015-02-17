@@ -2,7 +2,6 @@ package model;
 
 import model.player.Player;
 import model.player.Resources;
-import shared.definitions.PieceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
@@ -95,7 +94,7 @@ public interface IModelFacade
 	 * @return True if it is the players turn and if the player has owned the
 	 *         card for at least 1 turn: False otherwise
 	 */
-	boolean CanUseSoldier();
+	boolean CanUseSoldier(int victimIndex, HexLocation location);
 
 	/**
 	 * This method is called when a player tries to play a development card
@@ -103,7 +102,7 @@ public interface IModelFacade
 	 * @return True if it is the players turn and if the player has owned the
 	 *         card for at least 1 turn: False otherwise
 	 */
-	boolean CanUseMonopoly();
+	boolean CanUseMonopoly(String resource);
 
 	/**
 	 * This method is called when a player tries to play a development card
@@ -164,62 +163,6 @@ public interface IModelFacade
 	boolean canPlaceRobber(HexLocation hexLoc);
 
 	/**
-	 * This method is called when the user clicks the mouse to place a road.
-	 * 
-	 * @param edgeLoc
-	 *            The road location
-	 */
-	void placeRoad(EdgeLocation edgeLoc);
-
-	/**
-	 * This method is called when the user clicks the mouse to place a
-	 * settlement.
-	 * 
-	 * @param vertLoc
-	 *            The settlement location
-	 */
-	void placeSettlement(VertexLocation vertLoc);
-
-	/**
-	 * This method is called when the user clicks the mouse to place a city.
-	 * 
-	 * @param vertLoc
-	 *            The city location
-	 */
-	void placeCity(VertexLocation vertLoc);
-
-	/**
-	 * This method is called when the user clicks the mouse to place the robber.
-	 * 
-	 * @param hexLoc
-	 *            The robber location
-	 */
-	void placeRobber(HexLocation hexLoc);
-
-	/**
-	 * This method is called when the user requests to place a piece on the map
-	 * (road, city, or settlement)
-	 * 
-	 * @param pieceType
-	 *            The type of piece to be placed
-	 * @param isFree
-	 *            true if the piece should not cost the player resources, false
-	 *            otherwise. Set to true during initial setup and when a road
-	 *            building card is played.
-	 * @param allowDisconnected
-	 *            true if the piece can be disconnected, false otherwise. Set to
-	 *            true only during initial setup.
-	 */
-	void startMove(PieceType pieceType, boolean isFree,
-			boolean allowDisconnected);
-
-	/**
-	 * This method is called from the modal map overlay when the cancel button
-	 * is pressed.
-	 */
-	void cancelMove();
-
-	/**
 	 * This method is called by the Rob View when a player to rob is selected
 	 * via a button click.
 	 * 
@@ -236,16 +179,15 @@ public interface IModelFacade
 	boolean CanDiscardCards(Resources resources);
 	boolean canRobPlayer(HexLocation location, int victimIndex);
 	
-	void playMonumentCard();
-	void playMonopolyCard(String resource);
+	void playSoldierCard(int victimIndex, HexLocation location);
 	void playYearOfPlentyCard(String resource1, String resource2);
 	void playRoadCard(EdgeLocation spot1, EdgeLocation spot2);
-	void playSoldierCard(int victimIndex, HexLocation location);
+	void playMonopolyCard(String resource);
+	void playMonumentCard();
 
 	void rollNumber(int d1, int d2);
 	void sendChat();
 	void acceptTrade(boolean accept);
-	void createGame(String name, boolean randTiles, boolean randNumbers, boolean randPorts);
 	void discardCards(Resources resources);
 
 	void buildRoad(EdgeLocation edge, boolean free);	

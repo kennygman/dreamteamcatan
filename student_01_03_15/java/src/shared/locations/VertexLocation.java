@@ -11,6 +11,19 @@ public class VertexLocation
 	private HexLocation hexLoc;
 	private VertexDirection dir;
 	
+	public VertexLocation(int x, int y, String direction)
+	{
+		this.x = x;
+		this.y = y;
+		this.direction = direction;
+	}
+	
+	public VertexLocation(HexLocation hexLoc, VertexDirection dir)
+	{
+		setHexLoc(hexLoc);
+		setDir(dir);
+	}
+	
 	public void translate()
 	{
 		hexLoc = new HexLocation(x,y);
@@ -41,21 +54,9 @@ public class VertexLocation
 		}
 	}
 
-	public VertexLocation(int x, int y, String direction)
-	{
-		this.x = x;
-		this.y = y;
-		this.direction = direction;
-	}
-	
-	public VertexLocation(HexLocation hexLoc, VertexDirection dir)
-	{
-		setHexLoc(hexLoc);
-		setDir(dir);
-	}
-	
 	public HexLocation getHexLoc()
 	{
+		if (hexLoc==null) translate();
 		return hexLoc;
 	}
 	
@@ -81,6 +82,7 @@ public class VertexLocation
 	@Override
 	public String toString()
 	{
+		if (hexLoc==null) translate();
 		return "VertexLocation [hexLoc=" + hexLoc + ", dir=" + dir + "]";
 	}
 	
@@ -97,6 +99,7 @@ public class VertexLocation
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (hexLoc==null) translate();
 		if(this == obj)
 			return true;
 		if(obj == null)
@@ -126,6 +129,7 @@ public class VertexLocation
 	 */
 	public VertexLocation getNormalizedLocation()
 	{
+		if (hexLoc==null) translate();
 		
 		// Return location that has direction NW or NE
 		

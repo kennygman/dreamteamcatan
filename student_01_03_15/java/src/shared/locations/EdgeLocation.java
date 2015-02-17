@@ -19,6 +19,12 @@ public class EdgeLocation
 		this.y = y;
 		this.direction = direction;
 	}
+	public EdgeLocation(HexLocation hexLoc, EdgeDirection dir)
+	{
+		setHexLoc(hexLoc);
+		setDir(dir);
+	}
+	
 	
 	public void translate()
 	{
@@ -49,15 +55,9 @@ public class EdgeLocation
 			return;
 		}
 	}
-	public EdgeLocation(HexLocation hexLoc, EdgeDirection dir)
-	{
-		setHexLoc(hexLoc);
-		setDir(dir);
-	}
-	
 	public HexLocation getHexLoc()
 	{
-		if (hexLoc != null) translate();
+		if (hexLoc == null) translate();
 		return hexLoc;
 	}
 	
@@ -83,6 +83,7 @@ public class EdgeLocation
 	@Override
 	public String toString()
 	{
+		if (hexLoc == null) translate();
 		return "EdgeLocation [hexLoc=" + hexLoc + ", dir=" + dir + "]";
 	}
 	
@@ -99,6 +100,7 @@ public class EdgeLocation
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (hexLoc == null) translate();
 		if(this == obj)
 			return true;
 		if(obj == null)
@@ -128,6 +130,7 @@ public class EdgeLocation
 	 */
 	public EdgeLocation getNormalizedLocation()
 	{
+		if (hexLoc == null) translate();
 		
 		// Return an EdgeLocation that has direction NW, N, or NE
 		

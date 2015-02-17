@@ -7,6 +7,7 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 import client.proxy.IProxy;
 import model.board.City;
+import model.board.Road;
 import model.board.Settlement;
 import model.player.Player;
 import model.player.Resources;
@@ -72,7 +73,10 @@ public class ModelFacade implements IModelFacade
 	// Playing Preconditions ================================================================================
 	private boolean canPlay()
 	{
-		return this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Playing");
+		boolean valid = true;
+		if (!isPlayerTurn() ) valid = false;
+		if (!game.getTurnTracker().getStatus().equals("Playing")) valid = false;
+		return valid;
 	}
 	//--------------------------------------------------------------------------------
 	@Override
@@ -89,7 +93,7 @@ public class ModelFacade implements IModelFacade
 		EdgeLocation edge = edgeLoc.getNormalizedLocation();
 		if (game.getBoard().contains(edge) ||
 			!free && !CanBuyRoad() ||
-			!game.getBoard().hasNeighborWater(edge.getHexLoc())) return false;
+			game.getBoard().hasNeighborWater(edge.getHexLoc())) return false;
 		
 		if (game.getTurnTracker().getStatus().equals("FirstRound") ||
 			game.getTurnTracker().getStatus().equals("SecondRound"))
@@ -116,7 +120,8 @@ public class ModelFacade implements IModelFacade
 		Object structure = game.getBoard().getStructure(vert);
 		boolean setup = false;
 		
-		if (!CanBuySettlement() || structure != null ||
+		if (!CanBuySettlement() ||
+			structure != null ||
 			game.getBoard().hasNeighborWater(vert.getHexLoc()) ||
 			game.getBoard().hasNeighborStructure(vert)) return false;
 
@@ -363,27 +368,41 @@ public class ModelFacade implements IModelFacade
 	public void buildRoad(EdgeLocation edge, boolean free)
 	{
 		Player p = game.getPlayer();
-		Game newGame = proxy.buildRoad(	new BuildRoadParam(
-				game.getTurnTracker().getCurrentTurn(), edge, free)).getGame();
+		BuildRoadParam parm = 	new BuildRoadParam(game.getTurnTracker().getCurrentTurn(), edge, free);
+
+		proxy.buildRoad(parm);
+		p.setRoads(p.getRoads()-1);
+		p.getResources().useResource(ResourceType.WOOD, 1);
+		p.getResources().useResource(ResourceType.BRICK, 1);
+		game.getBoard().setRoad(new Road(p.getPlayerIndex(), edge));
+/*		Game newGame = proxy.buildRoad(parm).getGame();
 		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
 		p.setRoads(newGame.getPlayers()[p.getPlayerIndex()].getRoads());
 		game.getBoard().setRoads(newGame.getBoard().getRoads());
 		game.getBoard().sort();
 		game.getTurnTracker().setLongestRoad(newGame.getTurnTracker().getLongestRoad());
-	}
+*/	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void buildSettlement(VertexLocation vert, boolean free)
 	{
 		Player p = game.getPlayer();
-		Game newGame = proxy.buildSettlement(new BuildSettlementParam(
+		proxy.buildSettlement(new BuildSettlementParam(
+				game.getPlayer().getPlayerIndex(), vert, free));
+		p.setSettlements(p.getSettlements()-1);
+		p.getResources().useResource(ResourceType.WOOD, 1);
+		p.getResources().useResource(ResourceType.BRICK, 1);
+		p.getResources().useResource(ResourceType.SHEEP, 1);
+		p.getResources().useResource(ResourceType.WHEAT, 1);
+		
+/*		Game newGame = proxy.buildSettlement(new BuildSettlementParam(
 				game.getPlayer().getPlayerIndex(), vert, free)).getGame();
 		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
 		p.setSettlements(newGame.getPlayers()[p.getPlayerIndex()].getSettlements());
 		game.getBoard().setSettlements(newGame.getBoard().getSettlements());
 		game.getBoard().sort();
-	}
+*/	}
 
 	//--------------------------------------------------------------------------------
 	@Override

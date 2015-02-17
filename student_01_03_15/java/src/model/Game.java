@@ -28,7 +28,6 @@ public class Game
 		{
 			if (p.getPlayerID()==playerId) return p;
 		}
-
 		assert false;
 		return null;
 	}

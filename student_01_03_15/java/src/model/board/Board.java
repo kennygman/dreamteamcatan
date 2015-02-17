@@ -28,6 +28,7 @@ public class Board extends Observable
 	private HexLocation robber;
 	private int radius;
 	
+	public Board()	{}
 	//--------------------------------------------------------------------------------
 	/**
 	 * This function is called after JSON initializations
@@ -166,7 +167,7 @@ public class Board extends Observable
 	//--------------------------------------------------------------------------------
 	public void setSettlement(Settlement settlement)
 	{
-		
+		if (settlement == null) return;
 	
 		VertexLocation vertex = settlement.getLocation().getNormalizedLocation();
 		
@@ -314,7 +315,7 @@ public class Board extends Observable
 							VertexDirection.NorthEast)) == null &&
 					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.SouthWest),
 							VertexDirection.NorthEast)) == null
-				) return true;
+				) return false;
 		}
 		else
 		{
@@ -324,15 +325,18 @@ public class Board extends Observable
 							VertexDirection.NorthWest)) == null &&
 					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.SouthEast),
 							VertexDirection.NorthWest)) == null
-				) return true;
+				)
+				{
+					return false;
+				}
 		}
 
- 		return false;
+ 		return true;
  	}
 	//--------------------------------------------------------------------------------
  	public boolean hasNeighborWater(HexLocation hex)
  	{
- 		return Math.abs(hex.getX()) < 3 && Math.abs(hex.getY()) < 3;
+ 		return Math.abs(hex.getX()) > 2 && Math.abs(hex.getY()) > 2;
  	}
 	
 	//--------------------------------------------------------------------------------

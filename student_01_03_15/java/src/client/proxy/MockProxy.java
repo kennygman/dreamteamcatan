@@ -59,8 +59,8 @@ public class MockProxy implements IProxy
    		 
    		 fakeGame = g.getGame();
    		 fakeGame.setTitle("loosers");
-   		 fakeGame.setPlayerId(0);
-   		 
+   		 fakeGame.setPlayerId(fakeGame.getPlayers()[0].getPlayerID());
+   		 fakeGame.getBoard().sort();
    		HexLocation location = new HexLocation(0,0);
 		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthEast);
   		Settlement settlement = new Settlement(0,vertex.getNormalizedLocation());
@@ -174,7 +174,6 @@ public class MockProxy implements IProxy
    	 
    	 result.setGame(fakeGame);
    	 result.setValid(true);
-   	 
    	 return result;
     }
 

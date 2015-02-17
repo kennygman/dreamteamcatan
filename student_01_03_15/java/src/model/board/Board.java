@@ -15,7 +15,7 @@ import shared.locations.VertexLocation;
 public class Board extends Observable
 {
 	private transient Map<Integer, List<Hex>> hexNumbers;
-	private transient Map<VertexLocation, Settlement> settlementLocation;
+	private Map<VertexLocation, Settlement> settlementLocation;
 	private transient Map<VertexLocation, City> cityLocation;
 	private transient Map<EdgeLocation, Road> roadLocation;
 	private transient Map<Integer, List<Port>> playerPorts;
@@ -37,7 +37,7 @@ public class Board extends Observable
 	{
 		hexNumbers = new HashMap<>();
 		roadLocation = new HashMap<>();
-		settlementLocation = new HashMap<>();
+		settlementLocation = new HashMap<VertexLocation,Settlement>();
 		cityLocation = new HashMap<>();
 		playerPorts = new HashMap<>();
 		for (int i = 0; i < 4; i++)

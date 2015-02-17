@@ -2,7 +2,6 @@ package model;
 
 import model.player.Player;
 import model.player.Resources;
-import shared.definitions.PieceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
@@ -164,29 +163,6 @@ public interface IModelFacade
 	boolean canPlaceRobber(HexLocation hexLoc);
 
 	/**
-	 * This method is called when the user requests to place a piece on the map
-	 * (road, city, or settlement)
-	 * 
-	 * @param pieceType
-	 *            The type of piece to be placed
-	 * @param isFree
-	 *            true if the piece should not cost the player resources, false
-	 *            otherwise. Set to true during initial setup and when a road
-	 *            building card is played.
-	 * @param allowDisconnected
-	 *            true if the piece can be disconnected, false otherwise. Set to
-	 *            true only during initial setup.
-	 */
-	void startMove(PieceType pieceType, boolean isFree,
-			boolean allowDisconnected);
-
-	/**
-	 * This method is called from the modal map overlay when the cancel button
-	 * is pressed.
-	 */
-	void cancelMove();
-
-	/**
 	 * This method is called by the Rob View when a player to rob is selected
 	 * via a button click.
 	 * 
@@ -212,7 +188,6 @@ public interface IModelFacade
 	void rollNumber(int d1, int d2);
 	void sendChat();
 	void acceptTrade(boolean accept);
-	void createGame(String name, boolean randTiles, boolean randNumbers, boolean randPorts);
 	void discardCards(Resources resources);
 
 	void buildRoad(EdgeLocation edge, boolean free);	

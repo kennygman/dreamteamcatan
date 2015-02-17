@@ -179,11 +179,6 @@ public class Board extends Observable
 			System.out.println("hasMap is null");
 		}
 	
-		if(settlement == null)
-		{
-			System.out.println("settlement is null");
-		}
-		
 		settlementLocation.put(vertex, settlement);
 
 		List<Settlement> setList = new ArrayList<>();

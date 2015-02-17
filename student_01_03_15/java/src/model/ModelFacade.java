@@ -1,14 +1,12 @@
 package model;
 
 import shared.definitions.DevCardType;
-import shared.definitions.PieceType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 import client.proxy.IProxy;
 import model.board.City;
-import model.board.Road;
 import model.board.Settlement;
 import model.player.Player;
 import model.player.Resources;
@@ -97,11 +95,13 @@ public class ModelFacade implements IModelFacade
 			game.getTurnTracker().getStatus().equals("SecondRound"))
 		{
 			if (game.getBoard().hasNeighborSettlement(edge, game.getPlayer().getPlayerIndex()) &&
-				!game.getBoard().hasNeighborRoad(edge, game.getPlayer().getPlayerIndex(), true)) return true;
+				!game.getBoard().hasNeighborRoad(edge, game.getPlayer().getPlayerIndex(), true))
+				return true;
 		}
 		else
 		{
-			if (game.getBoard().hasNeighborRoad(edge, game.getPlayer().getPlayerIndex(), false)) return true;
+			if (game.getBoard().hasNeighborRoad(edge, game.getPlayer().getPlayerIndex(), false))
+				return true;
 		}
 			
 		return false;
@@ -123,7 +123,8 @@ public class ModelFacade implements IModelFacade
 		if (game.getTurnTracker().getStatus().equals("FirstRound") ||
 				game.getTurnTracker().getStatus().equals("SecondRound")) setup = true;
 		
-		boolean neighbor = game.getBoard().hasNeighborRoad(vert, game.getPlayer().getPlayerIndex(), setup);
+		boolean neighbor = game.getBoard().hasNeighborRoad(
+				vert, game.getPlayer().getPlayerIndex(), setup);
 		if (setup)
 		{
 			if (!neighbor) return true;
@@ -285,7 +286,8 @@ public class ModelFacade implements IModelFacade
 			spot1.equals(spot2)
 			) return false;
 		
-		if (game.getBoard().hasNeighborRoad(spot2, game.getPlayer().getPlayerIndex(), false) ||
+		if (game.getBoard().hasNeighborRoad(spot2,
+				game.getPlayer().getPlayerIndex(), false) ||
 			game.getBoard().areNeighbors(spot1, spot2)
 			) return true;
 		return false;
@@ -329,37 +331,24 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public void acceptTrade(boolean accept)
 	{
-		Game newGame = proxy.acceptTrade(new AcceptTradeParam(
-				game.getTradeOffer().getReciever(), accept)).getGame();
-	}
-	
-	//--------------------------------------------------------------------------------
-	@Override
-	public void startMove(PieceType pieceType, boolean isFree,
-			boolean allowDisconnected)
-	{
-		
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void cancelMove()
-	{
-		
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void createGame(String name, boolean randTiles, boolean randNumbers, boolean randPorts)
-	{
-		proxy.createGame(new CreateGameParam(name, randTiles, randNumbers, randPorts));
+		Player sender = game.getPlayers()[game.getTradeOffer().getSender()];
+		Player reciever = game.getPlayers()[game.getTradeOffer().getReciever()];
+		Game newGame = proxy.acceptTrade(
+				new AcceptTradeParam(reciever.getPlayerIndex(), accept)).getGame();
+		if (!accept) return;
+		sender.setResources(newGame.getPlayers()[sender.getPlayerIndex()].getResources());
+		reciever.setResources(newGame.getPlayers()[reciever.getPlayerIndex()].getResources());
+		game.setTradeOffer(newGame.getTradeOffer());
 	}
 	
 	//--------------------------------------------------------------------------------
 	@Override
 	public void discardCards(Resources resources)
 	{
-		proxy.discardCards(new DiscardCardsParam(0, resources));
+		Player p = game.getPlayer();
+		Game newGame = proxy.discardCards(new DiscardCardsParam(0, resources)).getGame();
+		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+		game.getTurnTracker().setStatus(newGame.getTurnTracker().getStatus());
 	}
 
 	//--------------------------------------------------------------------------------
@@ -373,94 +362,153 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public void buildRoad(EdgeLocation edge, boolean free)
 	{
-		proxy.buildRoad(new BuildRoadParam(game.getTurnTracker().getCurrentTurn(), edge, free));
+		Player p = game.getPlayer();
+		Game newGame = proxy.buildRoad(	new BuildRoadParam(
+				game.getTurnTracker().getCurrentTurn(), edge, free)).getGame();
+		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+		p.setRoads(newGame.getPlayers()[p.getPlayerIndex()].getRoads());
+		game.getBoard().setRoads(newGame.getBoard().getRoads());
+		game.getBoard().sort();
+		game.getTurnTracker().setLongestRoad(newGame.getTurnTracker().getLongestRoad());
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void buildSettlement(VertexLocation vert, boolean free)
 	{
-		proxy.buildSettlement(new BuildSettlementParam(game.getPlayer().getPlayerIndex(), vert, free));
+		Player p = game.getPlayer();
+		Game newGame = proxy.buildSettlement(new BuildSettlementParam(
+				game.getPlayer().getPlayerIndex(), vert, free)).getGame();
+		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+		p.setSettlements(newGame.getPlayers()[p.getPlayerIndex()].getSettlements());
+		game.getBoard().setSettlements(newGame.getBoard().getSettlements());
+		game.getBoard().sort();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void buildCity(VertexLocation vert)
 	{
-		proxy.buildCity(new BuildCityParam(game.getPlayer().getPlayerIndex(), vert));
+		Player p = game.getPlayer();
+		Game newGame = proxy.buildCity(
+				new BuildCityParam(game.getPlayer().getPlayerIndex(), vert)).getGame();
+		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+		p.setCities(newGame.getPlayers()[p.getPlayerIndex()].getCities());
+		p.setSettlements(newGame.getPlayers()[p.getPlayerIndex()].getSettlements());
+		game.getBoard().setCities(newGame.getBoard().getCities());
+		game.getBoard().sort();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void offerTrade(Player sender, Player receiver, Resources resources)
 	{
-		proxy.offerTrade(new OfferTradeParam(sender.getPlayerIndex(), receiver.getPlayerIndex(), resources));
+		proxy.offerTrade(new OfferTradeParam(sender.getPlayerIndex(),
+				receiver.getPlayerIndex(), resources)).getGame();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void maritimeTrade(int ratio, String inputResource, String outResource)
 	{
-		proxy.maritimeTrade(new MaritimeTradeParam(game.getPlayer().getPlayerIndex(), ratio, inputResource, outResource));
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void finishTurn()
-	{
-		if (this.CanFinishTurn())
-		{
-			proxy.finishTurn(new FinishTurnParam(game.getPlayer().getPlayerIndex()));
-		}
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void buyDevCard()
-	{
-		proxy.buyDevCard(new BuyDevCardParam(game.getPlayer().getPlayerIndex()));
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void playYearOfPlentyCard(String resource1, String resource2)
-	{
-		proxy.playYearOfPlenty(new PlayYearOfPlentyParam(game.getPlayer().getPlayerIndex(), resource1, resource2));
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void playRoadCard(EdgeLocation spot1, EdgeLocation spot2)
-	{
-		proxy.playRoadBuilding(new PlayRoadBuildingParam(game.getPlayer().getPlayerIndex(), spot1, spot2));
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void playSoldierCard(int victimIndex, HexLocation location)
-	{
-		proxy.playSoldier(new PlaySoldierParam(game.getPlayer().getPlayerIndex(), victimIndex, location));
-	}
-
-	@Override
-	public void playMonumentCard()
-	{
-		proxy.playMonument(new PlayMonumentParam(game.getPlayer().getPlayerIndex()));
-	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void playMonopolyCard(String resource)
-	{
-		proxy.playMonopoly(new PlayMonopolyParam(game.getPlayer().getPlayerIndex(), resource));
+		Player p = game.getPlayer();
+		Game newGame =  proxy.maritimeTrade(
+				new MaritimeTradeParam(game.getPlayer().getPlayerIndex(),
+				ratio, inputResource, outResource)).getGame();
+		game.setBank(newGame.getBank());
+		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void robPlayer(HexLocation location, int victimIndex)
 	{
-		proxy.robPlayer(new RobPlayerParam(game.getPlayer().getPlayerIndex(), victimIndex, location));
+		Player p = game.getPlayer();
+		Game newGame =  proxy.robPlayer(new RobPlayerParam(
+				game.getPlayer().getPlayerIndex(), victimIndex, location)).getGame();
+		game.getBoard().setRobber(newGame.getBoard().getRobber());
+		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
 	}
+
+	//--------------------------------------------------------------------------------
+	@Override
+	public void finishTurn()
+	{
+		Player p = game.getPlayer();
+		Game newGame = proxy.finishTurn(
+				new FinishTurnParam(game.getPlayer().getPlayerIndex())).getGame();
+		p.setNewDevCards(newGame.getPlayers()[p.getPlayerIndex()].getNewDevCards());
+		p.setOldDevCards(newGame.getPlayers()[p.getPlayerIndex()].getOldDevCards());
+		game.getTurnTracker().setCurrentTurn(newGame.getTurnTracker().getCurrentTurn());
+	}
+
+	//--------------------------------------------------------------------------------
+	@Override
+	public void buyDevCard()
+	{
+		Player p = game.getPlayer();
+		Game newGame = 	proxy.buyDevCard(
+				new BuyDevCardParam(game.getPlayer().getPlayerIndex())).getGame();
+		p.setNewDevCards(newGame.getPlayers()[p.getPlayerIndex()].getNewDevCards());
+		p.setOldDevCards(newGame.getPlayers()[p.getPlayerIndex()].getOldDevCards());
+	}
+
+	//--------------------------------------------------------------------------------
+	@Override
+	public void playSoldierCard(int victimIndex, HexLocation location)
+	{
+		Player p = game.getPlayer();
+		Game newGame = proxy.playSoldier(new PlaySoldierParam(
+				game.getPlayer().getPlayerIndex(), victimIndex, location)).getGame();
+		game.getBoard().setRobber(newGame.getBoard().getRobber());
+		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+		game.getTurnTracker().setLargestArmy(newGame.getTurnTracker().getLargestArmy());
+		p.setPlayedDevCard(newGame.getPlayers()[p.getPlayerIndex()].isPlayedDevCard());
+	}
+
+	//--------------------------------------------------------------------------------
+	@Override
+	public void playYearOfPlentyCard(String resource1, String resource2)
+	{
+		Player p = game.getPlayer();
+		Game newGame = 	proxy.playYearOfPlenty(new PlayYearOfPlentyParam(
+				game.getPlayer().getPlayerIndex(), resource1, resource2)).getGame();
+		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+	}
+
+	//--------------------------------------------------------------------------------
+	@Override
+	public void playRoadCard(EdgeLocation spot1, EdgeLocation spot2)
+	{
+		Player p = game.getPlayer();
+		Game newGame =	proxy.playRoadBuilding(new PlayRoadBuildingParam(
+				game.getPlayer().getPlayerIndex(), spot1, spot2)).getGame();
+		p.setRoads(newGame.getPlayers()[p.getPlayerIndex()].getRoads());
+		game.getBoard().setRoads(newGame.getBoard().getRoads());
+		game.getBoard().sort();
+		game.getTurnTracker().setLongestRoad(newGame.getTurnTracker().getLongestRoad());
+	}
+
+	//--------------------------------------------------------------------------------
+	@Override
+	public void playMonopolyCard(String resource)
+	{
+		Player p = game.getPlayer();
+		Game newGame =	proxy.playMonopoly(new PlayMonopolyParam(
+				game.getPlayer().getPlayerIndex(), resource)).getGame();
+		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+	}
+
+	//--------------------------------------------------------------------------------
+	@Override
+	public void playMonumentCard()
+	{
+		Player p = game.getPlayer();
+		Game newGame =	proxy.playMonument(new PlayMonumentParam(
+				game.getPlayer().getPlayerIndex())).getGame();
+		p.setVictoryPoints(newGame.getPlayers()[p.getPlayerIndex()].getVictoryPoints());
+	}
+
 }
 	//================================================================================
 	// END

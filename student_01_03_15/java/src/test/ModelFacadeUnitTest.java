@@ -238,7 +238,7 @@ public class ModelFacadeUnitTest
 		
 		assertEquals(result, true);
 	}
-/*	
+	
 	@Test
 	public void testCantBuildSettlement()
 	{
@@ -648,7 +648,6 @@ public class ModelFacadeUnitTest
 	}
 
 
-*/
 	
 }
 

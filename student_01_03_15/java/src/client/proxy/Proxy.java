@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 
 import com.google.gson.Gson;
 
@@ -28,6 +29,8 @@ public class Proxy implements IProxy
 	private Translator translator;
 	private String cookie;
 	private String gameId;
+	
+	
 	
 
 	/**
@@ -207,7 +210,6 @@ public class Proxy implements IProxy
 	public StandardResponse login(CredentialsParam input) 
 	{
 		String result = doPost("/user/login", translator.convert(input));
-		
 		return translator.translateStandard(result);
 	}
 

@@ -28,7 +28,6 @@ public class Board extends Observable
 	private HexLocation robber;
 	private int radius;
 	
-	public Board()	{}
 	//--------------------------------------------------------------------------------
 	/**
 	 * This function is called after JSON initializations
@@ -47,6 +46,18 @@ public class Board extends Observable
 		sortRoads();
 		sortPorts();
 		sortStructures();
+	}
+	
+	//--------------------------------------------------------------------------------
+	public void update(Board b)
+	{
+		this.setHexes(b.getHexes());
+		this.setPorts(b.getPorts());
+		this.setRoads(b.getRoads());
+		this.setSettlements(b.getSettlements());
+		this.setCities(b.getCities());
+		this.setRobber(b.getRobber());
+		this.sort();
 	}
 	
 	//--------------------------------------------------------------------------------

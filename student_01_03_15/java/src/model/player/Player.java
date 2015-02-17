@@ -47,6 +47,21 @@ public class Player
 		cities = 4;
 
 	}
+	
+	public void update(Player p)
+	{
+		this.setVictoryPoints(p.getVictoryPoints());
+		this.setSoldiers(p.getSoldiers());
+		this.setRoads(p.getRoads());
+		this.setSettlements(p.getSettlements());
+		this.setCities(p.getCities());
+		resources.update(p.getResources());
+		this.setDiscarded(p.isDiscarded());
+		this.setPlayedDevCard(p.isPlayedDevCard());
+		this.setMonuments(p.getMonuments());
+		this.setNewDevCards(p.getNewDevCards());
+		this.setOldDevCards(p.getOldDevCards());
+	}
 
 	/**
 	 * Every player needs to be initiated with a playerId, userId and a color

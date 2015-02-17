@@ -10,6 +10,13 @@ public class TurnTracker
 	int longestRoad;
 	int largestArmy;
 	
+	public void update(TurnTracker t)
+	{
+		this.setCurrentTurn(t.getCurrentTurn());
+		this.setStatus(t.getStatus());
+		this.setLongestRoad(t.getLongestRoad());
+		this.setLargestArmy(t.getLargestArmy());
+	}
 	public void nextTurn()
 	{
 	}

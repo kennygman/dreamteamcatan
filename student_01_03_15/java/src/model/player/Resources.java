@@ -10,6 +10,8 @@ public class Resources {
 	private int wheat;
 	private int brick;
 	private int ore;
+	ResourceType[] list = {ResourceType.WHEAT, ResourceType.WOOD,
+			ResourceType.BRICK, ResourceType.ORE, ResourceType.SHEEP};
 	
 	public Resources(int wood, int sheep, int wheat, int brick, int ore) 
 	{
@@ -20,7 +22,15 @@ public class Resources {
 		this.ore = ore;
 	}
 
-
+	public void update(Resources r)
+	{
+		this.wood = r.getResourceAmount(ResourceType.WOOD);
+		this.sheep = r.getResourceAmount(ResourceType.SHEEP);
+		this.wheat = r.getResourceAmount(ResourceType.WHEAT);
+		this.brick = r.getResourceAmount(ResourceType.BRICK);
+		this.ore = r.getResourceAmount(ResourceType.ORE);
+	}
+	
 	/**
 	 * 
 	 * Used to facilitate trading.
@@ -148,8 +158,6 @@ public class Resources {
 	 */
 	public boolean contains(Resources r)
 	{
-		ResourceType[] list = {ResourceType.WHEAT, ResourceType.WOOD,
-				ResourceType.BRICK, ResourceType.ORE, ResourceType.SHEEP};
 		for (ResourceType res : list)
 		{
 			int amount = r.getResourceAmount(res);

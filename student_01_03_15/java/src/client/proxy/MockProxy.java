@@ -6,12 +6,14 @@ import java.io.IOException;
 
 import model.board.Settlement;
 import model.player.Player;
+import model.player.Resources;
 
 import com.google.gson.Gson;
 
 import model.Game;
 import shared.Translator;
 import shared.definitions.CatanColor;
+import shared.definitions.ResourceType;
 import shared.locations.HexLocation;
 import shared.locations.VertexDirection;
 import shared.locations.VertexLocation;
@@ -21,7 +23,9 @@ import shared.response.*;
 public class MockProxy implements IProxy
 {
 
-    private Game fakeGame;
+    private static final ResourceType WHEAT = null;
+	private static final ResourceType ORE = null;
+	private Game fakeGame;
     private GameListObject proxyGame;
     private GameListObject[] games ;
 
@@ -368,10 +372,28 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
-   	 result.setGame(fakeGame);
-   	 result.setValid(true);
+   	int playeIndex = input.getPlayerIndex();
+   	Player currentPlayer = fakeGame.getPlayers()[0];
+   	
+    currentPlayer.setCities(currentPlayer.getCities()-1);
     
-   	 return null;
+    Resources hand = currentPlayer.getResources();
+    
+    int wheat = hand.getResourceAmount(ResourceType.WHEAT);
+	int ore = hand.getResourceAmount(ResourceType.ORE);
+	
+	hand.useResource(WHEAT, 2);
+	hand.useResource(ORE, 3);
+   	currentPlayer.setResources(hand);
+   	currentPlayer.setCities(currentPlayer.getCities()-1);
+   	currentPlayer.setSettlements(currentPlayer.getSettlements()+1);
+   	
+   	fakeGame.getPlayers()[0] =currentPlayer;
+   		
+   	result.setGame(fakeGame);
+   	result.setValid(true);
+    
+   	 return result;
     }
 
     @Override

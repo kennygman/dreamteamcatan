@@ -367,55 +367,27 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public void buildRoad(EdgeLocation edge, boolean free)
 	{
-		Player p = game.getPlayer();
-		BuildRoadParam parm = 	new BuildRoadParam(game.getTurnTracker().getCurrentTurn(), edge, free);
-
-		proxy.buildRoad(parm);
-		p.setRoads(p.getRoads()-1);
-		p.getResources().useResource(ResourceType.WOOD, 1);
-		p.getResources().useResource(ResourceType.BRICK, 1);
-		game.getBoard().setRoad(new Road(p.getPlayerIndex(), edge));
-/*		Game newGame = proxy.buildRoad(parm).getGame();
-		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-		p.setRoads(newGame.getPlayers()[p.getPlayerIndex()].getRoads());
-		game.getBoard().setRoads(newGame.getBoard().getRoads());
-		game.getBoard().sort();
-		game.getTurnTracker().setLongestRoad(newGame.getTurnTracker().getLongestRoad());
-*/	}
+		Game newGame = proxy.buildRoad(new BuildRoadParam(
+				game.getTurnTracker().getCurrentTurn(), edge, free)).getGame();
+		update(newGame);
+	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void buildSettlement(VertexLocation vert, boolean free)
 	{
-		Player p = game.getPlayer();
-		proxy.buildSettlement(new BuildSettlementParam(
-				game.getPlayer().getPlayerIndex(), vert, free));
-		p.setSettlements(p.getSettlements()-1);
-		p.getResources().useResource(ResourceType.WOOD, 1);
-		p.getResources().useResource(ResourceType.BRICK, 1);
-		p.getResources().useResource(ResourceType.SHEEP, 1);
-		p.getResources().useResource(ResourceType.WHEAT, 1);
-		
-/*		Game newGame = proxy.buildSettlement(new BuildSettlementParam(
+		Game newGame = proxy.buildSettlement(new BuildSettlementParam(
 				game.getPlayer().getPlayerIndex(), vert, free)).getGame();
-		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-		p.setSettlements(newGame.getPlayers()[p.getPlayerIndex()].getSettlements());
-		game.getBoard().setSettlements(newGame.getBoard().getSettlements());
-		game.getBoard().sort();
-*/	}
+		update(newGame);
+	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void buildCity(VertexLocation vert)
 	{
-		Player p = game.getPlayer();
 		Game newGame = proxy.buildCity(
 				new BuildCityParam(game.getPlayer().getPlayerIndex(), vert)).getGame();
-		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-		p.setCities(newGame.getPlayers()[p.getPlayerIndex()].getCities());
-		p.setSettlements(newGame.getPlayers()[p.getPlayerIndex()].getSettlements());
-		game.getBoard().setCities(newGame.getBoard().getCities());
-		game.getBoard().sort();
+		update(newGame);
 	}
 
 	//--------------------------------------------------------------------------------
@@ -528,6 +500,13 @@ public class ModelFacade implements IModelFacade
 		p.setVictoryPoints(newGame.getPlayers()[p.getPlayerIndex()].getVictoryPoints());
 	}
 
+	private void update(Game newGame)
+	{
+		Player p = newGame.getPlayer();
+		p.update(newGame.getPlayers()[p.getPlayerIndex()]);
+		game.getBoard().update(newGame.getBoard());
+		game.getTurnTracker().update(newGame.getTurnTracker());
+	}
 }
 	//================================================================================
 	// END

@@ -554,7 +554,7 @@ public class ModelFacadeUnitTest
 				result = false;
 			}
 			//tests other dev cards
-			if(facade.CanUseMonopoly())
+			if(facade.CanUseMonopoly("wood"))
 			{
 				result = false;
 						
@@ -590,7 +590,7 @@ public class ModelFacadeUnitTest
 		int currentWood = hand.getResourceAmount(ResourceType.WOOD);
 		
 		
-		if(facade.CanUseMonopoly())
+		if(facade.CanUseMonopoly("wood"))
 		{
 			//Only Opponent in the game
 			currentPlayer = game.getPlayers()[1];

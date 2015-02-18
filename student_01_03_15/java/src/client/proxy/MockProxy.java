@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import model.board.Road;
 import model.board.Settlement;
 import model.player.Player;
 import model.player.Resources;
@@ -25,6 +26,7 @@ public class MockProxy implements IProxy
 
     private static final ResourceType WHEAT = null;
 	private static final ResourceType ORE = null;
+
 	private Game fakeGame;
     private GameListObject proxyGame;
     private GameListObject[] games ;
@@ -271,12 +273,15 @@ public class MockProxy implements IProxy
     @Override
     public GameModelResponse finishTurn(FinishTurnParam input)
     {
+    	
    	 GameModelResponse result = new GameModelResponse();
+   	 fakeGame.getTurnTracker().setCurrentTurn(fakeGame.getTurnTracker().getCurrentTurn()+1);
+   	 fakeGame.getTurnTracker().setStatus("Waiting");
    	 
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -287,7 +292,7 @@ public class MockProxy implements IProxy
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -298,18 +303,25 @@ public class MockProxy implements IProxy
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
     public GameModelResponse playRoadBuilding(PlayRoadBuildingParam input)
     {
+    	GameModelResponse result = new GameModelResponse();
+    	Road road = new Road(input.getPlayerIndex(),input.getSpot1());
+    	Road road2 = new Road(input.getPlayerIndex(),input.getSpot2());
     	
-   	 GameModelResponse result = new GameModelResponse();
-   	 result.setGame(fakeGame);
-   	 result.setValid(true);
+    	fakeGame.getBoard().setRoad(road);
+    	fakeGame.getBoard().setRoad(road2);
+    	
+    	
+   	 
+   	 	result.setGame(fakeGame);
+   	 	result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -320,7 +332,7 @@ public class MockProxy implements IProxy
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -328,10 +340,24 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
+   	 Player currentPlayer = fakeGame.getPlayers()[input.getPlayerIndex()];
+   	 Player opponent = fakeGame.getPlayers()[1];
+   	 
+   	 currentPlayer.getOldDevCards().setMonopoly(currentPlayer.getOldDevCards().getMonopoly()-1);
+   	 
+ 
+   	 
+   	 currentPlayer.getResources().addResource(ResourceType.WOOD, opponent.getResources().getResourceAmount(input.getResource()));
+   	 
+   	 opponent.getResources().useResource(ResourceType.WOOD,opponent.getResources().getResourceAmount(input.getResource()));
+   	 
+   	 fakeGame.getPlayers()[input.getPlayerIndex()] = currentPlayer;
+   	 fakeGame.getPlayers()[1] = opponent;
+   	 
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -339,10 +365,14 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
+   	 int currentVP = fakeGame.getPlayers()[0].getVictoryPoints();
+   	 
+   	 fakeGame.getPlayers()[0].setVictoryPoints(currentVP+1);
+   	 
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -353,7 +383,7 @@ public class MockProxy implements IProxy
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -364,7 +394,7 @@ public class MockProxy implements IProxy
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -372,15 +402,14 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
-   	int playeIndex = input.getPlayerIndex();
+ 
    	Player currentPlayer = fakeGame.getPlayers()[0];
    	
     currentPlayer.setCities(currentPlayer.getCities()-1);
     
     Resources hand = currentPlayer.getResources();
     
-    int wheat = hand.getResourceAmount(ResourceType.WHEAT);
-	int ore = hand.getResourceAmount(ResourceType.ORE);
+   
 	
 	hand.useResource(WHEAT, 2);
 	hand.useResource(ORE, 3);
@@ -404,7 +433,7 @@ public class MockProxy implements IProxy
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -422,10 +451,14 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
+   	 fakeGame.getBank().addResource(ResourceType.WOOD,4);
+   	fakeGame.getBank().useResource(ResourceType.BRICK,1);
+   	 fakeGame.getPlayers()[input.getPlayerIndex()].getResources().useResource(ResourceType.WOOD,4);
+   	fakeGame.getPlayers()[input.getPlayerIndex()].getResources().addResource(ResourceType.BRICK,1);
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
-   	 return null;
+   	 return result;
     }
 
     @Override
@@ -437,7 +470,7 @@ public class MockProxy implements IProxy
    		 result.setGame(fakeGame);
    		 result.setValid(true);
    	 
-   		 return null;
+   		 return result;
     }
 
     @Override

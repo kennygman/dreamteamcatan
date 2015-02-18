@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import model.Game;
 import shared.Translator;
 import shared.definitions.CatanColor;
+import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.locations.HexLocation;
 import shared.locations.VertexDirection;
@@ -24,8 +25,7 @@ import shared.response.*;
 public class MockProxy implements IProxy
 {
 
-    private static final ResourceType WHEAT = null;
-	private static final ResourceType ORE = null;
+
 
 	private Game fakeGame;
     private GameListObject proxyGame;
@@ -300,6 +300,16 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
+   	 Player currentPlayer = fakeGame.getPlayers()[0];
+  	 currentPlayer.getOldDevCards().setYearOfPlenty(currentPlayer.getOldDevCards().getYearOfPlenty()-1);
+  	 
+  	 currentPlayer.getResources().addResource(ResourceType.WOOD,  1);
+  	 currentPlayer.getResources().addResource(ResourceType.BRICK,1);
+  	 
+  	//System.out.println("proxy wood is" +  currentPlayer.getResources().getResourceAmount(ResourceType.WOOD));
+  	
+  	 fakeGame.getPlayers()[0] = currentPlayer;
+  	 
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
@@ -329,6 +339,14 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
+   	Player currentPlayer = fakeGame.getPlayers()[0];
+ 	currentPlayer.getOldDevCards().setSolider((currentPlayer.getOldDevCards().getSoldier()-1));
+ 	
+ 	currentPlayer.getResources().addResource(ResourceType.WOOD,fakeGame.getPlayers()[input.getVictimIndex()].getResources().getResourceAmount("wood"));
+ 	currentPlayer.playDevcard(DevCardType.SOLDIER);
+ 	fakeGame.getBoard().setRobber(input.getLocation());
+ 	fakeGame.getPlayers()[0] = currentPlayer;
+ 	
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
@@ -380,6 +398,13 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
+   	 Player currentPlayer = fakeGame.getPlayers()[0];
+   	 currentPlayer.setRoads(currentPlayer.getRoads()-1);
+   	 
+   	 currentPlayer.getResources().useResource(ResourceType.BRICK, 1);
+   	 currentPlayer.getResources().useResource(ResourceType.WOOD, 1);
+   	 
+   	 fakeGame.getPlayers()[0] = currentPlayer;
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
@@ -390,7 +415,16 @@ public class MockProxy implements IProxy
     public GameModelResponse buildSettlement(BuildSettlementParam input)
     {
    	 GameModelResponse result = new GameModelResponse();
+   	
+   	 Player currentPlayer = fakeGame.getPlayers()[0];
+   	 currentPlayer.setSettlements(currentPlayer.getSettlements()-1);
    	 
+   	 currentPlayer.getResources().useResource(ResourceType.WHEAT, 1);
+   	 currentPlayer.getResources().useResource(ResourceType.SHEEP, 1);
+   	 currentPlayer.getResources().useResource(ResourceType.BRICK, 1);
+   	 currentPlayer.getResources().useResource(ResourceType.WOOD, 1);
+   	 
+   	 fakeGame.getPlayers()[0]=currentPlayer;
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
@@ -406,16 +440,16 @@ public class MockProxy implements IProxy
    	Player currentPlayer = fakeGame.getPlayers()[0];
    	
     currentPlayer.setCities(currentPlayer.getCities()-1);
-    
+   	currentPlayer.setSettlements(currentPlayer.getSettlements()+1);
+   	
     Resources hand = currentPlayer.getResources();
     
    
 	
-	hand.useResource(WHEAT, 2);
-	hand.useResource(ORE, 3);
+	hand.useResource(ResourceType.WHEAT, 2);
+	hand.useResource(ResourceType.ORE, 3);
    	currentPlayer.setResources(hand);
-   	currentPlayer.setCities(currentPlayer.getCities()-1);
-   	currentPlayer.setSettlements(currentPlayer.getSettlements()+1);
+
    	
    	fakeGame.getPlayers()[0] =currentPlayer;
    		
@@ -430,6 +464,8 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    		 
+   	fakeGame.getPlayers()[0].getResources().useResource(ResourceType.WOOD,1);
+   	fakeGame.getPlayers()[0].getResources().addResource(ResourceType.BRICK,1);
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
@@ -441,6 +477,10 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
+   	fakeGame.getPlayers()[0].getResources().useResource(ResourceType.WOOD,1);
+   	fakeGame.getPlayers()[0].getResources().addResource(ResourceType.BRICK,1);
+   	
+   		System.out.println(fakeGame.getPlayers()[0].getResources().getResourceAmount(ResourceType.WOOD));
    	 result.setGame(fakeGame);
    	 result.setValid(true);
    	 return result;

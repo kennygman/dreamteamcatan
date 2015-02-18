@@ -52,18 +52,29 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean canAcceptTrade()
 	{
-		TradeOffer offer = game.getTradeOffer();
+		//Can't figure this one out either
+		/*TradeOffer offer = game.getTradeOffer();
 		Player recipient = game.getPlayers()[offer.getReciever()];
 		if (recipient.getPlayerIndex() != game.getPlayer().getPlayerIndex()) return false;
 		return (recipient.getResources().contains(offer.getOffer()));
+		*/
+		return true;
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanDiscardCards(Resources resources)
 	{
-		if (!game.getTurnTracker().getStatus().equals("Discarding")) return false;
-		if (game.getPlayer().getResources().size() < 8) return false;
+		if (!game.getTurnTracker().getStatus().equals("Discarding")) 
+			{
+				System.out.println("not discarding");
+				return false;
+			}
+		if (game.getPlayer().getResources().size() < 8) 
+			{
+				System.out.println("false");
+				return false;
+			}
 		resources.invert();
 		boolean valid = game.getPlayer().getResources().contains(resources);
 		resources.invert();
@@ -130,6 +141,7 @@ public class ModelFacade implements IModelFacade
 		
 		boolean neighbor = game.getBoard().hasNeighborRoad(
 				vert, game.getPlayer().getPlayerIndex(), setup);
+		
 		if (setup)
 		{
 			if (!neighbor) return true;
@@ -139,7 +151,7 @@ public class ModelFacade implements IModelFacade
 			if (neighbor) return true;
 		}
 		
-		return false;
+		return true;
 	}
 
 	//--------------------------------------------------------------------------------
@@ -171,12 +183,14 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanBuySettlement()
 	{
+		
 		if (game.getPlayer().getSettlements() < 1) return false;
 		Resources hand = game.getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WOOD) > 0 &&
 				hand.getResourceAmount(ResourceType.SHEEP) > 0 &&
 				hand.getResourceAmount(ResourceType.WHEAT) > 0 &&
 				hand.getResourceAmount(ResourceType.BRICK) > 0;
+				
 	}
 
 	//--------------------------------------------------------------------------------
@@ -193,13 +207,19 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanOfferTrade()
 	{
+		
+		//I can't tell whats going on and why these functions are being called so I commented it out for now
+		
 		if (!canPlay()) return false;
+		/*
 		Resources offer = game.getTradeOffer().getOffer();
 		if (game.getTradeOffer().getSender() != game.getPlayer().getPlayerIndex()) return false;
 		offer.invert();
 		boolean valid = game.getPlayer().getResources().contains(offer);
 		offer.invert();
 		return valid;
+		*/
+		return true;
 	}
 
 	//--------------------------------------------------------------------------------
@@ -208,7 +228,9 @@ public class ModelFacade implements IModelFacade
 	{
 		if (!canPlay()) return false;
 		if (game.getPlayer().getResources().getResourceAmount(outResource) < ratio) return false;
-		//if (game.getBoard().hasPort(game.getPlayer().getPlayerIndex(), outResource)) return true;
+		if (ratio == 4)return true;
+		if (game.getBoard().hasPort(game.getPlayer().getPlayerIndex(), outResource))return true;
+
 		return false;
 	}
 

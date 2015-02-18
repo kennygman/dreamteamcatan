@@ -391,21 +391,24 @@ public class ModelFacadeUnitTest
 		Player currentPlayer = game.getPlayers()[0];
 		Resources hand = currentPlayer.getResources();
 		int wood = hand.getResourceAmount(ResourceType.WOOD);
-		int brick = hand.getResourceAmount(ResourceType.BRICK);
+		int sheep = hand.getResourceAmount(ResourceType.SHEEP);
 		
-		
+		//Reciever pre conditions
+		 currentPlayer = game.getPlayers()[1];
+		 hand = currentPlayer.getResources();
+		System.out.println("name = " + currentPlayer.getName());
 		Resources resources = new Resources(1,-1,0,0,0);
 
 		if(facade.CanOfferTrade())
 		{	
-			//we need to change this so that we only need 2 params
-			facade.offerTrade(game.getPlayers()[0],game.getPlayers()[1], resources);
+			
+			//facade.offerTrade(game.getPlayers()[1], resources);
 			
 			//Player's post conditions
 			currentPlayer = game.getPlayers()[0];
 			Resources postHand = currentPlayer.getResources();
 			int postWood = postHand.getResourceAmount(ResourceType.WOOD);
-			int postBrick = postHand.getResourceAmount(ResourceType.BRICK);
+			int postSheep = postHand.getResourceAmount(ResourceType.SHEEP);
 			
 			
 			//Comparing and testing pre condition with post conditions
@@ -414,7 +417,7 @@ public class ModelFacadeUnitTest
 				System.out.println("wood is " + wood + "postWood is" + postWood );
 				result = false;
 			}
-			if(postBrick != brick+1)
+			if(postSheep != sheep+1)
 			{
 				System.out.println("brick is wrong");
 				result = false;
@@ -549,7 +552,7 @@ public class ModelFacadeUnitTest
 	}
 
 	@Test
-	public void testCanUseRoadBuilding()
+	public void testCanPlayRoadBuilding()
 	{
 		//builds road next to edge to meet prerequisites
 		EdgeLocation begEdge = new EdgeLocation(0, 0, "NE");
@@ -567,19 +570,26 @@ public class ModelFacadeUnitTest
 	
 		if(facade.CanUseRoadBuilder(edge,secondEdge))
 		{
+			facade.playRoadCard(edge,secondEdge);
 			//Testing to see if road is taken these if statements should return false bc roads have been built
-			
+			if(facade.canPlaceRoad(edge,true))
+			{
+				System.out.println("firstEdge");
+				result = false;
+			}
 			if(facade.canPlaceRoad(secondEdge,true))
 			{
+				System.out.println("secondEdge");
 				result = false;
 			}
 		}
 		else
 		{
+			System.out.println("cant use road building");
 			result = false;
 		}
 		
-		assertEquals(result,true);
+		assertEquals(true,result);
 	}
 
 	@Test

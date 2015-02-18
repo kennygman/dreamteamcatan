@@ -301,6 +301,8 @@ public class MockProxy implements IProxy
    	 GameModelResponse result = new GameModelResponse();
    	 
    	 Player currentPlayer = fakeGame.getPlayers()[0];
+   	 
+   	 currentPlayer.setPlayedDevCard(true);
   	 currentPlayer.getOldDevCards().setYearOfPlenty(currentPlayer.getOldDevCards().getYearOfPlenty()-1);
   	 
   	 currentPlayer.getResources().addResource(ResourceType.WOOD,  1);
@@ -323,6 +325,7 @@ public class MockProxy implements IProxy
     	Road road = new Road(input.getPlayerIndex(),input.getSpot1());
     	Road road2 = new Road(input.getPlayerIndex(),input.getSpot2());
     	
+    	fakeGame.getPlayers()[0].setPlayedDevCard(true);
     	fakeGame.getBoard().setRoad(road);
     	fakeGame.getBoard().setRoad(road2);
     	
@@ -341,7 +344,7 @@ public class MockProxy implements IProxy
    	 
    	Player currentPlayer = fakeGame.getPlayers()[0];
  	currentPlayer.getOldDevCards().setSolider((currentPlayer.getOldDevCards().getSoldier()-1));
- 	
+ 	 currentPlayer.setPlayedDevCard(true);
  	currentPlayer.getResources().addResource(ResourceType.WOOD,fakeGame.getPlayers()[input.getVictimIndex()].getResources().getResourceAmount("wood"));
  	currentPlayer.playDevcard(DevCardType.SOLDIER);
  	fakeGame.getBoard().setRobber(input.getLocation());
@@ -358,9 +361,11 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
+   	 
    	 Player currentPlayer = fakeGame.getPlayers()[input.getPlayerIndex()];
    	 Player opponent = fakeGame.getPlayers()[1];
    	 
+   	 currentPlayer.setPlayedDevCard(true);
    	 currentPlayer.getOldDevCards().setMonopoly(currentPlayer.getOldDevCards().getMonopoly()-1);
    	 
  

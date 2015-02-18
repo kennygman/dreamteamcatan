@@ -208,7 +208,7 @@ public class ModelFacade implements IModelFacade
 	{
 		if (!canPlay()) return false;
 		if (game.getPlayer().getResources().getResourceAmount(outResource) < ratio) return false;
-		if (game.getBoard().hasPort(game.getPlayer().getPlayerIndex(), outResource)) return true;
+		//if (game.getBoard().hasPort(game.getPlayer().getPlayerIndex(), outResource)) return true;
 		return false;
 	}
 
@@ -253,7 +253,7 @@ public class ModelFacade implements IModelFacade
 	{
 		if (!isPlayerTurn() ||
 			!game.getTurnTracker().getStatus().equals("Playing") ||
-			!monument && !game.getPlayer().getOldDevCards().hasDevCard(devCard) ||  
+			!monument &&!game.getPlayer().getOldDevCards().hasDevCard(devCard) ||  
 			game.getPlayer().isPlayedDevCard()
 			) return false;
 		return true;
@@ -289,12 +289,23 @@ public class ModelFacade implements IModelFacade
 			game.getPlayer().getRoads() < 2 ||
 			game.getBoard().contains(spot2) ||
 			spot1.equals(spot2)
-			) return false;
+			) 
+			{
+				
+				return false;
+			}
 		
 		if (game.getBoard().hasNeighborRoad(spot2,
 				game.getPlayer().getPlayerIndex(), false) ||
 			game.getBoard().areNeighbors(spot1, spot2)
-			) return true;
+			) 
+		{
+			
+			return true;
+		}
+			
+		
+		
 		return false;
 	}
 
@@ -427,7 +438,7 @@ public class ModelFacade implements IModelFacade
 	{
 		Player p = game.getPlayer();
 		Game newGame = proxy.finishTurn(
-				new FinishTurnParam(game.getPlayer().getPlayerIndex())).getGame();
+				new FinishTurnParam(p.getPlayerIndex())).getGame();
 		p.setNewDevCards(newGame.getPlayers()[p.getPlayerIndex()].getNewDevCards());
 		p.setOldDevCards(newGame.getPlayers()[p.getPlayerIndex()].getOldDevCards());
 		game.getTurnTracker().setCurrentTurn(newGame.getTurnTracker().getCurrentTurn());

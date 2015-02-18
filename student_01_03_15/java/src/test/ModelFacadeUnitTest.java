@@ -46,8 +46,8 @@ public class ModelFacadeUnitTest
 	public void testCanBuildRoad()
 	{
 		boolean result = true;
+		game.getTurnTracker().setStatus("Playing");
 		
-		//Road road = game.getMap().getRoads()[0];
 		game.getBoard().setRoad(new Road(0, new EdgeLocation(0,0,"NW")));
 		EdgeLocation edge = new EdgeLocation(0, 0, "N");
 		game.getTurnTracker().setStatus("Playing");
@@ -63,7 +63,7 @@ public class ModelFacadeUnitTest
 		if(canBuild)
 		{
 			boolean free = false;
-			
+			game.getTurnTracker().setStatus("Playing");
 			
 			facade.buildRoad(edge, free);
 			
@@ -102,6 +102,7 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanBuildRoad2()
 	{
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = true;
 		
 		
@@ -248,6 +249,7 @@ public class ModelFacadeUnitTest
   		Settlement settlement = new Settlement(0,vertex);
 		
 		boolean result = facade.canPlaceSettlement(settlement.getLocation(),false);
+		
 		assertEquals(result, false);
 	}
 	
@@ -255,6 +257,7 @@ public class ModelFacadeUnitTest
 	public void testCanBuildCity()
 	{
 		boolean result = true;
+		game.getTurnTracker().setStatus("Playing");
 		
 		//build a new city object
 		HexLocation location = new HexLocation(0,0);
@@ -282,19 +285,24 @@ public class ModelFacadeUnitTest
 			
 			if(postWheat != wheat-2)	
 			{
+				System.out.println("wheat is wrong");
 				result = false;
 			}
 			if(postOre != ore-3)
 			{
+				System.out.println("ore is wrong");
 				result = false;
 			}
 			if(postCityCount != cityCount-1)
 			{
+				System.out.println("city is wrong");
 				result = false;
 			}
+		
 		}
 		else
 		{
+			System.out.println("it can't build city");
 			result = false;
 		}
 	
@@ -304,7 +312,7 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCantBuildCity()
 	{
-		
+		game.getTurnTracker().setStatus("Playing");
 		HexLocation location = new HexLocation(1,1);
 		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthEast);
 		
@@ -316,6 +324,7 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanRollNumber()
 	{
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = facade.CanRollNumber(5);
 		assertEquals(result,true);
 	}
@@ -323,13 +332,14 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanNOTRollNumber()
 	{
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = facade.CanRollNumber(1);
 		assertEquals(result,false);
 	}
 	@Test
 	public void testCanAcceptTrade()
 	{
-		
+		game.getTurnTracker().setStatus("Waiting");
 		boolean result = true;
 
 		if(facade.canAcceptTrade())
@@ -344,7 +354,7 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanDisCardCards()
 	{
-		
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = false;
 		Player player = game.getPlayer();
 		if(facade.CanDiscardCards(player.getResources()));
@@ -359,7 +369,7 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanOfferTrade()
 	{
-		
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = true;
 		
 		//Player's pre conditions
@@ -405,7 +415,7 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanMaritimeTrade()
 	{
-		
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = true;
 		//Bank's pre condition
 		Resources currentBank = game.getBank();
@@ -458,7 +468,7 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanFinishTurn()
 	{
-		
+		game.getTurnTracker().setStatus("Playing");
 		boolean result =  true ;
 		
 		facade.finishTurn();
@@ -469,7 +479,11 @@ public class ModelFacadeUnitTest
 		{
 			result = false;
 		}
-		//this can be improved by checking old and new dev cards 
+		if(turnTracker.getStatus() == "Playing")
+		{
+			result = false;
+		}
+		
 		assertEquals(result,true);
 	}
 
@@ -477,6 +491,7 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanUseYearOfPlenty()
 	{
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = true; 
 		
 		//Preconditions
@@ -514,7 +529,14 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanUseRoadBuilding()
 	{
-
+		//builds road next to edge to meet prerequisites
+		EdgeLocation begEdge = new EdgeLocation(0, 0, "NE");
+		Road road = new Road(0,begEdge);
+		game.getBoard().setRoad(road);
+		
+		
+		
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = true; 
 		
 		EdgeLocation edge = new EdgeLocation(0, 0, "N");
@@ -537,12 +559,14 @@ public class ModelFacadeUnitTest
 		{
 			result = false;
 		}
+		
 		assertEquals(result,true);
 	}
 
 	@Test
 	public void testCanUseSoldier()
 	{
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = true;
 		
 		HexLocation location = new HexLocation(1,1);
@@ -581,19 +605,20 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanUseMonopoly()
 	{
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = true;
-		//Opposing team's pre cond
-		Player currentPlayer = game.getPlayers()[1];
-		Resources hand = currentPlayer.getResources();
-		int opponentWood = hand.getResourceAmount(ResourceType.WOOD);
+		
+		
 		//current Player's pre cond
-		currentPlayer = game.getPlayers()[0];
-		hand = currentPlayer.getResources();
+		Player currentPlayer = game.getPlayers()[0];
+		Resources hand = currentPlayer.getResources();
 		int currentWood = hand.getResourceAmount(ResourceType.WOOD);
 		
 		
 		if(facade.CanUseMonopoly("wood"))
 		{
+			
+			facade.playMonopolyCard("wood");
 			//Only Opponent in the game
 			currentPlayer = game.getPlayers()[1];
 			hand = currentPlayer.getResources();
@@ -626,8 +651,9 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanUseMonument()
 	{
-		
+		game.getTurnTracker().setStatus("Playing");
 		boolean result = true;
+		
 		//get PreConditions
 		Player currentPlayer = game.getPlayers()[0];
 		int vp = currentPlayer.getVictoryPoints();

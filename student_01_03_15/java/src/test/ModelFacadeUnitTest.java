@@ -213,22 +213,27 @@ public class ModelFacadeUnitTest
 			//Test post conditions
 			if(postWood != wood-1)	
 			{
+				System.out.println("wood is wrong");
 				result = false;
 			}
 			if(postBrick != brick-1)
 			{
+				System.out.println("brick is wrong");
 				result = false;
 			}
 			if(postWheat != wheat-1)	
 			{
+				System.out.println("wheat is wrong");
 				result = false;
 			}
 			if(postSheep != sheep-1)
 			{
+				System.out.println("sheep is wrong");
 				result = false;
 			}
 			if(postSettlementCount != settlementCount-1)
 			{
+				System.out.println("settlement is wrong");
 				result = false;
 			}
 		}
@@ -270,10 +275,11 @@ public class ModelFacadeUnitTest
 		int wheat = hand.getResourceAmount(ResourceType.WHEAT);
 		int ore = hand.getResourceAmount(ResourceType.ORE);
 		int cityCount = currentPlayer.getCities();
-		
+		//System.out.println("city count is " + cityCount);
 		
 		if(facade.canPlaceCity(vertex))
 		{
+			
 			facade.buildCity(vertex);
 			
 			currentPlayer = game.getPlayers()[0];
@@ -283,26 +289,28 @@ public class ModelFacadeUnitTest
 			int postOre = postHand.getResourceAmount(ResourceType.ORE);
 			int postCityCount = currentPlayer.getCities();
 			
+			
+			
 			if(postWheat != wheat-2)	
 			{
-				System.out.println("wheat is wrong");
+				//System.out.println("wheat is wrong");
 				result = false;
 			}
 			if(postOre != ore-3)
 			{
-				System.out.println("ore is wrong");
+				//System.out.println("ore is wrong");
 				result = false;
 			}
 			if(postCityCount != cityCount-1)
 			{
-				System.out.println("city is wrong");
+				//System.out.println("city is wrong");
 				result = false;
 			}
 		
 		}
 		else
 		{
-			System.out.println("it can't build city");
+			//System.out.println("it can't build city");
 			result = false;
 		}
 	
@@ -324,8 +332,11 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanRollNumber()
 	{
-		game.getTurnTracker().setStatus("Playing");
+		game.getTurnTracker().setStatus("Rolling");
+		
 		boolean result = facade.CanRollNumber(5);
+	
+		
 		assertEquals(result,true);
 	}
 
@@ -342,8 +353,9 @@ public class ModelFacadeUnitTest
 		game.getTurnTracker().setStatus("Waiting");
 		boolean result = true;
 
-		if(facade.canAcceptTrade())
+		if(!facade.canAcceptTrade())
 		{
+			
 			result = false;
 		}
 		
@@ -354,14 +366,17 @@ public class ModelFacadeUnitTest
 	@Test
 	public void testCanDisCardCards()
 	{
-		game.getTurnTracker().setStatus("Playing");
-		boolean result = false;
+		game.getTurnTracker().setStatus("Discarding");
+		boolean result = true;
+		
 		Player player = game.getPlayer();
-		if(facade.CanDiscardCards(player.getResources()));
+		
+		if(!facade.CanDiscardCards(player.getResources()))
 		{
-			result = true;
+			result = false;
 		}
-		assertEquals(result,false);
+		
+		assertEquals(result,true);
 	}
 
 
@@ -396,10 +411,12 @@ public class ModelFacadeUnitTest
 			//Comparing and testing pre condition with post conditions
 			if(postWood != wood-1)
 			{
+				System.out.println("wood is " + wood + "postWood is" + postWood );
 				result = false;
 			}
-			if(postBrick != brick -1)
+			if(postBrick != brick+1)
 			{
+				System.out.println("brick is wrong");
 				result = false;
 			}
 			
@@ -502,24 +519,29 @@ public class ModelFacadeUnitTest
 		
 		if(facade.CanUseYearOfPlenty("wood","brick"))
 		{
+			facade.playYearOfPlentyCard("wood","brick");
 			//player's post condition
 			currentPlayer = game.getPlayers()[0];
 			Resources postHand = currentPlayer.getResources();
 			int postWood = postHand.getResourceAmount(ResourceType.WOOD);
 			int postBrick = postHand.getResourceAmount(ResourceType.BRICK);
 		
+			
 			//Testing those conditions
 			if(postWood != wood+1)	
 			{
+				System.out.println("post wood is" + postWood + "wood is" + wood);
 				result = false;
 			}
 			if(postBrick != brick+1)
 			{
+				System.out.println("brick is wrong");
 				result = false;
 			}
 		}
 		else
 		{
+			System.out.println("canDo is wrong");
 			result = false;
 		}
 		
@@ -546,10 +568,7 @@ public class ModelFacadeUnitTest
 		if(facade.CanUseRoadBuilder(edge,secondEdge))
 		{
 			//Testing to see if road is taken these if statements should return false bc roads have been built
-			if(facade.canPlaceRoad(edge,true))
-			{
-				result = false;
-			}
+			
 			if(facade.canPlaceRoad(secondEdge,true))
 			{
 				result = false;
@@ -571,22 +590,26 @@ public class ModelFacadeUnitTest
 		
 		HexLocation location = new HexLocation(1,1);
 		
-		if(facade.canPlaceRobber(location))
+		if(facade.CanUseSoldier(1, location))
 		{
 			facade.playSoldierCard(1, location);
 			
 			if(facade.canPlaceRobber(location))
 			{
+				//System.out.println("robber is wrong");
 				result = false;
 			}
 			//tests other dev cards
 			if(facade.CanUseMonopoly("wood"))
 			{
+				System.out.println("can use monopoly is wrong");
+				
 				result = false;
 						
 			}
 			if(facade.CanUseYearOfPlenty("wood","brick"))
 			{
+				System.out.println("can use year of plenty is wrong");
 				result = false;
 						
 			}
@@ -619,6 +642,7 @@ public class ModelFacadeUnitTest
 		{
 			
 			facade.playMonopolyCard("wood");
+			
 			//Only Opponent in the game
 			currentPlayer = game.getPlayers()[1];
 			hand = currentPlayer.getResources();

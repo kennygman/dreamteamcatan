@@ -12,12 +12,12 @@ public interface IProxy {
 	/**
 	 * Will return the result of trying to login into the system.
 	 */
-	StandardResponse login(CredentialsParam input);
+	LoginResponse login(CredentialsParam input);
 	
 	/**
 	 * Will return the result of trying to register.
 	 */
-	StandardResponse register(CredentialsParam input);
+	LoginResponse register(CredentialsParam input);
 	
 	/**
 	 * Will list the Games currently on the server.

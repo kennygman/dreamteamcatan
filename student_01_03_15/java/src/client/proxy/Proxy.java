@@ -205,20 +205,37 @@ public class Proxy implements IProxy
 		}
 	}
 	
+	
+	@SuppressWarnings("deprecation")
+	private int decodePlayerId()
+	{
+		if(cookie != null)
+		{
+			StringBuilder cookieParser = new StringBuilder(URLDecoder.decode(cookie));
+			int lastColon = cookieParser.lastIndexOf(":");
+			String id = cookieParser.substring(lastColon +1,cookieParser.length()-1);
+			return Integer.parseInt(id);
 
+		}
+		else
+		{
+			return -1;
+		}
+	}
 	@Override
-	public StandardResponse login(CredentialsParam input) 
+	public LoginResponse login(CredentialsParam input) 
 	{
 		String result = doPost("/user/login", translator.convert(input));
-		return translator.translateStandard(result);
+		int id = decodePlayerId();
+		return translator.translateLogin(result,id);
 	}
 
 	@Override
-	public StandardResponse register(CredentialsParam input) 
+	public LoginResponse register(CredentialsParam input) 
 	{
 		String result = doPost("/user/register", translator.convert(input));
-		
-		return translator.translateStandard(result);
+		int id = decodePlayerId();
+		return translator.translateLogin(result,id);
 	}
 
 	@Override

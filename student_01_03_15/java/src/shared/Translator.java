@@ -69,6 +69,23 @@ public class Translator
 		return translation;
 	}
 	
+	public LoginResponse translateLogin(String input, int playerId)
+	{
+		LoginResponse translation;
+		if(input.equals("Success"))
+		{
+
+			translation = new LoginResponse(true,playerId);
+		}
+		else
+		{
+			translation = new LoginResponse(false);
+			//System.err.println(input);
+		}
+		
+		return translation;
+	}
+	
 	public ListAIResponse translateListAi(String input)
 	{
 		String[] aiList = g.fromJson(input,String[].class);

@@ -11,6 +11,7 @@ import shared.parameters.JoinGameParam;
 import shared.response.CreateGameResponse;
 import shared.response.GameListObject;
 import shared.response.ListGamesResponse;
+import shared.response.LoginResponse;
 import shared.response.StandardResponse;
 
 public class ProxyRegisterTests
@@ -27,11 +28,10 @@ public class ProxyRegisterTests
 		
 		//CredentialsParam t5 = new CredentialsParam(null, "test2");
 		//CredentialsParam t6 = new CredentialsParam("test3",null);
-		
-		StandardResponse r1 = proxy.register(t1);
-		StandardResponse r2 = proxy.register(t2);
-		StandardResponse r3 = proxy.register(t3);
-		StandardResponse r4 = proxy.register(t4);
+		LoginResponse r1 = proxy.register(t1);
+		LoginResponse r2 = proxy.register(t2);
+		LoginResponse r3 = proxy.register(t3);
+		LoginResponse r4 = proxy.register(t4);
 		//StandardResponse r5 = proxy.register(t5);
 		//StandardResponse r6 = proxy.register(t6);
 		

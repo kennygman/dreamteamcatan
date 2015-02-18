@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import client.proxy.Proxy;
 import shared.parameters.CredentialsParam;
+import shared.response.LoginResponse;
 import shared.response.StandardResponse;
 
 public class ProxyLoginTests 
@@ -18,8 +19,7 @@ public class ProxyLoginTests
 		CredentialsParam t1 = new CredentialsParam("test1","test1");
 		//CredentialsParam t2 = new CredentialsParam(null, "test2");
 		//CredentialsParam t3 = new CredentialsParam("test3",null);
-		
-		StandardResponse r1 = proxy.login(t1);
+		LoginResponse r1 = proxy.login(t1);
 		//StandardResponse r2 = proxy.login(t2);
 		//StandardResponse r3 = proxy.login(t3);
 		

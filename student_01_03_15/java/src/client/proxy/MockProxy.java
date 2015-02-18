@@ -83,7 +83,7 @@ public class MockProxy implements IProxy
    	  */
     }
     @Override
-    public StandardResponse login(CredentialsParam input)
+    public LoginResponse login(CredentialsParam input)
     {
 //   	 if(input.getUser() == "hank" && input.getPassword() == "test")
 //   	 {
@@ -97,7 +97,7 @@ public class MockProxy implements IProxy
     }
 
     @Override
-    public StandardResponse register(CredentialsParam input)
+    public LoginResponse register(CredentialsParam input)
     {
 //   	 
 //   	 if(input.getUser() != null || input.getPassword() != null || input.getUser() == "hank")

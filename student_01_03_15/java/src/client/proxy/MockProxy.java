@@ -12,6 +12,7 @@ import model.player.Resources;
 import com.google.gson.Gson;
 
 import model.Game;
+import model.TradeOffer;
 import shared.Translator;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
@@ -468,7 +469,11 @@ public class MockProxy implements IProxy
     public GameModelResponse offerTrade(OfferTradeParam input)
     {
    	 GameModelResponse result = new GameModelResponse();
-   		 
+   	 
+   	 
+   	 TradeOffer offer = new TradeOffer(0,input.getreceiver(),input.getOffer());
+   	 
+   	fakeGame.setTradeOffer(offer);
    	fakeGame.getPlayers()[0].getResources().useResource(ResourceType.WOOD,1);
    	fakeGame.getPlayers()[0].getResources().addResource(ResourceType.BRICK,1);
    	 result.setGame(fakeGame);

@@ -7,7 +7,6 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 import client.proxy.IProxy;
 import model.board.City;
-import model.board.Road;
 import model.board.Settlement;
 import model.player.Player;
 import model.player.Resources;
@@ -52,13 +51,12 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean canAcceptTrade()
 	{
-		//Can't figure this one out either
-		/*TradeOffer offer = game.getTradeOffer();
+		TradeOffer offer = game.getTradeOffer();
+		if (offer==null) return false;
 		Player recipient = game.getPlayers()[offer.getReciever()];
+		
 		if (recipient.getPlayerIndex() != game.getPlayer().getPlayerIndex()) return false;
 		return (recipient.getResources().contains(offer.getOffer()));
-		*/
-		return true;
 	}
 
 	//--------------------------------------------------------------------------------
@@ -67,12 +65,10 @@ public class ModelFacade implements IModelFacade
 	{
 		if (!game.getTurnTracker().getStatus().equals("Discarding")) 
 			{
-				System.out.println("not discarding");
 				return false;
 			}
 		if (game.getPlayer().getResources().size() < 8) 
 			{
-				System.out.println("false");
 				return false;
 			}
 		resources.invert();
@@ -205,21 +201,13 @@ public class ModelFacade implements IModelFacade
 
 	//--------------------------------------------------------------------------------
 	@Override
-	public boolean CanOfferTrade()
+	public boolean CanOfferTrade(Resources offer)
 	{
-		
-		//I can't tell whats going on and why these functions are being called so I commented it out for now
-		
 		if (!canPlay()) return false;
-		/*
-		Resources offer = game.getTradeOffer().getOffer();
-		if (game.getTradeOffer().getSender() != game.getPlayer().getPlayerIndex()) return false;
 		offer.invert();
 		boolean valid = game.getPlayer().getResources().contains(offer);
 		offer.invert();
 		return valid;
-		*/
-		return true;
 	}
 
 	//--------------------------------------------------------------------------------
@@ -271,12 +259,12 @@ public class ModelFacade implements IModelFacade
 	}
 	
 	// DevCard Preconditions ================================================================================
-	private boolean canPlayDevCard(DevCardType devCard, boolean monument)
+	private boolean canPlayDevCard(DevCardType devCard)
 	{
 		if (!isPlayerTurn() ||
-			!game.getTurnTracker().getStatus().equals("Playing") ||
-			!monument &&!game.getPlayer().getOldDevCards().hasDevCard(devCard) ||  
-			game.getPlayer().isPlayedDevCard()
+			!game.getTurnTracker().getStatus().equals("Playing")
+			|| !game.getPlayer().getOldDevCards().hasDevCard(devCard)
+			|| game.getPlayer().isPlayedDevCard()
 			) return false;
 		return true;
 	}
@@ -285,7 +273,7 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanUseSoldier(int victimIndex, HexLocation location)
 	{
-		if (!canPlayDevCard(DevCardType.SOLDIER, false) ||
+		if (!canPlayDevCard(DevCardType.SOLDIER) ||
 			!canRobPlayer(location, victimIndex)
 			) return false;
 		return true;
@@ -295,7 +283,7 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanUseYearOfPlenty(String resource1, String resource2)
 	{
-		if (!canPlayDevCard(DevCardType.YEAR_OF_PLENTY, false)) return false;
+		if (!canPlayDevCard(DevCardType.YEAR_OF_PLENTY)) return false;
 		if (game.getBank().getResourceAmount(resource1) > 0 &&
 			game.getBank().getResourceAmount(resource2) > 0
 			) return true;
@@ -306,14 +294,13 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanUseRoadBuilder(EdgeLocation spot1, EdgeLocation spot2)
 	{
-		if (!canPlayDevCard(DevCardType.ROAD_BUILD, false) ||
-			!canPlaceRoad(spot1, true) ||
-			game.getPlayer().getRoads() < 2 ||
-			game.getBoard().contains(spot2) ||
-			spot1.equals(spot2)
+		if (!canPlayDevCard(DevCardType.ROAD_BUILD)
+				|| !canPlaceRoad(spot1, true)
+				|| game.getPlayer().getRoads() < 2
+				|| game.getBoard().contains(spot2)
+				|| spot1.equals(spot2)
 			) 
 			{
-				
 				return false;
 			}
 		
@@ -335,14 +322,14 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public boolean CanUseMonopoly(String resource)
 	{
-		return canPlayDevCard(DevCardType.MONOPOLY, false);
+		return canPlayDevCard(DevCardType.MONOPOLY);
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanUseMonument()
 	{
-		if (!canPlayDevCard(DevCardType.MONUMENT, true)) return false;
+		if (!canPlayDevCard(DevCardType.MONUMENT)) return false;
 		if ( game.getPlayer().getVictoryPoints() +
 				game.getPlayer().getNewDevCards().getMonument() +
 				game.getPlayer().getOldDevCards().getMonument() >= 10) return true;
@@ -369,14 +356,13 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public void acceptTrade(boolean accept)
 	{
-		Player sender = game.getPlayers()[game.getTradeOffer().getSender()];
 		Player reciever = game.getPlayers()[game.getTradeOffer().getReciever()];
 		Game newGame = proxy.acceptTrade(
-				new AcceptTradeParam(reciever.getPlayerIndex(), accept)).getGame();
+				new AcceptTradeParam(reciever.getPlayerIndex(), accept))
+				.getGame();
 		if (!accept) return;
-		sender.setResources(newGame.getPlayers()[sender.getPlayerIndex()].getResources());
-		reciever.setResources(newGame.getPlayers()[reciever.getPlayerIndex()].getResources());
 		game.setTradeOffer(newGame.getTradeOffer());
+		this.update(newGame);
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -425,10 +411,13 @@ public class ModelFacade implements IModelFacade
 
 	//--------------------------------------------------------------------------------
 	@Override
-	public void offerTrade(Player sender, Player receiver, Resources resources)
+	public void offerTrade(int receiver, Resources resources)
 	{
-		proxy.offerTrade(new OfferTradeParam(sender.getPlayerIndex(),
-				receiver.getPlayerIndex(), resources)).getGame();
+		Game newGame =	proxy.offerTrade(new OfferTradeParam(
+				game.getPlayer().getPlayerIndex(), receiver, resources))
+			.getGame();
+		game.setTradeOffer(newGame.getTradeOffer());
+		update(newGame);
 	}
 
 	//--------------------------------------------------------------------------------
@@ -481,13 +470,9 @@ public class ModelFacade implements IModelFacade
 	@Override
 	public void playSoldierCard(int victimIndex, HexLocation location)
 	{
-		Player p = game.getPlayer();
 		Game newGame = proxy.playSoldier(new PlaySoldierParam(
 				game.getPlayer().getPlayerIndex(), victimIndex, location)).getGame();
-		game.getBoard().setRobber(newGame.getBoard().getRobber());
-		p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-		game.getTurnTracker().setLargestArmy(newGame.getTurnTracker().getLargestArmy());
-		p.setPlayedDevCard(newGame.getPlayers()[p.getPlayerIndex()].isPlayedDevCard());
+		this.update(newGame);
 	}
 
 	//--------------------------------------------------------------------------------

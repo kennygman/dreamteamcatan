@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.*;
 import model.Game;
 import model.ModelFacade;
+import model.TradeOffer;
 import model.TurnTracker;
 
 import org.junit.After;
@@ -347,15 +348,47 @@ public class ModelFacadeUnitTest
 		boolean result = facade.CanRollNumber(1);
 		assertEquals(result,false);
 	}
+
+	@Test
+	public void testCanOfferTrade()
+	{
+		game.getTurnTracker().setStatus("Playing");
+		boolean result = true;
+		
+		//Player's pre conditions
+		Resources resources = new Resources(1,-1,0,0,0);
+
+		if(facade.CanOfferTrade(resources))
+		{	
+			facade.offerTrade(1, resources);
+			
+			//Player's post conditions
+			
+			// Test if TradeOffer is in server Model:
+			if (game.getTurnTracker() == null)
+			{
+				result = false;
+			}
+			
+		}
+		else
+		{
+			result = false;
+		}
+		
+		assertEquals(result,true);
+	}
+
+	
 	@Test
 	public void testCanAcceptTrade()
 	{
 		game.getTurnTracker().setStatus("Waiting");
 		boolean result = true;
-
+		TradeOffer offer = new TradeOffer(0,1,new Resources(1,-1,0,0,0));
+		game.setTradeOffer(offer);
 		if(!facade.canAcceptTrade())
 		{
-			
 			result = false;
 		}
 		
@@ -372,56 +405,6 @@ public class ModelFacadeUnitTest
 		Player player = game.getPlayer();
 		
 		if(!facade.CanDiscardCards(player.getResources()))
-		{
-			result = false;
-		}
-		
-		assertEquals(result,true);
-	}
-
-
-
-	@Test
-	public void testCanOfferTrade()
-	{
-		game.getTurnTracker().setStatus("Playing");
-		boolean result = true;
-		
-		//Player's pre conditions
-		Player currentPlayer = game.getPlayers()[0];
-		Resources hand = currentPlayer.getResources();
-		int wood = hand.getResourceAmount(ResourceType.WOOD);
-		int brick = hand.getResourceAmount(ResourceType.BRICK);
-		
-		
-		Resources resources = new Resources(1,-1,0,0,0);
-
-		if(facade.CanOfferTrade())
-		{	
-			//we need to change this so that we only need 2 params
-			facade.offerTrade(game.getPlayers()[0],game.getPlayers()[1], resources);
-			
-			//Player's post conditions
-			currentPlayer = game.getPlayers()[0];
-			Resources postHand = currentPlayer.getResources();
-			int postWood = postHand.getResourceAmount(ResourceType.WOOD);
-			int postBrick = postHand.getResourceAmount(ResourceType.BRICK);
-			
-			
-			//Comparing and testing pre condition with post conditions
-			if(postWood != wood-1)
-			{
-				System.out.println("wood is " + wood + "postWood is" + postWood );
-				result = false;
-			}
-			if(postBrick != brick+1)
-			{
-				System.out.println("brick is wrong");
-				result = false;
-			}
-			
-		}
-		else
 		{
 			result = false;
 		}
@@ -510,6 +493,7 @@ public class ModelFacadeUnitTest
 	{
 		game.getTurnTracker().setStatus("Playing");
 		boolean result = true; 
+		game.getPlayers()[0].getOldDevCards().setYearOfPlenty(1);
 		
 		//Preconditions
 		Player currentPlayer = game.getPlayers()[0];
@@ -556,6 +540,7 @@ public class ModelFacadeUnitTest
 		Road road = new Road(0,begEdge);
 		game.getBoard().setRoad(road);
 		
+		game.getPlayers()[0].getOldDevCards().setRoadBuilding(1);
 		
 		
 		game.getTurnTracker().setStatus("Playing");
@@ -589,7 +574,7 @@ public class ModelFacadeUnitTest
 		boolean result = true;
 		
 		HexLocation location = new HexLocation(1,1);
-		
+		game.getPlayers()[0].getOldDevCards().setSolider(1);
 		if(facade.CanUseSoldier(1, location))
 		{
 			facade.playSoldierCard(1, location);
@@ -631,6 +616,7 @@ public class ModelFacadeUnitTest
 		game.getTurnTracker().setStatus("Playing");
 		boolean result = true;
 		
+		game.getPlayers()[0].getOldDevCards().setMonopoly(1);
 		
 		//current Player's pre cond
 		Player currentPlayer = game.getPlayers()[0];

@@ -472,10 +472,7 @@ public class MockProxy implements IProxy
    	 
    	 
    	 TradeOffer offer = new TradeOffer(0,input.getreceiver(),input.getOffer());
-   	 
    	fakeGame.setTradeOffer(offer);
-   	fakeGame.getPlayers()[0].getResources().useResource(ResourceType.WOOD,1);
-   	fakeGame.getPlayers()[0].getResources().addResource(ResourceType.BRICK,1);
    	 result.setGame(fakeGame);
    	 result.setValid(true);
     
@@ -487,10 +484,9 @@ public class MockProxy implements IProxy
     {
    	 GameModelResponse result = new GameModelResponse();
    	 
-   	fakeGame.getPlayers()[0].getResources().useResource(ResourceType.WOOD,1);
-   	fakeGame.getPlayers()[0].getResources().addResource(ResourceType.BRICK,1);
-   	
-   		System.out.println(fakeGame.getPlayers()[0].getResources().getResourceAmount(ResourceType.WOOD));
+    	fakeGame.getPlayers()[0].getResources().useResource(ResourceType.WOOD,1);
+       	fakeGame.getPlayers()[0].getResources().addResource(ResourceType.SHEEP,1);
+       	
    	 result.setGame(fakeGame);
    	 result.setValid(true);
    	 return result;

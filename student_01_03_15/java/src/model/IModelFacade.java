@@ -1,6 +1,5 @@
 package model;
 
-import model.player.Player;
 import model.player.Resources;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
@@ -48,7 +47,7 @@ public interface IModelFacade
 	 * 
 	 * @return True if the turn belongs to the Player: False otherwise
 	 */
-	boolean CanOfferTrade();
+	boolean CanOfferTrade(Resources offer);
 
 	/**
 	 * This method is called when a player attempts to perform a Maritime Trade
@@ -194,12 +193,8 @@ public interface IModelFacade
 	void buildSettlement(VertexLocation vert, boolean free);
 	void buildCity(VertexLocation vert);
 
-	void offerTrade(Player sender, Player receiver, Resources resources);
+	void offerTrade(int receiver, Resources resources);
 	void maritimeTrade(int ratio, String inputResource, String outResource);
 	void finishTurn();
 	void buyDevCard();
-
-	
-	
-	
 }

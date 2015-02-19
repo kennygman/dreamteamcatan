@@ -11,6 +11,12 @@ public class TradeOffer
 	
 	
 	
+	@Override
+	public String toString()
+	{
+		return "TradeOffer [sender=" + sender + ", reciever=" + reciever
+				+ ", offer=" + offer + "]";
+	}
 	public TradeOffer(int sender, int reciever, Resources offer)
 	{
 		this.sender = sender;

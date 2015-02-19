@@ -283,41 +283,7 @@
       "name": "kenny",
       "color": "blue"
     },
-    {
-      "resources": {
-        "brick": 7,
-        "wood": 7,
-        "sheep": 7,
-        "wheat": 7,
-        "ore": 7
-      },
-      "oldDevCards": {
-        "yearOfPlenty": 2,
-        "monopoly": 2,
-        "soldier": 3,
-        "roadBuilding": 2,
-        "monument": 2
-      },
-      "newDevCards": {
-        "yearOfPlenty": 0,
-        "monopoly": 0,
-        "soldier": 0,
-        "roadBuilding": 0,
-        "monument": 0
-      },
-      "roads": 15,
-      "cities": 4,
-      "settlements": 5,
-      "soldiers": 0,
-      "victoryPoints": 0,
-      "monuments": 0,
-      "playedDevCard": false,
-      "discarded": false,
-      "playerID": 10,
-      "playerIndex": 0,
-      "name": "george",
-      "color": "orange"
-    },
+    null,
     null,
     null
   ],

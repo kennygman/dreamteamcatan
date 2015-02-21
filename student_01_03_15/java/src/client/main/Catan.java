@@ -2,10 +2,14 @@ package client.main;
 
 import javax.swing.*;
 
+import model.IModelFacade;
+import model.ModelFacade;
 import client.catan.*;
 import client.login.*;
 import client.join.*;
 import client.misc.*;
+import client.proxy.IProxy;
+import client.proxy.Proxy;
 import client.base.*;
 
 /**
@@ -95,8 +99,17 @@ public class Catan extends JFrame
 						joinController.start();
 					}
 				});
+//				loginView.setController(loginController);
 				loginView.setController(loginController);
-				loginView.setController(loginController);
+				
+//------------------------------------------------------------------
+//				SETUP STUFF
+//------------------------------------------------------------------
+//				1. Make a proxy
+				IProxy gameProxy = new Proxy();
+//				2. Make clientFacade
+				IModelFacade gameClientFacade = new ModelFacade(gameProxy);
+//				Setup Poller later in the facade or something.....
 				
 				loginController.start();
 			}

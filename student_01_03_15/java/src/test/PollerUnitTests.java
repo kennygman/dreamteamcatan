@@ -2,6 +2,8 @@ package test;
 //Tests
 import static org.junit.Assert.*;
 import model.Game;
+import model.ModelFacade;
+import model.player.Player;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,17 +16,16 @@ import client.proxy.MockProxy;
 public class PollerUnitTests
 {
 	private static Poller poller;
-	private static Game game;
+	private static ModelFacade modelFacade;
 	private static IProxy mockProxy;
 
 	@Before
 	public void setup()
 	{
-		game = new Game();
 		int versionNumber = 1;
-		game.setVersion(versionNumber);
 		mockProxy = new MockProxy();
-		poller = new Poller(mockProxy, game);
+		modelFacade = new ModelFacade(mockProxy);
+		poller = new Poller(mockProxy, modelFacade);
 	}
 
 	@After
@@ -46,19 +47,18 @@ public class PollerUnitTests
 	{
 		Game game1 = new Game();
 		int test = 4212012;
+		game1 = modelFacade.getGame();
 		game1.setVersion(test);
 		poller.setServerModel(game1);
 		poller.updateModel();
-		assertEquals(poller.getClientModel().getVersion(), test);
+		assertEquals(modelFacade.getGame().getVersion(), test);
 	}
 
 	@Test
 	public void testStart()
 	{
-		Game game1 = new Game();
 		int test = -4212012;
-		game1.setVersion(test);
-		poller.setClientModel(game1);
+		poller.setClientVersion(test);
 		poller.start();
 		assertTrue(poller.getTimesTimerRan() > 0);
 	}

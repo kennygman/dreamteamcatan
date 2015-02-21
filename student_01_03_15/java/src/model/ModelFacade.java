@@ -518,7 +518,7 @@ public class ModelFacade implements IModelFacade
 		p.setVictoryPoints(newGame.getPlayers()[p.getPlayerIndex()].getVictoryPoints());
 	}
 
-	private void update(Game newGame)
+	public void update(Game newGame)
 	{
 		Player p = newGame.getPlayer();
 		p.update(newGame.getPlayers()[p.getPlayerIndex()]);

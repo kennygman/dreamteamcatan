@@ -5,9 +5,8 @@ import java.util.TimerTask;
 
 import shared.response.GameModelResponse;
 import model.Game;
+import model.ModelFacade;
 import client.proxy.IProxy;
-
-import com.google.gson.Gson;
 
 /**
  * @author Cami Greenall Poller class that checks for differences between the
@@ -16,37 +15,34 @@ import com.google.gson.Gson;
 public class Poller
 {
 	private Game serverModel;
-	private Game clientModel;
+	private int clientVersion;
 	private IProxy proxyServer;
 	private Timer timer;
 	private int timesTimerRan;
+	private ModelFacade clientModelFacade;
 
-	/**
-	 * Default constructor. Creates a new updatedModelGson object
-	 */
-	public Poller()
-	{
-		this.serverModel = new Game();
-		this.timer = new Timer();
-		this.timesTimerRan = 0;
-	}
+//	/**
+//	 * Default constructor. Creates a new updatedModelGson object
+//	 */
+//	public Poller()
+//	{
+//		this.serverModel = new Game();
+//		this.timer = new Timer();
+//		this.timesTimerRan = 0;
+//	}
 
-	// NOTE: this is really sloppy because the Poller has huge dependency
-	// problems.
 	/**
 	 * @param clientModelGson
 	 * @param proxyServer
 	 *            Constructor. Sets the clientModelGson and proxyServer.
 	 */
-	public Poller(IProxy proxyServer, Game clientModel)
+	public Poller(IProxy proxyServer, ModelFacade clientModelFacade)
 	{
+		this.clientModelFacade = clientModelFacade;
 		this.proxyServer = proxyServer;
 		this.timer = new Timer();
-		this.clientModel = clientModel;
+		this.clientVersion = clientModelFacade.getGame().getVersion();
 		this.timesTimerRan = 0;
-		// call pollServer
-		// if pollServer results differ from clientModelGson,
-		// updateClientModel
 	}
 
 	/**
@@ -69,7 +65,8 @@ public class Poller
 	 */
 	public void updateModel()
 	{
-		this.clientModel = this.serverModel;
+		clientModelFacade.update(serverModel);
+		this.clientVersion = clientModelFacade.getGame().getVersion();
 	}
 
 	/**
@@ -88,7 +85,7 @@ public class Poller
 			{
 				setTimesTimerRan(getTimesTimerRan() + 1);
 				pollServer();
-				if (serverModel.getVersion() > clientModel.getVersion())
+				if (serverModel.getVersion() > clientVersion)
 				{
 					updateModel();
 				}
@@ -116,14 +113,24 @@ public class Poller
 		this.serverModel = serverModel;
 	}
 
-	public Game getClientModel()
+	public ModelFacade getClientModelFacade()
 	{
-		return clientModel;
+		return clientModelFacade;
 	}
 
-	public void setClientModel(Game clientModel)
+	public void setClientModelFacade(ModelFacade clientModelFacade)
 	{
-		this.clientModel = clientModel;
+		this.clientModelFacade = clientModelFacade;
+	}
+
+	public int getClientVersion()
+	{
+		return clientVersion;
+	}
+
+	public void setClientVersion(int clientVersion)
+	{
+		this.clientVersion = clientVersion;
 	}
 
 	public IProxy getProxyServer()

@@ -159,7 +159,7 @@ public class Player
 
 	public void setPlayerID(int playerID)
 	{
-		this.playerIndex = playerID;
+		this.playerID = playerID;
 	}
 
 

@@ -108,7 +108,9 @@ public class Catan extends JFrame
 //				1. Make a proxy
 				IProxy gameProxy = new Proxy();
 //				2. Make clientFacade
-				IModelFacade gameClientFacade = new ModelFacade(gameProxy);
+//				IModelFacade gameClientFacade = new ModelFacade(gameProxy);
+				ModelFacade facade = ModelFacade.getInstance();
+				facade.setProxy(gameProxy);
 //				Setup Poller later in the facade or something.....
 				
 				loginController.start();

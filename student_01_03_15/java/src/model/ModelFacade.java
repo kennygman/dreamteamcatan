@@ -17,12 +17,19 @@ public class ModelFacade implements IModelFacade
 	private IProxy proxy;
 	private Game game;
 	
-	//--------------------------------------------------------------------------------
-	public ModelFacade(IProxy proxy)
+	/**
+	 * Singleton implementation
+	 */
+	private static ModelFacade instance;
+	
+	public static ModelFacade getInstance()
 	{
-		this.proxy=proxy;
-		this.game=proxy.getGameModel().getGame();
+		if (instance == null) instance = new ModelFacade();
+		return instance;
 	}
+	
+	// Had to remove proxy from constuctor
+	// USE setProxy() and getProxy() methods
 	
 	// ===============================================================================
 	// GETTERS AND SETTERS
@@ -34,6 +41,16 @@ public class ModelFacade implements IModelFacade
 	public void setGame(Game game)
 	{
 		this.game=game;
+	}
+	public void setProxy(IProxy proxy)
+	{
+		this.proxy=proxy;
+		if (proxy.getGameModel() != null && proxy.getGameModel().getGame() != null)
+			setGame(proxy.getGameModel().getGame());
+	}
+	public IProxy getProxy()
+	{
+		return proxy;
 	}
 
 	// ===============================================================================

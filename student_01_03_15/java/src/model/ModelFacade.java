@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Observable;
+
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
@@ -12,7 +14,7 @@ import model.player.Player;
 import model.player.Resources;
 import shared.parameters.*;
 
-public class ModelFacade implements IModelFacade
+public class ModelFacade extends Observable implements IModelFacade
 {
 	private IProxy proxy;
 	private Game game;
@@ -24,12 +26,28 @@ public class ModelFacade implements IModelFacade
 	
 	public static ModelFacade getInstance()
 	{
-		if (instance == null) instance = new ModelFacade();
+		if (instance == null) {
+			throw new IllegalStateException("Tried to get instance of ModelFacade without initializing it first!");
+		}
 		return instance;
 	}
-	
-	// Had to remove proxy from constuctor
-	// USE setProxy() and getProxy() methods
+	public static void createInstance(IProxy proxy)
+	{
+		instance = new ModelFacade(proxy);
+	}
+
+	public ModelFacade(IProxy proxy)
+	{
+		this.proxy = proxy;
+	}
+	/**
+	 * Observable methods
+	 */
+	public void modelChanged()
+	{
+		this.setChanged();
+		this.notifyObservers();
+	}
 	
 	// ===============================================================================
 	// GETTERS AND SETTERS
@@ -41,12 +59,6 @@ public class ModelFacade implements IModelFacade
 	public void setGame(Game game)
 	{
 		this.game=game;
-	}
-	public void setProxy(IProxy proxy)
-	{
-		this.proxy=proxy;
-		if (proxy.getGameModel() != null && proxy.getGameModel().getGame() != null)
-			setGame(proxy.getGameModel().getGame());
 	}
 	public IProxy getProxy()
 	{

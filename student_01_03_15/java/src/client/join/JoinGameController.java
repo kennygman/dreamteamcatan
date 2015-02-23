@@ -32,6 +32,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 		setNewGameView(newGameView);
 		setSelectColorView(selectColorView);
 		setMessageView(messageView);
+		new JoinGameState(this);
 	}
 	
 	public IJoinGameView getJoinGameView() {

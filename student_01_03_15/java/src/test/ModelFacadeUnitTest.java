@@ -24,20 +24,17 @@ public class ModelFacadeUnitTest
     
     
 	private Game game;
-	private ModelFacade facade;
 	
 	public ModelFacadeUnitTest()
 	{
-		//facade = new ModelFacade(new MockProxy());
-		//game = facade.getGame();
+		//ModelFacade.getInstance() = new ModelFacade(new MockProxy());
+		//game = ModelFacade.getInstance().getGame();
 	}
 	@Before
 	public void setup()
 	{
-//		facade = new ModelFacade(new MockProxy());
-		facade = ModelFacade.getInstance();
-		facade.setProxy(new MockProxy());
-		game = facade.getGame();
+		ModelFacade.createInstance(new MockProxy());
+		game = ModelFacade.getInstance().getGame();
 	}
 	
 	@After
@@ -54,7 +51,7 @@ public class ModelFacadeUnitTest
 		game.getBoard().setRoad(new Road(0, new EdgeLocation(0,0,"NW")));
 		EdgeLocation edge = new EdgeLocation(0, 0, "N");
 		game.getTurnTracker().setStatus("Playing");
-		boolean canBuild = facade.canPlaceRoad(edge,false);
+		boolean canBuild = ModelFacade.getInstance().canPlaceRoad(edge,false);
 		
 		Player currentPlayer = game.getPlayers()[0];
 		Resources hand = currentPlayer.getResources();
@@ -68,7 +65,7 @@ public class ModelFacadeUnitTest
 			boolean free = false;
 			game.getTurnTracker().setStatus("Playing");
 			
-			facade.buildRoad(edge, free);
+			ModelFacade.getInstance().buildRoad(edge, free);
 			
 			currentPlayer = game.getPlayers()[0];
 			Resources postHand = currentPlayer.getResources();
@@ -111,7 +108,7 @@ public class ModelFacadeUnitTest
 		
 		EdgeLocation edge = new EdgeLocation(0, 0, "N");
 		
-		boolean canBuild = facade.canPlaceRoad(edge,false);
+		boolean canBuild = ModelFacade.getInstance().canPlaceRoad(edge,false);
 		
 		Player currentPlayer = game.getPlayers()[0];
 		
@@ -125,7 +122,7 @@ public class ModelFacadeUnitTest
 		if(canBuild)
 		{
 			
-			facade.buildRoad(edge, false);
+			ModelFacade.getInstance().buildRoad(edge, false);
 			
 			currentPlayer = game.getPlayers()[0];
 			Resources postHand = currentPlayer.getResources();
@@ -154,7 +151,7 @@ public class ModelFacadeUnitTest
 			result = false;
 		}
 		
-		canBuild = facade.canPlaceRoad(edge,false);
+		canBuild = ModelFacade.getInstance().canPlaceRoad(edge,false);
 		
 		if(canBuild)
 		{
@@ -179,8 +176,8 @@ public class ModelFacadeUnitTest
 		EdgeLocation edge = new EdgeLocation(0, 0, "N");
 		EdgeLocation secondEdge = new EdgeLocation(0, 0, "NW");
 		
-		facade.buildRoad(edge,true);
-		facade.buildRoad(secondEdge,true);
+		ModelFacade.getInstance().buildRoad(edge,true);
+		ModelFacade.getInstance().buildRoad(secondEdge,true);
 		
 		HexLocation location = new HexLocation(0,0);
 		VertexLocation vertex = new VertexLocation(location,VertexDirection.West);
@@ -199,9 +196,9 @@ public class ModelFacadeUnitTest
 		int settlementCount = currentPlayer.getSettlements();
   		
 
-		if(facade.canPlaceSettlement(settlement.getLocation(),false))
+		if(ModelFacade.getInstance().canPlaceSettlement(settlement.getLocation(),false))
 		{
-			facade.buildSettlement(vertex, false);
+			ModelFacade.getInstance().buildSettlement(vertex, false);
 			
 			//Get post player and his conditions
 			currentPlayer = game.getPlayers()[0];
@@ -256,7 +253,7 @@ public class ModelFacadeUnitTest
 		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthWest);
   		Settlement settlement = new Settlement(0,vertex);
 		
-		boolean result = facade.canPlaceSettlement(settlement.getLocation(),false);
+		boolean result = ModelFacade.getInstance().canPlaceSettlement(settlement.getLocation(),false);
 		
 		assertEquals(result, false);
 	}
@@ -280,10 +277,10 @@ public class ModelFacadeUnitTest
 		int cityCount = currentPlayer.getCities();
 		//System.out.println("city count is " + cityCount);
 		
-		if(facade.canPlaceCity(vertex))
+		if(ModelFacade.getInstance().canPlaceCity(vertex))
 		{
 			
-			facade.buildCity(vertex);
+			ModelFacade.getInstance().buildCity(vertex);
 			
 			currentPlayer = game.getPlayers()[0];
 			Resources postHand = currentPlayer.getResources();
@@ -327,7 +324,7 @@ public class ModelFacadeUnitTest
 		HexLocation location = new HexLocation(1,1);
 		VertexLocation vertex = new VertexLocation(location,VertexDirection.NorthEast);
 		
-		boolean result = facade.canPlaceCity(vertex);
+		boolean result = ModelFacade.getInstance().canPlaceCity(vertex);
 		
 		assertEquals(result, false);
 	}
@@ -337,7 +334,7 @@ public class ModelFacadeUnitTest
 	{
 		game.getTurnTracker().setStatus("Rolling");
 		
-		boolean result = facade.CanRollNumber(5);
+		boolean result = ModelFacade.getInstance().CanRollNumber(5);
 	
 		
 		assertEquals(result,true);
@@ -347,7 +344,7 @@ public class ModelFacadeUnitTest
 	public void testCanNOTRollNumber()
 	{
 		game.getTurnTracker().setStatus("Playing");
-		boolean result = facade.CanRollNumber(1);
+		boolean result = ModelFacade.getInstance().CanRollNumber(1);
 		assertEquals(result,false);
 	}
 
@@ -360,9 +357,9 @@ public class ModelFacadeUnitTest
 		//Player's pre conditions
 		Resources resources = new Resources(1,-1,0,0,0);
 
-		if(facade.CanOfferTrade(resources))
+		if(ModelFacade.getInstance().CanOfferTrade(resources))
 		{	
-			facade.offerTrade(1, resources);
+			ModelFacade.getInstance().offerTrade(1, resources);
 			
 			//Player's post conditions
 			
@@ -389,7 +386,7 @@ public class ModelFacadeUnitTest
 		boolean result = true;
 		TradeOffer offer = new TradeOffer(0,1,new Resources(1,-1,0,0,0));
 		game.setTradeOffer(offer);
-		if(!facade.canAcceptTrade())
+		if(!ModelFacade.getInstance().canAcceptTrade())
 		{
 			result = false;
 		}
@@ -406,7 +403,7 @@ public class ModelFacadeUnitTest
 		
 		Player player = game.getPlayer();
 		
-		if(!facade.CanDiscardCards(player.getResources()))
+		if(!ModelFacade.getInstance().CanDiscardCards(player.getResources()))
 		{
 			result = false;
 		}
@@ -429,9 +426,9 @@ public class ModelFacadeUnitTest
 				int wood = hand.getResourceAmount(ResourceType.WOOD);
 				int brick = hand.getResourceAmount(ResourceType.BRICK);
 				
-		if(facade.CanMaritimeTrade(4,"wood","brick"))
+		if(ModelFacade.getInstance().CanMaritimeTrade(4,"wood","brick"))
 		{
-			facade.maritimeTrade(4, "wood", "brick");
+			ModelFacade.getInstance().maritimeTrade(4, "wood", "brick");
 			
 			//Banks post condition
 			currentBank = game.getBank();
@@ -473,7 +470,7 @@ public class ModelFacadeUnitTest
 		game.getTurnTracker().setStatus("Playing");
 		boolean result =  true ;
 		
-		facade.finishTurn();
+		ModelFacade.getInstance().finishTurn();
 		
 		TurnTracker turnTracker = game.getTurnTracker();
 		
@@ -503,9 +500,9 @@ public class ModelFacadeUnitTest
 		int wood = hand.getResourceAmount(ResourceType.WOOD);
 		int brick = hand.getResourceAmount(ResourceType.BRICK);
 		
-		if(facade.CanUseYearOfPlenty("wood","brick"))
+		if(ModelFacade.getInstance().CanUseYearOfPlenty("wood","brick"))
 		{
-			facade.playYearOfPlentyCard("wood","brick");
+			ModelFacade.getInstance().playYearOfPlentyCard("wood","brick");
 			//player's post condition
 			currentPlayer = game.getPlayers()[0];
 			Resources postHand = currentPlayer.getResources();
@@ -552,11 +549,11 @@ public class ModelFacadeUnitTest
 		EdgeLocation secondEdge = new EdgeLocation(0, 0, "NW");
 		
 	
-		if(facade.CanUseRoadBuilder(edge,secondEdge))
+		if(ModelFacade.getInstance().CanUseRoadBuilder(edge,secondEdge))
 		{
 			//Testing to see if road is taken these if statements should return false bc roads have been built
 			
-			if(facade.canPlaceRoad(secondEdge,true))
+			if(ModelFacade.getInstance().canPlaceRoad(secondEdge,true))
 			{
 				result = false;
 			}
@@ -577,24 +574,24 @@ public class ModelFacadeUnitTest
 		
 		HexLocation location = new HexLocation(1,1);
 		game.getPlayers()[0].getOldDevCards().setSolider(1);
-		if(facade.CanUseSoldier(1, location))
+		if(ModelFacade.getInstance().CanUseSoldier(1, location))
 		{
-			facade.playSoldierCard(1, location);
+			ModelFacade.getInstance().playSoldierCard(1, location);
 			
-			if(facade.canPlaceRobber(location))
+			if(ModelFacade.getInstance().canPlaceRobber(location))
 			{
 				//System.out.println("robber is wrong");
 				result = false;
 			}
 			//tests other dev cards
-			if(facade.CanUseMonopoly("wood"))
+			if(ModelFacade.getInstance().CanUseMonopoly("wood"))
 			{
 				System.out.println("can use monopoly is wrong");
 				
 				result = false;
 						
 			}
-			if(facade.CanUseYearOfPlenty("wood","brick"))
+			if(ModelFacade.getInstance().CanUseYearOfPlenty("wood","brick"))
 			{
 				System.out.println("can use year of plenty is wrong");
 				result = false;
@@ -626,10 +623,10 @@ public class ModelFacadeUnitTest
 		int currentWood = hand.getResourceAmount(ResourceType.WOOD);
 		
 		
-		if(facade.CanUseMonopoly("wood"))
+		if(ModelFacade.getInstance().CanUseMonopoly("wood"))
 		{
 			
-			facade.playMonopolyCard("wood");
+			ModelFacade.getInstance().playMonopolyCard("wood");
 			
 			//Only Opponent in the game
 			currentPlayer = game.getPlayers()[1];
@@ -671,7 +668,7 @@ public class ModelFacadeUnitTest
 		int vp = currentPlayer.getVictoryPoints();
 		
 		
-		if(facade.CanUseMonument())
+		if(ModelFacade.getInstance().CanUseMonument())
 		{
 			//Get post conditions
 			currentPlayer = game.getPlayers()[0];

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import client.data.GameInfo;
 import client.proxy.Proxy;
 import shared.parameters.AddAiParam;
 import shared.parameters.CreateGameParam;
@@ -62,22 +63,22 @@ public class ProxyGameStartTests
 		CredentialsParam p4 = new CredentialsParam("test4","test4");
 		
 		ListGamesResponse response = proxy.listGames();
-		GameListObject game = response.getGameListObject(response.numberOfGames()-1);
+		GameInfo game = response.getGameListObject()[response.numberOfGames()-1];
 		
 		proxy.login(p1);
-		JoinGameParam t1 = new JoinGameParam(game.getGameId(), "red");
+		JoinGameParam t1 = new JoinGameParam(game.getId(), "red");
 		StandardResponse r1 = proxy.joinGame(t1);
 		
 		proxy.login(p2);
-		JoinGameParam t2 = new JoinGameParam(game.getGameId(), "orange");
+		JoinGameParam t2 = new JoinGameParam(game.getId(), "orange");
 		StandardResponse r2 = proxy.joinGame(t2);
 		
 		proxy.login(p3);
-		JoinGameParam t3 = new JoinGameParam(game.getGameId(), "blue");
+		JoinGameParam t3 = new JoinGameParam(game.getId(), "blue");
 		StandardResponse r3 = proxy.joinGame(t3);
 		
 		proxy.login(p4);
-		JoinGameParam t4 = new JoinGameParam(game.getGameId(), "white");
+		JoinGameParam t4 = new JoinGameParam(game.getId(), "white");
 		StandardResponse r4 = proxy.joinGame(t4);
 		
 		
@@ -97,9 +98,9 @@ public class ProxyGameStartTests
 		proxy.createGame(new CreateGameParam("test2", true, true, true));
 		
 		ListGamesResponse response = proxy.listGames();
-		GameListObject game = response.getGameListObject(response.numberOfGames()-1);
+		GameInfo game = response.getGameListObject()[response.numberOfGames()-1];
 		
-		proxy.joinGame(new JoinGameParam(game.getGameId(), "blue"));
+		proxy.joinGame(new JoinGameParam(game.getId(), "blue"));
 		
 				
 		AddAiParam t1 = new AddAiParam("LARGEST_ARMY");

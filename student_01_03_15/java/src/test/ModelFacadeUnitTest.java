@@ -34,7 +34,9 @@ public class ModelFacadeUnitTest
 	@Before
 	public void setup()
 	{
-		facade = new ModelFacade(new MockProxy());
+//		facade = new ModelFacade(new MockProxy());
+		facade = ModelFacade.getInstance();
+		facade.setProxy(new MockProxy());
 		game = facade.getGame();
 	}
 	

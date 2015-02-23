@@ -12,6 +12,7 @@ import org.junit.*;
 import shared.locations.*;
 import shared.parameters.*;
 import shared.response.*;
+import client.data.GameInfo;
 import client.proxy.Proxy;
 import static org.junit.Assert.*;
 
@@ -50,9 +51,9 @@ public class ProxyInGameTests
 	public void test_saveGame() 
 	{
 		ListGamesResponse response = proxy.listGames();
-		GameListObject game = response.getGameListObject(response.numberOfGames() - 1);
+		GameInfo game = response.getGameListObject()[response.numberOfGames() - 1];
 		
-		SaveGameParam t1 = new SaveGameParam(game.getGameId(),"junit");
+		SaveGameParam t1 = new SaveGameParam(game.getId(),"junit");
 		StandardResponse r1 = proxy.saveGame(t1);
 		
 		assertEquals(true,r1.isValid());

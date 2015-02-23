@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import shared.response.GameListObject;
 import shared.response.GameModelResponse;
+import client.data.GameInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonNull;
@@ -117,7 +118,7 @@ public class Translator
 	public ListGamesResponse translateListGames(String input)
 	{
 		boolean valid = true;
-		GameListObject[] gamesList = g.fromJson(input,GameListObject[].class);
+		GameInfo[] gamesList = g.fromJson(input,GameInfo[].class);
 		if(gamesList == null)
 		{
 			valid = false;

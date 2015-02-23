@@ -24,9 +24,8 @@ public class PollerUnitTests
 	{
 		int versionNumber = 1;
 		mockProxy = new MockProxy();
-//		modelFacade = new ModelFacade(mockProxy);
+		ModelFacade.createInstance(mockProxy);
 		modelFacade = ModelFacade.getInstance();
-		modelFacade.setProxy(mockProxy);
 		poller = new Poller(mockProxy, modelFacade);
 	}
 

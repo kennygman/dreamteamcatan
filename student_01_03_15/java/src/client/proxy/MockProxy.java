@@ -8,6 +8,7 @@ import model.board.Road;
 import model.board.Settlement;
 import model.player.Player;
 import model.player.Resources;
+import client.data.GameInfo;
 
 import com.google.gson.Gson;
 
@@ -30,7 +31,7 @@ public class MockProxy implements IProxy
 
 	private Game fakeGame;
     private GameListObject proxyGame;
-    private GameListObject[] games ;
+    private GameInfo[] games ;
 
     
     public MockProxy()

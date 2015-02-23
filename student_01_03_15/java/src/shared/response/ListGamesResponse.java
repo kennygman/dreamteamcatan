@@ -1,12 +1,12 @@
 package shared.response;
 
-import java.util.ArrayList;
+import client.data.GameInfo;
 
 public class ListGamesResponse {
 	private boolean isValid;
 	//private ArrayList<GameListObject> games;
-	private GameListObject[] games;
-	public ListGamesResponse(GameListObject[] a, boolean b)
+	private GameInfo[] games;
+	public ListGamesResponse(GameInfo[] a, boolean b)
 	{
 		games = a;
 		isValid = b;
@@ -18,9 +18,9 @@ public class ListGamesResponse {
 		return games.length;
 	}
 	
-	public GameListObject getGameListObject(int i)
+	public GameInfo[] getGameListObject()
 	{
-		return games[i];
+		return games;
 	}
 	
 	public boolean isValid()

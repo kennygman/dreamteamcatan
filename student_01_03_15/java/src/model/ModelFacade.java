@@ -19,6 +19,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	private IProxy proxy;
 	private Game game;
 	
+	public ModelFacade(IProxy proxy)
+	{
+		this.proxy = proxy;
+		getGame();
+	}
+
 	/**
 	 * Singleton implementation
 	 */
@@ -36,10 +42,6 @@ public class ModelFacade extends Observable implements IModelFacade
 		instance = new ModelFacade(proxy);
 	}
 
-	public ModelFacade(IProxy proxy)
-	{
-		this.proxy = proxy;
-	}
 	/**
 	 * Observable methods
 	 */
@@ -54,14 +56,21 @@ public class ModelFacade extends Observable implements IModelFacade
 	// ===============================================================================
 	public Game getGame()
 	{
+		if (game == null) 
+		{
+			game = proxy.getGameModel().getGame();
+		}
 		return game;
 	}
 	public void setGame(Game game)
 	{
 		this.game=game;
 	}
-	public IProxy getProxy()
+	public IProxy getProxy() throws Exception
 	{
+		if (proxy == null) {
+			throw new Exception("Proxy not initialized!");
+		}
 		return proxy;
 	}
 

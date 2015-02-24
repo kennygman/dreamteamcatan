@@ -186,11 +186,14 @@ public class Proxy implements IProxy
 	{
 		if(path.equals("/user/login") || path.equals("/user/register"))
 		{
-			StringBuilder cookieBuilder = new StringBuilder(connection.getHeaderField("Set-cookie")); // "Set-cookie field is null when invalid login
-			cookieBuilder = cookieBuilder.delete(0, cookieBuilder.indexOf("=") + 1);
-			cookieBuilder = cookieBuilder.delete(cookieBuilder.indexOf(";"), cookieBuilder.length());
-			
-			cookie = cookieBuilder.toString();
+			if(responseCode == 200)
+			{
+				StringBuilder cookieBuilder = new StringBuilder(connection.getHeaderField("Set-cookie")); // "Set-cookie field is null when invalid login
+				cookieBuilder = cookieBuilder.delete(0, cookieBuilder.indexOf("=") + 1);
+				cookieBuilder = cookieBuilder.delete(cookieBuilder.indexOf(";"), cookieBuilder.length());
+				
+				cookie = cookieBuilder.toString();
+			}
 		}
 		else if(path.equals("/games/join"))
 		{

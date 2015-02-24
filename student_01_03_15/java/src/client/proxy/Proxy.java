@@ -186,7 +186,7 @@ public class Proxy implements IProxy
 	{
 		if(path.equals("/user/login") || path.equals("/user/register"))
 		{
-			StringBuilder cookieBuilder = new StringBuilder(connection.getHeaderField("Set-cookie"));
+			StringBuilder cookieBuilder = new StringBuilder(connection.getHeaderField("Set-cookie")); // "Set-cookie field is null when invalid login
 			cookieBuilder = cookieBuilder.delete(0, cookieBuilder.indexOf("=") + 1);
 			cookieBuilder = cookieBuilder.delete(cookieBuilder.indexOf(";"), cookieBuilder.length());
 			

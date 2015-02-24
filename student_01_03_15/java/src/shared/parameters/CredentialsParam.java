@@ -19,4 +19,12 @@ public class CredentialsParam {
 	{
 		return password;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "CredentialsParam [username=" + username + ", password="
+				+ password + "]";
+	}
+	
 }

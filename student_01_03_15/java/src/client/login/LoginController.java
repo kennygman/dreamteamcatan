@@ -18,6 +18,7 @@ public class LoginController extends Controller implements ILoginController {
 
 	private IMessageView messageView;
 	private IAction loginAction;
+	private LoginState state;
 	
 	/**
 	 * LoginController constructor
@@ -30,6 +31,7 @@ public class LoginController extends Controller implements ILoginController {
 		super(view);
 		
 		this.messageView = messageView;
+		state = new LoginState(this);
 	}
 	
 	public ILoginView getLoginView() {
@@ -71,22 +73,23 @@ public class LoginController extends Controller implements ILoginController {
 	@Override
 	public void signIn() {
 		
-		// TODO: log in user
-		
-
-		// If log in succeeded
-		getLoginView().closeModal();
-		loginAction.execute();
+		if (state.canLogin())
+		{
+			// If log in succeeded
+			getLoginView().closeModal();
+			loginAction.execute();
+		}
 	}
 
 	@Override
 	public void register() {
 		
-		// TODO: register new user (which, if successful, also logs them in)
-		
-		// If register succeeded
-		getLoginView().closeModal();
-		loginAction.execute();
+		if (state.canRegister())
+		{
+			// If register succeeded
+			getLoginView().closeModal();
+			loginAction.execute();
+		}
 	}
 
 }

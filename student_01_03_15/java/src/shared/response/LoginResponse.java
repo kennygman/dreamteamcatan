@@ -1,9 +1,12 @@
 package shared.response;
 
+import client.data.PlayerInfo;
+
 public class LoginResponse 
 {
 	private boolean isValid;
 	private int playerId;
+	PlayerInfo info;
 	
 	public LoginResponse(boolean b, int userId)
 	{
@@ -15,6 +18,16 @@ public class LoginResponse
 		isValid = b;
 		playerId = -1;
 	}
+
+	public PlayerInfo getInfo()
+	{
+		return info;
+	}
+	public void setInfo(PlayerInfo info)
+	{
+		this.info = info;
+	}
+	
 	
 	public boolean isValid()
 	{

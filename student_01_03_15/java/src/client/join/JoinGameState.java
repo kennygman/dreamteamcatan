@@ -1,21 +1,90 @@
 package client.join;
 
+import shared.definitions.CatanColor;
+import shared.parameters.CreateGameParam;
+import shared.parameters.JoinGameParam;
+import model.ModelFacade;
+import client.data.GameInfo;
+import client.data.PlayerInfo;
+
 public class JoinGameState
 {
-	IJoinGameController controller;
+	JoinGameController controller;
+	GameInfo game;
 	
-	public JoinGameState(IJoinGameController controller)
+	//--------------------------------------------------------------------------------
+	public JoinGameState(JoinGameController controller)
 	{
 		this.controller=controller;
-		updateGameList();
+		updateGameList(false);
+	}
+
+	//--------------------------------------------------------------------------------
+	public GameInfo[] validateGames(GameInfo[] games)
+	{
+		GameInfo[] newGames = new GameInfo[games.length];
+		for (int i = 0; i < games.length; i++)
+		{
+			GameInfo newGameInfo = new GameInfo();
+			newGameInfo.setId(games[i].getId());
+			newGameInfo.setTitle(games[i].getTitle());
+			if (games[i].getPlayers() != null && games[i].getPlayers().size() > 0)
+			{
+				for (PlayerInfo p : games[i].getPlayers())
+				{
+					if (p.getId() != -1)
+						newGameInfo.addPlayer(p);;
+				}
+			}
+			newGames[i] = newGameInfo;
+		}
+
+		return newGames;
+	}
+
+	//--------------------------------------------------------------------------------
+	public void updateGameList(boolean justCreated)
+	{
+		IJoinGameView view = controller.getJoinGameView();
+		GameInfo[] games = ModelFacade.getInstance().listGames().getGameListObject();
+		PlayerInfo player =  ModelFacade.getInstance().getPlayerInfo();
+		
+		games = validateGames(games);
+		
+		view.setGames(games,player);
 	}
 	
-	public void updateGameList()
+	//--------------------------------------------------------------------------------
+	public boolean joinGame(CatanColor color)
 	{
-/*		JoinGameView view = (JoinGameView) controller.getView();
-		GameInfo[] games = facade.getProxy().listGames().getGameListObject();
-		view.setGames(games, null);
-*/	}
+		return ModelFacade.getInstance().joinGame(
+				new JoinGameParam(
+						game.getId(),
+						color.name().toLowerCase()
+						)).isValid();
+	}
 	
+	//--------------------------------------------------------------------------------
+	public boolean createGame()
+	{
+		INewGameView view = controller.getNewGameView();
+		String name = view.getTitle();
+		boolean hexes = view.getRandomlyPlaceHexes();
+		boolean numbers = view.getRandomlyPlaceNumbers();
+		boolean ports = view.getUseRandomPorts();
+		if (name == null) return false;
 
+		ModelFacade.getInstance().createGame(new CreateGameParam(name,hexes,numbers,ports));
+		this.updateGameList(true);
+		return true;
+	}
+	
+	//--------------------------------------------------------------------------------
+	public void setGame(GameInfo game)
+	{
+		this.game=game;
+	}
+
+
+	//--------------------------------------------------------------------------------
 }

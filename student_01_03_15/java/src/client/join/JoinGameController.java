@@ -15,6 +15,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	private ISelectColorView selectColorView;
 	private IMessageView messageView;
 	private IAction joinAction;
+	private JoinGameState state;
 	
 	/**
 	 * JoinGameController constructor
@@ -32,7 +33,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 		setNewGameView(newGameView);
 		setSelectColorView(selectColorView);
 		setMessageView(messageView);
-		new JoinGameState(this);
+		state = new JoinGameState(this);
 	}
 	
 	public IJoinGameView getJoinGameView() {
@@ -110,12 +111,14 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	public void createNewGame() {
 		
 		getNewGameView().closeModal();
+		state.createGame();
 	}
 
 	@Override
 	public void startJoinGame(GameInfo game) {
 
 		getSelectColorView().showModal();
+		state.setGame(game);
 	}
 
 	@Override
@@ -127,10 +130,13 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	@Override
 	public void joinGame(CatanColor color) {
 		
-		// If join succeeded
-		getSelectColorView().closeModal();
-		getJoinGameView().closeModal();
-		joinAction.execute();
+		if (state.joinGame(color))
+		{
+			// If join succeeded
+			getSelectColorView().closeModal();
+			getJoinGameView().closeModal();
+			joinAction.execute();
+		}
 	}
 
 }

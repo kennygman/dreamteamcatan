@@ -46,6 +46,17 @@ public class Catan extends JFrame
 	
 	public static void main(final String[] args)
 	{
+		//------------------------------------------------------------------
+		//		SETUP STUFF
+		//------------------------------------------------------------------
+		//		1. Make a proxy
+		IProxy gameProxy = new Proxy();
+		//		2. Make clientFacade
+		ModelFacade.createInstance(gameProxy);
+
+		//		Setup Poller later in the facade or something.....
+		//------------------------------------------------------------------
+
 		try
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -98,18 +109,8 @@ public class Catan extends JFrame
 						joinController.start();
 					}
 				});
-//				loginView.setController(loginController);
-				loginView.setController(loginController);
-				
-//------------------------------------------------------------------
-//				SETUP STUFF
-//------------------------------------------------------------------
-//				1. Make a proxy
-				IProxy gameProxy = new Proxy();
-//				2. Make clientFacade
-				ModelFacade.createInstance(gameProxy);
 
-//				Setup Poller later in the facade or something.....
+				loginView.setController(loginController);
 				
 				loginController.start();
 			}

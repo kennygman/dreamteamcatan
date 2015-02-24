@@ -7,22 +7,28 @@ import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
+import client.data.PlayerInfo;
 import client.proxy.IProxy;
 import model.board.City;
 import model.board.Settlement;
 import model.player.Player;
 import model.player.Resources;
 import shared.parameters.*;
+import shared.response.CreateGameResponse;
+import shared.response.ListGamesResponse;
+import shared.response.LoginResponse;
+import shared.response.StandardResponse;
 
 public class ModelFacade extends Observable implements IModelFacade
 {
 	private IProxy proxy;
 	private Game game;
+	private PlayerInfo player;
 	
 	public ModelFacade(IProxy proxy)
 	{
 		this.proxy = proxy;
-		getGame();
+//		getGame();
 	}
 
 	/**
@@ -54,6 +60,15 @@ public class ModelFacade extends Observable implements IModelFacade
 	// ===============================================================================
 	// GETTERS AND SETTERS
 	// ===============================================================================
+	public void setPlayerInfo(PlayerInfo player)
+	{
+		this.player=player;
+	}
+	public PlayerInfo getPlayerInfo()
+	{
+		return player;
+	}
+	
 	public Game getGame()
 	{
 		if (game == null) 
@@ -563,6 +578,44 @@ public class ModelFacade extends Observable implements IModelFacade
 		game.getBoard().update(newGame.getBoard());
 		game.getTurnTracker().update(newGame.getTurnTracker());
 	}
+	
+	//================================================================================
+	// MISC PROXY FUNCTIONS
+	//================================================================================
+	
+	//--------------------------------------------------------------------------------
+	public LoginResponse login(CredentialsParam params)
+	{
+		return proxy.login(params);
+	}
+	
+	//--------------------------------------------------------------------------------
+	public LoginResponse register(CredentialsParam params)
+	{
+		return proxy.register(params);
+	}
+	
+	//--------------------------------------------------------------------------------
+	public StandardResponse joinGame(JoinGameParam params)
+	{
+		return proxy.joinGame(params);
+	}
+
+	//--------------------------------------------------------------------------------
+	public CreateGameResponse createGame(CreateGameParam params)
+	{
+		return proxy.createGame(params);
+	}
+
+	//--------------------------------------------------------------------------------
+	public ListGamesResponse listGames()
+	{
+		return proxy.listGames();
+	}
+
+	//--------------------------------------------------------------------------------
+
+	
 }
 	//================================================================================
 	// END

@@ -35,6 +35,8 @@ public class LoginView extends OverlayView implements ILoginView
 
 	/////------------------CHANGED TO FIT SCREEN BETTER------------------////
 	/////-------------------REMOVE FOR ACTUAL PRODUCT!!!!---------------/////
+	
+	
     private final int LABEL_TEXT_SIZE = 40;
     private final float SMALL_LABEL_TEXT_SIZE = 16.0F;
     private final float BIG_LABEL_TEXT_SIZE = LABEL_TEXT_SIZE * 1.5F;
@@ -53,7 +55,7 @@ public class LoginView extends OverlayView implements ILoginView
         mainPanel.add(new LoginView());
 
         jf.getContentPane().add(mainPanel);
-        //SHOULD BE 640,480
+//////////SHOULD BE 640,480----------------------------------/////////////////
         jf.setSize(240, 280);
         jf.setVisible(true);
     }

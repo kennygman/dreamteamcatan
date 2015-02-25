@@ -528,6 +528,13 @@ public class MockProxy implements IProxy
     public StandardResponse ChangeLogLevel(ChangeLogLevelParam input) {
    	 // TODO Auto-generated method stub
    	 return null;
-    }    
+    }
+
+	@Override
+	public int getGameId()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}    
 
 }

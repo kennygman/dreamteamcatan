@@ -45,7 +45,15 @@ public class PlayerWaitingView extends OverlayView implements IPlayerWaitingView
 		//create the center panel that displays player info
 		center = new JPanel();
 		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
-		this.add(center, BorderLayout.CENTER);	
+		this.add(center, BorderLayout.CENTER);
+		
+///////-----------------CHANGED TO SEE CHANGE BEFORE PUBLISH----------------------//////////////////////
+		center.setSize(200, 200);
+		
+		
+		
+		
+/////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		
 		//create the AI panel for the bottom of the pane
 		aiPanel = new JPanel();

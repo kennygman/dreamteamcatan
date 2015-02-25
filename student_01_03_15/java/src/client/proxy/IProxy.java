@@ -165,6 +165,7 @@ public interface IProxy {
 	 */
 	StandardResponse  ChangeLogLevel(ChangeLogLevelParam input);
 
+	int getGameId();
 	
 	
 }

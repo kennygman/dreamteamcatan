@@ -48,11 +48,10 @@ public class LoginState
 		if (param == null) return false;
 		
 		LoginResponse response = ModelFacade.getInstance().login(param);
-
+		
 		if (response.isValid()) 
 		{
-			info = new PlayerInfo();
-			info.setId(response.getPlayerId());
+			info = response.getPlayerInfo();
 			ModelFacade.getInstance().setPlayerInfo(info);
 			return true;
 		}

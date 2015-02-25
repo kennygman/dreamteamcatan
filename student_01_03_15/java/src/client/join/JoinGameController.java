@@ -1,5 +1,6 @@
 package client.join;
 
+import model.ModelFacade;
 import shared.definitions.CatanColor;
 import client.base.*;
 import client.data.*;
@@ -91,7 +92,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void start() {
-		
+		state.updateGameList();
 		getJoinGameView().showModal();
 	}
 
@@ -119,6 +120,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 		getSelectColorView().showModal();
 		state.setGame(game);
+		
 	}
 
 	@Override

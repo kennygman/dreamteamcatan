@@ -16,7 +16,6 @@ public class JoinGameState
 	public JoinGameState(JoinGameController controller)
 	{
 		this.controller=controller;
-		updateGameList(false);
 	}
 
 	//--------------------------------------------------------------------------------
@@ -43,25 +42,21 @@ public class JoinGameState
 	}
 
 	//--------------------------------------------------------------------------------
-	public void updateGameList(boolean justCreated)
+	public void updateGameList()
 	{
 		IJoinGameView view = controller.getJoinGameView();
 		GameInfo[] games = ModelFacade.getInstance().listGames().getGameListObject();
 		PlayerInfo player =  ModelFacade.getInstance().getPlayerInfo();
 		
 		games = validateGames(games);
-		
 		view.setGames(games,player);
 	}
 	
 	//--------------------------------------------------------------------------------
 	public boolean joinGame(CatanColor color)
 	{
-		return ModelFacade.getInstance().joinGame(
-				new JoinGameParam(
-						game.getId(),
-						color.name().toLowerCase()
-						)).isValid();
+		this.updateGameList();
+		return ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase())).isValid();
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -75,7 +70,7 @@ public class JoinGameState
 		if (name == null) return false;
 
 		ModelFacade.getInstance().createGame(new CreateGameParam(name,hexes,numbers,ports));
-		this.updateGameList(true);
+		this.updateGameList();
 		return true;
 	}
 	

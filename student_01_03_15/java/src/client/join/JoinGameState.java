@@ -3,7 +3,6 @@ package client.join;
 import shared.definitions.CatanColor;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
-import shared.response.StandardResponse;
 import model.ModelFacade;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
@@ -17,7 +16,6 @@ public class JoinGameState
 	public JoinGameState(JoinGameController controller)
 	{
 		this.controller=controller;
-		updateGameList(false);
 	}
 
 	//--------------------------------------------------------------------------------
@@ -33,9 +31,8 @@ public class JoinGameState
 			{
 				for (PlayerInfo p : games[i].getPlayers())
 				{
-					if (p.getId() != -1) {
-						newGameInfo.addPlayer(p);
-					}
+					if (p.getId() != -1)
+						newGameInfo.addPlayer(p);;
 				}
 			}
 			newGames[i] = newGameInfo;
@@ -45,34 +42,21 @@ public class JoinGameState
 	}
 
 	//--------------------------------------------------------------------------------
-	public void updateGameList(boolean justCreated)
+	public void updateGameList()
 	{
 		IJoinGameView view = controller.getJoinGameView();
 		GameInfo[] games = ModelFacade.getInstance().listGames().getGameListObject();
 		PlayerInfo player =  ModelFacade.getInstance().getPlayerInfo();
 		
 		games = validateGames(games);
-		
 		view.setGames(games,player);
 	}
 	
 	//--------------------------------------------------------------------------------
 	public boolean joinGame(CatanColor color)
 	{
-		StandardResponse response = ModelFacade.getInstance().joinGame(
-				new JoinGameParam(game.getId(),color.name().toLowerCase()));
-		if (response.isValid())
-		{
-			ModelFacade.getInstance().getPlayerInfo().setColor(color);
-			for (PlayerInfo p : game.getPlayers())
-			{
-				if (p.getId() == ModelFacade.getInstance().getPlayerInfo().getId())
-					ModelFacade.getInstance().getPlayerInfo().setPlayerIndex(game.getPlayers().indexOf(p));
-				System.out.println(ModelFacade.getInstance().getPlayerInfo());
-			}
-			return true;
-		}
-		return false;
+		this.updateGameList();
+		return ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase())).isValid();
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -86,7 +70,7 @@ public class JoinGameState
 		if (name == null) return false;
 
 		ModelFacade.getInstance().createGame(new CreateGameParam(name,hexes,numbers,ports));
-		this.updateGameList(true);
+		this.updateGameList();
 		return true;
 	}
 	

@@ -459,4 +459,17 @@ public class Proxy implements IProxy
 		return translator.translateStandard(result);	
 		
 	}
+
+	public int getGameId()
+	{
+		if(gameId != null)
+		{
+			return Integer.parseInt(gameId);
+		}
+		else
+		{
+			return -1;
+		}
+	}
+
 }

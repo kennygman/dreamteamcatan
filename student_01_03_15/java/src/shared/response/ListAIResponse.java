@@ -17,4 +17,11 @@ public class ListAIResponse {
 		return isValid;
 	}
 
+	public String[] getAiTypes()
+	{
+		return aiTypes;
+	}
+
+
+
 }

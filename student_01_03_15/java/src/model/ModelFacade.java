@@ -7,6 +7,7 @@ import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
+import client.data.GameInfo;
 import client.data.PlayerInfo;
 import client.proxy.IProxy;
 import model.board.City;
@@ -15,6 +16,7 @@ import model.player.Player;
 import model.player.Resources;
 import shared.parameters.*;
 import shared.response.CreateGameResponse;
+import shared.response.ListAIResponse;
 import shared.response.ListGamesResponse;
 import shared.response.LoginResponse;
 import shared.response.StandardResponse;
@@ -24,10 +26,11 @@ public class ModelFacade extends Observable implements IModelFacade
 	private IProxy proxy;
 	private Game game;
 	private PlayerInfo player;
-	
+
 	public ModelFacade(IProxy proxy)
 	{
 		this.proxy = proxy;
+		player = new PlayerInfo();
 //		getGame();
 	}
 
@@ -583,13 +586,28 @@ public class ModelFacade extends Observable implements IModelFacade
 	//--------------------------------------------------------------------------------
 	public LoginResponse login(CredentialsParam params)
 	{
-		return proxy.login(params);
+		LoginResponse response = proxy.login(params);
+		if(response.isValid())
+		{
+			player = response.getPlayerInfo();
+			player.setName(params.getUser());
+
+		}
+		
+		return response;
 	}
 	
 	//--------------------------------------------------------------------------------
 	public LoginResponse register(CredentialsParam params)
 	{
-		return proxy.register(params);
+		LoginResponse response = proxy.register(params);
+		if(response.isValid())
+		{
+			player = response.getPlayerInfo();
+			player.setName(params.getUser());
+		}
+		
+		return response;
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -611,7 +629,90 @@ public class ModelFacade extends Observable implements IModelFacade
 	}
 
 	//--------------------------------------------------------------------------------
+	public StandardResponse addAi(AddAiParam input)
+	{
+		return proxy.addAi(input);
+	}
+	//---------------------------------------------------------------------------------
+	public ListAIResponse listAi()
+	{
+		return proxy.listAi();
+	}
+	//---------------------------------------------------------------------------------
+	public boolean checkGameFull()
+	{
+		ListGamesResponse response = proxy.listGames();
+		int gameId = proxy.getGameId();
+		GameInfo[] games = response.getGameListObject();
+		//check the games in the game list for matching desired id and for capacity less than 
+		for(int i = 0; i < games.length; i++)
+		{
+			if(gameId == games[i].getId())
+			{
+				for(int j = 0; j <games[i].getPlayers().size(); j++ )
+				{
+					
+					if(games[i].getPlayers().get(j).getId() == -1)
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		return true;
+	}
 
+	//---------------------------------------------------------------------------------
+	public int getGameId()
+	{
+		return proxy.getGameId();
+	}
+
+	//---------------------------------------------------------------------------------
+	
+	/***
+	 * Will call the list games and pull the players from there as it is in the desired format for parts of the view controllers.
+	 * Different from the players stored in the game object.
+	 * @return
+	 */
+	public PlayerInfo[] getPlayerInfoList()
+	{
+		ListGamesResponse response = proxy.listGames();
+		int gameId = proxy.getGameId();
+		GameInfo[] games = response.getGameListObject();
+		
+		int gameindex = -1;
+		int numPlayers = 0;
+		for(int i = 0; i < games.length; i++)
+		{
+			if(gameId == games[i].getId())
+			{
+				gameindex = i;
+				for(int j = 0; j <games[i].getPlayers().size(); j++ )
+				{
+					
+					if(games[i].getPlayers().get(j).getId() != -1)
+					{
+						numPlayers ++;
+					
+					}
+					
+				}
+				break;
+			}
+		}
+		
+		PlayerInfo[] players = new PlayerInfo[numPlayers];
+		for(int k = 0; k < numPlayers; k++)
+		{
+			players[k] = games[gameindex].getPlayers().get(k);
+		}
+		
+		
+		return players;
+		
+	}
 	
 }
 	//================================================================================

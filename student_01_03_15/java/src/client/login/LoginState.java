@@ -26,15 +26,18 @@ public class LoginState
 		{
 			un = view.getRegisterUsername();
 			pw = view.getRegisterPassword();
+
 			String pw2 = view.getRegisterPasswordRepeat();
-			if (pw == null || !pw.equals(pw2)) return null;
+			if (pw.equals("") || !pw.equals(pw2)) return null;
+
 		}
 		else
 		{
 			un = view.getLoginUsername();
 			pw = view.getLoginPassword();
+			
 		}
-		if (un == null || pw == null) return null;
+		if (un.equals("") || pw.equals("")) return null;
 		return new CredentialsParam(un,pw);
 	}
 
@@ -42,7 +45,6 @@ public class LoginState
 	public boolean canLogin()
 	{
 		CredentialsParam param = getCredentials(false);
-		System.out.println(param.toString());
 		if (param == null) return false;
 		
 		LoginResponse response = ModelFacade.getInstance().login(param);

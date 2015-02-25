@@ -19,7 +19,7 @@ public class LoginController extends Controller implements ILoginController {
 	private IMessageView messageView;
 	private IAction loginAction;
 	private LoginState state;
-	
+	/////////-------CHANGE LOGIN VIEW!!!-----CHANGED TO FIT SCREEN BETTER!!!//////////////
 	/**
 	 * LoginController constructor
 	 * 

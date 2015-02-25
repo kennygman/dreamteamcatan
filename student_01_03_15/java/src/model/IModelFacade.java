@@ -4,6 +4,7 @@ import model.player.Resources;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
+import shared.parameters.SendChatParam;
 
 public interface IModelFacade
 {
@@ -185,7 +186,7 @@ public interface IModelFacade
 	void playMonumentCard();
 
 	void rollNumber(int d1, int d2);
-	void sendChat();
+	void sendChat(SendChatParam param);
 	void acceptTrade(boolean accept);
 	void discardCards(Resources resources);
 

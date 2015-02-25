@@ -8,7 +8,7 @@ import model.ModelFacade;
 public class LoginState
 {
 	LoginController login;
-	PlayerInfo info;
+	CredentialsParam credentials;
 	
 	//--------------------------------------------------------------------------------
 	public LoginState(LoginController login)
@@ -17,7 +17,7 @@ public class LoginState
 	}
 	
 	//--------------------------------------------------------------------------------
-	public CredentialsParam getCredentials(boolean reg)
+	public void setCredentials(boolean reg)
 	{
 		ILoginView view = (ILoginView)(login.getView());
 		String un;
@@ -27,31 +27,28 @@ public class LoginState
 			un = view.getRegisterUsername();
 			pw = view.getRegisterPassword();
 			String pw2 = view.getRegisterPasswordRepeat();
-			if (pw == null || !pw.equals(pw2)) return null;
+			if (!pw.equals(pw2)) return;
 		}
 		else
 		{
 			un = view.getLoginUsername();
 			pw = view.getLoginPassword();
 		}
-		if (un == null || pw == null) return null;
-		return new CredentialsParam(un,pw);
+		if (un == null || pw == null) return;
+		credentials = new CredentialsParam(un,pw);
 	}
 
 	//--------------------------------------------------------------------------------
 	public boolean canLogin()
 	{
-		CredentialsParam param = getCredentials(false);
-		System.out.println(param.toString());
-		if (param == null) return false;
+		setCredentials(false);
+		if (credentials == null) return false;
 		
-		LoginResponse response = ModelFacade.getInstance().login(param);
+		LoginResponse response = ModelFacade.getInstance().login(credentials);
 
 		if (response.isValid()) 
 		{
-			info = new PlayerInfo();
-			info.setId(response.getPlayerId());
-			ModelFacade.getInstance().setPlayerInfo(info);
+			setPlayerInfo(response);
 			return true;
 		}
 		
@@ -61,12 +58,26 @@ public class LoginState
 	//--------------------------------------------------------------------------------
 	public boolean canRegister()
 	{
-		CredentialsParam param = getCredentials(true);
-		if (param == null) return false;
+		setCredentials(true);
+		if (credentials == null) return false;
+		LoginResponse response =ModelFacade.getInstance().register(credentials);
 		
-		return ModelFacade.getInstance().register(param).isValid();
+		if (response.isValid()) 
+		{
+			setPlayerInfo(response);
+			return true;
+		}
+		
+		return false;
 	}
 
 	//--------------------------------------------------------------------------------
+	public void setPlayerInfo(LoginResponse response)
+	{
+		PlayerInfo info = new PlayerInfo();
+		info.setId(response.getPlayerId());
+		info.setName(credentials.getUser());
+		ModelFacade.getInstance().setPlayerInfo(info);
+	}
 
 }

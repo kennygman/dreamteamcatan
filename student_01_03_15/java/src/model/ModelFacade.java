@@ -396,12 +396,9 @@ public class ModelFacade extends Observable implements IModelFacade
 
 	//--------------------------------------------------------------------------------
 	@Override
-	public void sendChat()
+	public void sendChat(SendChatParam param)
 	{
-		Game newGame = proxy.sendChat(new SendChatParam(
-			game.getTurnTracker().getCurrentTurn(),
-			game.getChat().toString())).getGame();
-
+		Game newGame = proxy.sendChat(param).getGame();
 		game.getChat().setLines(newGame.getChat().getLines());
 	}
 

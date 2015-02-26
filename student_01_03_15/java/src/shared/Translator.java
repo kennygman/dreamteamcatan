@@ -118,7 +118,7 @@ public class Translator
 	public ListGamesResponse translateListGames(String input)
 	{
 		boolean valid = true;
-		GameInfo[] gamesList = g.fromJson(input,GameInfo[].class);
+		GameListObject[] gamesList = g.fromJson(input,GameListObject[].class);
 		if(gamesList == null)
 		{
 			valid = false;

@@ -31,7 +31,7 @@ public class MockProxy implements IProxy
 
 	private Game fakeGame;
     private GameListObject proxyGame;
-    private GameInfo[] games ;
+    private GameListObject[] games ;
 
     
     public MockProxy()

@@ -19,36 +19,13 @@ public class JoinGameState
 	}
 
 	//--------------------------------------------------------------------------------
-	public GameInfo[] validateGames(GameInfo[] games)
-	{
-		GameInfo[] newGames = new GameInfo[games.length];
-		for (int i = 0; i < games.length; i++)
-		{
-			GameInfo newGameInfo = new GameInfo();
-			newGameInfo.setId(games[i].getId());
-			newGameInfo.setTitle(games[i].getTitle());
-			if (games[i].getPlayers() != null && games[i].getPlayers().size() > 0)
-			{
-				for (PlayerInfo p : games[i].getPlayers())
-				{
-					if (p.getId() != -1)
-						newGameInfo.addPlayer(p);;
-				}
-			}
-			newGames[i] = newGameInfo;
-		}
-
-		return newGames;
-	}
-
-	//--------------------------------------------------------------------------------
 	public void updateGameList()
 	{
 		IJoinGameView view = controller.getJoinGameView();
 		GameInfo[] games = ModelFacade.getInstance().listGames().getGameListObject();
+		
 		PlayerInfo player =  ModelFacade.getInstance().getPlayerInfo();
 		
-		games = validateGames(games);
 		view.setGames(games,player);
 	}
 	
@@ -56,7 +33,13 @@ public class JoinGameState
 	public boolean joinGame(CatanColor color)
 	{
 		this.updateGameList();
-		return ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase())).isValid();
+		
+		if (ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase())).isValid())
+		{
+			setGameInfo();
+			return true;
+		}
+		return false;
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -80,6 +63,20 @@ public class JoinGameState
 		this.game=game;
 	}
 
-
 	//--------------------------------------------------------------------------------
+	public void setGameInfo()
+	{
+		GameInfo joinedGame = ModelFacade.getInstance().listGames().getGameListObject()[game.getId()];
+		ModelFacade.getInstance().setGameInfo(joinedGame);
+
+		PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+		for (PlayerInfo p : joinedGame.getPlayers())
+		{
+			if (p.getId() == player.getId())
+			{
+				player = p;
+				return;
+			}
+		}
+	}
 }

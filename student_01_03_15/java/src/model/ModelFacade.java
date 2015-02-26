@@ -412,7 +412,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void sendChat(SendChatParam param)
 	{
 		Game newGame = proxy.sendChat(param).getGame();
-		game.getChat().setLines(newGame.getChat().getLines());
+		game = newGame;
+		this.modelChanged();
 	}
 
 	//--------------------------------------------------------------------------------
@@ -648,6 +649,13 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		return proxy.listAi();
 	}
+	//---------------------------------------------------------------------------------
+	public void getGameModel()
+	{
+		this.setGame(proxy.getGameModel().getGame());
+		this.modelChanged();
+	}
+
 	//---------------------------------------------------------------------------------
 	public boolean checkGameFull()
 	{

@@ -37,6 +37,7 @@ public class JoinGameState
 		if (ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase())).isValid())
 		{
 			setGameInfo();
+			ModelFacade.getInstance().getGameModel();
 			return true;
 		}
 		return false;
@@ -61,6 +62,7 @@ public class JoinGameState
 	public void setGame(GameInfo game)
 	{
 		this.game=game;
+		disableColors();
 	}
 
 	//--------------------------------------------------------------------------------
@@ -74,9 +76,33 @@ public class JoinGameState
 		{
 			if (p.getId() == player.getId())
 			{
+				player.setPlayerIndex(joinedGame.getPlayers().indexOf(p));
 				player = p;
 				return;
 			}
 		}
+	}
+
+	//--------------------------------------------------------------------------------
+	public void disableColors()
+	{
+		controller.getSelectColorView().setColorEnabled(CatanColor.BLUE, true);
+		controller.getSelectColorView().setColorEnabled(CatanColor.BROWN, true);
+		controller.getSelectColorView().setColorEnabled(CatanColor.GREEN, true);
+		controller.getSelectColorView().setColorEnabled(CatanColor.ORANGE, true);
+		controller.getSelectColorView().setColorEnabled(CatanColor.PUCE, true);
+		controller.getSelectColorView().setColorEnabled(CatanColor.PURPLE, true);
+		controller.getSelectColorView().setColorEnabled(CatanColor.RED, true);
+		controller.getSelectColorView().setColorEnabled(CatanColor.WHITE, true);
+		controller.getSelectColorView().setColorEnabled(CatanColor.YELLOW, true);
+
+		for (PlayerInfo p : game.getPlayers())
+		{
+			if (p.getId() != ModelFacade.getInstance().getPlayerInfo().getId())
+			{
+				controller.getSelectColorView().setColorEnabled(p.getColor(), false);
+			}
+		}
+		
 	}
 }

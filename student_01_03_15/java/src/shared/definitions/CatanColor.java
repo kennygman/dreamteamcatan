@@ -25,5 +25,6 @@ public enum CatanColor
 	{
 		return color;
 	}
+	
 }
 

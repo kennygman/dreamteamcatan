@@ -37,7 +37,7 @@ public class Catan extends JFrame
 	private void display()
 	{
 		////----------------------COMMENTED OUT PACK NEED TO CHANGE BEFORE SUBMIT
-		//pack();
+		pack();
 		setVisible(true);
 	}
 	

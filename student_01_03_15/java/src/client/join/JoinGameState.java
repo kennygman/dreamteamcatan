@@ -19,7 +19,7 @@ public class JoinGameState
 	}
 
 	//--------------------------------------------------------------------------------
-	public GameInfo[] validateGames(GameInfo[] games)
+/*	public GameInfo[] validateGames(GameInfo[] games)
 	{
 		GameInfo[] newGames = new GameInfo[games.length];
 		for (int i = 0; i < games.length; i++)
@@ -40,15 +40,16 @@ public class JoinGameState
 
 		return newGames;
 	}
-
+*/
 	//--------------------------------------------------------------------------------
 	public void updateGameList()
 	{
 		IJoinGameView view = controller.getJoinGameView();
 		GameInfo[] games = ModelFacade.getInstance().listGames().getGameListObject();
+		
+		System.out.println("PLAYER LIST SIZE: " + games[games.length-1].getPlayers().size());
 		PlayerInfo player =  ModelFacade.getInstance().getPlayerInfo();
 		
-		games = validateGames(games);
 		view.setGames(games,player);
 	}
 	

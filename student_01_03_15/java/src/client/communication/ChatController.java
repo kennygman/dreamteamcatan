@@ -1,23 +1,18 @@
 package client.communication;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import shared.parameters.SendChatParam;
-import model.Chat;
-import model.Lines;
-import model.ModelFacade;
-import client.base.*;
-
+import client.base.Controller;
 
 /**
  * Chat controller implementation
  */
 public class ChatController extends Controller implements IChatController {
 
+	private ChatState state;
+	
 	public ChatController(IChatView view) {
 		
 		super(view);
+		state = new ChatState(this);
 	}
 
 	@Override
@@ -27,23 +22,8 @@ public class ChatController extends Controller implements IChatController {
 
 	@Override
 	public void sendMessage(String message) {
-		ModelFacade.getInstance().getGame().getPlayer().getPlayerIndex();
-		ModelFacade.getInstance().sendChat(new SendChatParam(
-				ModelFacade.getInstance().getPlayerInfo().getPlayerIndex(),
-				message));
-		
-		Chat chat = ModelFacade.getInstance().getGame().getChat();
-		this.getView().setEntries(convertChat(chat.getLines()));
+		state.sendMessage(message);
 	}
 	
-	public List<LogEntry> convertChat(Lines[] lines)
-	{
-		List<LogEntry> log = new ArrayList<>();
-		for (Lines line : lines)
-		{
-		}
-		return log;
-	}
-
 }
 

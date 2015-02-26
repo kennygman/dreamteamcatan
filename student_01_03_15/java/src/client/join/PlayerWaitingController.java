@@ -5,6 +5,7 @@ import shared.response.ListAIResponse;
 import shared.response.StandardResponse;
 import model.ModelFacade;
 import client.base.*;
+import client.data.PlayerInfo;
 
 
 /**
@@ -28,6 +29,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 		if(!ModelFacade.getInstance().checkGameFull())
 		{
 			getView().showModal();
+			getView().setPlayers(ModelFacade.getInstance().getGameInfo().getPlayers().toArray(new PlayerInfo[0]));
 			getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
 		}
 		

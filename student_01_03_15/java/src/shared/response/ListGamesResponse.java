@@ -4,9 +4,8 @@ import client.data.GameInfo;
 
 public class ListGamesResponse {
 	private boolean isValid;
-	//private ArrayList<GameListObject> games;
-	private GameInfo[] games;
-	public ListGamesResponse(GameInfo[] a, boolean b)
+	private GameListObject[] games;
+	public ListGamesResponse(GameListObject[] a, boolean b)
 	{
 		games = a;
 		isValid = b;
@@ -20,7 +19,12 @@ public class ListGamesResponse {
 	
 	public GameInfo[] getGameListObject()
 	{
-		return games;
+		GameInfo[] gi = new GameInfo[games.length];
+		for (int i = 0; i < games.length; i++)
+		{
+			gi[i] = games[i].getGameInfo();
+		}
+		return gi;
 	}
 	
 	public boolean isValid()

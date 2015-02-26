@@ -26,6 +26,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	private IProxy proxy;
 	private Game game;
 	private PlayerInfo player;
+	private GameInfo gameInfo;
 
 	public ModelFacade(IProxy proxy)
 	{
@@ -63,9 +64,18 @@ public class ModelFacade extends Observable implements IModelFacade
 	// ===============================================================================
 	// GETTERS AND SETTERS
 	// ===============================================================================
+	
 	public void setPlayerInfo(PlayerInfo player)
 	{
 		this.player=player;
+	}
+	public GameInfo getGameInfo()
+	{
+		return gameInfo;
+	}
+	public void setGameInfo(GameInfo gameInfo)
+	{
+		this.gameInfo = gameInfo;
 	}
 	public PlayerInfo getPlayerInfo()
 	{
@@ -652,7 +662,7 @@ public class ModelFacade extends Observable implements IModelFacade
 				for(int j = 0; j <games[i].getPlayers().size(); j++ )
 				{
 					
-					if(games[i].getPlayers().get(j).getId() == -1)
+					if(games[i].getPlayers().size() < 4 || games[i].getPlayers().get(j).getId() == -1)
 					{
 						return false;
 					}

@@ -54,7 +54,6 @@ public class LoginState
 		if (response.isValid()) 
 		{
 			info = response.getPlayerInfo();
-			System.out.println("\n================"+info);
 			setPlayer();
 			return true;
 		}
@@ -73,7 +72,6 @@ public class LoginState
 		if (response.isValid()) 
 		{
 			info = response.getPlayerInfo();
-			System.out.println("\n================"+info);
 			setPlayer();
 			return true;
 		}

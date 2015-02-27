@@ -46,24 +46,23 @@ public class Game
 		this.title = title;
 	}
 
-	public boolean canInitGame()
-	{
-		//returns false if it cant initialize
-		
-		return true;
-	}
-	public Board createBoard()
-	{
-		return new Board();
-	}
-	public void endGame()
-	{
-		
-	}
-	public void updateGame()
-	{
-		
-	}
+//	public boolean canInitGame()
+//	{
+//		//returns false if it cant initialize
+//		return true;
+//	}
+//	public Board createBoard()
+//	{
+//		return new Board();
+//	}
+//	public void endGame()
+//	{
+//		
+//	}
+//	public void updateGame()
+//	{
+//		
+//	}
 	public Resources getBank() 
 	{
 		return bank;

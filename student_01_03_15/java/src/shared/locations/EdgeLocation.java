@@ -25,7 +25,6 @@ public class EdgeLocation
 		setDir(dir);
 	}
 	
-	
 	public void translate()
 	{
 		hexLoc = new HexLocation(x,y);

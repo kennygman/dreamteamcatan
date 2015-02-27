@@ -9,7 +9,12 @@ import client.data.*;
 import model.Game;
 import model.ModelFacade;
 import model.board.Board;
+import model.board.City;
 import model.board.Hex;
+import model.board.Port;
+import model.board.Road;
+import model.board.Settlement;
+import model.player.Player;
 
 
 /**
@@ -40,12 +45,16 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	protected void initFromModel() {
             Game game = ModelFacade.getInstance().getGame();            
-            
             Board board = game.getBoard();
-            for (Hex hex : board.getHexes())
-            {
-                getView().addHex(hex.getLocation(), HexType.valueOf(hex.getResource()));
-            }
+            
+            drawHexes(game, board);
+            drawWaterHexes(board);
+            getView().placeRobber(board.getRobber());
+            
+            
+            
+            
+            
             
 //		for (int x = 0; x <= 3; ++x) {
 //			
@@ -84,29 +93,64 @@ public class MapController extends Controller implements IMapController , Observ
 //			}
 //		}
 //		
-//		PortType portType = PortType.BRICK;
-//		getView().addPort(new EdgeLocation(new HexLocation(0, 3), EdgeDirection.North), portType);
-//		getView().addPort(new EdgeLocation(new HexLocation(0, -3), EdgeDirection.South), portType);
-//		getView().addPort(new EdgeLocation(new HexLocation(-3, 3), EdgeDirection.NorthEast), portType);
-//		getView().addPort(new EdgeLocation(new HexLocation(-3, 0), EdgeDirection.SouthEast), portType);
-//		getView().addPort(new EdgeLocation(new HexLocation(3, -3), EdgeDirection.SouthWest), portType);
-//		getView().addPort(new EdgeLocation(new HexLocation(3, 0), EdgeDirection.NorthWest), portType);
 //		
-//		getView().placeRobber(new HexLocation(0, 0));
-//		
-//		getView().addNumber(new HexLocation(-2, 0), 2);
-//		getView().addNumber(new HexLocation(-2, 1), 3);
-//		getView().addNumber(new HexLocation(-2, 2), 4);
-//		getView().addNumber(new HexLocation(-1, 0), 5);
-//		getView().addNumber(new HexLocation(-1, 1), 6);
-//		getView().addNumber(new HexLocation(1, -1), 8);
-//		getView().addNumber(new HexLocation(1, 0), 9);
-//		getView().addNumber(new HexLocation(2, -2), 10);
-//		getView().addNumber(new HexLocation(2, -1), 11);
-//		getView().addNumber(new HexLocation(2, 0), 12);
 		
 		//</temp>
 	}
+        
+        private void drawHexes(Game game, Board board)
+        {
+            for (Hex hex : board.getHexes())
+            {
+                getView().addHex(hex.getLocation(), HexType.fromString(hex.getResource()));
+                if(hex.getNumber() != 0)
+                {
+                    getView().addNumber(hex.getLocation(), hex.getNumber());
+                }
+            }
+            Player[] players = game.getPlayers();
+            for (Road road : board.getRoads())
+            {
+                CatanColor cc = players[road.getOwner()].getColor();
+                getView().placeRoad(road.getEdgeLocation(), cc);
+            }
+            for (Settlement settlement : board.getSettlements())
+            {
+                CatanColor cc = players[settlement.getOwner()].getColor();
+                getView().placeSettlement(settlement.getLocation(), cc);
+            }
+            for (City city : board.getCities())
+            {
+                CatanColor cc = players[city.getOwner()].getColor();
+                getView().placeCity(city.getLocation(), cc);
+            }
+        }
+        
+        private void drawWaterHexes(Board board)
+        {
+            getView().addHex(new HexLocation(-3,0),HexType.WATER);
+            getView().addHex(new HexLocation(-3,1),HexType.WATER);
+            getView().addHex(new HexLocation(-3,2),HexType.WATER);
+            getView().addHex(new HexLocation(-3,3),HexType.WATER);
+            getView().addHex(new HexLocation(-2,-1),HexType.WATER);
+            getView().addHex(new HexLocation(-2,3),HexType.WATER);
+            getView().addHex(new HexLocation(-1,-2),HexType.WATER);
+            getView().addHex(new HexLocation(-1,3),HexType.WATER);
+            getView().addHex(new HexLocation(0,-3),HexType.WATER);
+            getView().addHex(new HexLocation(0,3),HexType.WATER);
+            getView().addHex(new HexLocation(1,-3),HexType.WATER);
+            getView().addHex(new HexLocation(1,2),HexType.WATER);
+            getView().addHex(new HexLocation(2,1),HexType.WATER);
+            getView().addHex(new HexLocation(2,-3),HexType.WATER);
+            getView().addHex(new HexLocation(3,-3),HexType.WATER);
+            getView().addHex(new HexLocation(3,-2),HexType.WATER);
+            getView().addHex(new HexLocation(3,-1),HexType.WATER);
+            getView().addHex(new HexLocation(3,0),HexType.WATER);
+            for (Port port : board.getPorts())
+            {
+                getView().addPort(port.getEdgeLocation(), PortType.fromString(port.getResource()));
+            }
+        }
 
 	public boolean canPlaceRoad(EdgeLocation edgeLoc) {
 		
@@ -174,7 +218,7 @@ public class MapController extends Controller implements IMapController , Observ
         @Override
         public void update(Observable o, Object o1) 
         {
-            
+            initFromModel();
         }
 }
 

@@ -32,7 +32,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		this.proxy = proxy;
 		player = new PlayerInfo();
-//		getGame();
+		player.setPlayerIndex(0);
 	}
 
 	/**
@@ -57,6 +57,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	 */
 	public void modelChanged()
 	{
+		if (this.getGame() == null) return;
 		this.setChanged();
 		this.notifyObservers();
 	}
@@ -623,9 +624,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	//--------------------------------------------------------------------------------
 	public StandardResponse joinGame(JoinGameParam params)
 	{
-                StandardResponse response = proxy.joinGame(params);
-                getGameModel();
-		return response;
+		return proxy.joinGame(params);
 	}
 
 	//--------------------------------------------------------------------------------

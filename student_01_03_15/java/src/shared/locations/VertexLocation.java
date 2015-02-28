@@ -164,6 +164,7 @@ public class VertexLocation
             }
             return vertices;
         }
+         
 	
 	@Override
 	public String toString()

@@ -177,10 +177,10 @@ public class ModelFacade extends Observable implements IModelFacade
             EdgeLocation edge = edgeLoc.getNormalizedLocation();
             Board board = game.getBoard();
 
-            if (board.containsRoad(edge) || (!free && !CanBuyRoad()) ||
-                    board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) return false;
-            
-            if (board.hasNeighborRoad(edge, player.getPlayerIndex(), free))  return true;
+            if (board.containsRoad(edge)) return false;
+            else if (!free && !CanBuyRoad()) return false;
+            else if (board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) return false;
+            else if (board.hasNeighborRoad(edge, player.getPlayerIndex(), free))  return true;
 			
              return false;
 	}	
@@ -193,11 +193,11 @@ public class ModelFacade extends Observable implements IModelFacade
 		VertexLocation vertex = vertLoc.getNormalizedLocation();
                 Board board =  game.getBoard();
 		
-		if (/*(!free && !CanBuySettlement()) ||
-			board.containsStructure(vertex) ||
-			board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir()) ||*/
-			/*!board.hasNeighborRoad(vertex, player.getPlayerIndex()) ||*/
-                        board.hasNeighborStructure(vertex)) return false;
+		if ((!free && !CanBuySettlement())) return false;
+                else if (board.containsStructure(vertex)) return false;
+                else if (board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir())) return false;
+                else if (!board.hasNeighborRoad(vertex, player.getPlayerIndex())) return false;
+                else if (board.hasNeighborStructure(vertex)) return false;
 		
 		return true;
 	}
@@ -211,8 +211,8 @@ public class ModelFacade extends Observable implements IModelFacade
 
 		Object obj = game.getBoard().getStructure(vertLoc);
 		if (obj == null) return false;
-		if (obj instanceof City) return false;
-		if (((Settlement)(obj)).getOwner() == game.getTurnTracker().getCurrentTurn()) return true;
+                else if (obj instanceof City) return false;
+                else if (((Settlement)(obj)).getOwner() == player.getPlayerIndex()) return true;
 
 		return false;
 	}

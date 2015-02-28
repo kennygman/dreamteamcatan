@@ -1,5 +1,8 @@
 package shared.locations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents the location of an edge on a hex map
  */
@@ -104,7 +107,80 @@ public class EdgeLocation
 		this.dir = dir;
                 convert();
 	}
+        
+        public List<EdgeLocation> getAdjacentEdges()
+	{
+            EdgeLocation edge = getNormalizedLocation();
+            List<EdgeLocation> edgeList = new ArrayList<>();
+            EdgeDirection dir = edge.getDir();
+            HexLocation location = edge.getHexLoc();
+            HexLocation temp;
+            
+            if (dir.equals(EdgeDirection.NorthWest))
+            {
+                edgeList.add(new EdgeLocation(location, EdgeDirection.North));
+                temp = new HexLocation(location.getX() - 1, location.getY() + 1);
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthEast));
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.North));
+                temp = new HexLocation(location.getX() - 1, location.getY());
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthEast));
+            } 
+            else if (dir.equals(EdgeDirection.North))
+            {
+                edgeList.add(new EdgeLocation(location, EdgeDirection.NorthWest));
+                edgeList.add(new EdgeLocation(location, EdgeDirection.NorthEast));
+                temp = new HexLocation(location.getX() + 1, location.getY() - 1);
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthWest));
+                temp = new HexLocation(location.getX() - 1, location.getY());
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthEast)); 
+            }
+            else if(dir.equals(EdgeDirection.NorthEast))
+            {
+                edgeList.add(new EdgeLocation(location, EdgeDirection.North));
+                temp = new HexLocation(location.getX() + 1, location.getY());
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthWest));
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.North));
+                temp = new HexLocation(location.getX() + 1, location.getY() - 1);
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthWest)); 
+            }
+            else
+            {
+                System.err.println("Bad getAdjacentEdge() in EdgeLocation class");
+            }
+
+            return edgeList;
+	}
 	
+        public List<VertexLocation> getAdjacentVertices()
+	{
+            EdgeLocation edge = getNormalizedLocation();
+            List<VertexLocation> vertexList = new ArrayList<>();
+            EdgeDirection dir = edge.getDir();
+            HexLocation location = edge.getHexLoc();
+            
+            if (dir.equals(EdgeDirection.NorthWest))
+            {
+                vertexList.add(new VertexLocation(location, VertexDirection.NorthWest));
+                vertexList.add(new VertexLocation(new HexLocation(location.getX() - 1, location.getY() + 1), VertexDirection.NorthEast));
+            } 
+            else if (dir.equals(EdgeDirection.North))
+            {
+                vertexList.add(new VertexLocation(location, VertexDirection.NorthWest));
+                vertexList.add(new VertexLocation(location, VertexDirection.NorthEast));
+            }
+            else if(dir.equals(EdgeDirection.NorthEast))
+            {
+                vertexList.add(new VertexLocation(location, VertexDirection.NorthEast));
+                vertexList.add(new VertexLocation(new HexLocation(location.getX() + 1, location.getY()), VertexDirection.NorthWest));
+            }
+            else
+            {
+                System.err.println("Bad getAdjacentEdge() in EdgeLocation class");
+            }
+
+            return vertexList;
+	}
+        
 	@Override
 	public String toString()
 	{

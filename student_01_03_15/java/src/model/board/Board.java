@@ -49,10 +49,6 @@ public class Board extends Observable
 		sortPorts();
 		sortStructures();
                 
-                for(int i=0; i<settlements.length; i++)
-                {
-                    System.out.println(settlements[i].getLocation().getNormalizedLocation());
-                }
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -147,12 +143,14 @@ public class Board extends Observable
 	//--------------------------------------------------------------------------------
 	public boolean containsRoad(EdgeLocation edge)
 	{
-		return roadLocation.get(edge) == null;
+		return roadLocation.get(edge) != null;
 	}
         
         public boolean containsStructure(VertexLocation vertex)
         {
-            if(settlementLocation.get(vertex) == null || cityLocation.get(vertex) == null) return true;
+            Settlement s = settlementLocation.get(vertex);
+            City c =  cityLocation.get(vertex);
+            if(s != null || c != null) return true;
             else return false;
         }
 	
@@ -230,50 +228,9 @@ public class Board extends Observable
 	}
         
 	//--------------------------------------------------------------------------------
-	public List<EdgeLocation> getEdges(EdgeLocation edge)
-	{
-            List<EdgeLocation> edgeList = new ArrayList<>();
-            EdgeDirection dir = edge.getDir();
-            HexLocation location = edge.getHexLoc();
-            HexLocation temp;
-            
-            if (dir.equals(EdgeDirection.NorthWest))
-            {
-                edgeList.add(new EdgeLocation(location, EdgeDirection.North));
-                temp = new HexLocation(location.getX() - 1, location.getY() + 1);
-                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthEast));
-                edgeList.add(new EdgeLocation(temp, EdgeDirection.North));
-                temp = new HexLocation(location.getX() - 1, location.getY());
-                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthEast));
-            } 
-            else if (dir.equals(EdgeDirection.North))
-            {
-                edgeList.add(new EdgeLocation(location, EdgeDirection.NorthWest));
-                edgeList.add(new EdgeLocation(location, EdgeDirection.NorthEast));
-                temp = new HexLocation(location.getX() + 1, location.getY() - 1);
-                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthWest));
-                temp = new HexLocation(location.getX() - 1, location.getY());
-                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthEast)); 
-            }
-            else if(dir.equals(EdgeDirection.NorthEast))
-            {
-                edgeList.add(new EdgeLocation(location, EdgeDirection.North));
-                temp = new HexLocation(location.getX() + 1, location.getY());
-                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthWest));
-                edgeList.add(new EdgeLocation(temp, EdgeDirection.North));
-                temp = new HexLocation(location.getX() + 1, location.getY() - 1);
-                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthWest)); 
-            }
-            else
-            {
-                System.err.println("Bad getEdge() in Board class");
-            }
-
-            return edgeList;
-	}
-	//--------------------------------------------------------------------------------
  	public boolean hasNeighborRoad(EdgeLocation location, int playerIndex, boolean setup) //already normalized
  	{
+            boolean hasNeighbor = false;
             //already checked if the space is occupied
             if(setup)
             {
@@ -281,18 +238,61 @@ public class Board extends Observable
             }
             else
             {
-                List<EdgeLocation> edgeLoc = getEdges(location);
+                List<EdgeLocation> edgeLoc = location.getAdjacentEdges();
                 
                 for(EdgeLocation edge : edgeLoc)
                 {
                     if(roadLocation.containsKey(edge) && (roadLocation.get(edge).getOwner() == playerIndex))
                     {
-                        return true;
+                        VertexLocation similar = findSimilarVertex(location, edge);
+                        if(!containsStructure(similar))
+                        {
+                           hasNeighbor = true;
+                           break; 
+                        }
+                        else
+                        {
+                            Settlement s = settlementLocation.get(similar);
+                            if(s != null)
+                            {
+                                if(s.getOwner() == playerIndex)
+                                {
+                                    hasNeighbor = true;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                City c = cityLocation.get(similar);
+                                if(c.getOwner() == playerIndex)
+                                {
+                                    hasNeighbor = true;
+                                    break;
+                                }
+                            }
+                        }                        
                     }
                 }
-            }//add check to see if you are crossing a opponents vertex
-            return false;
+            }
+            return hasNeighbor;
  	}
+        
+        private VertexLocation findSimilarVertex(EdgeLocation location, EdgeLocation edge)
+        {
+            List<VertexLocation> building = location.getAdjacentVertices();
+            List<VertexLocation> adjacent = edge.getAdjacentVertices();
+            for(VertexLocation buildVertex : building)
+            {
+                for(VertexLocation adjVertex : adjacent)
+                {
+                    if(buildVertex.equals(adjVertex))
+                    {
+                        return adjVertex;
+                    }
+                }
+            }
+            return null;
+        }
 	//--------------------------------------------------------------------------------
  	public boolean hasNeighborRoad(VertexLocation location, int playerIndex)
  	{

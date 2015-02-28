@@ -25,8 +25,8 @@ public class Player
 
 	private Developments newDevCards;
 	private Developments oldDevCards;
-//	private String color;
-//	private CatanColor catanColor;
+	private String color;
+	private CatanColor catanColor;
 
 	/**
 	 * All players will begin with boolean isTurn as false,0 VP
@@ -292,4 +292,9 @@ public class Player
 	{
 		this.playedDevCard = playedDevCard;
 	}
+        
+        public CatanColor getColor()
+        {
+            return CatanColor.stringToColor(color);
+        }
 }

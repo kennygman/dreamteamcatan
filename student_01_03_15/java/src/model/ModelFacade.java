@@ -602,7 +602,6 @@ public class ModelFacade extends Observable implements IModelFacade
 		{
 			player = response.getPlayerInfo();
 			player.setName(params.getUser());
-
 		}
 		
 		return response;
@@ -624,7 +623,9 @@ public class ModelFacade extends Observable implements IModelFacade
 	//--------------------------------------------------------------------------------
 	public StandardResponse joinGame(JoinGameParam params)
 	{
-		return proxy.joinGame(params);
+                StandardResponse response = proxy.joinGame(params);
+                getGameModel();
+		return response;
 	}
 
 	//--------------------------------------------------------------------------------

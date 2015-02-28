@@ -86,7 +86,7 @@ public class CatanPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-//				rollView.showModal();
+				rollView.showModal();
 				
 				discardView.setResourceMaxAmount(ResourceType.WOOD, 1);
 				discardView.setResourceMaxAmount(ResourceType.BRICK, 0);

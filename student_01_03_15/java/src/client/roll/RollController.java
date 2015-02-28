@@ -1,5 +1,7 @@
 package client.roll;
 
+import java.util.Random;
+
 import client.base.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -39,7 +41,11 @@ public class RollController extends Controller implements IRollController, Obser
 	
 	@Override
 	public void rollDice() {
-
+		Random generator = new Random(System.currentTimeMillis());
+		int dice1 = generator.nextInt(6 - 1 + 1) + 1;
+		int dice2 = generator.nextInt(6 - 1 + 1) + 1;
+		int total = dice1 + dice2;
+		resultView.setRollValue(total);
 		getResultView().showModal();
 	}
 

@@ -173,28 +173,16 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean canPlaceRoad(EdgeLocation edgeLoc, boolean free)
 	{
-		if (!canPlay()) return false;
-		EdgeLocation edge = edgeLoc.getNormalizedLocation();
-                Board board = game.getBoard();
+            if (!canPlay()) return false;
+            EdgeLocation edge = edgeLoc.getNormalizedLocation();
+            Board board = game.getBoard();
 
-		if (/*board.contains(edge) ||
-			(!free && !CanBuyRoad()) ||*/
-			board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) return false;
-		
-		/*if (game.getTurnTracker().getStatus().equals("FirstRound") ||
-			game.getTurnTracker().getStatus().equals("SecondRound"))
-		{
-			if (board.hasNeighborSettlement(edge, player.getPlayerIndex()) &&
-				!board.hasNeighborRoad(edge, player.getPlayerIndex(), true))
-				return true;
-		}
-		else
-		{
-			if (board.hasNeighborRoad(edge, player.getPlayerIndex(), false))
-				return true;
-		}
+            if (board.containsRoad(edge) || (!free && !CanBuyRoad()) ||
+                    board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) return false;
+            
+            if (board.hasNeighborRoad(edge, player.getPlayerIndex(), free))  return true;
 			
-		return false;*/ return true;
+             return false;
 	}	
  		
 	//--------------------------------------------------------------------------------
@@ -202,29 +190,14 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean canPlaceSettlement(VertexLocation vertLoc, boolean free)
 	{
 		if (!canPlay()) return false;
-		VertexLocation vert = vertLoc.getNormalizedLocation();
-		Object structure = game.getBoard().getStructure(vert);
-		boolean setup = false;
+		VertexLocation vertex = vertLoc.getNormalizedLocation();
+                Board board =  game.getBoard();
 		
-		if (/*!CanBuySettlement() ||
-			structure != null ||
-			*/game.getBoard().hasWaterVertex(vert.getHexLoc(), vert.getDir()) /*||
-			game.getBoard().hasNeighborStructure(vert)*/) return false;
-
-		/*if (game.getTurnTracker().getStatus().equals("FirstRound") ||
-				game.getTurnTracker().getStatus().equals("SecondRound")) setup = true;
-		
-		boolean neighbor = game.getBoard().hasNeighborRoad(
-				vert, game.getPlayer().getPlayerIndex(), setup);
-		
-		if (setup)
-		{
-			if (!neighbor) return true;
-		}
-		else
-		{
-			if (neighbor) return true;
-		}*/
+		if (/*(!free && !CanBuySettlement()) ||
+			board.containsStructure(vertex) ||
+			board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir()) ||*/
+			/*!board.hasNeighborRoad(vertex, player.getPlayerIndex()) ||*/
+                        board.hasNeighborStructure(vertex)) return false;
 		
 		return true;
 	}
@@ -376,7 +349,7 @@ public class ModelFacade extends Observable implements IModelFacade
 		if (!canPlayDevCard(DevCardType.ROAD_BUILD)
 				|| !canPlaceRoad(spot1, true)
 				|| game.getPlayer().getRoads() < 2
-				|| game.getBoard().contains(spot2)
+				|| game.getBoard().containsRoad(spot2)
 				|| spot1.equals(spot2)
 			) 
 			{
@@ -384,8 +357,8 @@ public class ModelFacade extends Observable implements IModelFacade
 			}
 		
 		if (game.getBoard().hasNeighborRoad(spot2,
-				game.getPlayer().getPlayerIndex(), false) ||
-			game.getBoard().areNeighbors(spot1, spot2)
+				game.getPlayer().getPlayerIndex(), false) /*||
+			game.getBoard().areNeighbors(spot1, spot2)*/
 			) 
 		{
 			
@@ -483,6 +456,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public void buildSettlement(VertexLocation vert, boolean free)
 	{
+            
+            
                 GameModelResponse response = proxy.buildSettlement(new BuildSettlementParam(
 				game.getPlayer().getPlayerIndex(), vert, free));
                 if(response.isValid())

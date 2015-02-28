@@ -48,6 +48,11 @@ public class Board extends Observable
 		sortRoads();
 		sortPorts();
 		sortStructures();
+                
+                for(int i=0; i<settlements.length; i++)
+                {
+                    System.out.println(settlements[i].getLocation().getNormalizedLocation());
+                }
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -60,6 +65,7 @@ public class Board extends Observable
 		this.setCities(b.getCities());
 		this.setRobber(b.getRobber());
 		this.sort();
+
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -139,10 +145,16 @@ public class Board extends Observable
 	}
 	
 	//--------------------------------------------------------------------------------
-	public boolean contains(EdgeLocation edge)
+	public boolean containsRoad(EdgeLocation edge)
 	{
-		return roadLocation.containsKey(edge);
+		return roadLocation.get(edge) == null;
 	}
+        
+        public boolean containsStructure(VertexLocation vertex)
+        {
+            if(settlementLocation.get(vertex) == null || cityLocation.get(vertex) == null) return true;
+            else return false;
+        }
 	
 	/**
 	 * Check if cityHexes and settlementHexes has a structure built on vert
@@ -216,135 +228,98 @@ public class Board extends Observable
 		City[] arr = cityList.toArray(new City[0]);
 		this.setCities(arr);
 	}
-	
+        
 	//--------------------------------------------------------------------------------
-	public List<VertexLocation> getVertices(EdgeLocation location)
+	public List<EdgeLocation> getEdges(EdgeLocation edge)
 	{
- 		EdgeLocation edge = location.getNormalizedLocation();
-		List<VertexLocation> vertList = new ArrayList<>();
-		
-		if(edge.getDir().equals(EdgeDirection.NorthWest))
-		{
-			vertList.add(new VertexLocation(edge.getHexLoc(), VertexDirection.West).getNormalizedLocation());
-			vertList.add(new VertexLocation(edge.getHexLoc(), VertexDirection.NorthWest).getNormalizedLocation());
-		}
-		else if (edge.getDir().equals(EdgeDirection.North))
-		{
-			vertList.add(new VertexLocation(edge.getHexLoc(), VertexDirection.NorthWest).getNormalizedLocation());
-			vertList.add(new VertexLocation(edge.getHexLoc(), VertexDirection.NorthEast).getNormalizedLocation());
-		}
-		else
-		{
-			vertList.add(new VertexLocation(edge.getHexLoc(), VertexDirection.NorthEast).getNormalizedLocation());
-			vertList.add(new VertexLocation(edge.getHexLoc(), VertexDirection.East).getNormalizedLocation());
-		}
-		
-		return vertList;
-	}
+            List<EdgeLocation> edgeList = new ArrayList<>();
+            EdgeDirection dir = edge.getDir();
+            HexLocation location = edge.getHexLoc();
+            HexLocation temp;
+            
+            if (dir.equals(EdgeDirection.NorthWest))
+            {
+                edgeList.add(new EdgeLocation(location, EdgeDirection.North));
+                temp = new HexLocation(location.getX() - 1, location.getY() + 1);
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthEast));
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.North));
+                temp = new HexLocation(location.getX() - 1, location.getY());
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthEast));
+            } 
+            else if (dir.equals(EdgeDirection.North))
+            {
+                edgeList.add(new EdgeLocation(location, EdgeDirection.NorthWest));
+                edgeList.add(new EdgeLocation(location, EdgeDirection.NorthEast));
+                temp = new HexLocation(location.getX() + 1, location.getY() - 1);
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthWest));
+                temp = new HexLocation(location.getX() - 1, location.getY());
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthEast)); 
+            }
+            else if(dir.equals(EdgeDirection.NorthEast))
+            {
+                edgeList.add(new EdgeLocation(location, EdgeDirection.North));
+                temp = new HexLocation(location.getX() + 1, location.getY());
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthWest));
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.North));
+                temp = new HexLocation(location.getX() + 1, location.getY() - 1);
+                edgeList.add(new EdgeLocation(temp, EdgeDirection.NorthWest)); 
+            }
+            else
+            {
+                System.err.println("Bad getEdge() in Board class");
+            }
 
-	//--------------------------------------------------------------------------------
-	public List<EdgeLocation> getEdges(VertexLocation location)
-	{
- 		VertexLocation vert = location.getNormalizedLocation();
-		List<EdgeLocation> edgeList = new ArrayList<>();
-		
-		// North Edge
-		edgeList.add(new EdgeLocation(vert.getHexLoc(), EdgeDirection.North));
-
-		// Edges for a NorthWest Vertex
-		if (vert.getDir().equals(VertexDirection.NorthWest))
-		{
-			edgeList.add(new EdgeLocation(vert.getHexLoc(), EdgeDirection.NorthWest));
-			edgeList.add(new EdgeLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.NorthWest), EdgeDirection.NorthEast));
-
-		// Edges for a NorthEast Vertex
-		} else {
-			edgeList.add(new EdgeLocation(vert.getHexLoc(), EdgeDirection.NorthEast));
-			edgeList.add(new EdgeLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.NorthEast), EdgeDirection.NorthWest));
-		}
-		
-		return edgeList;
+            return edgeList;
 	}
 	//--------------------------------------------------------------------------------
- 	public boolean hasNeighborSettlement(EdgeLocation location, int index)
+ 	public boolean hasNeighborRoad(EdgeLocation location, int playerIndex, boolean setup) //already normalized
  	{
- 		EdgeLocation edge = location.getNormalizedLocation();
-		List<VertexLocation> vertLoc = this.getVertices(edge);
-		for (VertexLocation v : vertLoc)
-		{
-			Object structure = this.getStructure(v);
-			if (structure != null &&
-				structure instanceof Settlement &&
-				(((Settlement) structure).getOwner() == index))
-			{
-				return true;
-			}
-			
-		}
-		return false;
+            //already checked if the space is occupied
+            if(setup)
+            {
+                //Check to see if the 2 vertexes both contain settlements already, else return true.
+            }
+            else
+            {
+                List<EdgeLocation> edgeLoc = getEdges(location);
+                
+                for(EdgeLocation edge : edgeLoc)
+                {
+                    if(roadLocation.containsKey(edge) && (roadLocation.get(edge).getOwner() == playerIndex))
+                    {
+                        return true;
+                    }
+                }
+            }//add check to see if you are crossing a opponents vertex
+            return false;
  	}
 	//--------------------------------------------------------------------------------
- 	public boolean hasNeighborRoad(EdgeLocation location, int index, boolean setup)
+ 	public boolean hasNeighborRoad(VertexLocation location, int playerIndex)
  	{
- 		EdgeLocation edge = location.getNormalizedLocation();
-		List<VertexLocation> vertLoc = this.getVertices(edge);
-		for (VertexLocation v : vertLoc)
-		{
-			if (this.hasNeighborRoad(v, index, setup)) return true;
-		}
- 		return false;
- 	}
-	//--------------------------------------------------------------------------------
- 	public boolean hasNeighborRoad(VertexLocation location, int index, boolean setup)
- 	{
- 		VertexLocation vert = location.getNormalizedLocation();
-		List<EdgeLocation> edges = this.getEdges(vert);
-		for (EdgeLocation e : edges)
-		{
-			Road road = this.getRoad(e);
-			if (setup)
-			{
-				if (road != null) return true;
-			}
-			else
-			{
-				if (road != null && road.getOwner() == index)
-				{
-					return true;
-				}
-			}
-		}
- 		return false;
+            List<EdgeLocation> edgeLoc = location.getAdjacentEdges();
+
+            for(EdgeLocation edge : edgeLoc)
+            {
+                if(roadLocation.containsKey(edge) && (roadLocation.get(edge).getOwner() == playerIndex))
+                {
+                    return true;
+                }
+            }
+            return false;
  	}
 	//--------------------------------------------------------------------------------
  	public boolean hasNeighborStructure(VertexLocation location)
  	{
- 		VertexLocation vert = location.getNormalizedLocation();
-		if (vert.getDir().equals(VertexDirection.NorthWest))
-		{
-			if (	this.getStructure(new VertexLocation(vert.getHexLoc(),
-							VertexDirection.NorthEast)) == null &&
-					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.NorthWest),
-							VertexDirection.NorthEast)) == null &&
-					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.SouthWest),
-							VertexDirection.NorthEast)) == null
-				) return false;
-		}
-		else
-		{
-			if (	this.getStructure(new VertexLocation(vert.getHexLoc(),
-							VertexDirection.NorthWest)) == null &&
-					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.NorthEast),
-							VertexDirection.NorthWest)) == null &&
-					this.getStructure(new VertexLocation(vert.getHexLoc().getNeighborLoc(EdgeDirection.SouthEast),
-							VertexDirection.NorthWest)) == null
-				)
-				{
-					return false;
-				}
-		}
+            List<VertexLocation> vertexLoc = location.getAdjacentVertices();
 
- 		return true;
+            for(VertexLocation vertex : vertexLoc)
+            {
+                if(containsStructure(vertex))
+                {
+                    return true;
+                }
+            }
+            return false;
  	}
 	//--------------------------------------------------------------------------------
  	public boolean hasWaterVertex(HexLocation hex, VertexDirection dir)
@@ -431,20 +406,20 @@ public class Board extends Observable
  	 * @param e2 the second edge
  	 * @return true if the edges are neighbors, false otherwise
  	 */
- 	public boolean areNeighbors(EdgeLocation e1, EdgeLocation e2)
- 	{
- 		EdgeLocation neighbor = e1.getNormalizedLocation();
- 		EdgeLocation edge = e2.getNormalizedLocation();
-		List<VertexLocation> vertLoc = this.getVertices(edge);
-		for (VertexLocation v : vertLoc)
-		{
-			List<EdgeLocation> neighbors = this.getEdges(v);
-			for (EdgeLocation e : neighbors)
-				if (e.equals(neighbor)) return true;
-		}
- 		
- 		return false;
- 	}
+// 	public boolean areNeighbors(EdgeLocation e1, EdgeLocation e2)
+// 	{
+//// 		EdgeLocation neighbor = e1.getNormalizedLocation();
+//// 		EdgeLocation edge = e2.getNormalizedLocation();
+////		List<VertexLocation> vertLoc = this.getVertices(edge);
+////		for (VertexLocation v : vertLoc)
+////		{
+////			List<EdgeLocation> neighbors = this.getEdges(v);
+////			for (EdgeLocation e : neighbors)
+////				if (e.equals(neighbor)) return true;
+////		}
+// 		
+// 		return false;
+// 	}
  	
 	//--------------------------------------------------------------------------------
 	// JSON Getters & Setters

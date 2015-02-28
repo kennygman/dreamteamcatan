@@ -27,7 +27,7 @@ public class MapController extends Controller implements IMapController , Observ
 	public MapController(IMapView view, IRobView robView) {
 		
 		super(view);
-		
+		ModelFacade.getInstance().addObserver(this);
 		setRobView(robView);
 	}
 	
@@ -50,52 +50,6 @@ public class MapController extends Controller implements IMapController , Observ
             drawHexes(game, board);
             drawWaterHexes(board);
             getView().placeRobber(board.getRobber());
-            
-            
-            
-            
-            
-            
-//		for (int x = 0; x <= 3; ++x) {
-//			
-//			int maxY = 3 - x;			
-//			for (int y = -3; y <= maxY; ++y) {				
-//				int r = rand.nextInt(HexType.values().length);
-//				HexType hexType = HexType.values()[r];
-//				HexLocation hexLoc = new HexLocation(x, y);
-//				getView().addHex(hexLoc, hexType);
-//				getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.NorthWest),
-//						CatanColor.RED);
-//				getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.SouthWest),
-//						CatanColor.BLUE);
-//				getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.South),
-//						CatanColor.WHITE);
-//				getView().placeSettlement(new VertexLocation(hexLoc,  VertexDirection.NorthWest), CatanColor.GREEN);
-//				getView().placeCity(new VertexLocation(hexLoc,  VertexDirection.NorthEast), CatanColor.PURPLE);
-//			}
-//			
-//			if (x != 0) {
-//				int minY = x - 3;
-//				for (int y = minY; y <= 3; ++y) {
-//					int r = rand.nextInt(HexType.values().length);
-//					HexType hexType = HexType.values()[r];
-//					HexLocation hexLoc = new HexLocation(-x, y);
-//					getView().addHex(hexLoc, hexType);
-//					getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.NorthWest),
-//							CatanColor.RED);
-//					getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.SouthWest),
-//							CatanColor.BLUE);
-//					getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.South),
-//							CatanColor.ORANGE);
-//					getView().placeSettlement(new VertexLocation(hexLoc,  VertexDirection.NorthWest), CatanColor.GREEN);
-//					getView().placeCity(new VertexLocation(hexLoc,  VertexDirection.NorthEast), CatanColor.PURPLE);
-//				}
-//			}
-//		}
-//		
-//		
-		
-		//</temp>
 	}
         
         private void drawHexes(Game game, Board board)
@@ -125,6 +79,8 @@ public class MapController extends Controller implements IMapController , Observ
                 getView().placeCity(city.getLocation(), cc);
             }
         }
+        
+        
         
         private void drawWaterHexes(Board board)
         {

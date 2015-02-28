@@ -24,12 +24,7 @@ public class Game
 	
 	public Player getPlayer()
 	{
-		for (Player p : players)
-		{
-			if (p.getPlayerID()==playerId) return p;
-		}
-		assert false;
-		return null;
+		return players[ModelFacade.getInstance().getPlayerInfo().getPlayerIndex()];
 	}
 	public int getPlayerId()
 	{

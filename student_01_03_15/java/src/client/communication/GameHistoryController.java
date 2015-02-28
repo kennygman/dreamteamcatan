@@ -1,48 +1,74 @@
 package client.communication;
 
 import java.util.*;
-import java.util.List;
 
+import model.Lines;
+import model.ModelFacade;
 import client.base.*;
+import client.data.PlayerInfo;
 import shared.definitions.*;
 
 
 /**
  * Game history controller implementation
  */
-public class GameHistoryController extends Controller implements IGameHistoryController {
+public class GameHistoryController extends Controller implements IGameHistoryController, Observer {
 
 	public GameHistoryController(IGameHistoryView view) {
 		
 		super(view);
 		
 		initFromModel();
+		ModelFacade.getInstance().addObserver(this);
 	}
 	
+	//--------------------------------------------------------------------------------
 	@Override
 	public IGameHistoryView getView() {
 		
 		return (IGameHistoryView)super.getView();
 	}
 	
-	private void initFromModel() {
-		
-		//<temp>
-		
-		List<LogEntry> entries = new ArrayList<LogEntry>();
-		entries.add(new LogEntry(CatanColor.BROWN, "This is a brown message"));
-		entries.add(new LogEntry(CatanColor.ORANGE, "This is an orange message ss x y z w.  This is an orange message.  This is an orange message.  This is an orange message."));
-		entries.add(new LogEntry(CatanColor.BROWN, "This is a brown message"));
-		entries.add(new LogEntry(CatanColor.ORANGE, "This is an orange message ss x y z w.  This is an orange message.  This is an orange message.  This is an orange message."));
-		entries.add(new LogEntry(CatanColor.BROWN, "This is a brown message"));
-		entries.add(new LogEntry(CatanColor.ORANGE, "This is an orange message ss x y z w.  This is an orange message.  This is an orange message.  This is an orange message."));
-		entries.add(new LogEntry(CatanColor.BROWN, "This is a brown message"));
-		entries.add(new LogEntry(CatanColor.ORANGE, "This is an orange message ss x y z w.  This is an orange message.  This is an orange message.  This is an orange message."));
-		
-		getView().setEntries(entries);
-	
-		//</temp>
+	//--------------------------------------------------------------------------------
+	@Override
+	public void update(Observable arg0, Object arg1)
+	{
+		initFromModel();
 	}
 	
+	//--------------------------------------------------------------------------------
+	private void initFromModel() {
+		
+		if (ModelFacade.getInstance() == null || ModelFacade.getInstance().getGame()==null) return;
+		List<Lines> logEntries = ModelFacade.getInstance().getGame().getLog().getLines();
+		getView().setEntries(convertLog(logEntries));
+	
+	}
+
+	//--------------------------------------------------------------------------------
+	public List<LogEntry> convertLog(List<Lines> lines)
+	{
+		List<LogEntry> log = new ArrayList<>();
+		for (Lines line : lines)
+		{
+			log.add(new LogEntry(getColor(line.getSource()), line.getMessage()));
+		}
+		return log;
+	}
+	
+	//--------------------------------------------------------------------------------
+	public CatanColor getColor(String user)
+	{
+		for (PlayerInfo p : ModelFacade.getInstance().getGameInfo().getPlayers())
+		{
+			if (p.getName().equals(user))
+			{
+				return p.getColor();
+			}
+		}
+		return CatanColor.WHITE;
+	}
+
+	//--------------------------------------------------------------------------------
 }
 

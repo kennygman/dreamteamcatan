@@ -4,6 +4,7 @@ import java.util.*;
 
 import shared.definitions.ResourceType;
 import model.ModelFacade;
+import model.player.Developments;
 import model.player.Player;
 import model.player.Resources;
 import client.base.*;
@@ -96,8 +97,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		// WOOD, BRICK, SHEEP, WHEAT, ORE, ROAD, SETTLEMENT, CITY, BUY_CARD, PLAY_CARD, SOLDIERS
 
 		boolean valid = false;
-		Player player = ModelFacade.getInstance().getGame().getPlayers()
-				[ModelFacade.getInstance().getPlayerInfo().getPlayerIndex()];
+		Player player = ModelFacade.getInstance().getGame().getPlayer();
 		Resources resources = player.getResources();
 		
 		setElement(ResourceBarElement.WOOD, resources.getResourceAmount(ResourceType.WOOD));
@@ -113,7 +113,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		valid = ModelFacade.getInstance().CanBuyDevCard();
 		getView().setElementEnabled(ResourceBarElement.BUY_CARD, valid);
 
-//		updateElement(ResourceBarElement.PLAY_CARD, 0);
+		setElement(ResourceBarElement.PLAY_CARD, getPlayCardNumber(player));
 		
 	}
 	
@@ -124,5 +124,19 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		getView().setElementEnabled(element, amount > 0);
 
 	}
+	
+	//--------------------------------------------------------------------------------
+	public int getPlayCardNumber(Player player)
+	{
+		int total = 0;
+		total += player.getNewDevCards().getMonument();
+		total += player.getOldDevCards().getMonument();
+		total += player.getOldDevCards().getMonopoly();
+		total += player.getOldDevCards().getSoldier();
+		total += player.getOldDevCards().getRoadBuilding();
+		total += player.getOldDevCards().getYearOfPlenty();
+		return total;
+	}
+
 }
 

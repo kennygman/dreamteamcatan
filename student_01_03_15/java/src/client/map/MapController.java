@@ -108,28 +108,28 @@ public class MapController extends Controller implements IMapController , Observ
             }
         }
 
-	public boolean canPlaceRoad(EdgeLocation edgeLoc) {
-		
+	public boolean canPlaceRoad(EdgeLocation edgeLoc) 
+        {	
 		return ModelFacade.getInstance().canPlaceRoad(edgeLoc, false);
 	}
 
-	public boolean canPlaceSettlement(VertexLocation vertLoc) {
-		
+	public boolean canPlaceSettlement(VertexLocation vertLoc) 
+        {	
 		return ModelFacade.getInstance().canPlaceSettlement(vertLoc, false);
 	}
 
-	public boolean canPlaceCity(VertexLocation vertLoc) {
-		
+	public boolean canPlaceCity(VertexLocation vertLoc) 
+        {	
 		return ModelFacade.getInstance().canPlaceCity(vertLoc);
 	}
 
-	public boolean canPlaceRobber(HexLocation hexLoc) {
-		
+	public boolean canPlaceRobber(HexLocation hexLoc) 
+        {	
 		return ModelFacade.getInstance().canPlaceRobber(hexLoc);
 	}
 
-	public void placeRoad(EdgeLocation edgeLoc) {
-            
+	public void placeRoad(EdgeLocation edgeLoc) 
+        {
             if(canPlaceRoad(edgeLoc))
             {
                 ModelFacade.getInstance().buildRoad(edgeLoc, false);
@@ -138,26 +138,34 @@ public class MapController extends Controller implements IMapController , Observ
             }
 	}
 
-	public void placeSettlement(VertexLocation vertLoc) {
-		
-            //getView().placeSettlement(vertLoc, CatanColor.ORANGE);
+	public void placeSettlement(VertexLocation vertLoc) 
+        {
+            if(canPlaceSettlement(vertLoc))
+            {
+                ModelFacade.getInstance().buildSettlement(vertLoc, false);
+                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+                getView().placeSettlement(vertLoc, player.getColor());
+            }
 	}
 
-	public void placeCity(VertexLocation vertLoc) {
-		
-            //getView().placeCity(vertLoc, CatanColor.ORANGE);
+	public void placeCity(VertexLocation vertLoc) 
+        {
+            if(canPlaceCity(vertLoc))
+            {
+                ModelFacade.getInstance().buildCity(vertLoc);
+                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+                getView().placeCity(vertLoc, player.getColor());
+            }
 	}
 
 	public void placeRobber(HexLocation hexLoc) {
-		
-            //getView().placeRobber(hexLoc);
-		
-            //getRobView().showModal();
+            
 	}
 	
 	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) 
         {
-            getView().startDrop(pieceType, CatanColor.ORANGE, true);
+            CatanColor color = ModelFacade.getInstance().getPlayerInfo().getColor();
+            getView().startDrop(pieceType, color, true);
 	}
 	
 	public void cancelMove() {

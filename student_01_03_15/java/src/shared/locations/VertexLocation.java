@@ -16,6 +16,7 @@ public class VertexLocation
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
+                //translate();
 	}
 	
 	public VertexLocation(HexLocation hexLoc, VertexDirection dir)
@@ -39,7 +40,7 @@ public class VertexLocation
 		case "NW" :
 			dir = VertexDirection.NorthWest;
 			break;
-		case "S" :
+		case "E" :
 			dir = VertexDirection.East;
 			break;
 		case "SE" :
@@ -47,6 +48,33 @@ public class VertexLocation
 			break;
 		case "NE" :
 			dir = VertexDirection.NorthEast;
+			break;
+		default:
+			assert false;
+			return;
+		}
+	}
+        public void convert()
+	{
+		switch (dir)
+		{
+		case West :
+			direction = "W";
+			break;
+		case SouthWest :
+			direction = "SW";
+			break;
+		case NorthWest :
+			direction = "NW";
+			break;
+		case East :
+			direction = "E";
+			break;
+		case SouthEast :
+			direction = "SE";
+			break;
+		case NorthEast :
+			direction = "NE";
 			break;
 		default:
 			assert false;
@@ -67,6 +95,8 @@ public class VertexLocation
 			throw new IllegalArgumentException("hexLoc cannot be null");
 		}
 		this.hexLoc = hexLoc;
+                x = hexLoc.getX();
+                y = hexLoc.getY();
 	}
 	
 	public VertexDirection getDir()
@@ -77,6 +107,7 @@ public class VertexLocation
 	private void setDir(VertexDirection direction)
 	{
 		this.dir = direction;
+                convert();
 	}
 	
 	@Override
@@ -111,8 +142,8 @@ public class VertexLocation
 			return false;
 		if(hexLoc == null)
 		{
-			if(other.hexLoc != null)
-				return false;
+                    if(other.hexLoc != null)
+                            return false;
 		}
 		else if(!hexLoc.equals(other.hexLoc))
 			return false;
@@ -140,20 +171,20 @@ public class VertexLocation
 				return this;
 			case West:
 				return new VertexLocation(
-										  hexLoc.getNeighborLoc(EdgeDirection.SouthWest),
-										  VertexDirection.NorthEast);
+                                        hexLoc.getNeighborLoc(EdgeDirection.SouthWest),
+                                        VertexDirection.NorthEast);
 			case SouthWest:
 				return new VertexLocation(
-										  hexLoc.getNeighborLoc(EdgeDirection.South),
-										  VertexDirection.NorthWest);
+                                        hexLoc.getNeighborLoc(EdgeDirection.South),
+                                        VertexDirection.NorthWest);
 			case SouthEast:
 				return new VertexLocation(
-										  hexLoc.getNeighborLoc(EdgeDirection.South),
-										  VertexDirection.NorthEast);
+                                        hexLoc.getNeighborLoc(EdgeDirection.South),
+                                        VertexDirection.NorthEast);
 			case East:
 				return new VertexLocation(
-										  hexLoc.getNeighborLoc(EdgeDirection.SouthEast),
-										  VertexDirection.NorthWest);
+                                        hexLoc.getNeighborLoc(EdgeDirection.SouthEast),
+                                        VertexDirection.NorthWest);
 			default:
 				assert false;
 				return null;

@@ -53,7 +53,6 @@ public class Board extends Observable
 	//--------------------------------------------------------------------------------
 	public void update(Board b)
 	{
-            System.out.println("update");
 		this.setHexes(b.getHexes());
 		this.setPorts(b.getPorts());
 		this.setRoads(b.getRoads());

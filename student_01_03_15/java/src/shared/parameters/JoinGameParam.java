@@ -9,5 +9,10 @@ public class JoinGameParam {
 		id = i;
 		color = c;
 	}
+        
+        public String getColor()
+        {
+            return this.color;
+        }
 
 }

@@ -14,6 +14,7 @@ import model.board.City;
 import model.board.Settlement;
 import model.player.Player;
 import model.player.Resources;
+import shared.definitions.CatanColor;
 import shared.parameters.*;
 import shared.response.CreateGameResponse;
 import shared.response.GameModelResponse;
@@ -689,7 +690,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	//--------------------------------------------------------------------------------
 	public StandardResponse joinGame(JoinGameParam params)
 	{
-		return proxy.joinGame(params);
+                StandardResponse response = proxy.joinGame(params);
+                if(response.isValid())
+                {
+                    this.player.setColor(CatanColor.stringToColor(params.getColor()));
+                }
+		return response;
 	}
 
 	//--------------------------------------------------------------------------------

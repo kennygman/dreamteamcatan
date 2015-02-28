@@ -10,6 +10,7 @@ import shared.locations.VertexLocation;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
 import client.proxy.IProxy;
+import model.board.Board;
 import model.board.City;
 import model.board.Settlement;
 import model.player.Player;
@@ -174,24 +175,26 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		if (!canPlay()) return false;
 		EdgeLocation edge = edgeLoc.getNormalizedLocation();
-		if (game.getBoard().contains(edge) ||
-			!free && !CanBuyRoad() ||
-			game.getBoard().hasNeighborWater(edge.getHexLoc())) return false;
+                Board board = game.getBoard();
+
+		if (/*board.contains(edge) ||
+			(!free && !CanBuyRoad()) ||*/
+			board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) return false;
 		
-		if (game.getTurnTracker().getStatus().equals("FirstRound") ||
+		/*if (game.getTurnTracker().getStatus().equals("FirstRound") ||
 			game.getTurnTracker().getStatus().equals("SecondRound"))
 		{
-			if (game.getBoard().hasNeighborSettlement(edge, game.getPlayer().getPlayerIndex()) &&
-				!game.getBoard().hasNeighborRoad(edge, game.getPlayer().getPlayerIndex(), true))
+			if (board.hasNeighborSettlement(edge, player.getPlayerIndex()) &&
+				!board.hasNeighborRoad(edge, player.getPlayerIndex(), true))
 				return true;
 		}
 		else
 		{
-			if (game.getBoard().hasNeighborRoad(edge, game.getPlayer().getPlayerIndex(), false))
+			if (board.hasNeighborRoad(edge, player.getPlayerIndex(), false))
 				return true;
 		}
 			
-		return false;
+		return false;*/ return true;
 	}	
  		
 	//--------------------------------------------------------------------------------
@@ -203,12 +206,12 @@ public class ModelFacade extends Observable implements IModelFacade
 		Object structure = game.getBoard().getStructure(vert);
 		boolean setup = false;
 		
-		if (!CanBuySettlement() ||
+		if (/*!CanBuySettlement() ||
 			structure != null ||
-			game.getBoard().hasNeighborWater(vert.getHexLoc()) ||
-			game.getBoard().hasNeighborStructure(vert)) return false;
+			*/game.getBoard().hasWaterVertex(vert.getHexLoc(), vert.getDir()) /*||
+			game.getBoard().hasNeighborStructure(vert)*/) return false;
 
-		if (game.getTurnTracker().getStatus().equals("FirstRound") ||
+		/*if (game.getTurnTracker().getStatus().equals("FirstRound") ||
 				game.getTurnTracker().getStatus().equals("SecondRound")) setup = true;
 		
 		boolean neighbor = game.getBoard().hasNeighborRoad(
@@ -221,7 +224,7 @@ public class ModelFacade extends Observable implements IModelFacade
 		else
 		{
 			if (neighbor) return true;
-		}
+		}*/
 		
 		return true;
 	}
@@ -245,7 +248,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanBuyRoad()
 	{
-		if (game.getPlayer().getRoads() < 1) return false;
+		if (game.getPlayer().getRoads() <= 0) return false;
 		Resources hand = game.getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WOOD) > 0 &&
 				hand.getResourceAmount(ResourceType.BRICK) > 0;

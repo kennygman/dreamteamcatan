@@ -347,11 +347,74 @@ public class Board extends Observable
  		return true;
  	}
 	//--------------------------------------------------------------------------------
- 	public boolean hasNeighborWater(HexLocation hex)
+ 	public boolean hasWaterVertex(HexLocation hex, VertexDirection dir)
  	{
- 		return Math.abs(hex.getX()) > 2 && Math.abs(hex.getY()) > 2;
+            int x = hex.getX();
+            int y = hex.getY();
+            if(Math.abs(x) > 3 || Math.abs(y) > 3) return true;
+            else if(x == - 3)
+            {
+                if(y == 0) return true;
+                else if(dir == VertexDirection.NorthWest) return true;
+            }
+            else if(x == 3)
+            {
+                if(y == -3 || y == 1) return true;
+                else if(dir == VertexDirection.NorthEast) return true;
+            }
+            else if(x == -2 && y == -1) return true;
+            else if(x == -1 && y == -2) return true;
+            else if(x == 0 && y == -3) return true;
+            else if(x == 1 && Math.abs(y) == 3) return true; 
+            else if(x == 2 && (y == -3 || y == 2)) return true;
+            
+            return false;
  	}
 	
+        public boolean hasWaterEdge(HexLocation hex, EdgeDirection dir)
+ 	{
+            int x = hex.getX();
+            int y = hex.getY();
+            if(Math.abs(x) > 3 || Math.abs(y) > 3) return true;
+            else if(x == -3)
+            {
+                if(y == 0) return true;
+                else if(dir != EdgeDirection.NorthEast) return true;
+            }
+            else if (x == 3)
+            {
+                if(y == -3 || y == 1) return true;
+                else if(dir != EdgeDirection.NorthWest) return true;
+            }
+            else if(x == -2)
+            {
+                if(y == -1) return true;
+                else if(y == 3 && dir == EdgeDirection.NorthWest) return true;
+            }
+            else if(x == 2)
+            {
+                if(y == -3 || y == 2) return true;
+                else if(y == 1 && dir == EdgeDirection.NorthEast) return true;
+            }
+            else if(x == -1)
+            {
+                if(y == -2) return true;
+                else if(y == 3 && dir == EdgeDirection.NorthWest) return true;
+            }
+            else if(x == 1)
+            {
+                if(y == -3 || y == 3) return true;
+                else if(y == 2 && dir == EdgeDirection.NorthEast) return true;
+            }
+            else if(x == 0)
+            {
+                if(y == -3) return true;
+                else if(y == 3 && dir != EdgeDirection.North) return true;
+            }
+            
+            
+            return false;
+ 	}
 	//--------------------------------------------------------------------------------
  	public List<Port> getPorts(int index)
  	{

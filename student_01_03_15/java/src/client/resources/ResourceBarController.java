@@ -4,7 +4,6 @@ import java.util.*;
 
 import shared.definitions.ResourceType;
 import model.ModelFacade;
-import model.player.Developments;
 import model.player.Player;
 import model.player.Resources;
 import client.base.*;
@@ -81,6 +80,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 			
 			IAction action = elementActions.get(element);
 			action.execute();
+                        
 		}
 	}
 
@@ -101,6 +101,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		Resources resources = player.getResources();
 		
 		setElement(ResourceBarElement.WOOD, resources.getResourceAmount(ResourceType.WOOD));
+                setElement(ResourceBarElement.BRICK, resources.getResourceAmount(ResourceType.BRICK));
 		setElement(ResourceBarElement.SHEEP, resources.getResourceAmount(ResourceType.SHEEP));
 		setElement(ResourceBarElement.WHEAT, resources.getResourceAmount(ResourceType.WHEAT));
 		setElement(ResourceBarElement.ORE, resources.getResourceAmount(ResourceType.ORE));

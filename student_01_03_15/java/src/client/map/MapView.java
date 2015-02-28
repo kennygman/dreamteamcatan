@@ -90,7 +90,6 @@ public class MapView extends PanelView implements IMapView
 	public void startDrop(PieceType pieceType, CatanColor pieceColor,
 						  boolean isCancelAllowed)
 	{
-		
 		overlay = new MapOverlay(map);
 		overlay.setController(overlayController);
 		overlay.startDrop(pieceType, pieceColor, isCancelAllowed);
@@ -157,14 +156,13 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void placeRobber(HexLocation hexLoc)
 		{
-			
 			closeModal();
 			getController().placeRobber(hexLoc);
 		}
 		
 		@Override
 		public void startMove(PieceType pieceType, boolean isFree,
-							  boolean allowDisconnected)
+                            boolean allowDisconnected)
 		{
 			assert false;
 		}

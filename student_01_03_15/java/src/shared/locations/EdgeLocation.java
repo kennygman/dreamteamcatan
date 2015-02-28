@@ -18,6 +18,7 @@ public class EdgeLocation
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
+                translate();
 	}
 	public EdgeLocation(HexLocation hexLoc, EdgeDirection dir)
 	{
@@ -54,19 +55,43 @@ public class EdgeLocation
 			return;
 		}
 	}
+        private void convert()
+	{
+		switch (dir)
+		{
+		case South :
+			direction = "S";
+			break;
+		case SouthWest :
+			direction = "SW";
+			break;
+		case SouthEast :
+			direction = "SE";
+			break;
+		case North :
+			direction = "N";
+			break;
+		case NorthEast :
+			direction = "NE";
+			break;
+		case NorthWest :
+			direction = "NW";
+			break;
+		default:
+			assert false;
+			return;
+		}
+	}
 	public HexLocation getHexLoc()
 	{
-		if (hexLoc == null) translate();
 		return hexLoc;
 	}
 	
 	private void setHexLoc(HexLocation hexLoc)
 	{
-		if(hexLoc == null)
-		{
-			throw new IllegalArgumentException("hexLoc cannot be null");
-		}
 		this.hexLoc = hexLoc;
+                x = hexLoc.getX();
+                y = hexLoc.getY();
 	}
 	
 	public EdgeDirection getDir()
@@ -77,6 +102,7 @@ public class EdgeLocation
 	private void setDir(EdgeDirection dir)
 	{
 		this.dir = dir;
+                convert();
 	}
 	
 	@Override
@@ -143,7 +169,7 @@ public class EdgeLocation
 			case South:
 			case SouthEast:
 				return new EdgeLocation(hexLoc.getNeighborLoc(dir),
-										dir.getOppositeDirection());
+						dir.getOppositeDirection());
 			default:
 				assert false;
 				return null;

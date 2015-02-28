@@ -110,27 +110,32 @@ public class MapController extends Controller implements IMapController , Observ
 
 	public boolean canPlaceRoad(EdgeLocation edgeLoc) {
 		
-		return true;
+		return ModelFacade.getInstance().canPlaceRoad(edgeLoc, false);
 	}
 
 	public boolean canPlaceSettlement(VertexLocation vertLoc) {
 		
-		return true;
+		return ModelFacade.getInstance().canPlaceSettlement(vertLoc, false);
 	}
 
 	public boolean canPlaceCity(VertexLocation vertLoc) {
 		
-		return true;
+		return ModelFacade.getInstance().canPlaceCity(vertLoc);
 	}
 
 	public boolean canPlaceRobber(HexLocation hexLoc) {
 		
-		return true;
+		return ModelFacade.getInstance().canPlaceRobber(hexLoc);
 	}
 
 	public void placeRoad(EdgeLocation edgeLoc) {
-		
-            //getView().placeRoad(edgeLoc, CatanColor.ORANGE);
+            
+            if(canPlaceRoad(edgeLoc))
+            {
+                ModelFacade.getInstance().buildRoad(edgeLoc, false);
+                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+                getView().placeRoad(edgeLoc, player.getColor());
+            }
 	}
 
 	public void placeSettlement(VertexLocation vertLoc) {
@@ -150,9 +155,9 @@ public class MapController extends Controller implements IMapController , Observ
             //getRobView().showModal();
 	}
 	
-	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) {	
-		
-            //getView().startDrop(pieceType, CatanColor.ORANGE, true);
+	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) 
+        {
+            getView().startDrop(pieceType, CatanColor.ORANGE, true);
 	}
 	
 	public void cancelMove() {

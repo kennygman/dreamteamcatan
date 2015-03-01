@@ -1,5 +1,9 @@
 package client.maritime;
 
+import java.util.Observable;
+import java.util.Observer;
+
+import model.ModelFacade;
 import shared.definitions.*;
 import client.base.*;
 
@@ -7,7 +11,8 @@ import client.base.*;
 /**
  * Implementation for the maritime trade controller
  */
-public class MaritimeTradeController extends Controller implements IMaritimeTradeController {
+public class MaritimeTradeController extends Controller implements IMaritimeTradeController, Observer
+{
 
 	private IMaritimeTradeOverlay tradeOverlay;
 	
@@ -67,6 +72,15 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	@Override
 	public void unsetGiveValue() {
 
+	}
+
+	@Override
+	public void update(Observable o, Object arg) 
+	{
+		
+		MaritimeTradeView maritimeView = new MaritimeTradeView();
+		
+		maritimeView.enableMaritimeTrade(true);
 	}
 
 }

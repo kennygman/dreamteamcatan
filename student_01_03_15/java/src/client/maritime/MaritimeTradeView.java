@@ -35,12 +35,14 @@ public class MaritimeTradeView extends PanelView implements IMaritimeTradeView {
 	}
 
 	@Override
-	public void enableMaritimeTrade(boolean value) {
+	public void enableMaritimeTrade(boolean value) 
+	{
 		
 		button.setEnabled(value);
 	}
 	
-	private ActionListener buttonListener = new ActionListener() {
+	private ActionListener buttonListener = new ActionListener() 
+	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			

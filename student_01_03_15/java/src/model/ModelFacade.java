@@ -705,6 +705,11 @@ public class ModelFacade extends Observable implements IModelFacade
 		return proxy.listAi();
 	}
 	//---------------------------------------------------------------------------------
+	public void resetGame()
+	{
+		update( proxy.resetGame().getGame() );
+	}
+	//---------------------------------------------------------------------------------
 	public void updateGame()
 	{
 		this.setGame(getGame());

@@ -6,6 +6,7 @@ import shared.parameters.JoinGameParam;
 import model.ModelFacade;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
+import client.poller.Poller;
 
 public class JoinGameState
 {
@@ -38,6 +39,15 @@ public class JoinGameState
 		{
 			setGameInfo();
 			ModelFacade.getInstance().updateGame();
+			try
+			{
+				System.out.println("==========POLLER STARTED");
+				new Poller().start();
+				
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 			return true;
 		}
 		return false;

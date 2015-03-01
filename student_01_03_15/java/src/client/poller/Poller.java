@@ -36,14 +36,21 @@ public class Poller
 	 * @param proxyServer
 	 *            Constructor. Sets the clientModelGson and proxyServer.
 	 */
-	public Poller(IProxy proxyServer, ModelFacade clientModelFacade)
+	public Poller()
 	{
-		this.clientModelFacade = clientModelFacade;
-		this.proxyServer = proxyServer;
+		this.clientModelFacade = ModelFacade.getInstance();
+		try
+		{
+			this.proxyServer = ModelFacade.getInstance().getProxy();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 		this.timer = new Timer();
 		this.clientVersion = clientModelFacade.getGame().getVersion();
 		this.timesTimerRan = 0;
 	}
+	
 
 	/**
 	 * Gets the Game Model from the server and saves it to serverModel

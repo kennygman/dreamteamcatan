@@ -441,7 +441,6 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void rollNumber(int d1, int d2)
 	{
 		proxy.rollNumber(new RollNumParam(d1, d2));
-		
 	}
 
 	//--------------------------------------------------------------------------------
@@ -633,11 +632,13 @@ public class ModelFacade extends Observable implements IModelFacade
                 }
 	}
 
+	//--------------------------------------------------------------------------------
 	public void update(Game newGame)
 	{
 		Player p = newGame.getPlayer();
 		p.update(newGame.getPlayers()[p.getPlayerIndex()]);
-                game.update(newGame);
+		game.update(newGame);
+		this.modelChanged();
 	}
 	
 	//================================================================================

@@ -26,7 +26,7 @@ public class PollerUnitTests
 		mockProxy = new MockProxy();
 		ModelFacade.createInstance(mockProxy);
 		modelFacade = ModelFacade.getInstance();
-		poller = new Poller(mockProxy, modelFacade);
+		poller = new Poller();
 	}
 
 	@After

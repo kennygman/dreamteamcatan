@@ -24,6 +24,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		
 		super(view);
 		firstPass=true;
+		ModelFacade.getInstance().addObserver(this);
 	}
 	
 	@Override
@@ -43,6 +44,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		Player player = ModelFacade.getInstance().getGame().getPlayer();
 		TurnTracker tracker = ModelFacade.getInstance().getGame().getTurnTracker();
 		
+		System.out.println("INIT TurnTracker");
 		if (firstPass) {
 			firstPass = false;
 			getView().setLocalPlayerColor(playerInfo.getColor());
@@ -62,6 +64,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 				);
 		
 		getView().updateGameState(tracker.getStatus(), true);
+		System.out.println("TurnTracker Game Status: " + tracker.getStatus());
 	}
 
 	@Override

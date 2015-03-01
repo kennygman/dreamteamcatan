@@ -72,7 +72,7 @@ public class Poller
 	 */
 	public void updateModel()
 	{
-		clientModelFacade.update(serverModel);
+		ModelFacade.getInstance().update(serverModel);
 		this.clientVersion = clientModelFacade.getGame().getVersion();
 	}
 
@@ -94,6 +94,8 @@ public class Poller
 				pollServer();
 				if (serverModel.getVersion() > clientVersion)
 				{
+					System.out.println("=========ServerVersion: " + serverModel.getVersion());
+					System.out.println("=========ClientVersion: " + clientVersion);
 					updateModel();
 				}
 			}

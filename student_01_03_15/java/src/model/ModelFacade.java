@@ -88,15 +88,15 @@ public class ModelFacade extends Observable implements IModelFacade
 	
 	public Game getGame()
 	{
-		if (game == null) 
-		{
-                    GameModelResponse response = proxy.getGameModel();
-                    if(response.isValid())
-                    {
-                        game = response.getGame();
-                    }
-		}
-		return game;
+            if (game == null) 
+            {
+                GameModelResponse response = proxy.getGameModel();
+                if(response.isValid())
+                {
+                    game = response.getGame();
+                }
+            }
+            return game;
 	}
 	public void setGame(Game game)
 	{
@@ -107,10 +107,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	}
 	public IProxy getProxy() throws Exception
 	{
-		if (proxy == null) {
-			throw new Exception("Proxy not initialized!");
-		}
-		return proxy;
+            if (proxy == null) {
+                    throw new Exception("Proxy not initialized!");
+            }
+            return proxy;
 	}
 
 	// ===============================================================================
@@ -121,7 +121,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean isPlayerTurn()
 	{
-		return game.getTurnTracker().getCurrentTurn() == game.getPlayer().getPlayerIndex();
+            return game.getTurnTracker().getCurrentTurn() == game.getPlayer().getPlayerIndex();
 	}
 
 	//--------------------------------------------------------------------------------
@@ -288,7 +288,7 @@ public class ModelFacade extends Observable implements IModelFacade
 		if (!canPlay()) return false;
 		if (!canPlaceRobber(location) ||
 		game.getPlayers()[victimIndex].getResources().size()<1) return false;
-		return true;
+		return true; 
 	}
 
 	//--------------------------------------------------------------------------------

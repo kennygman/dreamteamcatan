@@ -24,26 +24,29 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	private IRobView robView;
 	
-	public MapController(IMapView view, IRobView robView) {
-		
+	public MapController(IMapView view, IRobView robView) 
+        {
 		super(view);
 		ModelFacade.getInstance().addObserver(this);
 		setRobView(robView);
 	}
 	
-	public IMapView getView() {
-		
+	public IMapView getView() 
+        {
 		return (IMapView)super.getView();
 	}
 	
-	private IRobView getRobView() {
+	private IRobView getRobView() 
+        {
 		return robView;
 	}
-	private void setRobView(IRobView robView) {
+	private void setRobView(IRobView robView) 
+        {
 		this.robView = robView;
 	}
 	
-	protected void initFromModel() {
+	protected void initFromModel() 
+        {
             Game game = ModelFacade.getInstance().getGame();            
             Board board = game.getBoard();
             
@@ -158,8 +161,9 @@ public class MapController extends Controller implements IMapController , Observ
             }
 	}
 
-	public void placeRobber(HexLocation hexLoc) {
-            
+	public void placeRobber(HexLocation hexLoc) 
+        {
+ 
 	}
 	
 	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) 
@@ -168,19 +172,23 @@ public class MapController extends Controller implements IMapController , Observ
             getView().startDrop(pieceType, color, true);
 	}
 	
-	public void cancelMove() {
+	public void cancelMove() 
+        {
 		
 	}
 	
-	public void playSoldierCard() {	
+	public void playSoldierCard() 
+        {	
 		
 	}
 	
-	public void playRoadBuildingCard() {	
+	public void playRoadBuildingCard() 
+        {	
 		
 	}
 	
-	public void robPlayer(RobPlayerInfo victim) {	
+	public void robPlayer(RobPlayerInfo victim) 
+        {	
 		
 	}
         

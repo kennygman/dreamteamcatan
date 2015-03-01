@@ -24,12 +24,7 @@ public class Game
 	
 	public Player getPlayer()
 	{
-		for (Player p : players)
-		{
-			if (p.getPlayerID()==playerId) return p;
-		}
-		assert false;
-		return null;
+		return players[ModelFacade.getInstance().getPlayerInfo().getPlayerIndex()];
 	}
 	public int getPlayerId()
 	{
@@ -46,23 +41,23 @@ public class Game
 		this.title = title;
 	}
 
-	public boolean canInitGame()
+//	public boolean canInitGame()
+//	{
+//		//returns false if it cant initialize
+//		return true;
+//	}
+//	public Board createBoard()
+//	{
+//		return new Board();
+//	}
+//	public void endGame()
+//	{
+//		
+//	}
+	public void update(Game newGame)
 	{
-		//returns false if it cant initialize
-		
-		return true;
-	}
-	public Board createBoard()
-	{
-		return new Board();
-	}
-	public void endGame()
-	{
-		
-	}
-	public void updateGame()
-	{
-		
+            map.update(newGame.getBoard());
+            turnTracker.update(newGame.getTurnTracker());
 	}
 	public Resources getBank() 
 	{
@@ -152,4 +147,8 @@ public class Game
 	{
 		this.map = board;
 	}
+        public void sortBoard()
+        {
+                map.sort();
+        }
 }

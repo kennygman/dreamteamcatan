@@ -676,8 +676,7 @@ public class MapComponent extends JComponent
 		}
 	}
 	
-	private void
-			drawRoad(Graphics2D g2, EdgeLocation edgeLoc, CatanColor color)
+	private void drawRoad(Graphics2D g2, EdgeLocation edgeLoc, CatanColor color)
 	{
 		
 		Point2D edgePoint = getEdgePoint(edgeLoc);
@@ -745,8 +744,7 @@ public class MapComponent extends JComponent
 		}
 	}
 	
-	private void drawCity(Graphics2D g2, VertexLocation vertLoc,
-						  CatanColor color)
+	private void drawCity(Graphics2D g2, VertexLocation vertLoc, CatanColor color)
 	{
 		
 		Point2D vertPoint = getVertexPoint(vertLoc);
@@ -775,8 +773,7 @@ public class MapComponent extends JComponent
 		}
 	}
 	
-	private void
-			drawPort(Graphics2D g2, EdgeLocation edgeLoc, PortType portType)
+	private void drawPort(Graphics2D g2, EdgeLocation edgeLoc, PortType portType)
 	{
 		Point2D imageLoc = getHexPoint(edgeLoc.getHexLoc());
 		drawRotatedImage(g2, getPortImage(portType), imageLoc,
@@ -867,23 +864,21 @@ public class MapComponent extends JComponent
 	}
 	
 	private void drawRotatedImage(Graphics2D g2, BufferedImage image,
-								  Point2D location, double radians)
+                Point2D location, double radians)
 	{
 		
 		int centerX = image.getWidth() / 2;
 		int centerY = image.getHeight() / 2;
 		
 		AffineTransform tx = AffineTransform.getRotateInstance(radians,
-															   centerX, centerY);
-		AffineTransformOp op = new AffineTransformOp(
-													 tx,
-													 AffineTransformOp.TYPE_BILINEAR);
+                        centerX, centerY);
+		AffineTransformOp op = new AffineTransformOp( tx,
+                        AffineTransformOp.TYPE_BILINEAR);
 		
 		drawImage(g2, op.filter(image, null), location);
 	}
 	
-	private void
-			drawImage(Graphics2D g2, BufferedImage image, Point2D location)
+	private void drawImage(Graphics2D g2, BufferedImage image, Point2D location)
 	{
 		
 		int centerX = image.getWidth() / 2;

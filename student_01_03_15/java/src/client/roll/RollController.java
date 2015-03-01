@@ -1,12 +1,17 @@
 package client.roll;
 
+import java.util.Random;
+
 import client.base.*;
+import java.util.Observable;
+import java.util.Observer;
+import model.ModelFacade;
 
 
 /**
  * Implementation for the roll controller
  */
-public class RollController extends Controller implements IRollController {
+public class RollController extends Controller implements IRollController, Observer {
 
 	private IRollResultView resultView;
 
@@ -19,7 +24,7 @@ public class RollController extends Controller implements IRollController {
 	public RollController(IRollView view, IRollResultView resultView) {
 
 		super(view);
-		
+		ModelFacade.getInstance().addObserver(this);
 		setResultView(resultView);
 	}
 	
@@ -36,9 +41,17 @@ public class RollController extends Controller implements IRollController {
 	
 	@Override
 	public void rollDice() {
-
+		Random generator = new Random(System.currentTimeMillis());
+		int dice1 = generator.nextInt(6 - 1 + 1) + 1;
+		int dice2 = generator.nextInt(6 - 1 + 1) + 1;
+		int total = dice1 + dice2;
+		resultView.setRollValue(total);
 		getResultView().showModal();
 	}
 
+        @Override
+        public void update(Observable o, Object o1) {
+            
+        }
 }
 

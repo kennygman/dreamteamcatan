@@ -1,5 +1,6 @@
 package model.board;
 
+import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 
 public class Port {
@@ -21,6 +22,10 @@ public class Port {
 	{
 		return location;
 	}
+        public EdgeLocation getEdgeLocation()
+        {
+            return new EdgeLocation(location.getX(), location.getY(), direction);
+        }
 	public void setLocation(HexLocation location)
 	{
 		this.location = location;

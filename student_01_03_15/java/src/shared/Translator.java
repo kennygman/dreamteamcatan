@@ -36,6 +36,7 @@ public class Translator
 		
 		if(game != null)
 		{
+                        game.sortBoard();
 			response.setGame(game);
 			response.setValid(true);
 		}
@@ -118,7 +119,7 @@ public class Translator
 	public ListGamesResponse translateListGames(String input)
 	{
 		boolean valid = true;
-		GameInfo[] gamesList = g.fromJson(input,GameInfo[].class);
+		GameListObject[] gamesList = g.fromJson(input,GameListObject[].class);
 		if(gamesList == null)
 		{
 			valid = false;

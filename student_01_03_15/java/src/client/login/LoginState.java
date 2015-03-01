@@ -9,6 +9,7 @@ public class LoginState
 {
 	LoginController login;
 	PlayerInfo info;
+	CredentialsParam cred;
 	
 	//--------------------------------------------------------------------------------
 	public LoginState(LoginController login)
@@ -38,7 +39,8 @@ public class LoginState
 			
 		}
 		if (un.equals("") || pw.equals("")) return null;
-		return new CredentialsParam(un,pw);
+		cred = new CredentialsParam(un,pw);
+		return cred;
 	}
 
 	//--------------------------------------------------------------------------------
@@ -52,7 +54,7 @@ public class LoginState
 		if (response.isValid()) 
 		{
 			info = response.getPlayerInfo();
-			ModelFacade.getInstance().setPlayerInfo(info);
+			setPlayer();
 			return true;
 		}
 		
@@ -65,9 +67,22 @@ public class LoginState
 		CredentialsParam param = getCredentials(true);
 		if (param == null) return false;
 		
-		return ModelFacade.getInstance().register(param).isValid();
+		LoginResponse response = ModelFacade.getInstance().register(param);
+		
+		if (response.isValid()) 
+		{
+			info = response.getPlayerInfo();
+			setPlayer();
+			return true;
+		}
+		
+		return false;
 	}
 
 	//--------------------------------------------------------------------------------
+	public void setPlayer()
+	{
+		ModelFacade.getInstance().setPlayerInfo(info);
+	}
 
 }

@@ -1,52 +1,52 @@
 package client.communication;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
+import model.Game;
 import model.Lines;
 import model.ModelFacade;
-import client.base.*;
+import shared.definitions.CatanColor;
+import shared.parameters.SendChatParam;
 import client.data.PlayerInfo;
-import shared.definitions.*;
 
-
-/**
- * Game history controller implementation
- */
-public class GameHistoryController extends Controller implements IGameHistoryController, Observer {
-
-	public GameHistoryController(IGameHistoryView view) {
-		
-		super(view);
-		
-		initFromModel();
-		ModelFacade.getInstance().addObserver(this);
-	}
+public class ChatState implements Observer
+{
+	private ChatController controller;
 	
 	//--------------------------------------------------------------------------------
-	@Override
-	public IGameHistoryView getView() {
-		
-		return (IGameHistoryView)super.getView();
+	public ChatState(ChatController controller)
+	{
+		this.controller = controller;
+		ModelFacade.getInstance().addObserver(this);
 	}
 	
 	//--------------------------------------------------------------------------------
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
-		initFromModel();
-	}
-	
-	//--------------------------------------------------------------------------------
-	private void initFromModel() {
-		
-		if (ModelFacade.getInstance() == null || ModelFacade.getInstance().getGame()==null) return;
-		List<Lines> logEntries = ModelFacade.getInstance().getGame().getLog().getLines();
-		getView().setEntries(convertLog(logEntries));
-	
+		this.updateChat();
 	}
 
 	//--------------------------------------------------------------------------------
-	public List<LogEntry> convertLog(List<Lines> lines)
+	public void updateChat()
+	{
+		Game game = ModelFacade.getInstance().getGame();
+		if (game == null) return;
+		controller.getView().setEntries(convertChat(game.getChat().getLines()));
+	}
+	
+	//--------------------------------------------------------------------------------
+	public void sendMessage(String message)
+	{
+		int index = ModelFacade.getInstance().getPlayerInfo().getPlayerIndex();
+		ModelFacade.getInstance().sendChat(new SendChatParam(index,message));
+	}
+	
+	//--------------------------------------------------------------------------------
+	public List<LogEntry> convertChat(Lines[] lines)
 	{
 		List<LogEntry> log = new ArrayList<>();
 		for (Lines line : lines)
@@ -71,4 +71,3 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 
 	//--------------------------------------------------------------------------------
 }
-

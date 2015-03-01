@@ -61,31 +61,28 @@ public class RightPanel extends JPanel
 		//
 		resourceView = new ResourceBarView();
 		resourceController = new ResourceBarController(resourceView);
-		resourceController.setElementAction(ResourceBarElement.ROAD,
-											createStartMoveAction(mapController,
-																  PieceType.ROAD));
-		resourceController.setElementAction(ResourceBarElement.SETTLEMENT,
-											createStartMoveAction(mapController,
-																  PieceType.SETTLEMENT));
+		resourceController.setElementAction(ResourceBarElement.ROAD, 
+                        createStartMoveAction(mapController, PieceType.ROAD));
+		resourceController.setElementAction(ResourceBarElement.SETTLEMENT, 
+                        createStartMoveAction(mapController, PieceType.SETTLEMENT));
 		resourceController.setElementAction(ResourceBarElement.CITY,
-											createStartMoveAction(mapController,
-																  PieceType.CITY));
+                        createStartMoveAction(mapController, PieceType.CITY));
 		resourceController.setElementAction(ResourceBarElement.BUY_CARD,
-											new IAction() {
-												@Override
-												public void execute()
-												{
-													devCardController.startBuyCard();
-												}
-											});
+                        new IAction() {
+                            @Override
+                            public void execute()
+                            {
+                                    devCardController.startBuyCard();
+                            }
+                        });
 		resourceController.setElementAction(ResourceBarElement.PLAY_CARD,
-											new IAction() {
-												@Override
-												public void execute()
-												{
-													devCardController.startPlayCard();
-												}
-											});
+                        new IAction() {
+                                @Override
+                                public void execute()
+                                {
+                                        devCardController.startPlayCard();
+                                }
+                        });
 		resourceView.setController(resourceController);
 		
 		this.add(pointsView);
@@ -93,19 +90,18 @@ public class RightPanel extends JPanel
 	}
 	
 	private IAction createStartMoveAction(final IMapController mapController,
-										  final PieceType pieceType)
+                        final PieceType pieceType)
 	{
-		
-		return new IAction() {
-			
-			@Override
-			public void execute()
-			{
-				boolean isFree = false;
-				boolean allowDisconnected = false;
-				mapController.startMove(pieceType, isFree, allowDisconnected);
-			}
-		};
+            return 
+            new IAction() {
+                @Override
+                public void execute()
+                {
+                        boolean isFree = false;
+                        boolean allowDisconnected = false;
+                        mapController.startMove(pieceType, isFree, allowDisconnected);
+                }
+            };
 	}
 	
 }

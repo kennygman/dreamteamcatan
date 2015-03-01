@@ -56,9 +56,9 @@ public class RollController extends Controller implements IRollController, Obser
         {
         	if(ModelFacade.getInstance().CanRollNumber())
         	{
-        		this.getRollView().closeModal();
+        		//this.getRollView().closeModal();
         		this.getRollView().showModal();
-        		
+                        System.out.println(getRollView().isModalShowing());
         	}
         }        	
 }

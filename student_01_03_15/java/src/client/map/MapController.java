@@ -64,16 +64,7 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 case "Robbing": 
                 {
-                    //try
-                    //{
-                    //System.in.read();
-                    //getRobView().closeModal();
-                    //startMove(PieceType.ROAD, true, false);
-                    //getRobView().showModal();
-                    //System.in.read();
-                    //}
-                    //catch(IOException e)
-                    //{}
+                    startMove(PieceType.ROBBER, true, false);
                     break;
                 }  
                 case "FirstRound": 

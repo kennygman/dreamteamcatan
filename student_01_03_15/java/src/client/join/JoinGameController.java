@@ -120,7 +120,6 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 		getSelectColorView().showModal();
 		state.setGame(game);
-		
 	}
 
 	@Override

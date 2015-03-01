@@ -6,8 +6,10 @@ import shared.definitions.*;
 import shared.locations.*;
 import client.base.*;
 import client.data.*;
+import java.io.IOException;
 import model.Game;
 import model.ModelFacade;
+import model.TurnTracker;
 import model.board.Board;
 import model.board.City;
 import model.board.Hex;
@@ -45,14 +47,52 @@ public class MapController extends Controller implements IMapController , Observ
 		this.robView = robView;
 	}
 	
-	protected void initFromModel() 
+	protected void initFromModel()
         {
             Game game = ModelFacade.getInstance().getGame();            
             Board board = game.getBoard();
+            TurnTracker tt = game.getTurnTracker();
+            String status = tt.getStatus();
+            
             
             drawHexes(game, board);
             drawWaterHexes(board);
             getView().placeRobber(board.getRobber());
+            
+            
+            switch(status)
+            {
+                case "Robbing": 
+                {
+                    //try
+                    //{
+                    //System.in.read();
+                    //getRobView().closeModal();
+                    //startMove(PieceType.ROAD, true, false);
+                    //getRobView().showModal();
+                    //System.in.read();
+                    //}
+                    //catch(IOException e)
+                    //{}
+                    break;
+                }  
+                case "FirstRound": 
+                {
+                    startMove(PieceType.ROAD, true, false);
+                    startMove(PieceType.SETTLEMENT, true, false);
+                    break;
+                }
+                case "SecondRound": 
+                {
+                    startMove(PieceType.ROAD, true, false);
+                    startMove(PieceType.SETTLEMENT, true, false);
+                    break;
+                }
+                case "Playing": break;
+                case "Discarding": break;
+                case "Rolling": break;
+            }
+            
 	}
         
         private void drawHexes(Game game, Board board)

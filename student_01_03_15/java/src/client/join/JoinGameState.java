@@ -37,7 +37,7 @@ public class JoinGameState
 		if (ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase())).isValid())
 		{
 			setGameInfo();
-			ModelFacade.getInstance().getGameModel();
+			ModelFacade.getInstance().updateGame();
 			return true;
 		}
 		return false;

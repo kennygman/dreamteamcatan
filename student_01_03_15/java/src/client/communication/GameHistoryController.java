@@ -18,7 +18,6 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 		
 		super(view);
 		
-		initFromModel();
 		ModelFacade.getInstance().addObserver(this);
 	}
 	
@@ -39,7 +38,6 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 	//--------------------------------------------------------------------------------
 	private void initFromModel() {
 		
-		if (ModelFacade.getInstance() == null || ModelFacade.getInstance().getGame()==null) return;
 		List<Lines> logEntries = ModelFacade.getInstance().getGame().getLog().getLines();
 		getView().setEntries(convertLog(logEntries));
 	

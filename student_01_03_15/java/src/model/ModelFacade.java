@@ -66,6 +66,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	// GETTERS AND SETTERS
 	// ===============================================================================
 	
+	public String getState()
+	{
+		return this.getGame().getTurnTracker().getStatus();
+	}
 	public void setPlayerInfo(PlayerInfo player)
 	{
 		this.player=player;
@@ -445,6 +449,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void rollNumber(int d1, int d2)
 	{
 		proxy.rollNumber(new RollNumParam(d1, d2));
+		
 	}
 
 	//--------------------------------------------------------------------------------
@@ -650,7 +655,7 @@ public class ModelFacade extends Observable implements IModelFacade
 		return proxy.listAi();
 	}
 	//---------------------------------------------------------------------------------
-	public void getGameModel()
+	public void updateGame()
 	{
 		this.setGame(proxy.getGameModel().getGame());
 		this.modelChanged();

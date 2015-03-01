@@ -1,5 +1,9 @@
 package client.domestic;
 
+import java.util.Observable;
+import java.util.Observer;
+
+import model.ModelFacade;
 import shared.definitions.*;
 import client.base.*;
 import client.misc.*;
@@ -8,11 +12,16 @@ import client.misc.*;
 /**
  * Domestic trade controller implementation
  */
-public class DomesticTradeController extends Controller implements IDomesticTradeController {
+public class DomesticTradeController extends Controller implements IDomesticTradeController, Observer {
 
 	private IDomesticTradeOverlay tradeOverlay;
 	private IWaitView waitOverlay;
 	private IAcceptTradeOverlay acceptOverlay;
+
+	private boolean firstRun;
+	private TradeOfferState offerState;
+	private AcceptTradeState acceptState;
+
 
 	/**
 	 * DomesticTradeController constructor
@@ -30,6 +39,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		setTradeOverlay(tradeOverlay);
 		setWaitOverlay(waitOverlay);
 		setAcceptOverlay(acceptOverlay);
+		firstRun = true;
 	}
 	
 	public IDomesticTradeView getTradeView() {
@@ -61,60 +71,99 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		this.acceptOverlay = acceptOverlay;
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void startTrade() {
-
+		if (!ModelFacade.getInstance().getState().equals("Playing"))
+		{
+			offerState = new TradeOfferState(this);
+			if (firstRun) {
+				offerState.setPlayers();
+				firstRun = false;
+			}
+		}
+		else
+		{
+			this.getTradeOverlay().setTradeEnabled(false);
+			this.getTradeOverlay().setPlayerSelectionEnabled(false);
+			this.getTradeOverlay().setResourceSelectionEnabled(false);
+			this.getTradeOverlay().setStateMessage(ModelFacade.getInstance().getState());
+		}
+		
 		getTradeOverlay().showModal();
 	}
 
 	@Override
 	public void decreaseResourceAmount(ResourceType resource) {
-
+		offerState.getOffer().useResource(resource, 1);
 	}
 
 	@Override
 	public void increaseResourceAmount(ResourceType resource) {
-
+		offerState.getOffer().addResource(resource, 1);
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void sendTradeOffer() {
 
-		getTradeOverlay().closeModal();
-//		getWaitOverlay().showModal();
+		if (!ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
+		{
+			ModelFacade.getInstance().offerTrade(offerState.getRecipient(), offerState.getOffer());
+			getTradeOverlay().closeModal();
+			getWaitOverlay().setMessage("Waiting for recipient response.");
+			getWaitOverlay().showModal();
+		}
 	}
 
 	@Override
 	public void setPlayerToTradeWith(int playerIndex) {
-
+		offerState.setRecipient(playerIndex);
 	}
 
 	@Override
 	public void setResourceToReceive(ResourceType resource) {
-
 	}
 
 	@Override
 	public void setResourceToSend(ResourceType resource) {
-
 	}
 
 	@Override
 	public void unsetResource(ResourceType resource) {
-
+		offerState.getOffer().resetResource(resource);
 	}
 
 	@Override
 	public void cancelTrade() {
-
 		getTradeOverlay().closeModal();
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void acceptTrade(boolean willAccept) {
 
+		if (willAccept && ModelFacade.getInstance().canAcceptTrade())
+		{
+			ModelFacade.getInstance().acceptTrade(willAccept);
+		}
+		else
+		{
+			ModelFacade.getInstance().acceptTrade(!willAccept);
+		}
 		getAcceptOverlay().closeModal();
 	}
 
+	//---------------------------------------------------------------------------------
+	@Override
+	public void update(Observable arg0, Object arg1)
+	{
+		if (ModelFacade.getInstance().getState().equals("Trading"))
+		{
+			acceptState = new AcceptTradeState(this);
+		}
+		
+	}
+	
 }
 

@@ -22,6 +22,10 @@ public class Resources {
 		this.ore = ore;
 	}
 
+	public ResourceType[] getResourceList()
+	{
+		return list;
+	}
 	public void update(Resources r)
 	{
 		this.wood = r.getResourceAmount(ResourceType.WOOD);
@@ -150,6 +154,26 @@ public class Resources {
 		return amount;
 		
 	}
+	
+	public void resetResource(ResourceType type)
+	{
+		switch(type)
+		{
+		case WOOD: wood = 0; 
+		break;
+		case BRICK: brick = 0;
+		break;
+		case WHEAT: wheat = 0;
+		break;
+		case SHEEP: sheep = 0;
+		break;
+		case ORE: ore = 0;
+		break;
+			default:
+				break;
+		}
+	}
+
 	/**
 	 * This method verifies that the player has at least the same amount of resources in
 	 * the specified list

@@ -69,6 +69,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	// GETTERS AND SETTERS
 	// ===============================================================================
 	
+	public String getState()
+	{
+		return this.getGame().getTurnTracker().getStatus();
+	}
 	public void setPlayerInfo(PlayerInfo player)
 	{
 		this.player=player;
@@ -628,11 +632,13 @@ public class ModelFacade extends Observable implements IModelFacade
                 }
 	}
 
+	//--------------------------------------------------------------------------------
 	public void update(Game newGame)
 	{
 		Player p = newGame.getPlayer();
 		p.update(newGame.getPlayers()[p.getPlayerIndex()]);
-                game.update(newGame);
+		game.update(newGame);
+		this.modelChanged();
 	}
 	
 	//================================================================================
@@ -699,7 +705,7 @@ public class ModelFacade extends Observable implements IModelFacade
 		return proxy.listAi();
 	}
 	//---------------------------------------------------------------------------------
-	public void getGameModel()
+	public void updateGame()
 	{
 		this.setGame(getGame());
 		this.modelChanged();

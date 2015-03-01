@@ -88,14 +88,6 @@ public class ModelFacade extends Observable implements IModelFacade
 	
 	public Game getGame()
 	{
-            if (game == null) 
-            {
-                GameModelResponse response = proxy.getGameModel();
-                if(response.isValid())
-                {
-                    game = response.getGame();
-                }
-            }
             return game;
 	}
 	public void setGame(Game game)
@@ -679,7 +671,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	//--------------------------------------------------------------------------------
 	public CreateGameResponse createGame(CreateGameParam params)
 	{
-		return proxy.createGame(params);
+                CreateGameResponse response = proxy.createGame(params);
+                if(response.isValid())
+                {
+                    joinGame(new JoinGameParam(response.getGameId(), "white"));
+                }
+		return response;
 	}
 
 	//--------------------------------------------------------------------------------
@@ -699,10 +696,14 @@ public class ModelFacade extends Observable implements IModelFacade
 		return proxy.listAi();
 	}
 	//---------------------------------------------------------------------------------
-	public void getGameModel()
+	public void updateGameModel()
 	{
-		this.setGame(getGame());
-		this.modelChanged();
+                GameModelResponse response = proxy.getGameModel();
+                if(response.isValid())
+                {
+                    game = response.getGame();
+                    this.modelChanged();
+                }
 	}
 
 	//---------------------------------------------------------------------------------

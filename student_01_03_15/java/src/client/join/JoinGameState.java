@@ -50,7 +50,7 @@ public class JoinGameState
 		boolean hexes = view.getRandomlyPlaceHexes();
 		boolean numbers = view.getRandomlyPlaceNumbers();
 		boolean ports = view.getUseRandomPorts();
-		if (name == null) return false;
+		if (name.equals("")) return false;
 
 		ModelFacade.getInstance().createGame(new CreateGameParam(name,hexes,numbers,ports));
 		this.updateGameList();

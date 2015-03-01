@@ -111,10 +111,17 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void createNewGame() {
-		
-		getNewGameView().closeModal();
-		state.createGame();
-                getJoinGameView().showModal();
+                if(!state.createGame())
+                {
+                    messageView.setTitle("Error");
+                    messageView.setMessage("The game must have a name!");
+                    messageView.showModal();
+                }
+                else
+                {
+                    getNewGameView().closeModal();
+                    getJoinGameView().showModal();
+                }
 	}
 
 	@Override
@@ -137,12 +144,9 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 		{
                     
 			// If join succeeded
-                        //getNewGameView().closeModal();
 			getSelectColorView().closeModal();
-			//getJoinGameView().closeModal();
-                        System.out.println("Suck");
                         joinAction.execute();
-                        ModelFacade.getInstance().getGameModel();			
+                        ModelFacade.getInstance().updateGameModel();			
 		}
 	}
 

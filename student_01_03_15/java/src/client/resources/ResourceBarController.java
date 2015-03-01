@@ -80,7 +80,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 			
 			IAction action = elementActions.get(element);
 			action.execute();
-                        
+                        ModelFacade.getInstance().updateGameModel();
 		}
 	}
 

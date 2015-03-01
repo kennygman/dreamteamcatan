@@ -144,12 +144,20 @@ public class MapController extends Controller implements IMapController , Observ
 
 	public boolean canPlaceRoad(EdgeLocation edgeLoc) 
         {	
-		return ModelFacade.getInstance().canPlaceRoad(edgeLoc, false);
+            String status = ModelFacade.getInstance().getGame().getTurnTracker().getStatus();
+            if(status == "FirstRound" || status == "SecondRound")
+                return ModelFacade.getInstance().canPlaceRoad(edgeLoc, true);
+            else
+                return ModelFacade.getInstance().canPlaceRoad(edgeLoc, false);
 	}
 
 	public boolean canPlaceSettlement(VertexLocation vertLoc) 
         {	
-		return ModelFacade.getInstance().canPlaceSettlement(vertLoc, false);
+            String status = ModelFacade.getInstance().getGame().getTurnTracker().getStatus();
+            if(status == "FirstRound" || status == "SecondRound") // or road building card?? really hating this set up
+		return ModelFacade.getInstance().canPlaceSettlement(vertLoc, true);
+            else
+                return ModelFacade.getInstance().canPlaceSettlement(vertLoc, false);
 	}
 
 	public boolean canPlaceCity(VertexLocation vertLoc) 

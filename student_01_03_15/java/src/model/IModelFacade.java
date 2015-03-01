@@ -21,7 +21,7 @@ public interface IModelFacade
 	 *            the number
 	 * @return True if the number is between 2 and 12: False otherwise
 	 */
-	boolean CanRollNumber(int n);
+	boolean CanRollNumber();
 
 	/**
 	 * This method is called when a player tries to build a road

@@ -47,11 +47,19 @@ public class RollController extends Controller implements IRollController, Obser
 		int total = dice1 + dice2;
 		resultView.setRollValue(total);
 		getResultView().showModal();
+		ModelFacade.getInstance().rollNumber(dice1, dice2);
 	}
+	
 
         @Override
-        public void update(Observable o, Object o1) {
-            
-        }
+        public void update(Observable o, Object o1) 
+        {
+        	if(ModelFacade.getInstance().CanRollNumber())
+        	{
+        		this.getRollView().closeModal();
+        		this.getRollView().showModal();
+        		
+        	}
+        }        	
 }
 

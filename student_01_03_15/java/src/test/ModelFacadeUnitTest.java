@@ -334,7 +334,7 @@ public class ModelFacadeUnitTest
 	{
 		game.getTurnTracker().setStatus("Rolling");
 		
-		boolean result = ModelFacade.getInstance().CanRollNumber(5);
+		boolean result = ModelFacade.getInstance().CanRollNumber();
 	
 		
 		assertEquals(result,true);
@@ -344,7 +344,7 @@ public class ModelFacadeUnitTest
 	public void testCanNOTRollNumber()
 	{
 		game.getTurnTracker().setStatus("Playing");
-		boolean result = ModelFacade.getInstance().CanRollNumber(1);
+		boolean result = ModelFacade.getInstance().CanRollNumber();
 		assertEquals(result,false);
 	}
 

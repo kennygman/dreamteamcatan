@@ -164,7 +164,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	}
 	//--------------------------------------------------------------------------------
 	@Override
-	public boolean CanRollNumber(int n)
+	public boolean CanRollNumber()
 	{
 		return (this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Rolling"));
 	}
@@ -784,6 +784,7 @@ public class ModelFacade extends Observable implements IModelFacade
 		return players;
 		
 	}
+
 	
 }
 	//================================================================================

@@ -21,6 +21,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	private boolean firstRun;
 	private TradeOfferState offerState;
 	private AcceptTradeState acceptState;
+	
 
 
 	/**
@@ -39,6 +40,8 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		setTradeOverlay(tradeOverlay);
 		setWaitOverlay(waitOverlay);
 		setAcceptOverlay(acceptOverlay);
+		
+		ModelFacade.getInstance().addObserver(this);
 		firstRun = true;
 	}
 	

@@ -28,7 +28,8 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 	private final int NUM_PLAYERS = 4;
 	private final int FONT_SIZE = 13;
 	
-	public TurnTrackerView(TitlePanel titlePanel, GameStatePanel gameStatePanel) {
+	public TurnTrackerView(TitlePanel titlePanel, GameStatePanel gameStatePanel) 
+	{
 		
 		this.titlePanel = titlePanel;
 		this.gameStatePanel = gameStatePanel;

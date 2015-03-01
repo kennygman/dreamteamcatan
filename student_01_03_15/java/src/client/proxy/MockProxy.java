@@ -26,10 +26,7 @@ import shared.response.*;
 
 public class MockProxy implements IProxy
 {
-
-
-
-	private Game fakeGame;
+    private Game fakeGame;
     private GameListObject proxyGame;
     private GameListObject[] games ;
 

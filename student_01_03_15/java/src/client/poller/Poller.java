@@ -14,12 +14,11 @@ import client.proxy.IProxy;
  */
 public class Poller
 {
-	private Game serverModel;
+	private int serverVersion;
 	private int clientVersion;
 	private IProxy proxyServer;
 	private Timer timer;
 	private int timesTimerRan;
-	private ModelFacade clientModelFacade;
 
 //	/**
 //	 * Default constructor. Creates a new updatedModelGson object
@@ -36,12 +35,11 @@ public class Poller
 	 * @param proxyServer
 	 *            Constructor. Sets the clientModelGson and proxyServer.
 	 */
-	public Poller(IProxy proxyServer, ModelFacade clientModelFacade)
+	public Poller(IProxy proxyServer)
 	{
-		this.clientModelFacade = clientModelFacade;
 		this.proxyServer = proxyServer;
 		this.timer = new Timer();
-		this.clientVersion = clientModelFacade.getGame().getVersion();
+		this.clientVersion = ModelFacade.getInstance().getGame().getVersion();
 		this.timesTimerRan = 0;
 	}
 
@@ -53,7 +51,7 @@ public class Poller
 		GameModelResponse game = proxyServer.getGameModel();
 		if(game.isValid())
 		{
-			this.serverModel = game.getGame();
+			this.serverVersion = game.getGame().getVersion();
 		}
 	}
 
@@ -65,8 +63,8 @@ public class Poller
 	 */
 	public void updateModel()
 	{
-		clientModelFacade.update(serverModel);
-		this.clientVersion = clientModelFacade.getGame().getVersion();
+		ModelFacade.getInstance().updateGameModel();
+		this.clientVersion = ModelFacade.getInstance().getGame().getVersion();
 	}
 
 	/**
@@ -85,7 +83,7 @@ public class Poller
 			{
 				setTimesTimerRan(getTimesTimerRan() + 1);
 				pollServer();
-				if (serverModel.getVersion() > clientVersion)
+				if (serverVersion > clientVersion)
 				{
 					updateModel();
 				}
@@ -103,24 +101,14 @@ public class Poller
 		setTimesTimerRan(0);
 	}
 
-	public Game getServerModel()
+	public int getServerVersion()
 	{
-		return serverModel;
+		return serverVersion;
 	}
 
-	public void setServerModel(Game serverModel)
+	public void setServerVersion(int serverVersion)
 	{
-		this.serverModel = serverModel;
-	}
-
-	public ModelFacade getClientModelFacade()
-	{
-		return clientModelFacade;
-	}
-
-	public void setClientModelFacade(ModelFacade clientModelFacade)
-	{
-		this.clientModelFacade = clientModelFacade;
+		this.serverVersion = serverVersion;
 	}
 
 	public int getClientVersion()

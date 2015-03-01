@@ -88,6 +88,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	
 	public Game getGame()
 	{
+            if(game == null)
+            {
+                updateGameModel();
+            }
             return game;
 	}
 	public void setGame(Game game)
@@ -181,15 +185,15 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean canPlaceSettlement(VertexLocation vertLoc, boolean free)
 	{
-		if (!canPlay()) return false;
+		if (!canPlay()) {System.out.println("Can't play");return false;}
 		VertexLocation vertex = vertLoc.getNormalizedLocation();
                 Board board =  game.getBoard();
 		
-		if ((!free && !CanBuySettlement())) return false;
-                else if (board.containsStructure(vertex)) return false;
-                else if (board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir())) return false;
-                else if (!board.hasNeighborRoad(vertex, player.getPlayerIndex())) return false;
-                else if (board.hasNeighborStructure(vertex)) return false;
+		if ((!free && !CanBuySettlement())){System.out.println("Can't buy"); return false;}
+                else if (board.containsStructure(vertex)){System.out.println("Already contains structure"); return false;}
+                else if (board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir())) {System.out.println("On water"); return false;}
+                else if (!board.hasNeighborRoad(vertex, player.getPlayerIndex())) {System.out.println("Doesn't have connected road"); return false;}
+                else if (board.hasNeighborStructure(vertex)) {System.out.println("Has neighboring structure"); return false;}
 		
 		return true;
 	}
@@ -338,27 +342,20 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanUseRoadBuilder(EdgeLocation spot1, EdgeLocation spot2)
 	{
-		if (!canPlayDevCard(DevCardType.ROAD_BUILD)
-				|| !canPlaceRoad(spot1, true)
-				|| game.getPlayer().getRoads() < 2
-				|| game.getBoard().containsRoad(spot2)
-				|| spot1.equals(spot2)
-			) 
-			{
-				return false;
-			}
+		if (!canPlayDevCard(DevCardType.ROAD_BUILD)) {System.out.println("Can't play card"); return false;}
+                else if(!canPlaceRoad(spot1, true)) {System.out.println("Can't place spot1"); return false;}
+                else if (game.getPlayer().getRoads() < 2) {System.out.println("Doesn't have 2 roads left"); return false;}
+                else if (game.getBoard().containsRoad(spot2)) {System.out.println("Can't place spot2"); return false;}
+                else if (spot1.equals(spot2)) {System.out.println("Spot1 and 2 are the same"); return false;}
 		
-		if (game.getBoard().hasNeighborRoad(spot2,
-				game.getPlayer().getPlayerIndex(), false) /*||
-			game.getBoard().areNeighbors(spot1, spot2)*/
-			) 
+		if (game.getBoard().hasNeighborRoad(spot2, game.getPlayer().getPlayerIndex(), false))
 		{
 			
 			return true;
 		}
 			
 		
-		
+		System.out.println("The spot2 doesn't have a neighbor");
 		return false;
 	}
 
@@ -406,7 +403,8 @@ public class ModelFacade extends Observable implements IModelFacade
                     Game newGame = response.getGame();
                     if (!accept) return;
                     game.setTradeOffer(newGame.getTradeOffer());
-                    this.update(newGame);
+                    //update(newGame);
+                    updateGameModel();
                 }
 	}
 	
@@ -419,8 +417,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     Game newGame = response.getGame();
-                    p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-                    game.getTurnTracker().setStatus(newGame.getTurnTracker().getStatus());
+                    //p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+                    //game.getTurnTracker().setStatus(newGame.getTurnTracker().getStatus());
                 }
 	}
 
@@ -440,7 +438,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     Game newGame = response.getGame();
-                    update(newGame);
+                    //update(newGame);
+                    updateGameModel();
                 }
 	}
 
@@ -455,7 +454,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     Game newGame = response.getGame();
-                    update(newGame);
+                    //update(newGame);
+                    updateGameModel();
                 }
 	}
 
@@ -468,7 +468,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     Game newGame = response.getGame();
-                    update(newGame);
+                    //(newGame);
+                    updateGameModel();
                 }
 	}
 
@@ -482,7 +483,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     Game newGame = response.getGame();
                     game.setTradeOffer(newGame.getTradeOffer());
-                    update(newGame);
+                    //update(newGame);
+                    updateGameModel();
                 }
 	}
 
@@ -557,7 +559,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     Game newGame = response.getGame();
-                    this.update(newGame);
+                    //update(newGame);
+                    updateGameModel();
                 }
 	}
 
@@ -620,12 +623,13 @@ public class ModelFacade extends Observable implements IModelFacade
                 }
 	}
 
-	public void update(Game newGame)
-	{
-		Player p = newGame.getPlayer();
-		p.update(newGame.getPlayers()[p.getPlayerIndex()]);
-                game.update(newGame);
-	}
+//	public void update(Game newGame)
+//	{
+//		Player p = newGame.getPlayer();
+//		p.update(newGame.getPlayers()[p.getPlayerIndex()]);
+//                game.update(newGame);
+//                modelChanged();
+//	}
 	
 	//================================================================================
 	// MISC PROXY FUNCTIONS

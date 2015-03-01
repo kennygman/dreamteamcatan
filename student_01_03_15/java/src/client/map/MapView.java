@@ -90,7 +90,6 @@ public class MapView extends PanelView implements IMapView
 	public void startDrop(PieceType pieceType, CatanColor pieceColor,
 						  boolean isCancelAllowed)
 	{
-		
 		overlay = new MapOverlay(map);
 		overlay.setController(overlayController);
 		overlay.startDrop(pieceType, pieceColor, isCancelAllowed);
@@ -133,7 +132,6 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void placeRoad(EdgeLocation edgeLoc)
 		{
-			
 			closeModal();
 			getController().placeRoad(edgeLoc);
 		}
@@ -141,7 +139,6 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void placeSettlement(VertexLocation vertLoc)
 		{
-			
 			closeModal();
 			getController().placeSettlement(vertLoc);
 		}
@@ -149,7 +146,6 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void placeCity(VertexLocation vertLoc)
 		{
-			
 			closeModal();
 			getController().placeCity(vertLoc);
 		}
@@ -157,14 +153,13 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void placeRobber(HexLocation hexLoc)
 		{
-			
 			closeModal();
 			getController().placeRobber(hexLoc);
 		}
 		
 		@Override
 		public void startMove(PieceType pieceType, boolean isFree,
-							  boolean allowDisconnected)
+                            boolean allowDisconnected)
 		{
 			assert false;
 		}
@@ -172,7 +167,6 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void cancelMove()
 		{
-			
 			closeModal();
 			getController().cancelMove();
 		}
@@ -234,24 +228,20 @@ public class MapView extends PanelView implements IMapView
 			
 			this.setOpaque(false);
 			this.setLayout(new BorderLayout());
-			this.setBorder(BorderFactory.createLineBorder(Color.black,
-														  BORDER_WIDTH));
+			this.setBorder(BorderFactory.createLineBorder(Color.black, BORDER_WIDTH));
 			
 			label = new JLabel(getLabelText(pieceType), JLabel.CENTER);
 			label.setOpaque(true);
 			label.setBackground(Color.white);
 			Font labelFont = label.getFont();
-			labelFont = labelFont.deriveFont(labelFont.getStyle(),
-											 LABEL_TEXT_SIZE);
+			labelFont = labelFont.deriveFont(labelFont.getStyle(), LABEL_TEXT_SIZE);
 			label.setFont(labelFont);
 			
 			map = mainMap.copy();
 			map.setController(getController());
 			
-			int prefWidth = (int)(mainMap.getScale() * mainMap.getPreferredSize()
-															  .getWidth());
-			int prefHeight = (int)(mainMap.getScale() * mainMap.getPreferredSize()
-															   .getHeight());
+			int prefWidth = (int)(mainMap.getScale() * mainMap.getPreferredSize().getWidth());
+			int prefHeight = (int)(mainMap.getScale() * mainMap.getPreferredSize().getHeight());
 			Dimension prefSize = new Dimension(prefWidth, prefHeight);
 			map.setPreferredSize(prefSize);
 			
@@ -263,8 +253,7 @@ public class MapView extends PanelView implements IMapView
 				
 				cancelButton = new JButton("Cancel");
 				Font buttonFont = cancelButton.getFont();
-				buttonFont = buttonFont.deriveFont(buttonFont.getStyle(),
-												   BUTTON_TEXT_SIZE);
+				buttonFont = buttonFont.deriveFont(buttonFont.getStyle(), BUTTON_TEXT_SIZE);
 				cancelButton.setFont(buttonFont);
 				cancelButton.addActionListener(cancelButtonListener);
 				this.add(cancelButton, BorderLayout.SOUTH);

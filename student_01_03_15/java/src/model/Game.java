@@ -54,10 +54,11 @@ public class Game
 //	{
 //		
 //	}
-//	public void updateGame()
-//	{
-//		
-//	}
+	public void update(Game newGame)
+	{
+            map.update(newGame.getBoard());
+            turnTracker.update(newGame.getTurnTracker());
+	}
 	public Resources getBank() 
 	{
 		return bank;
@@ -146,4 +147,8 @@ public class Game
 	{
 		this.map = board;
 	}
+        public void sortBoard()
+        {
+                map.sort();
+        }
 }

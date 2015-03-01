@@ -36,6 +36,7 @@ public class Translator
 		
 		if(game != null)
 		{
+                        game.sortBoard();
 			response.setGame(game);
 			response.setValid(true);
 		}

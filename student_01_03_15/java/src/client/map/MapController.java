@@ -27,7 +27,7 @@ public class MapController extends Controller implements IMapController , Observ
 	public MapController(IMapView view, IRobView robView) {
 		
 		super(view);
-		
+		ModelFacade.getInstance().addObserver(this);
 		setRobView(robView);
 	}
 	
@@ -50,52 +50,6 @@ public class MapController extends Controller implements IMapController , Observ
             drawHexes(game, board);
             drawWaterHexes(board);
             getView().placeRobber(board.getRobber());
-            
-            
-            
-            
-            
-            
-//		for (int x = 0; x <= 3; ++x) {
-//			
-//			int maxY = 3 - x;			
-//			for (int y = -3; y <= maxY; ++y) {				
-//				int r = rand.nextInt(HexType.values().length);
-//				HexType hexType = HexType.values()[r];
-//				HexLocation hexLoc = new HexLocation(x, y);
-//				getView().addHex(hexLoc, hexType);
-//				getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.NorthWest),
-//						CatanColor.RED);
-//				getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.SouthWest),
-//						CatanColor.BLUE);
-//				getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.South),
-//						CatanColor.WHITE);
-//				getView().placeSettlement(new VertexLocation(hexLoc,  VertexDirection.NorthWest), CatanColor.GREEN);
-//				getView().placeCity(new VertexLocation(hexLoc,  VertexDirection.NorthEast), CatanColor.PURPLE);
-//			}
-//			
-//			if (x != 0) {
-//				int minY = x - 3;
-//				for (int y = minY; y <= 3; ++y) {
-//					int r = rand.nextInt(HexType.values().length);
-//					HexType hexType = HexType.values()[r];
-//					HexLocation hexLoc = new HexLocation(-x, y);
-//					getView().addHex(hexLoc, hexType);
-//					getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.NorthWest),
-//							CatanColor.RED);
-//					getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.SouthWest),
-//							CatanColor.BLUE);
-//					getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.South),
-//							CatanColor.ORANGE);
-//					getView().placeSettlement(new VertexLocation(hexLoc,  VertexDirection.NorthWest), CatanColor.GREEN);
-//					getView().placeCity(new VertexLocation(hexLoc,  VertexDirection.NorthEast), CatanColor.PURPLE);
-//				}
-//			}
-//		}
-//		
-//		
-		
-		//</temp>
 	}
         
         private void drawHexes(Game game, Board board)
@@ -126,6 +80,8 @@ public class MapController extends Controller implements IMapController , Observ
             }
         }
         
+        
+        
         private void drawWaterHexes(Board board)
         {
             getView().addHex(new HexLocation(-3,0),HexType.WATER);
@@ -152,51 +108,64 @@ public class MapController extends Controller implements IMapController , Observ
             }
         }
 
-	public boolean canPlaceRoad(EdgeLocation edgeLoc) {
-		
-		return true;
+	public boolean canPlaceRoad(EdgeLocation edgeLoc) 
+        {	
+		return ModelFacade.getInstance().canPlaceRoad(edgeLoc, false);
 	}
 
-	public boolean canPlaceSettlement(VertexLocation vertLoc) {
-		
-		return true;
+	public boolean canPlaceSettlement(VertexLocation vertLoc) 
+        {	
+		return ModelFacade.getInstance().canPlaceSettlement(vertLoc, false);
 	}
 
-	public boolean canPlaceCity(VertexLocation vertLoc) {
-		
-		return true;
+	public boolean canPlaceCity(VertexLocation vertLoc) 
+        {	
+		return ModelFacade.getInstance().canPlaceCity(vertLoc);
 	}
 
-	public boolean canPlaceRobber(HexLocation hexLoc) {
-		
-		return true;
+	public boolean canPlaceRobber(HexLocation hexLoc) 
+        {	
+		return ModelFacade.getInstance().canPlaceRobber(hexLoc);
 	}
 
-	public void placeRoad(EdgeLocation edgeLoc) {
-		
-            //getView().placeRoad(edgeLoc, CatanColor.ORANGE);
+	public void placeRoad(EdgeLocation edgeLoc) 
+        {
+            if(canPlaceRoad(edgeLoc))
+            {
+                ModelFacade.getInstance().buildRoad(edgeLoc, false);
+                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+                getView().placeRoad(edgeLoc, player.getColor());
+            }
 	}
 
-	public void placeSettlement(VertexLocation vertLoc) {
-		
-            //getView().placeSettlement(vertLoc, CatanColor.ORANGE);
+	public void placeSettlement(VertexLocation vertLoc) 
+        {
+            if(canPlaceSettlement(vertLoc))
+            {
+                ModelFacade.getInstance().buildSettlement(vertLoc, false);
+                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+                getView().placeSettlement(vertLoc, player.getColor());
+            }
 	}
 
-	public void placeCity(VertexLocation vertLoc) {
-		
-            //getView().placeCity(vertLoc, CatanColor.ORANGE);
+	public void placeCity(VertexLocation vertLoc) 
+        {
+            if(canPlaceCity(vertLoc))
+            {
+                ModelFacade.getInstance().buildCity(vertLoc);
+                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+                getView().placeCity(vertLoc, player.getColor());
+            }
 	}
 
 	public void placeRobber(HexLocation hexLoc) {
-		
-            //getView().placeRobber(hexLoc);
-		
-            //getRobView().showModal();
+            
 	}
 	
-	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) {	
-		
-            //getView().startDrop(pieceType, CatanColor.ORANGE, true);
+	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) 
+        {
+            CatanColor color = ModelFacade.getInstance().getPlayerInfo().getColor();
+            getView().startDrop(pieceType, color, true);
 	}
 	
 	public void cancelMove() {

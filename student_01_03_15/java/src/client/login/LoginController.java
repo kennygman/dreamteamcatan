@@ -75,10 +75,15 @@ public class LoginController extends Controller implements ILoginController {
 		
 		if (state.canLogin())
 		{
-			// If log in succeeded
 			getLoginView().closeModal();
 			loginAction.execute();
 		}
+                else
+                {
+                    messageView.setTitle("Login Error");
+                    messageView.setMessage("Invalid Username or Password.");
+                    messageView.showModal();
+                }
 	}
 
 	@Override
@@ -86,10 +91,15 @@ public class LoginController extends Controller implements ILoginController {
 		
 		if (state.canRegister())
 		{
-			// If register succeeded
 			getLoginView().closeModal();
 			loginAction.execute();
 		}
+                else
+                {
+                    messageView.setTitle("Register Error");
+                    messageView.setMessage("Please re-submit your credentials.");
+                    messageView.showModal();
+                }
 	}
 
 }

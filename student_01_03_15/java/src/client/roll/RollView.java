@@ -26,7 +26,7 @@ public class RollView extends OverlayView implements IRollView {
 	private final int BORDER_WIDTH = 10;
 
 	private JLabel label;
-    private JLabel imageLabel;
+        private JLabel imageLabel;
 	private JButton rollButton;
 	private JPanel buttonPanel;
 
@@ -42,14 +42,15 @@ public class RollView extends OverlayView implements IRollView {
 		label.setFont(labelFont);
 		this.add(label, BorderLayout.NORTH);
 		
-        try {
-            BufferedImage diceImg = ImageIO.read(new File("images/misc/dice.jpg"));
-            Image smallDiceImg = diceImg.getScaledInstance(300, 224, Image.SCALE_SMOOTH);
-            imageLabel = new JLabel(new ImageIcon(smallDiceImg));
-            this.add(imageLabel, BorderLayout.CENTER);
-        } catch (IOException ex) {
-            // Handle Exception Here
-        }
+                try {
+                    BufferedImage diceImg = ImageIO.read(new File("images/misc/dice.jpg"));
+                    Image smallDiceImg = diceImg.getScaledInstance(300, 224, Image.SCALE_SMOOTH);
+                    imageLabel = new JLabel(new ImageIcon(smallDiceImg));
+                    this.add(imageLabel, BorderLayout.CENTER);
+                } catch (IOException ex) {
+                    // Handle Exception Here
+                    System.out.println(ex.getStackTrace());
+                }
 
 		rollButton = new JButton("Roll!");
 		rollButton.addActionListener(actionListener);

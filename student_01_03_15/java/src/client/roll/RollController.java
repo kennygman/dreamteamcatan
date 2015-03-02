@@ -18,6 +18,7 @@ import model.ModelFacade;
 public class RollController extends Controller implements IRollController, Observer {
 
 	private IRollResultView resultView;
+	private Timer timer;
 
 	/**
 	 * RollController constructor
@@ -28,6 +29,7 @@ public class RollController extends Controller implements IRollController, Obser
 	public RollController(IRollView view, IRollResultView resultView) {
 
 		super(view);
+		this.timer = new Timer();
 		ModelFacade.getInstance().addObserver(this);
 		setResultView(resultView);
 	}
@@ -45,6 +47,7 @@ public class RollController extends Controller implements IRollController, Obser
 	
 	@Override
 	public void rollDice() {
+		timer.cancel();
 		Random generator = new Random(System.currentTimeMillis());
 		int dice1 = generator.nextInt(6 - 1 + 1) + 1;
 		int dice2 = generator.nextInt(6 - 1 + 1) + 1;
@@ -56,7 +59,6 @@ public class RollController extends Controller implements IRollController, Obser
 	
 	public void runRollTimer()
 	{
-		Timer timer = new Timer();
 		class TimerToDo extends TimerTask
 		{
 			RollController control;
@@ -67,7 +69,8 @@ public class RollController extends Controller implements IRollController, Obser
 			@Override
 			public void run()
 			{
-				control.getRollView().closeModal();
+				
+				getRollView().closeModal();
 				rollDice();
 				
 			}

@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import shared.response.GameModelResponse;
-import model.Game;
 import model.ModelFacade;
 import client.proxy.IProxy;
 
@@ -42,6 +41,7 @@ public class Poller
 		this.clientVersion = ModelFacade.getInstance().getGame().getVersion();
 		this.timesTimerRan = 0;
 	}
+	
 
 	/**
 	 * Gets the Game Model from the server and saves it to serverModel
@@ -85,6 +85,8 @@ public class Poller
 				pollServer();
 				if (serverVersion > clientVersion)
 				{
+					System.out.println("=========ServerVersion: " + serverVersion);
+					System.out.println("=========ClientVersion: " + clientVersion);
 					updateModel();
 				}
 			}

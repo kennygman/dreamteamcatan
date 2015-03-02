@@ -72,6 +72,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	// GETTERS AND SETTERS
 	// ===============================================================================
 	
+	public String getState()
+	{
+		return this.getGame().getTurnTracker().getStatus();
+	}
 	public void setPlayerInfo(PlayerInfo player)
 	{
 		this.player=player;

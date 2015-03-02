@@ -57,6 +57,10 @@ public class Game
 	{
             map.update(newGame.getBoard());
             turnTracker.update(newGame.getTurnTracker());
+            this.setTradeOffer(newGame.getTradeOffer());
+            this.setChat(newGame.getChat());
+            this.setDice(newGame.getDice());
+            this.setLog(newGame.getLog());
 	}
 	public Resources getBank() 
 	{

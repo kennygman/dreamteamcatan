@@ -3,8 +3,12 @@ package client.roll;
 import java.util.Random;
 
 import client.base.*;
+
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import model.ModelFacade;
 
 
@@ -47,11 +51,43 @@ public class RollController extends Controller implements IRollController, Obser
 		int total = dice1 + dice2;
 		resultView.setRollValue(total);
 		getResultView().showModal();
+		ModelFacade.getInstance().rollNumber(dice1, dice2);
 	}
+	
+	public void runRollTimer()
+	{
+		Timer timer = new Timer();
+		class TimerToDo extends TimerTask
+		{
+			RollController control;
+			TimerToDo(RollController cont){
+				this.control = cont;
+			}
+			
+			@Override
+			public void run()
+			{
+				control.getRollView().closeModal();
+				rollDice();
+				
+			}
+			
+		}
+		TimerToDo task = new TimerToDo(this);
+
+			timer.schedule(task, 5000);
+	}
+	
 
         @Override
-        public void update(Observable o, Object o1) {
-            
-        }
+        public void update(Observable o, Object o1) 
+        {
+        	if(ModelFacade.getInstance().CanRollNumber())
+        	{
+        		//this.getRollView().closeModal();
+        		this.getRollView().showModal();
+        		this.runRollTimer();
+        	}
+        }        	
 }
 

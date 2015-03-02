@@ -1,5 +1,7 @@
 package client.data;
 
+import shared.locations.HexLocation;
+
 /**
  * Used to pass player information into the rob view<br>
  * <br>
@@ -17,11 +19,20 @@ public class RobPlayerInfo extends PlayerInfo
 {
 	
 	private int numCards;
+        private HexLocation location;
 	
 	public RobPlayerInfo()
 	{
 		super();
 	}
+        
+        public RobPlayerInfo(PlayerInfo info)
+        {
+            this.setId(info.getId());
+            this.setPlayerIndex(info.getPlayerIndex());
+            this.setName(info.getName());
+            this.setColor(info.getColor());
+        }
 	
 	public int getNumCards()
 	{
@@ -32,6 +43,15 @@ public class RobPlayerInfo extends PlayerInfo
 	{
 		this.numCards = numCards;
 	}
-	
+        
+        public HexLocation getLocation()
+        {
+            return location;
+        }
+        
+        public void setLocation(HexLocation hex)
+        {
+            location = hex;
+        }
 }
 

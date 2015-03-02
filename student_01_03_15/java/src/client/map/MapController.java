@@ -6,8 +6,10 @@ import shared.definitions.*;
 import shared.locations.*;
 import client.base.*;
 import client.data.*;
+import java.io.IOException;
 import model.Game;
 import model.ModelFacade;
+import model.TurnTracker;
 import model.board.Board;
 import model.board.City;
 import model.board.Hex;
@@ -24,32 +26,64 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	private IRobView robView;
 	
-	public MapController(IMapView view, IRobView robView) {
-		
+	public MapController(IMapView view, IRobView robView) 
+        {
 		super(view);
 		ModelFacade.getInstance().addObserver(this);
 		setRobView(robView);
 	}
 	
-	public IMapView getView() {
-		
+	public IMapView getView() 
+        {
 		return (IMapView)super.getView();
 	}
 	
-	private IRobView getRobView() {
+	private IRobView getRobView() 
+        {
 		return robView;
 	}
-	private void setRobView(IRobView robView) {
+	private void setRobView(IRobView robView) 
+        {
 		this.robView = robView;
 	}
 	
-	protected void initFromModel() {
+	protected void initFromModel()
+        {
             Game game = ModelFacade.getInstance().getGame();            
             Board board = game.getBoard();
+            TurnTracker tt = game.getTurnTracker();
+            String status = tt.getStatus();
+            
             
             drawHexes(game, board);
             drawWaterHexes(board);
             getView().placeRobber(board.getRobber());
+            
+            
+            switch(status)
+            {
+                case "Robbing": 
+                {
+                    startMove(PieceType.ROBBER, true, false);
+                    break;
+                }  
+                case "FirstRound": 
+                {
+                    startMove(PieceType.ROAD, true, false);
+                    startMove(PieceType.SETTLEMENT, true, false);
+                    break;
+                }
+                case "SecondRound": 
+                {
+                    startMove(PieceType.ROAD, true, false);
+                    startMove(PieceType.SETTLEMENT, true, false);
+                    break;
+                }
+                case "Playing": break;
+                case "Discarding": break;
+                case "Rolling": break;
+            }
+            
 	}
         
         private void drawHexes(Game game, Board board)
@@ -110,12 +144,20 @@ public class MapController extends Controller implements IMapController , Observ
 
 	public boolean canPlaceRoad(EdgeLocation edgeLoc) 
         {	
-		return ModelFacade.getInstance().canPlaceRoad(edgeLoc, false);
+            String status = ModelFacade.getInstance().getGame().getTurnTracker().getStatus();
+            if(status == "FirstRound" || status == "SecondRound")
+                return ModelFacade.getInstance().canPlaceRoad(edgeLoc, true);
+            else
+                return ModelFacade.getInstance().canPlaceRoad(edgeLoc, false);
 	}
 
 	public boolean canPlaceSettlement(VertexLocation vertLoc) 
         {	
-		return ModelFacade.getInstance().canPlaceSettlement(vertLoc, false);
+            String status = ModelFacade.getInstance().getGame().getTurnTracker().getStatus();
+            if(status == "FirstRound" || status == "SecondRound") // or road building card?? really hating this set up
+		return ModelFacade.getInstance().canPlaceSettlement(vertLoc, true);
+            else
+                return ModelFacade.getInstance().canPlaceSettlement(vertLoc, false);
 	}
 
 	public boolean canPlaceCity(VertexLocation vertLoc) 
@@ -130,36 +172,30 @@ public class MapController extends Controller implements IMapController , Observ
 
 	public void placeRoad(EdgeLocation edgeLoc) 
         {
-            if(canPlaceRoad(edgeLoc))
-            {
-                ModelFacade.getInstance().buildRoad(edgeLoc, false);
-                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
-                getView().placeRoad(edgeLoc, player.getColor());
-            }
+            ModelFacade.getInstance().buildRoad(edgeLoc, false);
+            PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+            getView().placeRoad(edgeLoc, player.getColor());
 	}
 
 	public void placeSettlement(VertexLocation vertLoc) 
         {
-            if(canPlaceSettlement(vertLoc))
-            {
-                ModelFacade.getInstance().buildSettlement(vertLoc, false);
-                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
-                getView().placeSettlement(vertLoc, player.getColor());
-            }
+            ModelFacade.getInstance().buildSettlement(vertLoc, false);
+            PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+            getView().placeSettlement(vertLoc, player.getColor());
 	}
 
 	public void placeCity(VertexLocation vertLoc) 
         {
-            if(canPlaceCity(vertLoc))
-            {
-                ModelFacade.getInstance().buildCity(vertLoc);
-                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
-                getView().placeCity(vertLoc, player.getColor());
-            }
+            ModelFacade.getInstance().buildCity(vertLoc);
+            PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+            getView().placeCity(vertLoc, player.getColor());
 	}
 
-	public void placeRobber(HexLocation hexLoc) {
-            
+	public void placeRobber(HexLocation hexLoc) 
+        {
+            RobPlayerInfo[] players = ModelFacade.getInstance().getRobPlayerInfoList(hexLoc);
+            getRobView().setPlayers(players);
+            getRobView().showModal();
 	}
 	
 	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) 
@@ -168,20 +204,24 @@ public class MapController extends Controller implements IMapController , Observ
             getView().startDrop(pieceType, color, true);
 	}
 	
-	public void cancelMove() {
+	public void cancelMove() 
+        {
 		
 	}
 	
-	public void playSoldierCard() {	
+	public void playSoldierCard() 
+        {	
 		
 	}
 	
-	public void playRoadBuildingCard() {	
+	public void playRoadBuildingCard() 
+        {	
 		
 	}
 	
-	public void robPlayer(RobPlayerInfo victim) {	
-		
+	public void robPlayer(RobPlayerInfo victim) 
+        {	
+            ModelFacade.getInstance().robPlayer(victim.getLocation(), victim.getPlayerIndex());
 	}
         
         @Override

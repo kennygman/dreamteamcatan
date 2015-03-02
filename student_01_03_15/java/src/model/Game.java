@@ -20,7 +20,6 @@ public class Game
 	private int version;
 	private int winner;
 	private Dice dice;
-//	private Board board;
 	
 	public Player getPlayer()
 	{

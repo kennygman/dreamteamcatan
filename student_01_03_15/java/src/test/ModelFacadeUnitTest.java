@@ -239,6 +239,7 @@ public class ModelFacadeUnitTest
 		}
 		else
 		{
+                        System.out.println("Can't place settlement");
 			result = false;
 		}
 		
@@ -334,7 +335,7 @@ public class ModelFacadeUnitTest
 	{
 		game.getTurnTracker().setStatus("Rolling");
 		
-		boolean result = ModelFacade.getInstance().CanRollNumber(5);
+		boolean result = ModelFacade.getInstance().CanRollNumber();
 	
 		
 		assertEquals(result,true);
@@ -344,7 +345,7 @@ public class ModelFacadeUnitTest
 	public void testCanNOTRollNumber()
 	{
 		game.getTurnTracker().setStatus("Playing");
-		boolean result = ModelFacade.getInstance().CanRollNumber(1);
+		boolean result = ModelFacade.getInstance().CanRollNumber();
 		assertEquals(result,false);
 	}
 
@@ -555,11 +556,13 @@ public class ModelFacadeUnitTest
 			
 			if(ModelFacade.getInstance().canPlaceRoad(secondEdge,true))
 			{
+                                System.out.println("Can't place second");
 				result = false;
 			}
 		}
 		else
 		{
+                        System.out.println("can't use roadBuilding");
 			result = false;
 		}
 		

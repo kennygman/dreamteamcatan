@@ -38,8 +38,8 @@ public class JoinGameState
 		if (ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase())).isValid())
 		{
 			setGameInfo();
-			ModelFacade.getInstance().updateGame();
-			try
+			ModelFacade.getInstance().updateGameModel();
+			/*try
 			{
 				System.out.println("==========POLLER STARTED");
 				new Poller().start();
@@ -47,7 +47,7 @@ public class JoinGameState
 			} catch (Exception e)
 			{
 				e.printStackTrace();
-			}
+			}*/
 			return true;
 		}
 		return false;
@@ -61,7 +61,7 @@ public class JoinGameState
 		boolean hexes = view.getRandomlyPlaceHexes();
 		boolean numbers = view.getRandomlyPlaceNumbers();
 		boolean ports = view.getUseRandomPorts();
-		if (name == null) return false;
+		if (name.equals("")) return false;
 
 		ModelFacade.getInstance().createGame(new CreateGameParam(name,hexes,numbers,ports));
 		this.updateGameList();
@@ -78,19 +78,22 @@ public class JoinGameState
 	//--------------------------------------------------------------------------------
 	public void setGameInfo()
 	{
-		GameInfo joinedGame = ModelFacade.getInstance().listGames().getGameListObject()[game.getId()];
-		ModelFacade.getInstance().setGameInfo(joinedGame);
+            GameInfo joinedGame = ModelFacade.getInstance().listGames().getGameListObject(game.getId());
+            if(joinedGame != null)
+            {
+                ModelFacade.getInstance().setGameInfo(joinedGame);
 
-		PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
-		for (PlayerInfo p : joinedGame.getPlayers())
-		{
-			if (p.getId() == player.getId())
-			{
-				player.setPlayerIndex(joinedGame.getPlayers().indexOf(p));
-				player = p;
-				return;
-			}
-		}
+                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+                for (PlayerInfo p : joinedGame.getPlayers())
+                {
+                        if (p.getId() == player.getId())
+                        {
+                                player.setPlayerIndex(joinedGame.getPlayers().indexOf(p));
+                                player = p;
+                                return;
+                        }
+                }
+            }
 	}
 
 	//--------------------------------------------------------------------------------

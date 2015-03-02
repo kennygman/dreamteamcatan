@@ -2,6 +2,7 @@ package model.player;
 
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
+import shared.definitions.ResourceType;
 
 public class Player
 {
@@ -227,6 +228,17 @@ public class Player
 	{
 		return resources;
 	}
+        
+        public int getNumCards()
+        {
+            int numResources = 0;
+            numResources += resources.getResourceAmount(ResourceType.WOOD);
+            numResources += resources.getResourceAmount(ResourceType.BRICK);
+            numResources += resources.getResourceAmount(ResourceType.WHEAT);
+            numResources += resources.getResourceAmount(ResourceType.SHEEP);
+            numResources += resources.getResourceAmount(ResourceType.ORE);
+            return numResources;
+        }
 
 	public void setResources(Resources resources)
 	{

@@ -28,7 +28,8 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	}
 	
 	@Override
-	public ITurnTrackerView getView() {
+	public ITurnTrackerView getView() 
+	{
 		
 		return (ITurnTrackerView)super.getView();
 	}

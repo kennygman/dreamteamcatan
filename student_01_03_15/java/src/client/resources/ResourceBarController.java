@@ -80,7 +80,6 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 			
 			IAction action = elementActions.get(element);
 			action.execute();
-                        
 		}
 	}
 
@@ -116,7 +115,6 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 
 		ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().setYearOfPlenty(5);
 		setElement(ResourceBarElement.PLAY_CARD, getPlayCardNumber(player));
-		
 	}
 	
 	//--------------------------------------------------------------------------------

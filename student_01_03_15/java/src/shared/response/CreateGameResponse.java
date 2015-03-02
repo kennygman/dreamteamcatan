@@ -28,6 +28,16 @@ public class CreateGameResponse
 	{
 		return title;
 	}
+        
+        public boolean isValid()
+        {
+            return isValid;
+        }
+        
+        public int getGameId()
+        {
+            return id;
+        }
 	
 	public void setValid(boolean v)
 	{

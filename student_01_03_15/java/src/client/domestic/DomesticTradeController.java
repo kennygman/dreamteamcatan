@@ -160,25 +160,17 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	public void update(Observable arg0, Object arg1)
 	{
 		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
+		
+		if (this.getWaitOverlay().isModalShowing()) this.getWaitOverlay().closeModal();
+		
 		if (offer != null && offer.getReciever() == ModelFacade.getInstance().getPlayerInfo().getPlayerIndex())
 		{
 			System.out.println("========TRADEOFFER: " + offer);
-			if (getWaitOverlay().isModalShowing())
-			{
-				getWaitOverlay().closeModal();
-			}
 			
 			//boolean canAccept = ModelFacade.getInstance().canAcceptTrade();
 			acceptState = new AcceptTradeState(this);
 			acceptState.updateOverlay(true);
 			
-		}
-		else
-		{
-			if (getWaitOverlay().isModalShowing())
-			{
-				getWaitOverlay().closeModal();
-			}
 		}
 		
 	}

@@ -35,7 +35,8 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 
 	@Override
 	public void endTurn() {
-
+		if (ModelFacade.getInstance().CanFinishTurn())
+			ModelFacade.getInstance().finishTurn();
 	}
 	
 	private void initFromModel() {
@@ -65,6 +66,8 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		
 		getView().updateGameState(tracker.getStatus(), true);
 		System.out.println("TurnTracker Game Status: " + tracker.getStatus());
+		System.out.println("Current Turn: " + ModelFacade.getInstance().getGame()
+				.getPlayers()[tracker.getCurrentTurn()].getName());
 	}
 
 	@Override

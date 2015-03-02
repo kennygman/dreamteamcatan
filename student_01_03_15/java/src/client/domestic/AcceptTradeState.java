@@ -18,7 +18,6 @@ public class AcceptTradeState
 	{
 		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
 		
-		controller.getAcceptOverlay().reset();
 		controller.getAcceptOverlay().setAcceptEnabled(canAccept);
 		controller.getAcceptOverlay().setPlayerName(offer.getSenderName());
 		
@@ -36,7 +35,7 @@ public class AcceptTradeState
 			else
 				continue;	
 		}
-		controller.getAcceptOverlay().showModal();
+		
 	}
 	
 }

@@ -26,6 +26,19 @@ public class ListGamesResponse {
 		}
 		return gi;
 	}
+        
+        public GameInfo getGameListObject(int gameId)
+	{
+            for (int i = 0; i < games.length; i++)
+            {
+                GameInfo gi = games[i].getGameInfo();
+                if(gi.getId() == gameId)
+                {
+                    return gi;
+                }
+            }
+            return null;
+	}
 	
 	public boolean isValid()
 	{

@@ -2,9 +2,6 @@ package test;
 //Tests
 import static org.junit.Assert.*;
 import model.Game;
-import model.ModelFacade;
-import model.player.Player;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,11 +9,11 @@ import org.junit.Test;
 import client.poller.Poller;
 import client.proxy.IProxy;
 import client.proxy.MockProxy;
+import model.ModelFacade;
 
 public class PollerUnitTests
 {
 	private static Poller poller;
-	private static ModelFacade modelFacade;
 	private static IProxy mockProxy;
 
 	@Before
@@ -25,8 +22,7 @@ public class PollerUnitTests
 		int versionNumber = 1;
 		mockProxy = new MockProxy();
 		ModelFacade.createInstance(mockProxy);
-		modelFacade = ModelFacade.getInstance();
-		poller = new Poller(mockProxy, modelFacade);
+		poller = new Poller(mockProxy);
 	}
 
 	@After
@@ -39,7 +35,7 @@ public class PollerUnitTests
 	public void testPollServer()
 	{
 		poller.pollServer();
-		int version = poller.getServerModel().getVersion();
+		int version = poller.getServerVersion();
 		assertTrue(version >= 0);
 	}
 
@@ -48,11 +44,11 @@ public class PollerUnitTests
 	{
 		Game game1 = new Game();
 		int test = 4212012;
-		game1 = modelFacade.getGame();
+		game1 = ModelFacade.getInstance().getGame();
 		game1.setVersion(test);
-		poller.setServerModel(game1);
+		poller.setServerVersion(game1.getVersion());
 		poller.updateModel();
-		assertEquals(modelFacade.getGame().getVersion(), test);
+		assertEquals(ModelFacade.getInstance().getGame().getVersion(), test);
 	}
 
 	@Test

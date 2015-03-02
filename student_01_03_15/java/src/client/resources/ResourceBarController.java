@@ -80,7 +80,6 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 			
 			IAction action = elementActions.get(element);
 			action.execute();
-                        
 		}
 	}
 
@@ -115,7 +114,6 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		getView().setElementEnabled(ResourceBarElement.BUY_CARD, valid);
 
 		setElement(ResourceBarElement.PLAY_CARD, getPlayCardNumber(player));
-		
 	}
 	
 	//--------------------------------------------------------------------------------

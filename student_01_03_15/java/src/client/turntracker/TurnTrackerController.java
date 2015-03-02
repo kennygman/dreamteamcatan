@@ -6,6 +6,7 @@ import java.util.Observer;
 import model.ModelFacade;
 import model.TurnTracker;
 import model.player.Player;
+import shared.definitions.CatanColor;
 import client.base.*;
 import client.data.PlayerInfo;
 import client.poller.Poller;
@@ -34,12 +35,9 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	}
 
 	@Override
-	public void endTurn() 
-	{
-		if(ModelFacade.getInstance().CanFinishTurn())
-		{
+	public void endTurn() {
+		if (ModelFacade.getInstance().CanFinishTurn())
 			ModelFacade.getInstance().finishTurn();
-		}
 	}
 	
 	private void initFromModel() {
@@ -69,6 +67,8 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		
 		getView().updateGameState(tracker.getStatus(), true);
 		System.out.println("TurnTracker Game Status: " + tracker.getStatus());
+		System.out.println("Current Turn: " + ModelFacade.getInstance().getGame()
+				.getPlayers()[tracker.getCurrentTurn()].getName());
 	}
 
 	@Override

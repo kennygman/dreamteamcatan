@@ -113,6 +113,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		valid = ModelFacade.getInstance().CanBuyDevCard();
 		getView().setElementEnabled(ResourceBarElement.BUY_CARD, valid);
 
+		ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().setYearOfPlenty(5);
 		setElement(ResourceBarElement.PLAY_CARD, getPlayCardNumber(player));
 	}
 	

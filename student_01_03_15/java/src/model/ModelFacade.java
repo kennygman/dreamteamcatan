@@ -33,6 +33,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	private Game game;
 	private PlayerInfo player;
 	private GameInfo gameInfo;
+        private boolean startRoad;
+        private boolean startSettlement;
 
 	public ModelFacade(IProxy proxy)
 	{
@@ -423,9 +425,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 GameModelResponse response = proxy.discardCards(new DiscardCardsParam(0, resources));
                 if(response.isValid())
                 {
-                    Game newGame = response.getGame();
-                    //p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-                    //game.getTurnTracker().setStatus(newGame.getTurnTracker().getStatus());
+                    game = response.getGame();
+                    updateGameModel();
                 }
 	}
 
@@ -448,8 +449,7 @@ public class ModelFacade extends Observable implements IModelFacade
                         (game.getTurnTracker().getCurrentTurn(), edge, free));
                 if(response.isValid())
                 {
-                    Game newGame = response.getGame();
-                    //update(newGame);
+                    game = response.getGame();
                     updateGameModel();
                 }
 	}
@@ -464,8 +464,7 @@ public class ModelFacade extends Observable implements IModelFacade
 				game.getPlayer().getPlayerIndex(), vert, free));
                 if(response.isValid())
                 {
-                    Game newGame = response.getGame();
-                    //update(newGame);
+                    game = response.getGame();
                     updateGameModel();
                 }
 	}
@@ -710,6 +709,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	public ListAIResponse listAi()
 	{
 		return proxy.listAi();
+	}
+	//---------------------------------------------------------------------------------
+	public void resetGame()
+	{
+		proxy.resetGame().getGame();
+		updateGameModel();
 	}
 	//---------------------------------------------------------------------------------
 	public void updateGameModel()

@@ -4,6 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import model.ModelFacade;
+import model.TradeOffer;
 import shared.definitions.*;
 import client.base.*;
 import client.misc.*;
@@ -96,27 +97,29 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		getTradeOverlay().showModal();
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void decreaseResourceAmount(ResourceType resource) {
-		offerState.getOffer().useResource(resource, 1);
+		offerState.decreaseResourceAmount(resource);
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void increaseResourceAmount(ResourceType resource) {
-		offerState.getOffer().addResource(resource, 1);
+		offerState.increaseResourceAmount(resource);
 	}
 
 	//---------------------------------------------------------------------------------
 	@Override
 	public void sendTradeOffer() {
 
-		if (!ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
-		{
+//		if (ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
+//		{
 			ModelFacade.getInstance().offerTrade(offerState.getRecipient(), offerState.getOffer());
 			getTradeOverlay().closeModal();
 			getWaitOverlay().setMessage("Waiting for recipient response.");
 			getWaitOverlay().showModal();
-		}
+//		}
 	}
 
 	@Override
@@ -126,10 +129,12 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void setResourceToReceive(ResourceType resource) {
+		offerState.setGetResource(resource);
 	}
 
 	@Override
 	public void setResourceToSend(ResourceType resource) {
+		offerState.setSendResource(resource);
 	}
 
 	@Override
@@ -146,14 +151,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void acceptTrade(boolean willAccept) {
 
-		if (willAccept && ModelFacade.getInstance().canAcceptTrade())
-		{
-			ModelFacade.getInstance().acceptTrade(willAccept);
-		}
-		else
-		{
-			ModelFacade.getInstance().acceptTrade(!willAccept);
-		}
+		ModelFacade.getInstance().acceptTrade(willAccept);
 		getAcceptOverlay().closeModal();
 	}
 
@@ -161,9 +159,18 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
-		if (ModelFacade.getInstance().getState().equals("Trading"))
+		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
+		
+		if (this.getWaitOverlay().isModalShowing()) this.getWaitOverlay().closeModal();
+		
+		if (offer != null && offer.getReciever() == ModelFacade.getInstance().getPlayerInfo().getPlayerIndex())
 		{
+			System.out.println("========TRADEOFFER: " + offer);
+			
+			//boolean canAccept = ModelFacade.getInstance().canAcceptTrade();
 			acceptState = new AcceptTradeState(this);
+			acceptState.updateOverlay(true);
+			
 		}
 		
 	}

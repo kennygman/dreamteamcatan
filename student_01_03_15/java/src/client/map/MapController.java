@@ -205,14 +205,20 @@ public class MapController extends Controller implements IMapController , Observ
 	public void placeSettlement(VertexLocation vertLoc) 
         {
             boolean isFree = false;
+            boolean isSetUp = false;
             String status = ModelFacade.getInstance().getState();
             if(status.equals("FirstRound") || status.equals("SecondRound"))
             {
                 isFree = true;
+                isSetUp = true;
             }
             ModelFacade.getInstance().buildSettlement(vertLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeSettlement(vertLoc, player.getColor());
+            if(isSetUp)
+            {
+                ModelFacade.getInstance().finishTurn();
+            }
 	}
 
 	public void placeCity(VertexLocation vertLoc) 

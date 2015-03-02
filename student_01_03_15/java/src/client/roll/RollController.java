@@ -62,7 +62,6 @@ public class RollController extends Controller implements IRollController, Obser
 			
 			//this.getResultView().closeModal();
 		}
-		
 	}
 	
 	public void runRollTimer()

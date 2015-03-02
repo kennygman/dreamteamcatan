@@ -41,6 +41,14 @@ public class ChatState implements Observer
 	//--------------------------------------------------------------------------------
 	public void sendMessage(String message)
 	{
+		if (message.equals("/cheat1"))
+		{
+			ModelFacade.getInstance().buyDevCard();
+		}
+		else if (message.equals("/reset"))
+		{
+			ModelFacade.getInstance().resetGame();
+		}
 		int index = ModelFacade.getInstance().getPlayerInfo().getPlayerIndex();
 		ModelFacade.getInstance().sendChat(new SendChatParam(index,message));
 	}

@@ -172,37 +172,30 @@ public class MapController extends Controller implements IMapController , Observ
 
 	public void placeRoad(EdgeLocation edgeLoc) 
         {
-            if(canPlaceRoad(edgeLoc))
-            {
-                ModelFacade.getInstance().buildRoad(edgeLoc, false);
-                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
-                getView().placeRoad(edgeLoc, player.getColor());
-            }
+            ModelFacade.getInstance().buildRoad(edgeLoc, false);
+            PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+            getView().placeRoad(edgeLoc, player.getColor());
 	}
 
 	public void placeSettlement(VertexLocation vertLoc) 
         {
-            if(canPlaceSettlement(vertLoc))
-            {
-                ModelFacade.getInstance().buildSettlement(vertLoc, false);
-                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
-                getView().placeSettlement(vertLoc, player.getColor());
-            }
+            ModelFacade.getInstance().buildSettlement(vertLoc, false);
+            PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+            getView().placeSettlement(vertLoc, player.getColor());
 	}
 
 	public void placeCity(VertexLocation vertLoc) 
         {
-            if(canPlaceCity(vertLoc))
-            {
-                ModelFacade.getInstance().buildCity(vertLoc);
-                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
-                getView().placeCity(vertLoc, player.getColor());
-            }
+            ModelFacade.getInstance().buildCity(vertLoc);
+            PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+            getView().placeCity(vertLoc, player.getColor());
 	}
 
 	public void placeRobber(HexLocation hexLoc) 
         {
- 
+            RobPlayerInfo[] players = ModelFacade.getInstance().getRobPlayerInfoList(hexLoc);
+            getRobView().setPlayers(players);
+            getRobView().showModal();
 	}
 	
 	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) 
@@ -228,7 +221,7 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	public void robPlayer(RobPlayerInfo victim) 
         {	
-		
+            ModelFacade.getInstance().robPlayer(victim.getLocation(), victim.getPlayerIndex());
 	}
         
         @Override

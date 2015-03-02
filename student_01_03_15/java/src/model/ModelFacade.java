@@ -9,7 +9,10 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
+import client.data.RobPlayerInfo;
 import client.proxy.IProxy;
+import java.util.ArrayList;
+import java.util.List;
 import model.board.Board;
 import model.board.City;
 import model.board.Settlement;
@@ -516,6 +519,7 @@ public class ModelFacade extends Observable implements IModelFacade
                     Game newGame =  response.getGame();
                     game.getBoard().setRobber(newGame.getBoard().getRobber());
                     p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+                    updateGameModel();
                 }
 	}
 
@@ -711,6 +715,53 @@ public class ModelFacade extends Observable implements IModelFacade
 	}
 
 	//---------------------------------------------------------------------------------
+        public RobPlayerInfo[] getRobPlayerInfoList(HexLocation hexLoc)
+	{
+            Object[] objects = game.getBoard().getStructure(hexLoc);
+            List<RobPlayerInfo> players = new ArrayList<RobPlayerInfo>();
+            PlayerInfo[] playerInfo = getPlayerInfoList();
+            
+            int index = 0;
+            for(Object obj : objects)
+            {
+                if(obj != null)
+                {
+                    if(obj instanceof Settlement)
+                    {
+                        Settlement s = (Settlement) obj;
+                        if(s.getOwner() != game.getPlayer().getPlayerID())
+                        {
+                            players.add(new RobPlayerInfo(playerInfo[s.getOwner()]));
+                            Player[] p = game.getPlayers();
+                            players.get(index).setNumCards(p[s.getOwner()].getNumCards());
+                            players.get(index).setLocation(hexLoc);
+                        }
+                    }
+                    else //if(obj instanceof City)
+                    {
+                        City c = (City) obj;
+                        if(c.getOwner() != game.getPlayer().getPlayerID())
+                        {
+                            players.add(new RobPlayerInfo(playerInfo[c.getOwner()]));
+                            Player[] p = game.getPlayers();
+                            players.get(index).setNumCards(p[c.getOwner()].getNumCards());
+                            players.get(index).setLocation(hexLoc);
+                        }
+                    }
+                    
+                    index++;
+                }
+            }
+            RobPlayerInfo[] arr = new RobPlayerInfo[players.size()];
+            for(int i = 0; i < players.size(); i++)
+            {
+                arr[i] = players.get(i);
+            }
+            System.out.println("size of infoList: " + players.size());
+            System.err.println(players.toString());
+            return arr;
+        }
+            //---------------------------------------------------------------------------------
 	public boolean checkGameFull()
 	{
 		ListGamesResponse response = proxy.listGames();

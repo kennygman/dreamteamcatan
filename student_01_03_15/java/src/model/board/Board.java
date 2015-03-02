@@ -172,6 +172,53 @@ public class Board extends Observable
 		}
 		return obj;
 	}
+        
+        //--------------------------------------------------------------------------------
+        public Object[] getStructure(HexLocation hex)
+	{
+		Object[] objects = new Object[3];
+                int index = 0;
+		Object struct;
+                
+                struct = getStructure(new VertexLocation(hex, VertexDirection.NorthEast));
+                if(struct != null)
+                {
+                    objects[index] = struct;
+                    index++;
+                }
+                struct = getStructure(new VertexLocation(hex, VertexDirection.NorthWest));
+                if(struct != null)
+                {
+                    objects[index] = struct;
+                    index++;
+                }
+                struct = getStructure(new VertexLocation(new HexLocation(hex.getX() - 1, hex.getY() + 1), VertexDirection.NorthEast));
+                if(struct != null)
+                {
+                    objects[index] = struct;
+                    index++;
+                }
+                struct = getStructure(new VertexLocation(new HexLocation(hex.getX(), hex.getY() + 1), VertexDirection.NorthWest));
+                if(struct != null)
+                {
+                    objects[index] = struct;
+                    index++;
+                }
+                struct = getStructure(new VertexLocation(new HexLocation(hex.getX(), hex.getY() + 1), VertexDirection.NorthEast));
+                if(struct != null)
+                {
+                    objects[index] = struct;
+                    index++;
+                }
+                struct = getStructure(new VertexLocation(new HexLocation(hex.getX() + 1, hex.getY()), VertexDirection.NorthWest));
+                if(struct != null)
+                {
+                    objects[index] = struct;
+                    index++;
+                }
+                
+		return objects;
+	}
 	
 	//--------------------------------------------------------------------------------
 	public void setRoad(Road road)

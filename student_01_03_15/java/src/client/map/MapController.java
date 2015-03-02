@@ -6,7 +6,6 @@ import shared.definitions.*;
 import shared.locations.*;
 import client.base.*;
 import client.data.*;
-import java.io.IOException;
 import model.Game;
 import model.ModelFacade;
 import model.TurnTracker;
@@ -51,37 +50,38 @@ public class MapController extends Controller implements IMapController , Observ
         {
             Game game = ModelFacade.getInstance().getGame();            
             Board board = game.getBoard();
-            TurnTracker tt = game.getTurnTracker();
-            String status = tt.getStatus();
+            String status = ModelFacade.getInstance().getState();
             
             
             drawHexes(game, board);
             drawWaterHexes(board);
             getView().placeRobber(board.getRobber());
             
-            
-            switch(status)
+            if(ModelFacade.getInstance().isPlayerTurn())
             {
-                case "Robbing": 
+                System.out.println("Player Turn in init: " + ModelFacade.getInstance().getGame().getTurnTracker().getCurrentTurn());
+                switch(status)
                 {
-                    startMove(PieceType.ROBBER, true, false);
-                    break;
-                }  
-                case "FirstRound": 
-                {
-                    startMove(PieceType.ROAD, true, false);
-                    startMove(PieceType.SETTLEMENT, true, false);
-                    break;
+                    case "Robbing": 
+                    {
+                        startMove(PieceType.ROBBER, true, false);
+                        break;
+                    }  
+                    case "FirstRound": 
+                    {
+                        System.out.println("in case");
+                        startMove(PieceType.ROAD, true, false);
+                        break;
+                    }
+                    case "SecondRound": 
+                    {
+                        startMove(PieceType.ROAD, true, false);
+                        break;
+                    }
+                    case "Playing": break;
+                    case "Discarding": break;
+                    case "Rolling": break;
                 }
-                case "SecondRound": 
-                {
-                    startMove(PieceType.ROAD, true, false);
-                    startMove(PieceType.SETTLEMENT, true, false);
-                    break;
-                }
-                case "Playing": break;
-                case "Discarding": break;
-                case "Rolling": break;
             }
             
 	}
@@ -144,20 +144,28 @@ public class MapController extends Controller implements IMapController , Observ
 
 	public boolean canPlaceRoad(EdgeLocation edgeLoc) 
         {	
-            String status = ModelFacade.getInstance().getGame().getTurnTracker().getStatus();
-            if(status == "FirstRound" || status == "SecondRound")
+            String status = ModelFacade.getInstance().getState();
+            if(status.equals("FirstRound") || status.equals("SecondRound"))
+            {
                 return ModelFacade.getInstance().canPlaceRoad(edgeLoc, true);
+            }
             else
+            {
                 return ModelFacade.getInstance().canPlaceRoad(edgeLoc, false);
+            }
 	}
 
 	public boolean canPlaceSettlement(VertexLocation vertLoc) 
         {	
-            String status = ModelFacade.getInstance().getGame().getTurnTracker().getStatus();
-            if(status == "FirstRound" || status == "SecondRound") // or road building card?? really hating this set up
+            String status = ModelFacade.getInstance().getState();
+            if(status.equals("FirstRound") || status.equals("SecondRound")) // or road building card?? really hating this set up
+            {
 		return ModelFacade.getInstance().canPlaceSettlement(vertLoc, true);
+            }
             else
+            {
                 return ModelFacade.getInstance().canPlaceSettlement(vertLoc, false);
+            }
 	}
 
 	public boolean canPlaceCity(VertexLocation vertLoc) 
@@ -172,14 +180,37 @@ public class MapController extends Controller implements IMapController , Observ
 
 	public void placeRoad(EdgeLocation edgeLoc) 
         {
-            ModelFacade.getInstance().buildRoad(edgeLoc, false);
+            boolean isStartUp = false;
+            boolean isFree = false;
+            String status = ModelFacade.getInstance().getState();
+            if(status.equals("FirstRound") || status.equals("SecondRound"))
+            {
+                isStartUp = true;
+                isFree = true;
+            }
+            /*else if(Road Building)
+            {
+                
+            }*/
+            ModelFacade.getInstance().buildRoad(edgeLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeRoad(edgeLoc, player.getColor());
+            
+            if(isStartUp)
+            {
+                startMove(PieceType.SETTLEMENT, true, false);
+            }
 	}
 
 	public void placeSettlement(VertexLocation vertLoc) 
         {
-            ModelFacade.getInstance().buildSettlement(vertLoc, false);
+            boolean isFree = false;
+            String status = ModelFacade.getInstance().getState();
+            if(status.equals("FirstRound") || status.equals("SecondRound"))
+            {
+                isFree = true;
+            }
+            ModelFacade.getInstance().buildSettlement(vertLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeSettlement(vertLoc, player.getColor());
 	}
@@ -198,10 +229,10 @@ public class MapController extends Controller implements IMapController , Observ
             getRobView().showModal();
 	}
 	
-	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) 
+	public void startMove(PieceType pieceType, boolean isFree, boolean allowCancel) 
         {
             CatanColor color = ModelFacade.getInstance().getPlayerInfo().getColor();
-            getView().startDrop(pieceType, color, true);
+            getView().startDrop(pieceType, color, allowCancel);
 	}
 	
 	public void cancelMove() 
@@ -211,7 +242,7 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	public void playSoldierCard() 
         {	
-		
+            startMove(PieceType.ROBBER, true, true);
 	}
 	
 	public void playRoadBuildingCard() 

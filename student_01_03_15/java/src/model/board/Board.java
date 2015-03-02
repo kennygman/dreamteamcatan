@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import model.ModelFacade;
 
 import shared.locations.EdgeDirection;
 import shared.locations.EdgeLocation;
@@ -278,10 +279,25 @@ public class Board extends Observable
  	public boolean hasNeighborRoad(EdgeLocation location, int playerIndex, boolean setup) //already normalized
  	{
             boolean hasNeighbor = false;
-            //already checked if the space is occupied
             if(setup)
             {
                 //Check to see if the 2 vertexes both contain settlements already, else return true.
+                List<VertexLocation> vertices = location.getAdjacentVertices();
+                for(VertexLocation v : vertices)
+                {
+                    boolean isValid = true;
+                    if (containsStructure(v) || hasWaterVertex(v.getHexLoc(), v.getDir()) || hasNeighborStructure(v))
+                    {
+                        isValid = false;
+                    }
+                    
+                    if(isValid)
+                    {
+                        hasNeighbor = true;
+                        break;
+                    }
+                }
+                
             }
             else
             {

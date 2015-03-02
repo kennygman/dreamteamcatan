@@ -1,6 +1,7 @@
 package client.maritime;
 
 import java.util.Observable;
+
 import java.util.Observer;
 
 import model.ModelFacade;
@@ -13,7 +14,9 @@ import client.base.*;
  */
 public class MaritimeTradeController extends Controller implements IMaritimeTradeController, Observer
 {
-
+	private String inputTrade;
+	private String outputTrade;
+	private int ratio = 4;
 	private IMaritimeTradeOverlay tradeOverlay;
 	
 	public MaritimeTradeController(IMaritimeTradeView tradeView, IMaritimeTradeOverlay tradeOverlay) 
@@ -39,9 +42,11 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	}
 
 	@Override
-	public void startTrade() {
+	public void startTrade() 
+	{
 		
 		getTradeOverlay().showModal();
+
 	}
 
 	@Override
@@ -57,15 +62,29 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	}
 
 	@Override
-	public void setGetResource(ResourceType resource) {
-
+	public void setGetResource(ResourceType resource) 
+	{
+			//ModelFacade.getInstance().maritimeTrade(ratio, , outResource);
+		inputTrade = resource.toString();
 	}
 
 	@Override
-	public void setGiveResource(ResourceType resource) {
-
+	public void setGiveResource(ResourceType resource) 
+	{
+		outputTrade = resource.toString();
+		
+		getRatio();
+		
+		
+		if(ModelFacade.getInstance().CanMaritimeTrade(ratio, outputTrade, inputTrade))
+		{
+			ModelFacade.getInstance().maritimeTrade(ratio,outputTrade,inputTrade);
+		}
 	}
-
+	public void getRatio()
+	{
+		
+	}
 	@Override
 	public void unsetGetValue() {
 
@@ -79,10 +98,17 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	@Override
 	public void update(Observable o, Object arg) 
 	{
+		boolean canTrade = true;
 		
-		MaritimeTradeView maritimeView = new MaritimeTradeView();
+		getTradeView().enableMaritimeTrade(canTrade);
 		
-		maritimeView.enableMaritimeTrade(true);
+		//Get the players ports and resources and see if any have more than 4 or see if they have a port then matvh ratio with that?
+		
+		/*if(ModelFacade.getInstance().CanMaritimeTrade(ratio, inputResource, outResource))
+		{
+			getTradeView().enableMaritimeTrade(canTrade);
+		
+		}*/
 	}
 
 }

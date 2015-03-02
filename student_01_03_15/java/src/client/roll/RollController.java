@@ -46,7 +46,7 @@ public class RollController extends Controller implements IRollController, Obser
 	}
 	
 	@Override
-	public void rollDice() {
+	public void rollDice(){
 		timer.cancel();
 		Random generator = new Random(System.currentTimeMillis());
 		int dice1 = generator.nextInt(6 - 1 + 1) + 1;

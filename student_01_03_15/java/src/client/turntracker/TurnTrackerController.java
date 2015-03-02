@@ -14,14 +14,14 @@ import client.poller.Poller;
  */
 public class TurnTrackerController extends Controller implements ITurnTrackerController,Observer
 {
-	private Poller poller;
-	
-	public TurnTrackerController(ITurnTrackerView view) 
+	@SuppressWarnings("unused")
+	public TurnTrackerController(ITurnTrackerView view)
 	{
 		
 		super(view);
 		initFromModel();
 	}
+	
 	
 	@Override
 	public ITurnTrackerView getView() 
@@ -41,7 +41,6 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	
 	private void initFromModel() 
 	{
-		
 		getView().setLocalPlayerColor(ModelFacade.getInstance().getPlayerInfo().getColor());
 	}
 

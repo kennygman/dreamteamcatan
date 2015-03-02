@@ -16,11 +16,13 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 
 	private IMaritimeTradeOverlay tradeOverlay;
 	
-	public MaritimeTradeController(IMaritimeTradeView tradeView, IMaritimeTradeOverlay tradeOverlay) {
+	public MaritimeTradeController(IMaritimeTradeView tradeView, IMaritimeTradeOverlay tradeOverlay) 
+	{
 		
 		super(tradeView);
 
 		setTradeOverlay(tradeOverlay);
+		ModelFacade.getInstance().addObserver(this);
 	}
 	
 	public IMaritimeTradeView getTradeView() {

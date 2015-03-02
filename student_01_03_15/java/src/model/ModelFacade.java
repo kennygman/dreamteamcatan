@@ -311,7 +311,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	}
 	
 	// DevCard Preconditions ================================================================================
-	private boolean canPlayDevCard(DevCardType devCard)
+	public boolean canPlayDevCard(DevCardType devCard)
 	{
 		if (!isPlayerTurn() ||
 			!game.getTurnTracker().getStatus().equals("Playing")

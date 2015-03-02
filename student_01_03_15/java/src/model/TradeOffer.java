@@ -23,6 +23,10 @@ public class TradeOffer
 		this.reciever = reciever;
 		this.offer = offer;
 	}
+	public String getSenderName()
+	{
+		return ModelFacade.getInstance().getGame().getPlayers()[sender].getName();
+	}
 	public int getSender()
 	{
 		return sender;

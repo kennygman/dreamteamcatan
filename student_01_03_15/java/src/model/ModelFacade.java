@@ -176,27 +176,27 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean canPlaceRoad(EdgeLocation edgeLoc, boolean free)
 	{
-            if (!canPlay()) return false;
+            if (!isPlayerTurn()) {System.out.println("Player Turn in can: " + game.getTurnTracker().getCurrentTurn()); return false;}
             EdgeLocation edge = edgeLoc.getNormalizedLocation();
             Board board = game.getBoard();
 
-            if (board.containsRoad(edge)) return false;
-            else if (!free && !CanBuyRoad()) return false;
-            else if (board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) return false;
-            else if (board.hasNeighborRoad(edge, player.getPlayerIndex(), free))  return true;
+            if (board.containsRoad(edge)) {System.out.println("contains Road"); return false;}
+            else if (!free && !CanBuyRoad()) {System.out.println("Can't buy"); return false;}
+            else if (board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) {System.out.println("on water"); return false;}
+            else if (board.hasNeighborRoad(edge, player.getPlayerIndex(), free))  {System.out.println("doesn't have neighbor Road"); return true;}
 			
              return false;
 	}	
  		
 	//--------------------------------------------------------------------------------
 	@Override
-	public boolean canPlaceSettlement(VertexLocation vertLoc, boolean free)
+	public boolean canPlaceSettlement(VertexLocation vertLoc, boolean isSetup)
 	{
-		if (!canPlay()) {System.out.println("Can't play");return false;}
+		if (!isPlayerTurn()) {System.out.println("Can't play settlement");return false;}
 		VertexLocation vertex = vertLoc.getNormalizedLocation();
                 Board board =  game.getBoard();
 		
-		if ((!free && !CanBuySettlement())){System.out.println("Can't buy"); return false;}
+		if ((!isSetup && !CanBuySettlement())){System.out.println("Can't buy"); return false;}
                 else if (board.containsStructure(vertex)){System.out.println("Already contains structure"); return false;}
                 else if (board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir())) {System.out.println("On water"); return false;}
                 else if (!board.hasNeighborRoad(vertex, player.getPlayerIndex())) {System.out.println("Doesn't have connected road"); return false;}
@@ -314,7 +314,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	}
 	
 	// DevCard Preconditions ================================================================================
-	private boolean canPlayDevCard(DevCardType devCard)
+	public boolean canPlayDevCard(DevCardType devCard)
 	{
 		if (!isPlayerTurn() ||
 			!game.getTurnTracker().getStatus().equals("Playing")
@@ -706,6 +706,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	public ListAIResponse listAi()
 	{
 		return proxy.listAi();
+	}
+	//---------------------------------------------------------------------------------
+	public void resetGame()
+	{
+		proxy.resetGame().getGame();
+		updateGameModel();
 	}
 	//---------------------------------------------------------------------------------
 	public void updateGameModel()

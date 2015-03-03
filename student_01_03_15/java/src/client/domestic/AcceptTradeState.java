@@ -26,11 +26,11 @@ public class AcceptTradeState
 			int amount = offer.getOffer().getResourceAmount(resource);
 
 			if (amount > 0) {
-//				controller.getAcceptOverlay().addGetResource(resource, Math.abs(amount));
+				controller.getAcceptOverlay().addGetResource(resource, Math.abs(amount));
 			}
 			else if (amount < 0)
 			{
-//				controller.getAcceptOverlay().addGetResource(resource, Math.abs(amount));
+				controller.getAcceptOverlay().addGetResource(resource, Math.abs(amount));
 			}
 			else
 				continue;	

@@ -78,7 +78,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	//---------------------------------------------------------------------------------
 	@Override
 	public void startTrade() {
-		if (!ModelFacade.getInstance().getState().equals("Playing"))
+		if (ModelFacade.getInstance().getState().equals("Playing"))
 		{
 			offerState = new TradeOfferState(this);
 			if (firstRun) {
@@ -113,13 +113,13 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void sendTradeOffer() {
 
-//		if (ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
-//		{
+		if (ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
+		{
 			ModelFacade.getInstance().offerTrade(offerState.getRecipient(), offerState.getOffer());
 			getTradeOverlay().closeModal();
 			getWaitOverlay().setMessage("Waiting for recipient response.");
 			getWaitOverlay().showModal();
-//		}
+		}
 	}
 
 	@Override
@@ -150,7 +150,6 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	//---------------------------------------------------------------------------------
 	@Override
 	public void acceptTrade(boolean willAccept) {
-
 		ModelFacade.getInstance().acceptTrade(willAccept);
 		getAcceptOverlay().closeModal();
 	}
@@ -161,15 +160,17 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	{
 		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
 		
-		if (this.getWaitOverlay().isModalShowing()) this.getWaitOverlay().closeModal();
+		if (offer == null && this.getWaitOverlay().isModalShowing())
+		{
+			this.getWaitOverlay().closeModal();
+		}
 		
 		if (offer != null && offer.getReciever() == ModelFacade.getInstance().getPlayerInfo().getPlayerIndex())
 		{
-			System.out.println("========TRADEOFFER: " + offer);
 			
-			//boolean canAccept = ModelFacade.getInstance().canAcceptTrade();
+			boolean canAccept = ModelFacade.getInstance().canAcceptTrade();
 			acceptState = new AcceptTradeState(this);
-			acceptState.updateOverlay(true);
+			acceptState.updateOverlay(canAccept);
 			
 		}
 		

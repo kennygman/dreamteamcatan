@@ -58,9 +58,8 @@ public class RollController extends Controller implements IRollController, Obser
 			int total = dice1 + dice2;
 			resultView.setRollValue(total);
 			getResultView().showModal();
+                        
 			ModelFacade.getInstance().rollNumber(dice1, dice2);
-			
-			//this.getResultView().closeModal();
 		}
 	}
 	
@@ -76,10 +75,8 @@ public class RollController extends Controller implements IRollController, Obser
 			@Override
 			public void run()
 			{
-				
 				getRollView().closeModal();
 				rollDice();
-				
 			}
 			
 		}
@@ -95,8 +92,6 @@ public class RollController extends Controller implements IRollController, Obser
         {
         	if(ModelFacade.getInstance().CanRollNumber())
         	{
-        		
-        		//this.getRollView().closeModal();
         		hasRolled = false;
         		this.getRollView().showModal();
         		this.runRollTimer();

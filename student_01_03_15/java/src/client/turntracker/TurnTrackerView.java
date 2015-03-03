@@ -4,6 +4,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import model.ModelFacade;
 import shared.definitions.*;
 import client.base.*;
 import client.catan.*;
@@ -131,17 +132,20 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 	@Override
 	public void updateGameState(String stateMessage, boolean enable) {
 
-		if(stateMessage.equals("Rolling"))
+		if(ModelFacade.getInstance().isPlayerTurn())
 		{
-			gameStatePanel.updateGameState("Please Roll", enable);	
-		}
-		else if( stateMessage.equals("Playing"))
-		{
-			gameStatePanel.updateGameState("Finish Turn", enable);
+			if(stateMessage.equals("Rolling"))
+			{
+				gameStatePanel.updateGameState("Please Roll", enable);	
+			}
+			else
+			{
+				gameStatePanel.updateGameState("Finish Turn", enable);
+			}
 		}
 		else 
 		{
-			gameStatePanel.updateGameState("Waiting for other players...", enable);
+			gameStatePanel.updateGameState("Waiting for other players...", false);
 		}
 	}
 	

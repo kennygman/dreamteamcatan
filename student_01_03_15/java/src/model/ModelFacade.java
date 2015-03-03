@@ -531,15 +531,13 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void finishTurn()
 	{
 		Player p = game.getPlayer();
-                GameModelResponse response = proxy.finishTurn(
-				new FinishTurnParam(p.getPlayerIndex()));
-                if(response.isValid())
-                {
-                    Game newGame = response.getGame();
-                    p.setNewDevCards(newGame.getPlayers()[p.getPlayerIndex()].getNewDevCards());
-                    p.setOldDevCards(newGame.getPlayers()[p.getPlayerIndex()].getOldDevCards());
-                    game.getTurnTracker().setCurrentTurn(newGame.getTurnTracker().getCurrentTurn());
-                }
+        GameModelResponse response = proxy.finishTurn(new FinishTurnParam(p.getPlayerIndex()));
+        if(response.isValid())
+        {
+        	game = response.getGame();
+            updateGameModel();
+            
+        }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -552,8 +550,7 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     Game newGame = response.getGame();
-                    p.setNewDevCards(newGame.getPlayers()[p.getPlayerIndex()].getNewDevCards());
-                    p.setOldDevCards(newGame.getPlayers()[p.getPlayerIndex()].getOldDevCards());
+	                updateGameModel();
                 }
 	}
 

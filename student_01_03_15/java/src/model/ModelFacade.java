@@ -39,9 +39,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	private PlayerInfo player;
 	private GameInfo gameInfo;
 	private boolean hasJoined = false;
-        private boolean startRoad = true;
-        private boolean startSettlement = false;
-        private boolean hasPlayedDevCard;
+    private boolean startRoad = true;
+    private boolean startSettlement = false;
+    private boolean hasPlayedDevCard;
+    private boolean hasRolled;
 
 	public ModelFacade(IProxy proxy)
 	{
@@ -182,7 +183,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanRollNumber()
 	{
-		return (this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Rolling"));
+		boolean result = (this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Rolling") && !hasRolled);
+		if(result)
+		{
+			hasRolled = true;
+		}
+		return result;
 	}
 
 	//--------------------------------------------------------------------------------
@@ -460,11 +466,12 @@ public class ModelFacade extends Observable implements IModelFacade
 
 		int playerIndex = this.getPlayerInfo().getPlayerIndex();
 		GameModelResponse response = proxy.rollNumber(new RollNumParam(playerIndex, total));
-                if(response.isValid())
-                {
-                    updateGameModel();
-                    hasPlayedDevCard = false;
-                }
+        if(response.isValid())
+        {
+            updateGameModel();
+            hasPlayedDevCard = false;
+        }
+                
 	}
         
 
@@ -564,7 +571,7 @@ public class ModelFacade extends Observable implements IModelFacade
         {
         	game = response.getGame();
             updateGameModel();
-            
+            hasRolled = false;
         }
 	}
 

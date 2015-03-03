@@ -86,7 +86,7 @@ public class RollResultView extends OverlayView implements IRollResultView {
 			if (e.getSource() == okayButton) {
 				
 				closeModal();
-                                ModelFacade.getInstance().rollNumber(total, 0);
+                ModelFacade.getInstance().rollNumber(total, 0);
 			}
 		}	
 	};

@@ -54,10 +54,11 @@ public class RollController extends Controller implements IRollController, Obser
 		{
 			timer.cancel();
 			Random generator = new Random(System.currentTimeMillis());
-			int dice1 = generator.nextInt(6 - 1 + 1) + 1;
-			int dice2 = generator.nextInt(6 - 1 + 1) + 1;
+			int dice1 = generator.nextInt(6) + 1;
+			int dice2 = generator.nextInt(6) + 1;
 			int total = dice1 + dice2;
 			resultView.setRollValue(total);
+			
 			getResultView().showModal();
 		} 
 		catch (IllegalStateException e)
@@ -81,10 +82,10 @@ public class RollController extends Controller implements IRollController, Obser
 			@Override
 			public void run()
 			{
-                                if(getRollView().isModalShowing())
-                                {
-                                    getRollView().closeModal();
-                                }
+                if(getRollView().isModalShowing())
+                {
+                    getRollView().closeModal();
+                }
 				rollDice();
 			}
 		}

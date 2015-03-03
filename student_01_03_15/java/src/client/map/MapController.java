@@ -8,7 +8,6 @@ import client.base.*;
 import client.data.*;
 import model.Game;
 import model.ModelFacade;
-import model.TurnTracker;
 import model.board.Board;
 import model.board.City;
 import model.board.Hex;
@@ -59,7 +58,6 @@ public class MapController extends Controller implements IMapController , Observ
             
             if(ModelFacade.getInstance().isPlayerTurn())
             {
-                System.out.println("Player Turn in init: " + ModelFacade.getInstance().getGame().getTurnTracker().getCurrentTurn());
                 switch(status)
                 {
                     case "Robbing": 
@@ -68,14 +66,27 @@ public class MapController extends Controller implements IMapController , Observ
                         break;
                     }  
                     case "FirstRound": 
+                    case "SecondRound":
                     {
-                        System.out.println("in case");
-                        startMove(PieceType.ROAD, true, false);
-                        break;
-                    }
-                    case "SecondRound": 
-                    {
-                        startMove(PieceType.ROAD, true, false);
+                        if(ModelFacade.getInstance().checkGameFull())
+                        {
+                            if(ModelFacade.getInstance().isSetUpRoad() && !ModelFacade.getInstance().isSetUpSettlement())
+                            {
+                                startMove(PieceType.ROAD, true, false);
+                                ModelFacade.getInstance().setSetUpRoad(false);
+                            }
+                            else if(!ModelFacade.getInstance().isSetUpRoad() && ModelFacade.getInstance().isSetUpSettlement())
+                            {
+                                startMove(PieceType.SETTLEMENT, true, false);
+                                ModelFacade.getInstance().setSetUpSettlement(false);
+                            }
+                            else if(ModelFacade.getInstance().isSetUpRoad() && ModelFacade.getInstance().isSetUpSettlement())
+                            {
+                                ModelFacade.getInstance().setSetUpRoad(true);
+                                ModelFacade.getInstance().setSetUpSettlement(false);
+                                ModelFacade.getInstance().finishTurn();
+                            }
+                        }
                         break;
                     }
                     case "Playing": break;
@@ -180,45 +191,35 @@ public class MapController extends Controller implements IMapController , Observ
 
 	public void placeRoad(EdgeLocation edgeLoc) 
         {
-            boolean isStartUp = false;
             boolean isFree = false;
             String status = ModelFacade.getInstance().getState();
             if(status.equals("FirstRound") || status.equals("SecondRound"))
             {
-                isStartUp = true;
                 isFree = true;
             }
             /*else if(Road Building)
             {
                 
             }*/
+            ModelFacade.getInstance().setSetUpSettlement(true);
             ModelFacade.getInstance().buildRoad(edgeLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeRoad(edgeLoc, player.getColor());
-            
-            if(isStartUp)
-            {
-                startMove(PieceType.SETTLEMENT, true, false);
-            }
 	}
 
 	public void placeSettlement(VertexLocation vertLoc) 
         {
             boolean isFree = false;
-            boolean isSetUp = false;
             String status = ModelFacade.getInstance().getState();
             if(status.equals("FirstRound") || status.equals("SecondRound"))
             {
                 isFree = true;
-                isSetUp = true;
             }
+            ModelFacade.getInstance().setSetUpSettlement(true);
+            ModelFacade.getInstance().setSetUpRoad(true);
             ModelFacade.getInstance().buildSettlement(vertLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeSettlement(vertLoc, player.getColor());
-            if(isSetUp)
-            {
-                ModelFacade.getInstance().finishTurn();
-            }
 	}
 
 	public void placeCity(VertexLocation vertLoc) 

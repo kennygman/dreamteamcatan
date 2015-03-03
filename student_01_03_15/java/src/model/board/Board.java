@@ -276,22 +276,16 @@ public class Board extends Observable
 	}
         
 	//--------------------------------------------------------------------------------
- 	public boolean hasNeighborRoad(EdgeLocation location, int playerIndex, boolean setup) //already normalized
+ 	public boolean hasNeighborRoad(EdgeLocation location, int playerIndex, String status) //already normalized
  	{
             boolean hasNeighbor = false;
-            if(setup)
+            if(status.equals("FirstRound") || status.equals("SecondRound"))
             {
                 //Check to see if the 2 vertexes both contain settlements already, else return true.
                 List<VertexLocation> vertices = location.getAdjacentVertices();
                 for(VertexLocation v : vertices)
                 {
-                    boolean isValid = true;
-                    if (containsStructure(v) || hasWaterVertex(v.getHexLoc(), v.getDir()) || hasNeighborStructure(v))
-                    {
-                        isValid = false;
-                    }
-                    
-                    if(isValid)
+                    if (!(containsStructure(v) || hasWaterVertex(v.getHexLoc(), v.getDir()) || hasNeighborStructure(v)))
                     {
                         hasNeighbor = true;
                         break;

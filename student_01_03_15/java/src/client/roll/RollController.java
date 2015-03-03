@@ -3,6 +3,7 @@ package client.roll;
 import java.util.Random;
 
 import client.base.*;
+import client.poller.Poller;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -19,6 +20,7 @@ public class RollController extends Controller implements IRollController, Obser
 
 	private IRollResultView resultView;
 	private Timer timer;
+
 
 	/**
 	 * RollController constructor
@@ -46,15 +48,29 @@ public class RollController extends Controller implements IRollController, Obser
 	}
 	
 	@Override
-	public void rollDice(){
-		timer.cancel();
-		Random generator = new Random(System.currentTimeMillis());
-		int dice1 = generator.nextInt(6 - 1 + 1) + 1;
-		int dice2 = generator.nextInt(6 - 1 + 1) + 1;
-		int total = dice1 + dice2;
-		resultView.setRollValue(total);
-		getResultView().showModal();
-		ModelFacade.getInstance().rollNumber(dice1, dice2);
+	public void rollDice() {
+
+		try
+		{
+			timer.cancel();
+			Random generator = new Random(System.currentTimeMillis());
+			int dice1 = generator.nextInt(6 - 1 + 1) + 1;
+			int dice2 = generator.nextInt(6 - 1 + 1) + 1;
+			int total = dice1 + dice2;
+			resultView.setRollValue(total);
+			getResultView().showModal();
+                        
+
+		} 
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+
+		}
+		
+		
+			
 	}
 	
 	public void runRollTimer()
@@ -69,16 +85,15 @@ public class RollController extends Controller implements IRollController, Obser
 			@Override
 			public void run()
 			{
-				
 				getRollView().closeModal();
 				rollDice();
-				
 			}
 			
 		}
+		
 		TimerToDo task = new TimerToDo(this);
-
-			timer.schedule(task, 5000);
+		timer = new Timer();
+		timer.schedule(task, 5000);
 	}
 	
 
@@ -86,8 +101,9 @@ public class RollController extends Controller implements IRollController, Obser
         public void update(Observable o, Object o1) 
         {
         	if(ModelFacade.getInstance().CanRollNumber())
-        	{
+        	{        		
         		//this.getRollView().closeModal();
+
         		this.getRollView().showModal();
         		this.runRollTimer();
         	}

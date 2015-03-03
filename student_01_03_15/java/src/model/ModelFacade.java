@@ -10,6 +10,7 @@ import shared.locations.VertexLocation;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
 import client.data.RobPlayerInfo;
+import client.poller.Poller;
 import client.proxy.IProxy;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	private Game game;
 	private PlayerInfo player;
 	private GameInfo gameInfo;
-        private boolean startRoad;
-        private boolean startSettlement;
+        private boolean startRoad = true;
+        private boolean startSettlement = false;
 
 	public ModelFacade(IProxy proxy)
 	{
@@ -178,14 +179,14 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean canPlaceRoad(EdgeLocation edgeLoc, boolean free)
 	{
-            if (!isPlayerTurn()) {System.out.println("Player Turn in can: " + game.getTurnTracker().getCurrentTurn()); return false;}
+            if (!isPlayerTurn()) {return false;}
             EdgeLocation edge = edgeLoc.getNormalizedLocation();
             Board board = game.getBoard();
 
-            if (board.containsRoad(edge)) {System.out.println("contains Road"); return false;}
-            else if (!free && !CanBuyRoad()) {System.out.println("Can't buy"); return false;}
-            else if (board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) {System.out.println("on water"); return false;}
-            else if (board.hasNeighborRoad(edge, player.getPlayerIndex(), free))  {System.out.println("doesn't have neighbor Road"); return true;}
+            if (board.containsRoad(edge)) {return false;}
+            else if (!free && !CanBuyRoad()) {return false;}
+            else if (board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) {return false;}
+            else if (board.hasNeighborRoad(edge, player.getPlayerIndex(), getState()))  {return true;}
 			
              return false;
 	}	
@@ -194,15 +195,15 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean canPlaceSettlement(VertexLocation vertLoc, boolean isSetup)
 	{
-		if (!isPlayerTurn()) {System.out.println("Can't play settlement");return false;}
+		if (!isPlayerTurn()) {return false;}
 		VertexLocation vertex = vertLoc.getNormalizedLocation();
                 Board board =  game.getBoard();
 		
-		if ((!isSetup && !CanBuySettlement())){System.out.println("Can't buy"); return false;}
-                else if (board.containsStructure(vertex)){System.out.println("Already contains structure"); return false;}
-                else if (board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir())) {System.out.println("On water"); return false;}
-                else if (!board.hasNeighborRoad(vertex, player.getPlayerIndex())) {System.out.println("Doesn't have connected road"); return false;}
-                else if (board.hasNeighborStructure(vertex)) {System.out.println("Has neighboring structure"); return false;}
+		if ((!isSetup && !CanBuySettlement())){return false;}
+                else if (board.containsStructure(vertex)){return false;}
+                else if (board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir())) {return false;}
+                else if (!board.hasNeighborRoad(vertex, player.getPlayerIndex())) {return false;}
+                else if (board.hasNeighborStructure(vertex)) {return false;}
 		
 		return true;
 	}
@@ -300,7 +301,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanFinishTurn()
 	{
-		return !canPlay();
+		return canPlay();
 	}
 
 	//--------------------------------------------------------------------------------
@@ -357,7 +358,7 @@ public class ModelFacade extends Observable implements IModelFacade
                 else if (game.getBoard().containsRoad(spot2)) {System.out.println("Can't place spot2"); return false;}
                 else if (spot1.equals(spot2)) {System.out.println("Spot1 and 2 are the same"); return false;}
 		
-		if (game.getBoard().hasNeighborRoad(spot2, game.getPlayer().getPlayerIndex(), false))
+		if (game.getBoard().hasNeighborRoad(spot2, game.getPlayer().getPlayerIndex(), getState()))
 		{
 			
 			return true;
@@ -412,7 +413,6 @@ public class ModelFacade extends Observable implements IModelFacade
                     Game newGame = response.getGame();
                     if (!accept) return;
                     game.setTradeOffer(newGame.getTradeOffer());
-                    //update(newGame);
                     updateGameModel();
                 }
 	}
@@ -434,7 +434,14 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public void rollNumber(int d1, int d2)
 	{
-		proxy.rollNumber(new RollNumParam(d1, d2));
+
+		int summedDie = d1 + d2;
+		int playerIndex = this.getPlayerInfo().getPlayerIndex();
+		GameModelResponse response = proxy.rollNumber(new RollNumParam(playerIndex, summedDie));
+                if(response.isValid())
+                {
+                    updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -473,8 +480,7 @@ public class ModelFacade extends Observable implements IModelFacade
 				new BuildCityParam(game.getPlayer().getPlayerIndex(), vert));
                 if(response.isValid())
                 {
-                    Game newGame = response.getGame();
-                    //(newGame);
+                    game = response.getGame();
                     updateGameModel();
                 }
 	}
@@ -487,9 +493,7 @@ public class ModelFacade extends Observable implements IModelFacade
 			game.getPlayer().getPlayerIndex(), receiver, resources));
                 if(response.isValid())
                 {
-                    Game newGame = response.getGame();
-                    game.setTradeOffer(newGame.getTradeOffer());
-                    //update(newGame);
+                    game = response.getGame();
                     updateGameModel();
                 }
 	}
@@ -531,15 +535,13 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void finishTurn()
 	{
 		Player p = game.getPlayer();
-                GameModelResponse response = proxy.finishTurn(
-				new FinishTurnParam(p.getPlayerIndex()));
-                if(response.isValid())
-                {
-                    Game newGame = response.getGame();
-                    p.setNewDevCards(newGame.getPlayers()[p.getPlayerIndex()].getNewDevCards());
-                    p.setOldDevCards(newGame.getPlayers()[p.getPlayerIndex()].getOldDevCards());
-                    game.getTurnTracker().setCurrentTurn(newGame.getTurnTracker().getCurrentTurn());
-                }
+        GameModelResponse response = proxy.finishTurn(new FinishTurnParam(p.getPlayerIndex()));
+        if(response.isValid())
+        {
+        	game = response.getGame();
+            updateGameModel();
+            
+        }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -552,8 +554,7 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     Game newGame = response.getGame();
-                    p.setNewDevCards(newGame.getPlayers()[p.getPlayerIndex()].getNewDevCards());
-                    p.setOldDevCards(newGame.getPlayers()[p.getPlayerIndex()].getOldDevCards());
+	                updateGameModel();
                 }
 	}
 
@@ -565,8 +566,7 @@ public class ModelFacade extends Observable implements IModelFacade
 			game.getPlayer().getPlayerIndex(), victimIndex, location));
                 if(response.isValid())
                 {
-                    Game newGame = response.getGame();
-                    //update(newGame);
+                    game = response.getGame();
                     updateGameModel();
                 }
 	}
@@ -582,6 +582,7 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     Game newGame = response.getGame();
                     p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+                    updateGameModel();
                 }
 	}
 
@@ -599,6 +600,7 @@ public class ModelFacade extends Observable implements IModelFacade
                     game.getBoard().setRoads(newGame.getBoard().getRoads());
                     game.getBoard().sort();
                     game.getTurnTracker().setLongestRoad(newGame.getTurnTracker().getLongestRoad());
+                    updateGameModel();
                 }
 	}
 
@@ -613,6 +615,7 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     Game newGame = response.getGame();
                     p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
+                    updateGameModel();
                 }
 	}
 
@@ -627,17 +630,31 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     Game newGame = response.getGame();
                     p.setVictoryPoints(newGame.getPlayers()[p.getPlayerIndex()].getVictoryPoints());
+                    updateGameModel();
                 }
 	}
-
-//	public void update(Game newGame)
-//	{
-//		Player p = newGame.getPlayer();
-//		p.update(newGame.getPlayers()[p.getPlayerIndex()]);
-//                game.update(newGame);
-//                modelChanged();
-//	}
-	
+        
+        //--------------------------------------------------------------------------------        
+        public boolean isSetUpRoad()
+        {
+            return startRoad;
+        }
+        
+        public boolean isSetUpSettlement()
+        {
+            return startSettlement;
+        }
+        
+        public void setSetUpRoad(boolean s)
+        {
+            startRoad = s;
+        }
+        
+        public void setSetUpSettlement(boolean s)
+        {
+            startSettlement = s;
+        }
+        
 	//================================================================================
 	// MISC PROXY FUNCTIONS
 	//================================================================================
@@ -675,6 +692,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     this.player.setColor(CatanColor.stringToColor(params.getColor()));
+                    //this.updateGameModel();
+                    
                 }
 		return response;
 	}

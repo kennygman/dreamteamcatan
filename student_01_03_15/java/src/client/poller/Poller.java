@@ -38,7 +38,8 @@ public class Poller
 	{
 		this.proxyServer = proxyServer;
 		this.timer = new Timer();
-		this.clientVersion = ModelFacade.getInstance().getGame().getVersion();
+		//this.clientVersion = ModelFacade.getInstance().getGame().getVersion();
+		this.clientVersion = 0;
 		this.timesTimerRan = 0;
 	}
 	

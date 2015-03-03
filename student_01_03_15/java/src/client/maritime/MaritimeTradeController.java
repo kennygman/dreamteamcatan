@@ -114,19 +114,20 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	@Override
 	public void makeTrade() {
 
-		if (ModelFacade.getInstance().CanMaritimeTrade(
+/*		if (ModelFacade.getInstance().CanMaritimeTrade(
 				ports.get(ResourceType.getName(giveResource)),
 				ResourceConverter.getName(giveResource),
 				ResourceConverter.getName(getResource)
 				)
 			)
 		{
-			ModelFacade.getInstance().maritimeTrade(
+*/
+		ModelFacade.getInstance().maritimeTrade(
 				ports.get(ResourceType.getName(giveResource)),
 				ResourceConverter.getName(giveResource),
 				ResourceConverter.getName(getResource)
 				);
-		}
+//		}
 		getTradeOverlay().closeModal();
 	}
 

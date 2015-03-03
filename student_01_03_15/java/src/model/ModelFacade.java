@@ -318,7 +318,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean CanBuyDevCard()
 	{
 		if (!canPlay()) return false;
-		if (game.getBank().size() < 1) return false;
+		if (game.getDeck().size() < 1) return false;
 		Resources hand = game.getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WHEAT) > 0 &&
 				hand.getResourceAmount(ResourceType.SHEEP) > 0 &&

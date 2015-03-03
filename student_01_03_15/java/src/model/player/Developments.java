@@ -30,6 +30,11 @@ public class Developments
 
 		}
 	}
+        
+        public int size()
+        {
+            return (monopoly + monument + roadBuilding + soldier + yearOfPlenty);
+        }
 	public int getMonopoly()
 	{
 		return monopoly;

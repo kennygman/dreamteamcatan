@@ -88,7 +88,6 @@ public class DevCardController extends Controller implements IDevCardController,
 		if(ModelFacade.getInstance().CanUseMonopoly(resource.toString()))
 		{
 			ModelFacade.getInstance().playMonopolyCard(resource.toString());
-            ModelFacade.getInstance().updateGameModel();
 		}
 		else
 		{
@@ -102,7 +101,6 @@ public class DevCardController extends Controller implements IDevCardController,
 		if(ModelFacade.getInstance().CanUseMonument())
 		{
 			ModelFacade.getInstance().playMonumentCard();
-            ModelFacade.getInstance().updateGameModel();
 		}
 		else
 		{
@@ -154,7 +152,8 @@ public class DevCardController extends Controller implements IDevCardController,
 			getPlayCardView().setCardEnabled(DevCardType.MONOPOLY, ModelFacade.getInstance().canPlayDevCard(DevCardType.MONOPOLY));
 			getPlayCardView().setCardAmount(DevCardType.MONOPOLY, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonopoly());
 	
-			getPlayCardView().setCardEnabled(DevCardType.MONUMENT,ModelFacade.getInstance().canPlayDevCard(DevCardType.MONUMENT));
+			//getPlayCardView().setCardEnabled(DevCardType.MONUMENT,ModelFacade.getInstance().canPlayDevCard(DevCardType.MONUMENT));
+			getPlayCardView().setCardEnabled(DevCardType.MONUMENT,true);
 			getPlayCardView().setCardAmount(DevCardType.MONUMENT, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonument());
 	
 			getPlayCardView().setCardEnabled(DevCardType.ROAD_BUILD, ModelFacade.getInstance().canPlayDevCard(DevCardType.ROAD_BUILD));

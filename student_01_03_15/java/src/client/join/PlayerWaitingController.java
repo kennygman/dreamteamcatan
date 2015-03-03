@@ -29,12 +29,11 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
 	@Override
 	public void start() {
-            if(!ModelFacade.getInstance().checkGameFull())
-            {
-                    getView().showModal();
-                    //getView().setPlayers(ModelFacade.getInstance().getGameInfo().getPlayers().toArray(new PlayerInfo[0]));
-                    getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
-            }
+        if(!ModelFacade.getInstance().checkGameFull())
+        {
+                getView().showModal();
+                getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
+        }
 	}
 
 	@Override
@@ -56,6 +55,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
+		getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
 		
 	}
 

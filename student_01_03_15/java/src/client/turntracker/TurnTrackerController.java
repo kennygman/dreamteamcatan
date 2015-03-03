@@ -17,15 +17,13 @@ import client.poller.Poller;
  */
 public class TurnTrackerController extends Controller implements ITurnTrackerController, Observer {
 // TODO: add poller to this class :)
-	private Poller poller;
 	
 	private boolean firstPass;
 	public TurnTrackerController(ITurnTrackerView view) {		
 		super(view);
 		try
 		{
-			poller = new Poller(ModelFacade.getInstance().getProxy());
-                        poller.start();
+			ModelFacade.getInstance().setPoller(new Poller(ModelFacade.getInstance().getProxy()));
 		} catch (Exception e)
 		{
 			// TODO Auto-generated catch block
@@ -63,15 +61,15 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		if (firstPass) {
 			firstPass = false;
 			getView().setLocalPlayerColor(playerInfo.getColor());
-			for (Player p : ModelFacade.getInstance().getGame().getPlayers())
+			Player[] players = ModelFacade.getInstance().getGame().getPlayers();
+			for (Player p : players)
 			{
-				getView().initializePlayer(
-						p.getPlayerIndex(),
-						p.getName(),
-						p.getColor()
-						);
+				if(p != null)
+				{
+					getView().initializePlayer(p.getPlayerIndex(),p.getName(),p.getColor());
+				}
 			}
-			
+           
 		}
 		
 		getView().updatePlayer(
@@ -83,7 +81,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 				);
 		
 		getView().updateGameState(tracker.getStatus(), true);
-		this.poller.setClientVersion(ModelFacade.getInstance().getGame().getVersion());
+		ModelFacade.getInstance().getPoller().setClientVersion(ModelFacade.getInstance().getGame().getVersion());
 		
 //		System.out.println("TurnTracker Game Status: " + tracker.getStatus());
 //		System.out.println("Current Turn: " + ModelFacade.getInstance().getGame()

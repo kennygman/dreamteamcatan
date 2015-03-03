@@ -97,8 +97,8 @@ public class RightPanel extends JPanel
                 public void execute()
                 {
                         boolean isFree = false;
-                        boolean allowDisconnected = false;
-                        mapController.startMove(pieceType, isFree, allowDisconnected);
+                        boolean allowCancel = true;
+                        mapController.startMove(pieceType, isFree, allowCancel);
                 }
             };
 	}

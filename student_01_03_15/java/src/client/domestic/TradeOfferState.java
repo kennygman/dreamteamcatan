@@ -38,7 +38,7 @@ public class TradeOfferState
 		resetTradeOffer();
 
 
-		addTempResources();	// REMOVE TEST
+		//addTempResources();	// REMOVE TEST
 	}
 	
 	//---------------------------------------------------------------------------------

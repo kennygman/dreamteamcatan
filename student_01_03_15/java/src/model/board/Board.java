@@ -450,8 +450,8 @@ public class Board extends Observable
 	//--------------------------------------------------------------------------------
  	public List<Port> getPorts(int index)
  	{
- 		List<Port> playerPorts = new ArrayList<>();
- 		return playerPorts;
+ 		List<Port> list = playerPorts.get(index);
+ 		return list;
  	}
 	
 	//--------------------------------------------------------------------------------

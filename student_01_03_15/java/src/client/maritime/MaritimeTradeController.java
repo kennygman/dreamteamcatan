@@ -1,7 +1,9 @@
 package client.maritime;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -9,6 +11,7 @@ import model.ModelFacade;
 import model.board.Port;
 import model.player.Resources;
 import shared.definitions.*;
+import shared.parameters.MaritimeTradeParam;
 import client.base.*;
 
 
@@ -17,16 +20,17 @@ import client.base.*;
  */
 public class MaritimeTradeController extends Controller implements IMaritimeTradeController, Observer
 {
-	private String giveResource;
-	private String getResource;
+	private ResourceType giveResource;
+	private ResourceType getResource;
 	private int ratio = 4;
 	private IMaritimeTradeOverlay tradeOverlay;
+	private Map<ResourceType, Integer> ports;
+	private List<ResourceType> giveResources;
 	
 	public MaritimeTradeController(IMaritimeTradeView tradeView, IMaritimeTradeOverlay tradeOverlay) 
 	{
 		
 		super(tradeView);
-
 		setTradeOverlay(tradeOverlay);
 		ModelFacade.getInstance().addObserver(this);
 	}
@@ -47,24 +51,45 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	@Override
 	public void startTrade() 
 	{
-		List<Port> ports = ModelFacade.getInstance().getPorts();
-		List<ResourceType> giveResources = new ArrayList<ResourceType>();
+		ports = new HashMap<>();
+		List<Port> portList = ModelFacade.getInstance().getPorts();
+		giveResources = new ArrayList<ResourceType>();
 		ResourceType[] resourceList = Resources.getResourceList();
-		
 		Resources resources = ModelFacade.getInstance().getGame().getPlayer().getResources();
-		for (ResourceType r : resourceList)
-		{
-			if (resources.getResourceAmount(r) >=4 )
-				giveResources.add(r);
-		}
+		resources.addResource(ResourceType.WOOD, 5);
 		
-		if (ports != null) {
-			for (Port p : ports)
+		if (ModelFacade.getInstance().getState().equals("Playing"))
+		{
+			for (ResourceType r : resourceList)
 			{
-				giveResources.add(ResourceConverter.getType(p.getResource()));
+				if (resources.getResourceAmount(r) >=4 )
+				{
+					ports.put(r, 4);
+					giveResources.add(r);
+				}
 			}
+			
+			if (portList != null)
+			{
+				for (Port p : portList)
+				{
+					ResourceType type = ResourceConverter.getType(p.getResource());
+					ports.put(type, p.getRatio());
+					if (resources.getResourceAmount(type) >= p.getRatio()) {
+						giveResources.add(type);
+					}
+				}
+			}
+			unsetGiveValue();
 		}
-		getTradeOverlay().showGiveOptions(giveResources.toArray(new ResourceType[0]));
+		else
+		{
+			getTradeOverlay().setStateMessage("");
+			getTradeOverlay().hideGiveOptions();
+			getTradeOverlay().hideGetOptions();
+			getTradeOverlay().setTradeEnabled(false);
+		}
+
 		getTradeOverlay().showModal();
 
 	}
@@ -72,7 +97,19 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	@Override
 	public void makeTrade() {
 
-		ModelFacade.getInstance().maritimeTrade(ratio,getResource,giveResource);
+		if (ModelFacade.getInstance().CanMaritimeTrade(
+				ports.get(giveResource),
+				ResourceConverter.getName(giveResource),
+				ResourceConverter.getName(getResource)
+				)
+			)
+		{
+			ModelFacade.getInstance().maritimeTrade(
+				ports.get(giveResource),
+				ResourceConverter.getName(giveResource),
+				ResourceConverter.getName(getResource)
+				);
+		}
 		getTradeOverlay().closeModal();
 	}
 
@@ -85,34 +122,42 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	@Override
 	public void setGetResource(ResourceType resource) 
 	{
-		//ModelFacade.getInstance().maritimeTrade(ratio, , outResource);
-		getResource = ResourceConverter.getName(resource);
-	}
+		getResource = resource;
+		getTradeOverlay().selectGetOption(resource, 1);
+		getTradeOverlay().setStateMessage("Accept");
+		getTradeOverlay().setTradeEnabled(true);
+}
 
 	@Override
 	public void setGiveResource(ResourceType resource) 
 	{
-		giveResource = ResourceConverter.getName(resource);
-		
-		getRatio();
-		
-		if(ModelFacade.getInstance().CanMaritimeTrade(ratio, getResource, giveResource))
-		{
-			
-		}
+		giveResource = resource;
+		getTradeOverlay().selectGiveOption(resource, ports.get(resource));
+		unsetGetValue();
 	}
-	public void getRatio()
-	{
-		
-	}
+	
 	@Override
 	public void unsetGetValue() {
+		List<ResourceType> getList = new ArrayList<ResourceType>();
+		ResourceType[] resourceList = Resources.getResourceList();
+		
+		for (ResourceType r : resourceList)
+		{
+			if (ModelFacade.getInstance().getGame().getBank().getResourceAmount(r) > 0)
+				getList.add(r);
+		}
 
+		getTradeOverlay().setStateMessage("Select resource to Get");
+		getTradeOverlay().showGetOptions(getList.toArray(new ResourceType[0]));
+		getTradeOverlay().setTradeEnabled(false);
 	}
 
 	@Override
 	public void unsetGiveValue() {
-
+		getTradeOverlay().showGiveOptions(giveResources.toArray(new ResourceType[0]));
+		getTradeOverlay().setStateMessage("Select resource to Give");
+		getTradeOverlay().setTradeEnabled(false);
+		getTradeOverlay().hideGetOptions();
 	}
 
 	@Override
@@ -122,13 +167,6 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 		
 		getTradeView().enableMaritimeTrade(canTrade);
 		
-		//Get the players ports and resources and see if any have more than 4 or see if they have a port then matvh ratio with that?
-		
-		/*if(ModelFacade.getInstance().CanMaritimeTrade(ratio, inputResource, outResource))
-		{
-			getTradeView().enableMaritimeTrade(canTrade);
-		
-		}*/
 	}
 
 }

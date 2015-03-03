@@ -20,5 +20,10 @@ public enum PortType
         }
         return ht;
     }
+    public static PortType[] getPortList()
+    {
+    	PortType[] list = {WOOD, BRICK, SHEEP, WHEAT, ORE, THREE};
+    	return list;
+    }
 }
 

@@ -37,7 +37,7 @@ public class AcceptTradeState
 			else
 				continue;	
 		}
-		
+		controller.getAcceptOverlay().showModal();
 	}
 	
 }

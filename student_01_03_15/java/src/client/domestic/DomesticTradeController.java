@@ -167,11 +167,9 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		
 		if (offer != null && offer.getReciever() == ModelFacade.getInstance().getPlayerInfo().getPlayerIndex())
 		{
-			
 			boolean canAccept = ModelFacade.getInstance().canAcceptTrade();
 			acceptState = new AcceptTradeState(this);
 			acceptState.updateOverlay(canAccept);
-			
 		}
 		
 	}

@@ -39,7 +39,6 @@ public class JoinGameState
 		if (response.isValid())
 		{
 			setGameInfo();
-			ModelFacade.getInstance().updateGameModel();
 			/*try
 			{
 				System.out.println("==========POLLER STARTED");

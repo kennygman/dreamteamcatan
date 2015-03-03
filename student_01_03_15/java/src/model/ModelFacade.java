@@ -38,6 +38,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	private Game game;
 	private PlayerInfo player;
 	private GameInfo gameInfo;
+	private boolean hasJoined = false;
         private boolean startRoad = true;
         private boolean startSettlement = false;
         private boolean hasPlayedDevCard;
@@ -725,12 +726,21 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     this.player.setColor(CatanColor.stringToColor(params.getColor()));
+                    this.hasJoined = true;
                     //this.updateGameModel();
                     
                 }
 		return response;
 	}
 
+	public boolean isHasJoined()
+	{
+		return hasJoined;
+	}
+	public void setHasJoined(boolean hasJoined)
+	{
+		this.hasJoined = hasJoined;
+	}
 	//--------------------------------------------------------------------------------
 	public CreateGameResponse createGame(CreateGameParam params)
 	{

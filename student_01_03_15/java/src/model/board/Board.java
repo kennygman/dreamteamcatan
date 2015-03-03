@@ -281,7 +281,6 @@ public class Board extends Observable
             boolean hasNeighbor = false;
             if(status.equals("FirstRound") || status.equals("SecondRound"))
             {
-                System.out.println("in hasNeighbor");
                 //Check to see if the 2 vertexes both contain settlements already, else return true.
                 List<VertexLocation> vertices = location.getAdjacentVertices();
                 for(VertexLocation v : vertices)
@@ -296,7 +295,6 @@ public class Board extends Observable
             }
             else
             {
-                System.out.println("out hasNeighbor");
                 List<EdgeLocation> edgeLoc = location.getAdjacentEdges();
                 
                 for(EdgeLocation edge : edgeLoc)

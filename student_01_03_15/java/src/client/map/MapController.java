@@ -85,7 +85,7 @@ public class MapController extends Controller implements IMapController , Observ
                             else if(ModelFacade.getInstance().isSetUpRoad() && ModelFacade.getInstance().isSetUpSettlement())
                             {
                                 ModelFacade.getInstance().setSetUpRoad(true);
-                                ModelFacade.getInstance().setSetUpSettlement(true);
+                                ModelFacade.getInstance().setSetUpSettlement(false);
                                 ModelFacade.getInstance().finishTurn();
                             }
                         }
@@ -203,10 +203,10 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 
             }*/
+            ModelFacade.getInstance().setSetUpSettlement(true);
             ModelFacade.getInstance().buildRoad(edgeLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeRoad(edgeLoc, player.getColor());
-            ModelFacade.getInstance().setSetUpSettlement(true);
 	}
 
 	public void placeSettlement(VertexLocation vertLoc) 
@@ -217,11 +217,11 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 isFree = true;
             }
+            ModelFacade.getInstance().setSetUpSettlement(true);
+            ModelFacade.getInstance().setSetUpRoad(true);
             ModelFacade.getInstance().buildSettlement(vertLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeSettlement(vertLoc, player.getColor());
-            ModelFacade.getInstance().setSetUpSettlement(true);
-            ModelFacade.getInstance().setSetUpRoad(true);
 	}
 
 	public void placeCity(VertexLocation vertLoc) 

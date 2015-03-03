@@ -470,6 +470,7 @@ public class ModelFacade extends Observable implements IModelFacade
         {
             updateGameModel();
             hasPlayedDevCard = false;
+            this.hasRolled = true;
         }
                 
 	}
@@ -600,7 +601,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void playSoldierCard(int victimIndex, HexLocation location)
 	{
                 GameModelResponse response = proxy.playSoldier(new PlaySoldierParam(
-			game.getPlayer().getPlayerIndex(), victimIndex, location));
+                game.getPlayer().getPlayerIndex(), victimIndex, location));
                 if(response.isValid())
                 {
                     game = response.getGame();

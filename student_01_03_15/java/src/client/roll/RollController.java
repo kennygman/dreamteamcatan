@@ -3,6 +3,7 @@ package client.roll;
 import java.util.Random;
 
 import client.base.*;
+import client.poller.Poller;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -19,7 +20,7 @@ public class RollController extends Controller implements IRollController, Obser
 
 	private IRollResultView resultView;
 	private Timer timer;
-	boolean hasRolled = false;
+
 
 	/**
 	 * RollController constructor
@@ -48,9 +49,9 @@ public class RollController extends Controller implements IRollController, Obser
 	
 	@Override
 	public void rollDice() {
-		if(hasRolled == false)
+
+		try
 		{
-			hasRolled = true;
 			timer.cancel();
 			Random generator = new Random(System.currentTimeMillis());
 			int dice1 = generator.nextInt(6 - 1 + 1) + 1;
@@ -59,9 +60,15 @@ public class RollController extends Controller implements IRollController, Obser
 			resultView.setRollValue(total);
 			getResultView().showModal();
 			ModelFacade.getInstance().rollNumber(dice1, dice2);
-			
-			//this.getResultView().closeModal();
+		} 
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
 		}
+		
+		
+			
 	}
 	
 	public void runRollTimer()
@@ -97,7 +104,6 @@ public class RollController extends Controller implements IRollController, Obser
         	{
         		
         		//this.getRollView().closeModal();
-        		hasRolled = false;
         		this.getRollView().showModal();
         		this.runRollTimer();
         	}

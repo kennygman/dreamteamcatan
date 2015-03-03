@@ -3,6 +3,7 @@ package client.join;
 import shared.definitions.CatanColor;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
+import shared.response.StandardResponse;
 import model.ModelFacade;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
@@ -34,8 +35,8 @@ public class JoinGameState
 	public boolean joinGame(CatanColor color)
 	{
 		this.updateGameList();
-		
-		if (ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase())).isValid())
+		StandardResponse response = ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase()));
+		if (response.isValid())
 		{
 			setGameInfo();
 			ModelFacade.getInstance().updateGameModel();

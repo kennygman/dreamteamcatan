@@ -14,7 +14,6 @@ public class TurnTracker
 	{
 		this.setCurrentTurn(t.getCurrentTurn());
 		this.setStatus(t.getStatus());
-		System.out.println("constructor" + this.getStatus());
 		this.setLongestRoad(t.getLongestRoad());
 		this.setLargestArmy(t.getLargestArmy());
 	}

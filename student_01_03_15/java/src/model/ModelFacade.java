@@ -679,6 +679,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     this.player.setColor(CatanColor.stringToColor(params.getColor()));
+                    //this.updateGameModel();
+                    
                 }
 		return response;
 	}

@@ -25,6 +25,7 @@ public class MapController extends Controller implements IMapController , Observ
 	private IRobView robView;
         private boolean isRoadBuilding;
         private boolean isFirst;
+        private boolean isSoldier;
 	
 	public MapController(IMapView view, IRobView robView) 
         {
@@ -257,6 +258,7 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	public void playSoldierCard() 
         {	
+            isSoldier = true;
             startMove(PieceType.ROBBER, true, true);
 	}
 	
@@ -268,8 +270,15 @@ public class MapController extends Controller implements IMapController , Observ
 	}
 	
 	public void robPlayer(RobPlayerInfo victim) 
-        {	
-            ModelFacade.getInstance().robPlayer(victim.getLocation(), victim.getPlayerIndex());
+        {
+            if(isSoldier)
+            {
+                ModelFacade.getInstance().playSoldierCard(victim.getPlayerIndex(), victim.getLocation());
+            }
+            else
+            {
+                ModelFacade.getInstance().robPlayer(victim.getLocation(), victim.getPlayerIndex());
+            }
 	}
         
         @Override

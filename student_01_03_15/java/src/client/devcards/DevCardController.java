@@ -88,7 +88,7 @@ public class DevCardController extends Controller implements IDevCardController,
 		if(ModelFacade.getInstance().CanUseMonopoly(resource.toString()))
 		{
 			ModelFacade.getInstance().playMonopolyCard(resource.toString());
-                        ModelFacade.getInstance().updateGameModel();
+            ModelFacade.getInstance().updateGameModel();
 		}
 		else
 		{
@@ -102,7 +102,7 @@ public class DevCardController extends Controller implements IDevCardController,
 		if(ModelFacade.getInstance().CanUseMonument())
 		{
 			ModelFacade.getInstance().playMonumentCard();
-                        ModelFacade.getInstance().updateGameModel();
+            ModelFacade.getInstance().updateGameModel();
 		}
 		else
 		{

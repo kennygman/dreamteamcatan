@@ -111,33 +111,13 @@ public class DevCardController extends Controller implements IDevCardController,
 	@Override
 	public void playRoadBuildCard() 
 	{
-		
-		/*if(ModelFacade.getInstance().CanUseRoadBuilder(spot1, spot2))
-		{
-			ModelFacade.getInstance().playRoadCard(spot1, spot2);
-			roadAction.execute();
-		}
-		else
-		{
-			System.out.println("not allowed to use");
-		}*/
-		
+            roadAction.execute();
 	}
 
 	@Override
 	public void playSoldierCard() 
 	{
 		soldierAction.execute();
-		/*if(ModelFacade.getInstance().CanUseSoldier(victimIndex, location))
-		{
-			ModelFacade.getInstance().playSoldierCard(victimIndex, location);
-			
-		}
-		else
-		{
-			System.out.println("not allowed to use");
-		}*/
-	
 	}
 
 	@Override

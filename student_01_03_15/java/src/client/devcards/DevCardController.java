@@ -91,7 +91,7 @@ public class DevCardController extends Controller implements IDevCardController,
 		}
 		else
 		{
-			//throw exception or do something?
+			System.out.println("not allowed to use");
 		}
 	}
 
@@ -104,7 +104,7 @@ public class DevCardController extends Controller implements IDevCardController,
 		}
 		else
 		{
-			//throw exception or do something?
+			System.out.println("not allowed to use");
 		}
 	}
 
@@ -119,7 +119,7 @@ public class DevCardController extends Controller implements IDevCardController,
 		}
 		else
 		{
-			//throw exception or do something?
+			System.out.println("not allowed to use");
 		}*/
 		
 	}
@@ -127,14 +127,15 @@ public class DevCardController extends Controller implements IDevCardController,
 	@Override
 	public void playSoldierCard() 
 	{
+		soldierAction.execute();
 		/*if(ModelFacade.getInstance().CanUseSoldier(victimIndex, location))
 		{
 			ModelFacade.getInstance().playSoldierCard(victimIndex, location);
-			soldierAction.execute();
+			
 		}
 		else
 		{
-			//throw exception or do something?
+			System.out.println("not allowed to use");
 		}*/
 	
 	}
@@ -148,7 +149,7 @@ public class DevCardController extends Controller implements IDevCardController,
 		}
 		else
 		{
-			//throw exception or do something?
+			System.out.println("not allowed to use");
 		}
 	}
 

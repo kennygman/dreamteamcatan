@@ -48,10 +48,13 @@ public class Poller
 	 */
 	public void pollServer()
 	{
-		GameModelResponse game = proxyServer.getGameModel();
-		if(game.isValid())
+		if(ModelFacade.getInstance().getGame() != null)
 		{
-			this.serverVersion = game.getGame().getVersion();
+			GameModelResponse game = proxyServer.getGameModel();
+			if(game.isValid())
+			{
+				this.serverVersion = game.getGame().getVersion();
+			}
 		}
 	}
 

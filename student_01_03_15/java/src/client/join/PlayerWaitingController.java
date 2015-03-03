@@ -42,13 +42,12 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
             StandardResponse addAiResponse = ModelFacade.getInstance().addAi(param);
             if(addAiResponse.isValid())
             {
-                    //Have to get game id from proxy via facade because stupid game model doesn't even know it's id.
-                    if(ModelFacade.getInstance().checkGameFull())
-                    {
-                            getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
-                            getView().closeModal();
-                            ModelFacade.getInstance().updateGameModel();
-                    }
+                //Have to get game id from proxy via facade because stupid game model doesn't even know it's id.
+                if(ModelFacade.getInstance().checkGameFull())
+                {
+                        getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
+                        getView().closeModal();
+                }
             }
 	}
 
@@ -56,7 +55,6 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	public void update(Observable arg0, Object arg1)
 	{
 		getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
-		
 	}
 
 }

@@ -55,7 +55,8 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 		ResourceType[] resourceList = Resources.getResourceList();
 		Resources resources = ModelFacade.getInstance().getGame().getPlayer().getResources();
 		
-		resources.addResource(ResourceType.WOOD, 5);
+	//	resources.addResource(ResourceType.WOOD, 5); // TEST ADD 5 WOOD
+		
 		if (ModelFacade.getInstance().getState().equals("Playing"))
 		{
 			for (ResourceType type : resourceList)

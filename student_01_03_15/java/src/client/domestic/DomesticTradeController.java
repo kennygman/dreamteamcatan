@@ -113,13 +113,13 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void sendTradeOffer() {
 
-		if (ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
-		{
+//		if (ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
+//		{
 			ModelFacade.getInstance().offerTrade(offerState.getRecipient(), offerState.getOffer());
 			getTradeOverlay().closeModal();
 			getWaitOverlay().setMessage("Waiting for recipient response.");
 			getWaitOverlay().showModal();
-		}
+//		}
 	}
 
 	@Override

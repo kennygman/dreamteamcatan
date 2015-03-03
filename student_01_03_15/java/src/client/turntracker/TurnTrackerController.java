@@ -63,11 +63,14 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		if (firstPass) {
 			firstPass = false;
 			getView().setLocalPlayerColor(playerInfo.getColor());
-			getView().initializePlayer(
-					playerInfo.getPlayerIndex(),
-					playerInfo.getName(),
-					playerInfo.getColor()
-					);
+			for (Player p : ModelFacade.getInstance().getGame().getPlayers())
+			{
+				getView().initializePlayer(
+						p.getPlayerIndex(),
+						p.getName(),
+						p.getColor()
+						);
+			}
 			
 		}
 		
@@ -81,18 +84,10 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		
 		getView().updateGameState(tracker.getStatus(), true);
 		this.poller.setClientVersion(ModelFacade.getInstance().getGame().getVersion());
-		/*if(ModelFacade.getInstance().isPlayerTurn())
-		{
-			poller.stop();
-		}
-                else
-                {
-                    poller.start();
-                }*/
 		
-		System.out.println("TurnTracker Game Status: " + tracker.getStatus());
-		System.out.println("Current Turn: " + ModelFacade.getInstance().getGame()
-				.getPlayers()[tracker.getCurrentTurn()].getName());
+//		System.out.println("TurnTracker Game Status: " + tracker.getStatus());
+//		System.out.println("Current Turn: " + ModelFacade.getInstance().getGame()
+//				.getPlayers()[tracker.getCurrentTurn()].getName());
 	}
 
 	@Override

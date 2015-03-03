@@ -1,5 +1,8 @@
 package client.join;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import shared.parameters.AddAiParam;
 import shared.response.ListAIResponse;
 import shared.response.StandardResponse;
@@ -11,7 +14,7 @@ import client.data.PlayerInfo;
 /**
  * Implementation for the player waiting controller
  */
-public class PlayerWaitingController extends Controller implements IPlayerWaitingController {
+public class PlayerWaitingController extends Controller implements IPlayerWaitingController, Observer {
 
 	public PlayerWaitingController(IPlayerWaitingView view) {
             super(view);
@@ -48,6 +51,12 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
                             ModelFacade.getInstance().updateGameModel();
                     }
             }
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1)
+	{
+		
 	}
 
 }

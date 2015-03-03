@@ -84,7 +84,16 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 					}
 					else
 					{
-						// 3 for 1
+						for (ResourceType res : resourceList)
+						{
+							if (!ports.containsKey(ResourceType.getName(res)))
+								ports.put(ResourceType.getName(res), 3);
+
+							if (ports.get(ResourceType.getName(res)) > 3 )
+							{
+								ports.put(ResourceType.getName(res), 3);
+							}
+						}
 					}
 				}
 			}
@@ -106,14 +115,14 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	public void makeTrade() {
 
 		if (ModelFacade.getInstance().CanMaritimeTrade(
-				ports.get(giveResource),
+				ports.get(ResourceType.getName(giveResource)),
 				ResourceConverter.getName(giveResource),
 				ResourceConverter.getName(getResource)
 				)
 			)
 		{
 			ModelFacade.getInstance().maritimeTrade(
-				ports.get(giveResource),
+				ports.get(ResourceType.getName(giveResource)),
 				ResourceConverter.getName(giveResource),
 				ResourceConverter.getName(getResource)
 				);

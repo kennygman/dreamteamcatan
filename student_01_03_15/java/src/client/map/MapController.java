@@ -68,14 +68,27 @@ public class MapController extends Controller implements IMapController , Observ
                         break;
                     }  
                     case "FirstRound": 
+                    case "SecondRound":
                     {
-                        System.out.println("in case");
-                        startMove(PieceType.ROAD, true, false);
-                        break;
-                    }
-                    case "SecondRound": 
-                    {
-                        startMove(PieceType.ROAD, true, false);
+                        if(ModelFacade.getInstance().checkGameFull())
+                        {
+                            if(ModelFacade.getInstance().isSetUpRoad() && !ModelFacade.getInstance().isSetUpSettlement())
+                            {
+                                startMove(PieceType.ROAD, true, false);
+                                ModelFacade.getInstance().setSetUpRoad(false);
+                            }
+                            else if(!ModelFacade.getInstance().isSetUpRoad() && ModelFacade.getInstance().isSetUpSettlement())
+                            {
+                                startMove(PieceType.SETTLEMENT, true, false);
+                                ModelFacade.getInstance().setSetUpSettlement(false);
+                            }
+                            else if(ModelFacade.getInstance().isSetUpRoad() && ModelFacade.getInstance().isSetUpSettlement())
+                            {
+                                ModelFacade.getInstance().setSetUpRoad(true);
+                                ModelFacade.getInstance().setSetUpSettlement(true);
+                                ModelFacade.getInstance().finishTurn();
+                            }
+                        }
                         break;
                     }
                     case "Playing": break;
@@ -180,12 +193,10 @@ public class MapController extends Controller implements IMapController , Observ
 
 	public void placeRoad(EdgeLocation edgeLoc) 
         {
-            boolean isStartUp = false;
             boolean isFree = false;
             String status = ModelFacade.getInstance().getState();
             if(status.equals("FirstRound") || status.equals("SecondRound"))
             {
-                isStartUp = true;
                 isFree = true;
             }
             /*else if(Road Building)
@@ -195,30 +206,22 @@ public class MapController extends Controller implements IMapController , Observ
             ModelFacade.getInstance().buildRoad(edgeLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeRoad(edgeLoc, player.getColor());
-            
-            if(isStartUp)
-            {
-                startMove(PieceType.SETTLEMENT, true, false);
-            }
+            ModelFacade.getInstance().setSetUpSettlement(true);
 	}
 
 	public void placeSettlement(VertexLocation vertLoc) 
         {
             boolean isFree = false;
-            boolean isSetUp = false;
             String status = ModelFacade.getInstance().getState();
             if(status.equals("FirstRound") || status.equals("SecondRound"))
             {
                 isFree = true;
-                isSetUp = true;
             }
             ModelFacade.getInstance().buildSettlement(vertLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeSettlement(vertLoc, player.getColor());
-            if(isSetUp)
-            {
-                ModelFacade.getInstance().finishTurn();
-            }
+            ModelFacade.getInstance().setSetUpSettlement(true);
+            ModelFacade.getInstance().setSetUpRoad(true);
 	}
 
 	public void placeCity(VertexLocation vertLoc) 

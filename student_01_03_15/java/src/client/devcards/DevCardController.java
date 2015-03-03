@@ -111,13 +111,19 @@ public class DevCardController extends Controller implements IDevCardController,
 	@Override
 	public void playRoadBuildCard() 
 	{
-            roadAction.execute();
+            if(ModelFacade.getInstance().canUseRoadBuilderOfficial())
+            {
+                roadAction.execute();
+            }
 	}
 
 	@Override
 	public void playSoldierCard() 
 	{
-		soldierAction.execute();
+            if(ModelFacade.getInstance().canUseSoldierOfficial())
+            {
+                soldierAction.execute();
+            }
 	}
 
 	@Override

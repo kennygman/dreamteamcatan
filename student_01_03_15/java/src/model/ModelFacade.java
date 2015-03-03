@@ -345,6 +345,11 @@ public class ModelFacade extends Observable implements IModelFacade
 			) return false;
 		return true;
 	}
+        
+        public boolean canUseSoldierOfficial()
+        {
+            return canPlayDevCard(DevCardType.SOLDIER);
+        }
 
 	//--------------------------------------------------------------------------------
 	@Override
@@ -377,6 +382,13 @@ public class ModelFacade extends Observable implements IModelFacade
 		System.out.println("The spot2 doesn't have a neighbor");
 		return false;
 	}
+        
+        public boolean canUseRoadBuilderOfficial()
+        {
+            if (!canPlayDevCard(DevCardType.ROAD_BUILD)) {return false;}
+                else if (game.getPlayer().getRoads() < 2) {return false;}	
+            return true;
+        }
 
 	//--------------------------------------------------------------------------------
 	@Override

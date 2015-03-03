@@ -160,7 +160,7 @@ public class TradeOfferState
 		List<PlayerInfo> opponents = new ArrayList<PlayerInfo>();
 		for (PlayerInfo p : players)
 		{
-			//if (p.getId()!=ModelFacade.getInstance().getPlayerInfo().getId())
+			if (p.getId()!=ModelFacade.getInstance().getPlayerInfo().getId())
 				opponents.add(p);
 		}
 		controller.getTradeOverlay().setPlayers(opponents.toArray(new PlayerInfo[0]));

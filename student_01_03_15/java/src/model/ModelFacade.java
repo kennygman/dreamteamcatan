@@ -3,6 +3,7 @@ package model;
 import java.util.Observable;
 
 import shared.definitions.DevCardType;
+import shared.definitions.PortType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
@@ -11,10 +12,13 @@ import client.data.GameInfo;
 import client.data.PlayerInfo;
 import client.data.RobPlayerInfo;
 import client.proxy.IProxy;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import model.board.Board;
 import model.board.City;
+import model.board.Port;
 import model.board.Settlement;
 import model.player.Player;
 import model.player.Resources;
@@ -74,6 +78,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	// GETTERS AND SETTERS
 	// ===============================================================================
 	
+	public List<Port> getPorts()
+	{
+		return this.getGame().getBoard().getPorts(player.getPlayerIndex());
+	}
 	public String getState()
 	{
 		return this.getGame().getTurnTracker().getStatus();
@@ -271,9 +279,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanMaritimeTrade(int ratio, String inputResource, String outResource)
 	{
+		Resources resources = this.getGame().getPlayer().getResources();
 		if (!canPlay()) return false;
 		if (game.getPlayer().getResources().getResourceAmount(outResource) < ratio) return false;
-		if (ratio == 4)return true;
+		if (ratio == 4 && resources.getResourceAmount(inputResource) >= 4)return true;
 		if (game.getBoard().hasPort(game.getPlayer().getPlayerIndex(), outResource))return true;
 
 		return false;

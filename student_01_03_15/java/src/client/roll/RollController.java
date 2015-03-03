@@ -101,9 +101,9 @@ public class RollController extends Controller implements IRollController, Obser
         public void update(Observable o, Object o1) 
         {
         	if(ModelFacade.getInstance().CanRollNumber())
+
         	{
 
-        		
 
         		this.getRollView().showModal();
         		this.runRollTimer();

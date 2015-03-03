@@ -131,7 +131,18 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 	@Override
 	public void updateGameState(String stateMessage, boolean enable) {
 
-		gameStatePanel.updateGameState(stateMessage, enable);
+		if(stateMessage.equals("Rolling"))
+		{
+			gameStatePanel.updateGameState("Please Roll", enable);	
+		}
+		else if( stateMessage.equals("Playing"))
+		{
+			gameStatePanel.updateGameState("Finish Turn", enable);
+		}
+		else 
+		{
+			gameStatePanel.updateGameState("Waiting for other players...", enable);
+		}
 	}
 	
 }

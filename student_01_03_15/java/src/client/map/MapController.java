@@ -8,7 +8,6 @@ import client.base.*;
 import client.data.*;
 import model.Game;
 import model.ModelFacade;
-import model.TurnTracker;
 import model.board.Board;
 import model.board.City;
 import model.board.Hex;
@@ -59,7 +58,6 @@ public class MapController extends Controller implements IMapController , Observ
             
             if(ModelFacade.getInstance().isPlayerTurn())
             {
-                System.out.println("Player Turn in init: " + ModelFacade.getInstance().getGame().getTurnTracker().getCurrentTurn());
                 switch(status)
                 {
                     case "Robbing": 

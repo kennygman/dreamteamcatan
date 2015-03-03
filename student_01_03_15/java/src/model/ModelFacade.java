@@ -10,6 +10,7 @@ import shared.locations.VertexLocation;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
 import client.data.RobPlayerInfo;
+import client.poller.Poller;
 import client.proxy.IProxy;
 import java.util.ArrayList;
 import java.util.List;
@@ -436,8 +437,11 @@ public class ModelFacade extends Observable implements IModelFacade
 
 		int summedDie = d1 + d2;
 		int playerIndex = this.getPlayerInfo().getPlayerIndex();
-		proxy.rollNumber(new RollNumParam(playerIndex,summedDie));
-		updateGameModel();
+		GameModelResponse response = proxy.rollNumber(new RollNumParam(playerIndex, summedDie));
+                if(response.isValid())
+                {
+                    updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------

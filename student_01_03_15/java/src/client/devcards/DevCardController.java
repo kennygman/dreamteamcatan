@@ -39,23 +39,25 @@ public class DevCardController extends Controller implements IDevCardController,
 		ModelFacade.getInstance().addObserver(this);
 	}
 
-	public IPlayDevCardView getPlayCardView() {
+	public IPlayDevCardView getPlayCardView() 
+	{
 		return (IPlayDevCardView)super.getView();
 	}
 
-	public IBuyDevCardView getBuyCardView() {
+	public IBuyDevCardView getBuyCardView()
+	{
 		return buyCardView;
 	}
 
 	@Override
 	public void startBuyCard() 
 	{
-	
 			getBuyCardView().showModal();
 	}
 
 	@Override
-	public void cancelBuyCard() {
+	public void cancelBuyCard() 
+	{
 		
 		getBuyCardView().closeModal();
 	}
@@ -64,10 +66,12 @@ public class DevCardController extends Controller implements IDevCardController,
 	public void buyCard() 
 	{
 		getBuyCardView().closeModal();
+		ModelFacade.getInstance().buyDevCard();
 	}
 
 	@Override
-	public void startPlayCard() {
+	public void startPlayCard()
+	{
 		
 		getPlayCardView().showModal();
 	}
@@ -151,42 +155,28 @@ public class DevCardController extends Controller implements IDevCardController,
 	@Override
 	public void update(Observable o, Object arg) 
 	{
-		//this is already being applied in the elements
-		/*if(ModelFacade.getInstance().CanBuyDevCard())
-		{
-			getView().setElementEnabled(ResourceBarElement.BUY_CARD, true);
-		}
-		else
-		{
-			getView().setElementEnabled(ResourceBarElement.BUY_CARD, false);
-		}*/
-		if(ModelFacade.getInstance().canPlayDevCard(DevCardType.MONOPOLY))
-		{
-			getPlayCardView().setCardEnabled(DevCardType.MONOPOLY, true);
-			getPlayCardView().setCardAmount(DevCardType.MONOPOLY, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonopoly());
-		}
-		if(ModelFacade.getInstance().canPlayDevCard(DevCardType.MONUMENT))
-		{
-			getPlayCardView().setCardEnabled(DevCardType.MONUMENT, true);
-			getPlayCardView().setCardAmount(DevCardType.MONUMENT, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonument());
-		}
-		if(ModelFacade.getInstance().canPlayDevCard(DevCardType.ROAD_BUILD))
-		{
-			getPlayCardView().setCardEnabled(DevCardType.ROAD_BUILD, true);
-			getPlayCardView().setCardAmount(DevCardType.ROAD_BUILD, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getRoadBuilding());
-		}
-		if(ModelFacade.getInstance().canPlayDevCard(DevCardType.SOLDIER))
-		{
-			getPlayCardView().setCardEnabled(DevCardType.SOLDIER, true);
-			getPlayCardView().setCardAmount(DevCardType.SOLDIER, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getSoldier());
-		}
-		if(ModelFacade.getInstance().canPlayDevCard(DevCardType.YEAR_OF_PLENTY))
-		{
-			getPlayCardView().setCardEnabled(DevCardType.YEAR_OF_PLENTY, true);
-			getPlayCardView().setCardAmount(DevCardType.YEAR_OF_PLENTY, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getYearOfPlenty());
-		}
+		
+			System.out.println(" monopoly amount is : " + ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonopoly());
+			System.out.println(" mon amount is : " +  ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonument());
+			System.out.println(" road amount is : " + ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getRoadBuilding());
+			System.out.println(" soldier amount is : " + ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getSoldier());
+			System.out.println(" year amount is : " +  ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getYearOfPlenty());
 			
-	}
+			getPlayCardView().setCardEnabled(DevCardType.MONOPOLY, ModelFacade.getInstance().canPlayDevCard(DevCardType.MONOPOLY));
+			getPlayCardView().setCardAmount(DevCardType.MONOPOLY, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonopoly());
+	
+			getPlayCardView().setCardEnabled(DevCardType.MONUMENT,ModelFacade.getInstance().canPlayDevCard(DevCardType.MONUMENT));
+			getPlayCardView().setCardAmount(DevCardType.MONUMENT, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonument());
+	
+			getPlayCardView().setCardEnabled(DevCardType.ROAD_BUILD, ModelFacade.getInstance().canPlayDevCard(DevCardType.ROAD_BUILD));
+			getPlayCardView().setCardAmount(DevCardType.ROAD_BUILD, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getRoadBuilding());
 
+			getPlayCardView().setCardEnabled(DevCardType.SOLDIER, ModelFacade.getInstance().canPlayDevCard(DevCardType.SOLDIER));
+			getPlayCardView().setCardAmount(DevCardType.SOLDIER, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getSoldier());
+		
+			getPlayCardView().setCardEnabled(DevCardType.YEAR_OF_PLENTY, ModelFacade.getInstance().canPlayDevCard(DevCardType.YEAR_OF_PLENTY));
+			getPlayCardView().setCardAmount(DevCardType.YEAR_OF_PLENTY, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getYearOfPlenty());
+
+	}
 }
 

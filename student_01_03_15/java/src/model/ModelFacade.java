@@ -558,11 +558,17 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void buyDevCard()
 	{
 		Player p = game.getPlayer();
+		 
                 GameModelResponse response = proxy.buyDevCard(
-			new BuyDevCardParam(game.getPlayer().getPlayerIndex()));
+			new BuyDevCardParam(p.getPlayerIndex()));
                 if(response.isValid())
                 {
-                    Game newGame = response.getGame();
+                    p = response.getGame().getPlayer();
+                	System.out.println("player's monopoly" + p.getNewDevCards().getMonopoly());
+                	System.out.println("player's monument" + p.getNewDevCards().getMonument());
+                	System.out.println("player's road building" + p.getNewDevCards().getRoadBuilding());
+                	System.out.println("player's soldier" + p.getNewDevCards().getSoldier());
+                	System.out.println("player's year of p" + p.getNewDevCards().getYearOfPlenty());
 	                updateGameModel();
                 }
 	}

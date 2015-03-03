@@ -60,6 +60,12 @@ public class PointsController extends Controller implements IPointsController,
 		int playerId = ModelFacade.getInstance().getPlayerInfo().getId();
 		for (Player player : players)
 		{
+			if (player.getVictoryPoints() >= 10) 
+			{
+				this.getFinishedView().setWinner(player.getName(), player.getPlayerID()==playerId);
+				this.getFinishedView().showModal();
+				return;
+			}
 			if (player.getPlayerID() == playerId)
 			{
 				getPointsView().setPoints(player.getVictoryPoints());

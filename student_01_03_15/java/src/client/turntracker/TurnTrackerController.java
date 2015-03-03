@@ -17,11 +17,19 @@ import client.poller.Poller;
  */
 public class TurnTrackerController extends Controller implements ITurnTrackerController, Observer {
 // TODO: add poller to this class :)
-//	private Poller poller;
+	private Poller poller;
 	
 	private boolean firstPass;
 	public TurnTrackerController(ITurnTrackerView view) {		
 		super(view);
+		try
+		{
+			poller = new Poller(ModelFacade.getInstance().getProxy());
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		firstPass=true;
 		ModelFacade.getInstance().addObserver(this);
 	}
@@ -37,7 +45,11 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	@Override
 	public void endTurn() {
 		if (ModelFacade.getInstance().CanFinishTurn())
+		{
 			ModelFacade.getInstance().finishTurn();
+			poller.start();
+		}
+		
 	}
 	
 	private void initFromModel() {
@@ -55,6 +67,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 					playerInfo.getName(),
 					playerInfo.getColor()
 					);
+			
 		}
 		
 		getView().updatePlayer(
@@ -66,6 +79,12 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 				);
 		
 		getView().updateGameState(tracker.getStatus(), true);
+		this.poller.setClientVersion(ModelFacade.getInstance().getGame().getVersion());
+		if(ModelFacade.getInstance().isPlayerTurn())
+		{
+			poller.stop();
+		}
+		
 		System.out.println("TurnTracker Game Status: " + tracker.getStatus());
 		System.out.println("Current Turn: " + ModelFacade.getInstance().getGame()
 				.getPlayers()[tracker.getCurrentTurn()].getName());

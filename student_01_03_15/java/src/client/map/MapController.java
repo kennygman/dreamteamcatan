@@ -8,7 +8,6 @@ import client.base.*;
 import client.data.*;
 import model.Game;
 import model.ModelFacade;
-import model.TurnTracker;
 import model.board.Board;
 import model.board.City;
 import model.board.Hex;
@@ -59,7 +58,6 @@ public class MapController extends Controller implements IMapController , Observ
             
             if(ModelFacade.getInstance().isPlayerTurn())
             {
-                System.out.println("Player Turn in init: " + ModelFacade.getInstance().getGame().getTurnTracker().getCurrentTurn());
                 switch(status)
                 {
                     case "Robbing": 
@@ -85,7 +83,7 @@ public class MapController extends Controller implements IMapController , Observ
                             else if(ModelFacade.getInstance().isSetUpRoad() && ModelFacade.getInstance().isSetUpSettlement())
                             {
                                 ModelFacade.getInstance().setSetUpRoad(true);
-                                ModelFacade.getInstance().setSetUpSettlement(true);
+                                ModelFacade.getInstance().setSetUpSettlement(false);
                                 ModelFacade.getInstance().finishTurn();
                             }
                         }
@@ -203,10 +201,10 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 
             }*/
+            ModelFacade.getInstance().setSetUpSettlement(true);
             ModelFacade.getInstance().buildRoad(edgeLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeRoad(edgeLoc, player.getColor());
-            ModelFacade.getInstance().setSetUpSettlement(true);
 	}
 
 	public void placeSettlement(VertexLocation vertLoc) 
@@ -217,11 +215,11 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 isFree = true;
             }
+            ModelFacade.getInstance().setSetUpSettlement(true);
+            ModelFacade.getInstance().setSetUpRoad(true);
             ModelFacade.getInstance().buildSettlement(vertLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeSettlement(vertLoc, player.getColor());
-            ModelFacade.getInstance().setSetUpSettlement(true);
-            ModelFacade.getInstance().setSetUpRoad(true);
 	}
 
 	public void placeCity(VertexLocation vertLoc) 

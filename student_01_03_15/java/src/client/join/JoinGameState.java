@@ -39,15 +39,6 @@ public class JoinGameState
 		if (response.isValid())
 		{
 			setGameInfo();
-			/*try
-			{
-				System.out.println("==========POLLER STARTED");
-				new Poller().start();
-				
-			} catch (Exception e)
-			{
-				e.printStackTrace();
-			}*/
 			return true;
 		}
 		return false;

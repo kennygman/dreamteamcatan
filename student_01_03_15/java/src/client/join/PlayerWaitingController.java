@@ -1,5 +1,6 @@
 package client.join;
 
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,6 +21,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
             super(view);
             ListAIResponse aiList = ModelFacade.getInstance().listAi();
             getView().setAIChoices(aiList.getAiTypes());
+            ModelFacade.getInstance().addObserver(this);
 	}
 
 	@Override
@@ -29,32 +31,27 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
 	@Override
 	public void start() {
-        if(!ModelFacade.getInstance().checkGameFull())
-        {
-                getView().showModal();
-                getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
-        }
+       	getView().showModal();
 	}
 
 	@Override
 	public void addAI() {
-            AddAiParam param = new AddAiParam(getView().getSelectedAI());
-            StandardResponse addAiResponse = ModelFacade.getInstance().addAi(param);
-            if(addAiResponse.isValid())
-            {
-                //Have to get game id from proxy via facade because stupid game model doesn't even know it's id.
-                if(ModelFacade.getInstance().checkGameFull())
-                {
-                        getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
-                        getView().closeModal();
-                }
-            }
+		AddAiParam param = new AddAiParam(getView().getSelectedAI());
+		ModelFacade.getInstance().addAi(param);
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
-		getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
+		
+		if (ModelFacade.getInstance().isGameFull() && getView().isModalShowing())
+		{
+            getView().closeModal();
+		}
+		else {
+			PlayerInfo[] players = ModelFacade.getInstance().getPlayerInfoList();
+			getView().setPlayers(players);
+		}
 	}
 
 }

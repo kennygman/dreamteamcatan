@@ -300,7 +300,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanFinishTurn()
 	{
-		return !canPlay();
+		return canPlay();
 	}
 
 	//--------------------------------------------------------------------------------
@@ -433,7 +433,11 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public void rollNumber(int d1, int d2)
 	{
-		proxy.rollNumber(new RollNumParam(d1, d2));
+
+		int summedDie = d1 + d2;
+		int playerIndex = this.getPlayerInfo().getPlayerIndex();
+		proxy.rollNumber(new RollNumParam(playerIndex,summedDie));
+		updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------

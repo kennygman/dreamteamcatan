@@ -19,6 +19,7 @@ public class RollController extends Controller implements IRollController, Obser
 
 	private IRollResultView resultView;
 	private Timer timer;
+	boolean hasRolled = false;
 
 	/**
 	 * RollController constructor
@@ -47,14 +48,20 @@ public class RollController extends Controller implements IRollController, Obser
 	
 	@Override
 	public void rollDice() {
-		timer.cancel();
-		Random generator = new Random(System.currentTimeMillis());
-		int dice1 = generator.nextInt(6 - 1 + 1) + 1;
-		int dice2 = generator.nextInt(6 - 1 + 1) + 1;
-		int total = dice1 + dice2;
-		resultView.setRollValue(total);
-		getResultView().showModal();
-		ModelFacade.getInstance().rollNumber(dice1, dice2);
+		if(hasRolled == false)
+		{
+			hasRolled = true;
+			timer.cancel();
+			Random generator = new Random(System.currentTimeMillis());
+			int dice1 = generator.nextInt(6 - 1 + 1) + 1;
+			int dice2 = generator.nextInt(6 - 1 + 1) + 1;
+			int total = dice1 + dice2;
+			resultView.setRollValue(total);
+			getResultView().showModal();
+			ModelFacade.getInstance().rollNumber(dice1, dice2);
+			
+			//this.getResultView().closeModal();
+		}
 	}
 	
 	public void runRollTimer()
@@ -76,9 +83,10 @@ public class RollController extends Controller implements IRollController, Obser
 			}
 			
 		}
+		
 		TimerToDo task = new TimerToDo(this);
-
-			timer.schedule(task, 5000);
+		timer = new Timer();
+		timer.schedule(task, 5000);
 	}
 	
 
@@ -87,7 +95,9 @@ public class RollController extends Controller implements IRollController, Obser
         {
         	if(ModelFacade.getInstance().CanRollNumber())
         	{
+        		
         		//this.getRollView().closeModal();
+        		hasRolled = false;
         		this.getRollView().showModal();
         		this.runRollTimer();
         	}

@@ -81,7 +81,10 @@ public class RollController extends Controller implements IRollController, Obser
 			@Override
 			public void run()
 			{
-				getRollView().closeModal();
+                                if(getRollView().isModalShowing())
+                                {
+                                    getRollView().closeModal();
+                                }
 				rollDice();
 			}
 		}

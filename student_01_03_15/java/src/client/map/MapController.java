@@ -23,6 +23,9 @@ import model.player.Player;
 public class MapController extends Controller implements IMapController , Observer{
 	
 	private IRobView robView;
+        private boolean isRoadBuilding;
+        private boolean isFirst;
+        private boolean isSoldier;
 	
 	public MapController(IMapView view, IRobView robView) 
         {
@@ -156,7 +159,7 @@ public class MapController extends Controller implements IMapController , Observ
 	public boolean canPlaceRoad(EdgeLocation edgeLoc) 
         {	
             String status = ModelFacade.getInstance().getState();
-            if(status.equals("FirstRound") || status.equals("SecondRound"))
+            if(status.equals("FirstRound") || status.equals("SecondRound") || isRoadBuilding)
             {
                 return ModelFacade.getInstance().canPlaceRoad(edgeLoc, true);
             }
@@ -169,7 +172,7 @@ public class MapController extends Controller implements IMapController , Observ
 	public boolean canPlaceSettlement(VertexLocation vertLoc) 
         {	
             String status = ModelFacade.getInstance().getState();
-            if(status.equals("FirstRound") || status.equals("SecondRound")) // or road building card?? really hating this set up
+            if(status.equals("FirstRound") || status.equals("SecondRound"))
             {
 		return ModelFacade.getInstance().canPlaceSettlement(vertLoc, true);
             }
@@ -193,18 +196,24 @@ public class MapController extends Controller implements IMapController , Observ
         {
             boolean isFree = false;
             String status = ModelFacade.getInstance().getState();
-            if(status.equals("FirstRound") || status.equals("SecondRound"))
+            if(status.equals("FirstRound") || status.equals("SecondRound") || isRoadBuilding)
             {
                 isFree = true;
             }
-            /*else if(Road Building)
-            {
-                
-            }*/
             ModelFacade.getInstance().setSetUpSettlement(true);
             ModelFacade.getInstance().buildRoad(edgeLoc, isFree);
             PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
             getView().placeRoad(edgeLoc, player.getColor());
+            if(isRoadBuilding && isFirst)
+            {
+                ModelFacade.getInstance().updateGameModel();
+                isFirst = false;
+                startMove(PieceType.ROAD, true, false);
+            }
+            else if(isRoadBuilding)
+            {
+                isRoadBuilding = false;
+            }
 	}
 
 	public void placeSettlement(VertexLocation vertLoc) 
@@ -244,22 +253,32 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	public void cancelMove() 
         {
-		
+            System.out.println("cancel");
 	}
 	
 	public void playSoldierCard() 
         {	
+            isSoldier = true;
             startMove(PieceType.ROBBER, true, true);
 	}
 	
 	public void playRoadBuildingCard() 
         {	
-		
+            isRoadBuilding = true;
+            isFirst = true;
+            startMove(PieceType.ROAD, true, true);
 	}
 	
 	public void robPlayer(RobPlayerInfo victim) 
-        {	
-            ModelFacade.getInstance().robPlayer(victim.getLocation(), victim.getPlayerIndex());
+        {
+            if(isSoldier)
+            {
+                ModelFacade.getInstance().playSoldierCard(victim.getPlayerIndex(), victim.getLocation());
+            }
+            else
+            {
+                ModelFacade.getInstance().robPlayer(victim.getLocation(), victim.getPlayerIndex());
+            }
 	}
         
         @Override

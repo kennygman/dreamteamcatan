@@ -38,8 +38,11 @@ public class ModelFacade extends Observable implements IModelFacade
 	private Game game;
 	private PlayerInfo player;
 	private GameInfo gameInfo;
-        private boolean startRoad = true;
-        private boolean startSettlement = false;
+	private boolean hasJoined = false;
+    private boolean startRoad = true;
+    private boolean startSettlement = false;
+    private boolean hasPlayedDevCard;
+    private boolean hasRolled;
 
 	public ModelFacade(IProxy proxy)
 	{
@@ -180,7 +183,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanRollNumber()
 	{
-		return (this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Rolling"));
+		boolean result = (this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Rolling") && !hasRolled);
+		if(result)
+		{
+			hasRolled = true;
+		}
+		return result;
 	}
 
 	//--------------------------------------------------------------------------------
@@ -318,7 +326,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean CanBuyDevCard()
 	{
 		if (!canPlay()) return false;
-		if (game.getBank().size() < 1) return false;
+		if (game.getDeck().size() < 1) return false;
 		Resources hand = game.getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WHEAT) > 0 &&
 				hand.getResourceAmount(ResourceType.SHEEP) > 0 &&
@@ -328,7 +336,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	// DevCard Preconditions ================================================================================
 	public boolean canPlayDevCard(DevCardType devCard)
 	{
-		if (!isPlayerTurn() ||
+		if (!isPlayerTurn() || hasPlayedDevCard ||
 			!game.getTurnTracker().getStatus().equals("Playing")
 			|| !game.getPlayer().getOldDevCards().hasDevCard(devCard)
 			|| game.getPlayer().isPlayedDevCard()
@@ -345,6 +353,11 @@ public class ModelFacade extends Observable implements IModelFacade
 			) return false;
 		return true;
 	}
+        
+        public boolean canUseSoldierOfficial()
+        {
+            return canPlayDevCard(DevCardType.SOLDIER);
+        }
 
 	//--------------------------------------------------------------------------------
 	@Override
@@ -377,6 +390,13 @@ public class ModelFacade extends Observable implements IModelFacade
 		System.out.println("The spot2 doesn't have a neighbor");
 		return false;
 	}
+        
+        public boolean canUseRoadBuilderOfficial()
+        {
+            if (!canPlayDevCard(DevCardType.ROAD_BUILD)) {return false;}
+                else if (game.getPlayer().getRoads() < 2) {return false;}	
+            return true;
+        }
 
 	//--------------------------------------------------------------------------------
 	@Override
@@ -446,10 +466,12 @@ public class ModelFacade extends Observable implements IModelFacade
 
 		int playerIndex = this.getPlayerInfo().getPlayerIndex();
 		GameModelResponse response = proxy.rollNumber(new RollNumParam(playerIndex, total));
-                if(response.isValid())
-                {
-                    updateGameModel();
-                }
+        if(response.isValid())
+        {
+            updateGameModel();
+            hasPlayedDevCard = false;
+        }
+                
 	}
         
 
@@ -549,7 +571,7 @@ public class ModelFacade extends Observable implements IModelFacade
         {
         	game = response.getGame();
             updateGameModel();
-            
+            hasRolled = false;
         }
 	}
 
@@ -583,6 +605,7 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     game = response.getGame();
                     updateGameModel();
+                    hasPlayedDevCard = true;
                 }
 	}
 
@@ -598,6 +621,7 @@ public class ModelFacade extends Observable implements IModelFacade
                     Game newGame = response.getGame();
                     p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
                     updateGameModel();
+                    hasPlayedDevCard = true;
                 }
 	}
 
@@ -616,6 +640,7 @@ public class ModelFacade extends Observable implements IModelFacade
                     game.getBoard().sort();
                     game.getTurnTracker().setLongestRoad(newGame.getTurnTracker().getLongestRoad());
                     updateGameModel();
+                    hasPlayedDevCard = true;
                 }
 	}
 
@@ -631,6 +656,7 @@ public class ModelFacade extends Observable implements IModelFacade
                     Game newGame = response.getGame();
                     p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
                     updateGameModel();
+                    hasPlayedDevCard = true;
                 }
 	}
 
@@ -707,12 +733,21 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     this.player.setColor(CatanColor.stringToColor(params.getColor()));
+                    this.hasJoined = true;
                     //this.updateGameModel();
                     
                 }
 		return response;
 	}
 
+	public boolean isHasJoined()
+	{
+		return hasJoined;
+	}
+	public void setHasJoined(boolean hasJoined)
+	{
+		this.hasJoined = hasJoined;
+	}
 	//--------------------------------------------------------------------------------
 	public CreateGameResponse createGame(CreateGameParam params)
 	{

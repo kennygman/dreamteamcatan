@@ -88,10 +88,11 @@ public class DevCardController extends Controller implements IDevCardController,
 		if(ModelFacade.getInstance().CanUseMonopoly(resource.toString()))
 		{
 			ModelFacade.getInstance().playMonopolyCard(resource.toString());
+                        ModelFacade.getInstance().updateGameModel();
 		}
 		else
 		{
-			//throw exception or do something?
+			System.out.println("not allowed to use");
 		}
 	}
 
@@ -101,42 +102,30 @@ public class DevCardController extends Controller implements IDevCardController,
 		if(ModelFacade.getInstance().CanUseMonument())
 		{
 			ModelFacade.getInstance().playMonumentCard();
+                        ModelFacade.getInstance().updateGameModel();
 		}
 		else
 		{
-			//throw exception or do something?
+			System.out.println("not allowed to use");
 		}
 	}
 
 	@Override
 	public void playRoadBuildCard() 
 	{
-		
-		/*if(ModelFacade.getInstance().CanUseRoadBuilder(spot1, spot2))
-		{
-			ModelFacade.getInstance().playRoadCard(spot1, spot2);
-			roadAction.execute();
-		}
-		else
-		{
-			//throw exception or do something?
-		}*/
-		
+            if(ModelFacade.getInstance().canUseRoadBuilderOfficial())
+            {
+                roadAction.execute();
+            }
 	}
 
 	@Override
 	public void playSoldierCard() 
 	{
-		/*if(ModelFacade.getInstance().CanUseSoldier(victimIndex, location))
-		{
-			ModelFacade.getInstance().playSoldierCard(victimIndex, location);
-			soldierAction.execute();
-		}
-		else
-		{
-			//throw exception or do something?
-		}*/
-	
+            if(ModelFacade.getInstance().canUseSoldierOfficial())
+            {
+                soldierAction.execute();
+            }
 	}
 
 	@Override
@@ -148,7 +137,7 @@ public class DevCardController extends Controller implements IDevCardController,
 		}
 		else
 		{
-			//throw exception or do something?
+			System.out.println("not allowed to use");
 		}
 	}
 

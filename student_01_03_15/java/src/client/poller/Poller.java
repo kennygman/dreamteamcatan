@@ -48,11 +48,15 @@ public class Poller
 	 */
 	public void pollServer()
 	{
-		GameModelResponse game = proxyServer.getGameModel();
-		if(game.isValid())
-		{
-			this.serverVersion = game.getGame().getVersion();
-		}
+			if(ModelFacade.getInstance().isHasJoined())
+			{
+				GameModelResponse game = proxyServer.getGameModel();
+				if(game.isValid())
+				{
+					this.serverVersion = game.getGame().getVersion();
+				}
+			}
+		
 	}
 
 	/**
@@ -87,6 +91,7 @@ public class Poller
 				{
 					System.out.println("=========ServerVersion: " + serverVersion);
 					System.out.println("=========ClientVersion: " + clientVersion);
+					if(ModelFacade.getInstance().isHasJoined())
 					updateModel();
 				}
 			}

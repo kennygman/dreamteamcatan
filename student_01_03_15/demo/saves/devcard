@@ -1,13 +1,13 @@
 <dl>
   <game>
-    <title>Dev Card</title>
+    <title>as</title>
     <model>
       <deck>
-        <yearOfPlenty>2</yearOfPlenty>
-        <monopoly>2</monopoly>
-        <soldier>13</soldier>
-        <roadBuilding>2</roadBuilding>
-        <monument>5</monument>
+        <yearOfPlenty>0</yearOfPlenty>
+        <monopoly>0</monopoly>
+        <soldier>0</soldier>
+        <roadBuilding>0</roadBuilding>
+        <monument>0</monument>
       </deck>
       <map>
         <hexGrid>
@@ -116,9 +116,9 @@
                     </value>
                   </eq>
                   <eq>
-                    <value class="eE">
-                      <ownerIndex>1</ownerIndex>
-                      <worth>1</worth>
+                    <value class="et">
+                      <ownerIndex>-1</ownerIndex>
+                      <worth>0</worth>
                     </value>
                   </eq>
                 </vertexes>
@@ -238,15 +238,15 @@
                   <eq reference="../../../../en-array/ew/vertexes/eq"/>
                   <eq reference="../../../../en-array/ew/vertexes/eq[6]"/>
                   <eq>
-                    <value class="et">
-                      <ownerIndex>-1</ownerIndex>
-                      <worth>0</worth>
-                    </value>
-                  </eq>
-                  <eq>
                     <value class="eE">
                       <ownerIndex>0</ownerIndex>
                       <worth>1</worth>
+                    </value>
+                  </eq>
+                  <eq>
+                    <value class="et">
+                      <ownerIndex>-1</ownerIndex>
+                      <worth>0</worth>
                     </value>
                   </eq>
                 </vertexes>
@@ -263,8 +263,8 @@
                   </ej>
                   <ej reference="../../../../en-array/ew/edges/ej[6]"/>
                   <ej>
-                    <value class="em">
-                      <ownerIndex>-1</ownerIndex>
+                    <value class="eD">
+                      <ownerIndex>0</ownerIndex>
                     </value>
                   </ej>
                   <ej>
@@ -291,15 +291,15 @@
                   <eq reference="../../../../en-array/ew/vertexes/eq[5]"/>
                   <eq reference="../../../../en-array/eC/vertexes/eq[6]"/>
                   <eq>
-                    <value class="et">
-                      <ownerIndex>-1</ownerIndex>
-                      <worth>0</worth>
+                    <value class="eE">
+                      <ownerIndex>0</ownerIndex>
+                      <worth>1</worth>
                     </value>
                   </eq>
                   <eq>
-                    <value class="eE">
-                      <ownerIndex>3</ownerIndex>
-                      <worth>1</worth>
+                    <value class="et">
+                      <ownerIndex>-1</ownerIndex>
+                      <worth>0</worth>
                     </value>
                   </eq>
                 </vertexes>
@@ -309,12 +309,12 @@
                   <ej reference="../../../../en-array/eC/edges/ej[6]"/>
                   <ej>
                     <value class="eD">
-                      <ownerIndex>1</ownerIndex>
+                      <ownerIndex>0</ownerIndex>
                     </value>
                   </ej>
                   <ej>
-                    <value class="eD">
-                      <ownerIndex>3</ownerIndex>
+                    <value class="em">
+                      <ownerIndex>-1</ownerIndex>
                     </value>
                   </ej>
                   <ej>
@@ -447,9 +447,9 @@
                   <eq reference="../../../../en-array[2]/eC/vertexes/eq"/>
                   <eq reference="../../../../en-array[2]/eC/vertexes/eq[6]"/>
                   <eq>
-                    <value class="et">
-                      <ownerIndex>-1</ownerIndex>
-                      <worth>0</worth>
+                    <value class="eE">
+                      <ownerIndex>1</ownerIndex>
+                      <worth>1</worth>
                     </value>
                   </eq>
                   <eq>
@@ -472,13 +472,13 @@
                   </ej>
                   <ej reference="../../../../en-array[2]/eC/edges/ej[6]"/>
                   <ej>
-                    <value class="eD">
-                      <ownerIndex>0</ownerIndex>
+                    <value class="em">
+                      <ownerIndex>-1</ownerIndex>
                     </value>
                   </ej>
                   <ej>
-                    <value class="em">
-                      <ownerIndex>-1</ownerIndex>
+                    <value class="eD">
+                      <ownerIndex>1</ownerIndex>
                     </value>
                   </ej>
                   <ej>
@@ -545,9 +545,9 @@
                   <eq reference="../../../../en-array[2]/eC[2]/vertexes/eq[5]"/>
                   <eq reference="../../../../en-array[2]/eC[3]/vertexes/eq[6]"/>
                   <eq>
-                    <value class="et">
-                      <ownerIndex>-1</ownerIndex>
-                      <worth>0</worth>
+                    <value class="eE">
+                      <ownerIndex>1</ownerIndex>
+                      <worth>1</worth>
                     </value>
                   </eq>
                   <eq>
@@ -567,8 +567,8 @@
                     </value>
                   </ej>
                   <ej>
-                    <value class="em">
-                      <ownerIndex>-1</ownerIndex>
+                    <value class="eD">
+                      <ownerIndex>1</ownerIndex>
                     </value>
                   </ej>
                   <ej>
@@ -590,9 +590,9 @@
                   <eq reference="../../../../en-array[2]/eC[3]/vertexes/eq[5]"/>
                   <eq reference="../../../../en-array[2]/eC[4]/vertexes/eq[6]"/>
                   <eq>
-                    <value class="eE">
-                      <ownerIndex>0</ownerIndex>
-                      <worth>1</worth>
+                    <value class="et">
+                      <ownerIndex>-1</ownerIndex>
+                      <worth>0</worth>
                     </value>
                   </eq>
                   <eq>
@@ -671,8 +671,8 @@
                     </value>
                   </ej>
                   <ej>
-                    <value class="eD">
-                      <ownerIndex>0</ownerIndex>
+                    <value class="em">
+                      <ownerIndex>-1</ownerIndex>
                     </value>
                   </ej>
                 </edges>
@@ -687,9 +687,9 @@
                 </location>
                 <vertexes>
                   <eq>
-                    <value class="et">
-                      <ownerIndex>-1</ownerIndex>
-                      <worth>0</worth>
+                    <value class="eE">
+                      <ownerIndex>3</ownerIndex>
+                      <worth>1</worth>
                     </value>
                   </eq>
                   <eq reference="../../../../en-array[3]/eC/vertexes/eq[6]"/>
@@ -727,8 +727,8 @@
                     </value>
                   </ej>
                   <ej>
-                    <value class="em">
-                      <ownerIndex>-1</ownerIndex>
+                    <value class="eD">
+                      <ownerIndex>3</ownerIndex>
                     </value>
                   </ej>
                 </edges>
@@ -790,9 +790,9 @@
                   <eq reference="../../../../en-array[3]/eC[3]/vertexes/eq[5]"/>
                   <eq reference="../../../../en-array[3]/eC[4]/vertexes/eq[6]"/>
                   <eq>
-                    <value class="eE">
-                      <ownerIndex>1</ownerIndex>
-                      <worth>1</worth>
+                    <value class="et">
+                      <ownerIndex>-1</ownerIndex>
+                      <worth>0</worth>
                     </value>
                   </eq>
                   <eq>
@@ -812,8 +812,8 @@
                     </value>
                   </ej>
                   <ej>
-                    <value class="eD">
-                      <ownerIndex>1</ownerIndex>
+                    <value class="em">
+                      <ownerIndex>-1</ownerIndex>
                     </value>
                   </ej>
                   <ej>
@@ -1193,22 +1193,41 @@
           </ez>
           <ez>
             <location>
-              <x>1</x>
-              <y>-3</y>
+              <x>-2</x>
+              <y>3</y>
             </location>
             <ratio>2</ratio>
-            <inputResource>Ore</inputResource>
+            <inputResource>Brick</inputResource>
             <validVertex1>
-              <x>1</x>
-              <y>-3</y>
-              <direction class="er">SE</direction>
+              <x>-2</x>
+              <y>3</y>
+              <direction class="er">NE</direction>
             </validVertex1>
             <validVertex2>
-              <x>1</x>
-              <y>-3</y>
-              <direction class="er">SW</direction>
+              <x>-2</x>
+              <y>3</y>
+              <direction class="er">E</direction>
             </validVertex2>
-            <orientation>S</orientation>
+            <orientation>NE</orientation>
+          </ez>
+          <ez>
+            <location>
+              <x>3</x>
+              <y>-1</y>
+            </location>
+            <ratio>2</ratio>
+            <inputResource>Sheep</inputResource>
+            <validVertex1>
+              <x>3</x>
+              <y>-1</y>
+              <direction class="er">W</direction>
+            </validVertex1>
+            <validVertex2>
+              <x>3</x>
+              <y>-1</y>
+              <direction class="er">NW</direction>
+            </validVertex2>
+            <orientation>NW</orientation>
           </ez>
           <ez>
             <location>
@@ -1227,24 +1246,6 @@
               <direction class="er">SE</direction>
             </validVertex2>
             <orientation>SE</orientation>
-          </ez>
-          <ez>
-            <location>
-              <x>0</x>
-              <y>3</y>
-            </location>
-            <ratio>3</ratio>
-            <validVertex1>
-              <x>0</x>
-              <y>3</y>
-              <direction class="er">NW</direction>
-            </validVertex1>
-            <validVertex2>
-              <x>0</x>
-              <y>3</y>
-              <direction class="er">NE</direction>
-            </validVertex2>
-            <orientation>N</orientation>
           </ez>
           <ez>
             <location>
@@ -1267,22 +1268,40 @@
           </ez>
           <ez>
             <location>
-              <x>-2</x>
+              <x>0</x>
               <y>3</y>
             </location>
-            <ratio>2</ratio>
-            <inputResource>Brick</inputResource>
+            <ratio>3</ratio>
             <validVertex1>
-              <x>-2</x>
+              <x>0</x>
               <y>3</y>
-              <direction class="er">NE</direction>
+              <direction class="er">NW</direction>
             </validVertex1>
             <validVertex2>
-              <x>-2</x>
+              <x>0</x>
               <y>3</y>
-              <direction class="er">E</direction>
+              <direction class="er">NE</direction>
             </validVertex2>
-            <orientation>NE</orientation>
+            <orientation>N</orientation>
+          </ez>
+          <ez>
+            <location>
+              <x>1</x>
+              <y>-3</y>
+            </location>
+            <ratio>2</ratio>
+            <inputResource>Ore</inputResource>
+            <validVertex1>
+              <x>1</x>
+              <y>-3</y>
+              <direction class="er">SE</direction>
+            </validVertex1>
+            <validVertex2>
+              <x>1</x>
+              <y>-3</y>
+              <direction class="er">SW</direction>
+            </validVertex2>
+            <orientation>S</orientation>
           </ez>
           <ez>
             <location>
@@ -1302,53 +1321,34 @@
             </validVertex2>
             <orientation>NW</orientation>
           </ez>
-          <ez>
-            <location>
-              <x>3</x>
-              <y>-1</y>
-            </location>
-            <ratio>2</ratio>
-            <inputResource>Sheep</inputResource>
-            <validVertex1>
-              <x>3</x>
-              <y>-1</y>
-              <direction class="er">W</direction>
-            </validVertex1>
-            <validVertex2>
-              <x>3</x>
-              <y>-1</y>
-              <direction class="er">NW</direction>
-            </validVertex2>
-            <orientation>NW</orientation>
-          </ez>
         </ports>
         <robber>
           <x>0</x>
-          <y>1</y>
+          <y>-2</y>
         </robber>
       </map>
       <players>
         <eJ>
           <MAX__GAME__POINTS>10</MAX__GAME__POINTS>
           <resources>
-            <brick>2</brick>
-            <wood>0</wood>
-            <sheep>2</sheep>
-            <wheat>2</wheat>
-            <ore>0</ore>
+            <brick>1</brick>
+            <wood>3</wood>
+            <sheep>-24</sheep>
+            <wheat>-25</wheat>
+            <ore>-25</ore>
           </resources>
           <oldDevCards>
             <yearOfPlenty>0</yearOfPlenty>
             <monopoly>0</monopoly>
             <soldier>0</soldier>
             <roadBuilding>0</roadBuilding>
-            <monument>0</monument>
+            <monument>5</monument>
           </oldDevCards>
           <newDevCards>
-            <yearOfPlenty>0</yearOfPlenty>
-            <monopoly>0</monopoly>
-            <soldier>1</soldier>
-            <roadBuilding>0</roadBuilding>
+            <yearOfPlenty>2</yearOfPlenty>
+            <monopoly>2</monopoly>
+            <soldier>14</soldier>
+            <roadBuilding>2</roadBuilding>
             <monument>0</monument>
           </newDevCards>
           <roads>13</roads>
@@ -1369,10 +1369,10 @@
         <eJ>
           <MAX__GAME__POINTS>10</MAX__GAME__POINTS>
           <resources>
-            <brick>1</brick>
+            <brick>0</brick>
             <wood>0</wood>
-            <sheep>0</sheep>
-            <wheat>4</wheat>
+            <sheep>1</sheep>
+            <wheat>1</wheat>
             <ore>1</ore>
           </resources>
           <oldDevCards>
@@ -1401,17 +1401,17 @@
           <discarded>false</discarded>
           <playerID>-2</playerID>
           <playerIndex>1</playerIndex>
-          <name>Miguel</name>
-          <color>white</color>
+          <name>Scott</name>
+          <color>purple</color>
         </eJ>
         <eJ>
           <MAX__GAME__POINTS>10</MAX__GAME__POINTS>
           <resources>
-            <brick>1</brick>
+            <brick>0</brick>
             <wood>1</wood>
             <sheep>1</sheep>
-            <wheat>2</wheat>
-            <ore>1</ore>
+            <wheat>1</wheat>
+            <ore>0</ore>
           </resources>
           <oldDevCards>
             <yearOfPlenty>0</yearOfPlenty>
@@ -1439,16 +1439,16 @@
           <discarded>false</discarded>
           <playerID>-3</playerID>
           <playerIndex>2</playerIndex>
-          <name>Ken</name>
-          <color>blue</color>
+          <name>Steve</name>
+          <color>orange</color>
         </eJ>
         <eJ>
           <MAX__GAME__POINTS>10</MAX__GAME__POINTS>
           <resources>
             <brick>0</brick>
-            <wood>1</wood>
-            <sheep>1</sheep>
-            <wheat>0</wheat>
+            <wood>0</wood>
+            <sheep>0</sheep>
+            <wheat>1</wheat>
             <ore>1</ore>
           </resources>
           <oldDevCards>
@@ -1477,127 +1477,127 @@
           <discarded>false</discarded>
           <playerID>-4</playerID>
           <playerIndex>3</playerIndex>
-          <name>Squall</name>
-          <color>yellow</color>
+          <name>Quinn</name>
+          <color>green</color>
         </eJ>
       </players>
       <log>
         <lines>
           <eG>
-            <source>Squall</source>
-            <message>Squall rolled a 6.</message>
-          </eG>
-          <eG>
-            <source>Squall</source>
-            <message>Squall&apos;s turn just ended</message>
+            <source>Scott</source>
+            <message>Scott&apos;s turn just ended</message>
           </eG>
           <eG>
             <source>Sam</source>
-            <message>Sam rolled a 11.</message>
+            <message>Sam built a road</message>
           </eG>
           <eG>
             <source>Sam</source>
-            <message>Sam&apos;s turn just ended</message>
-          </eG>
-          <eG>
-            <source>Miguel</source>
-            <message>Miguel rolled a 5.</message>
-          </eG>
-          <eG>
-            <source>Miguel</source>
-            <message>Miguel&apos;s turn just ended</message>
-          </eG>
-          <eG>
-            <source>Ken</source>
-            <message>Ken rolled a 6.</message>
-          </eG>
-          <eG>
-            <source>Ken</source>
-            <message>Ken&apos;s turn just ended</message>
-          </eG>
-          <eG>
-            <source>Squall</source>
-            <message>Squall rolled a 6.</message>
-          </eG>
-          <eG>
-            <source>Squall</source>
-            <message>Squall&apos;s turn just ended</message>
-          </eG>
-          <eG>
-            <source>Sam</source>
-            <message>Sam rolled a 11.</message>
+            <message>Sam built a settlement</message>
           </eG>
           <eG>
             <source>Sam</source>
             <message>Sam&apos;s turn just ended</message>
           </eG>
           <eG>
-            <source>Miguel</source>
-            <message>Miguel rolled a 7.</message>
-          </eG>
-          <eG>
-            <source>Miguel</source>
-            <message>Miguel moved the robber and robbed Ken.</message>
-          </eG>
-          <eG>
-            <source>Miguel</source>
-            <message>Miguel&apos;s turn just ended</message>
-          </eG>
-          <eG>
-            <source>Ken</source>
-            <message>Ken rolled a 10.</message>
-          </eG>
-          <eG>
-            <source>Ken</source>
-            <message>Ken&apos;s turn just ended</message>
-          </eG>
-          <eG>
-            <source>Squall</source>
-            <message>Squall rolled a 9.</message>
-          </eG>
-          <eG>
-            <source>Squall</source>
-            <message>Squall&apos;s turn just ended</message>
+            <source>Sam</source>
+            <message>Sam rolled a 3.</message>
           </eG>
           <eG>
             <source>Sam</source>
-            <message>Sam rolled a 7.</message>
+            <message>Sam bought a Development Card.</message>
           </eG>
           <eG>
             <source>Sam</source>
-            <message>Sam moved the robber and robbed Squall.</message>
+            <message>Sam bought a Development Card.</message>
           </eG>
           <eG>
             <source>Sam</source>
-            <message>Sam&apos;s turn just ended</message>
-          </eG>
-          <eG>
-            <source>Miguel</source>
-            <message>Miguel rolled a 4.</message>
-          </eG>
-          <eG>
-            <source>Miguel</source>
-            <message>Miguel&apos;s turn just ended</message>
-          </eG>
-          <eG>
-            <source>Ken</source>
-            <message>Ken rolled a 5.</message>
-          </eG>
-          <eG>
-            <source>Ken</source>
-            <message>Ken&apos;s turn just ended</message>
-          </eG>
-          <eG>
-            <source>Squall</source>
-            <message>Squall rolled a 8.</message>
-          </eG>
-          <eG>
-            <source>Squall</source>
-            <message>Squall&apos;s turn just ended</message>
+            <message>Sam bought a Development Card.</message>
           </eG>
           <eG>
             <source>Sam</source>
-            <message>Sam rolled a 6.</message>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
+          </eG>
+          <eG>
+            <source>Sam</source>
+            <message>Sam bought a Development Card.</message>
           </eG>
           <eG>
             <source>Sam</source>
@@ -1606,14 +1606,19 @@
         </lines>
       </log>
       <chat>
-        <lines/>
+        <lines>
+          <eG>
+            <source>Sam</source>
+            <message>zxc</message>
+          </eG>
+        </lines>
       </chat>
       <bank>
-        <brick>20</brick>
-        <wood>22</wood>
-        <sheep>20</sheep>
-        <wheat>16</wheat>
-        <ore>21</ore>
+        <brick>23</brick>
+        <wood>20</wood>
+        <sheep>46</sheep>
+        <wheat>46</wheat>
+        <ore>47</ore>
       </bank>
       <turnTracker>
         <status>Playing</status>
@@ -1622,7 +1627,7 @@
         <largestArmy>-1</largestArmy>
       </turnTracker>
       <winner>-1</winner>
-      <version>85</version>
+      <version>51</version>
     </model>
     <start>
       <deck>
@@ -2816,22 +2821,41 @@
           </ez>
           <ez>
             <location>
-              <x>1</x>
-              <y>-3</y>
+              <x>-2</x>
+              <y>3</y>
             </location>
             <ratio>2</ratio>
-            <inputResource>Ore</inputResource>
+            <inputResource>Brick</inputResource>
             <validVertex1>
-              <x>1</x>
-              <y>-3</y>
-              <direction class="er">SE</direction>
+              <x>-2</x>
+              <y>3</y>
+              <direction class="er">NE</direction>
             </validVertex1>
             <validVertex2>
-              <x>1</x>
-              <y>-3</y>
-              <direction class="er">SW</direction>
+              <x>-2</x>
+              <y>3</y>
+              <direction class="er">E</direction>
             </validVertex2>
-            <orientation>S</orientation>
+            <orientation>NE</orientation>
+          </ez>
+          <ez>
+            <location>
+              <x>3</x>
+              <y>-1</y>
+            </location>
+            <ratio>2</ratio>
+            <inputResource>Sheep</inputResource>
+            <validVertex1>
+              <x>3</x>
+              <y>-1</y>
+              <direction class="er">W</direction>
+            </validVertex1>
+            <validVertex2>
+              <x>3</x>
+              <y>-1</y>
+              <direction class="er">NW</direction>
+            </validVertex2>
+            <orientation>NW</orientation>
           </ez>
           <ez>
             <location>
@@ -2850,24 +2874,6 @@
               <direction class="er">SE</direction>
             </validVertex2>
             <orientation>SE</orientation>
-          </ez>
-          <ez>
-            <location>
-              <x>0</x>
-              <y>3</y>
-            </location>
-            <ratio>3</ratio>
-            <validVertex1>
-              <x>0</x>
-              <y>3</y>
-              <direction class="er">NW</direction>
-            </validVertex1>
-            <validVertex2>
-              <x>0</x>
-              <y>3</y>
-              <direction class="er">NE</direction>
-            </validVertex2>
-            <orientation>N</orientation>
           </ez>
           <ez>
             <location>
@@ -2890,22 +2896,40 @@
           </ez>
           <ez>
             <location>
-              <x>-2</x>
+              <x>0</x>
               <y>3</y>
             </location>
-            <ratio>2</ratio>
-            <inputResource>Brick</inputResource>
+            <ratio>3</ratio>
             <validVertex1>
-              <x>-2</x>
+              <x>0</x>
               <y>3</y>
-              <direction class="er">NE</direction>
+              <direction class="er">NW</direction>
             </validVertex1>
             <validVertex2>
-              <x>-2</x>
+              <x>0</x>
               <y>3</y>
-              <direction class="er">E</direction>
+              <direction class="er">NE</direction>
             </validVertex2>
-            <orientation>NE</orientation>
+            <orientation>N</orientation>
+          </ez>
+          <ez>
+            <location>
+              <x>1</x>
+              <y>-3</y>
+            </location>
+            <ratio>2</ratio>
+            <inputResource>Ore</inputResource>
+            <validVertex1>
+              <x>1</x>
+              <y>-3</y>
+              <direction class="er">SE</direction>
+            </validVertex1>
+            <validVertex2>
+              <x>1</x>
+              <y>-3</y>
+              <direction class="er">SW</direction>
+            </validVertex2>
+            <orientation>S</orientation>
           </ez>
           <ez>
             <location>
@@ -2921,25 +2945,6 @@
             <validVertex2>
               <x>2</x>
               <y>1</y>
-              <direction class="er">NW</direction>
-            </validVertex2>
-            <orientation>NW</orientation>
-          </ez>
-          <ez>
-            <location>
-              <x>3</x>
-              <y>-1</y>
-            </location>
-            <ratio>2</ratio>
-            <inputResource>Sheep</inputResource>
-            <validVertex1>
-              <x>3</x>
-              <y>-1</y>
-              <direction class="er">W</direction>
-            </validVertex1>
-            <validVertex2>
-              <x>3</x>
-              <y>-1</y>
               <direction class="er">NW</direction>
             </validVertex2>
             <orientation>NW</orientation>
@@ -2986,8 +2991,8 @@
           <type>buildRoad</type>
           <playerIndex>0</playerIndex>
           <roadLocation>
-            <x>-1</x>
-            <y>0</y>
+            <x>1</x>
+            <y>-1</y>
             <direction class="ek">NW</direction>
           </roadLocation>
           <free>true</free>
@@ -2996,9 +3001,9 @@
           <type>buildSettlement</type>
           <playerIndex>0</playerIndex>
           <vertexLocation>
-            <x>-1</x>
+            <x>0</x>
             <y>0</y>
-            <direction class="er">NW</direction>
+            <direction class="er">NE</direction>
           </vertexLocation>
           <free>true</free>
         </dI>
@@ -3011,8 +3016,8 @@
           <playerIndex>1</playerIndex>
           <roadLocation>
             <x>0</x>
-            <y>-1</y>
-            <direction class="ek">SE</direction>
+            <y>0</y>
+            <direction class="ek">S</direction>
           </roadLocation>
           <free>true</free>
         </dH>
@@ -3021,8 +3026,8 @@
           <playerIndex>1</playerIndex>
           <vertexLocation>
             <x>0</x>
-            <y>-1</y>
-            <direction class="er">E</direction>
+            <y>0</y>
+            <direction class="er">SE</direction>
           </vertexLocation>
           <free>true</free>
         </dI>
@@ -3082,9 +3087,9 @@
           <type>buildRoad</type>
           <playerIndex>3</playerIndex>
           <roadLocation>
-            <x>0</x>
-            <y>0</y>
-            <direction class="ek">N</direction>
+            <x>-2</x>
+            <y>1</y>
+            <direction class="ek">SW</direction>
           </roadLocation>
           <free>true</free>
         </dH>
@@ -3092,9 +3097,9 @@
           <type>buildSettlement</type>
           <playerIndex>3</playerIndex>
           <vertexLocation>
-            <x>0</x>
-            <y>0</y>
-            <direction class="er">NW</direction>
+            <x>-2</x>
+            <y>1</y>
+            <direction class="er">W</direction>
           </vertexLocation>
           <free>true</free>
         </dI>
@@ -3130,8 +3135,8 @@
           <type>buildRoad</type>
           <playerIndex>1</playerIndex>
           <roadLocation>
-            <x>0</x>
-            <y>1</y>
+            <x>-2</x>
+            <y>0</y>
             <direction class="ek">S</direction>
           </roadLocation>
           <free>true</free>
@@ -3140,8 +3145,8 @@
           <type>buildSettlement</type>
           <playerIndex>1</playerIndex>
           <vertexLocation>
-            <x>0</x>
-            <y>1</y>
+            <x>-2</x>
+            <y>0</y>
             <direction class="er">SE</direction>
           </vertexLocation>
           <free>true</free>
@@ -3154,9 +3159,9 @@
           <type>buildRoad</type>
           <playerIndex>0</playerIndex>
           <roadLocation>
-            <x>1</x>
-            <y>1</y>
-            <direction class="ek">NE</direction>
+            <x>0</x>
+            <y>-1</y>
+            <direction class="ek">NW</direction>
           </roadLocation>
           <free>true</free>
         </dH>
@@ -3164,8 +3169,8 @@
           <type>buildSettlement</type>
           <playerIndex>0</playerIndex>
           <vertexLocation>
-            <x>1</x>
-            <y>1</y>
+            <x>-1</x>
+            <y>0</y>
             <direction class="er">NE</direction>
           </vertexLocation>
           <free>true</free>
@@ -3177,336 +3182,113 @@
         <dL>
           <type>rollNumber</type>
           <playerIndex>0</playerIndex>
-          <number>4</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>0</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>1</playerIndex>
-          <number>7</number>
-        </dL>
-        <dK>
-          <type>robPlayer</type>
-          <playerIndex>1</playerIndex>
-          <victimIndex>0</victimIndex>
-          <location>
-            <x>-2</x>
-            <y>0</y>
-          </location>
-        </dK>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>1</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>2</playerIndex>
-          <number>2</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>2</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>3</playerIndex>
-          <number>5</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>3</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>0</playerIndex>
-          <number>11</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>0</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>1</playerIndex>
-          <number>6</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>1</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>2</playerIndex>
-          <number>9</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>2</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>3</playerIndex>
-          <number>8</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>3</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>0</playerIndex>
           <number>3</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>0</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>1</playerIndex>
-          <number>8</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>1</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>2</playerIndex>
-          <number>5</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>2</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>3</playerIndex>
-          <number>6</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>3</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>0</playerIndex>
-          <number>11</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>0</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>1</playerIndex>
-          <number>5</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>1</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>2</playerIndex>
-          <number>6</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>2</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>3</playerIndex>
-          <number>6</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>3</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>0</playerIndex>
-          <number>11</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>0</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>1</playerIndex>
-          <number>7</number>
-        </dL>
-        <dA>
-          <type>discardCards</type>
-          <playerIndex>1</playerIndex>
-          <discardedCards>
-            <brick>1</brick>
-            <wood>3</wood>
-            <sheep>1</sheep>
-            <wheat>0</wheat>
-            <ore>0</ore>
-          </discardedCards>
-        </dA>
-        <dA>
-          <type>discardCards</type>
-          <playerIndex>2</playerIndex>
-          <discardedCards>
-            <brick>1</brick>
-            <wood>5</wood>
-            <sheep>0</sheep>
-            <wheat>0</wheat>
-            <ore>0</ore>
-          </discardedCards>
-        </dA>
-        <dA>
-          <type>discardCards</type>
-          <playerIndex>3</playerIndex>
-          <discardedCards>
-            <brick>0</brick>
-            <wood>3</wood>
-            <sheep>2</sheep>
-            <wheat>0</wheat>
-            <ore>0</ore>
-          </discardedCards>
-        </dA>
-        <dA>
-          <type>discardCards</type>
-          <playerIndex>0</playerIndex>
-          <discardedCards>
-            <brick>5</brick>
-            <wood>0</wood>
-            <sheep>0</sheep>
-            <wheat>0</wheat>
-            <ore>0</ore>
-          </discardedCards>
-        </dA>
-        <dK>
-          <type>robPlayer</type>
-          <playerIndex>1</playerIndex>
-          <victimIndex>2</victimIndex>
-          <location>
-            <x>1</x>
-            <y>-1</y>
-          </location>
-        </dK>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>1</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>2</playerIndex>
-          <number>10</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>2</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>3</playerIndex>
-          <number>9</number>
-        </dL>
-        <dC>
-          <type>maritimeTrade</type>
-          <playerIndex>3</playerIndex>
-          <inputResource>Wheat</inputResource>
-          <outputResource>Wood</outputResource>
-          <ratio>4</ratio>
-        </dC>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>3</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>0</playerIndex>
-          <number>7</number>
-        </dL>
-        <dA>
-          <type>discardCards</type>
-          <playerIndex>1</playerIndex>
-          <discardedCards>
-            <brick>0</brick>
-            <wood>0</wood>
-            <sheep>3</sheep>
-            <wheat>0</wheat>
-            <ore>0</ore>
-          </discardedCards>
-        </dA>
-        <dA>
-          <type>discardCards</type>
-          <playerIndex>2</playerIndex>
-          <discardedCards>
-            <brick>2</brick>
-            <wood>0</wood>
-            <sheep>1</sheep>
-            <wheat>0</wheat>
-            <ore>0</ore>
-          </discardedCards>
-        </dA>
-        <dA>
-          <type>discardCards</type>
-          <playerIndex>0</playerIndex>
-          <discardedCards>
-            <brick>1</brick>
-            <wood>0</wood>
-            <sheep>0</sheep>
-            <wheat>3</wheat>
-            <ore>0</ore>
-          </discardedCards>
-        </dA>
-        <dK>
-          <type>robPlayer</type>
-          <playerIndex>0</playerIndex>
-          <victimIndex>3</victimIndex>
-          <location reference="../../../../model/map/robber"/>
-        </dK>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>0</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>1</playerIndex>
-          <number>4</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>1</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>2</playerIndex>
-          <number>5</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>2</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>3</playerIndex>
-          <number>8</number>
-        </dL>
-        <dB>
-          <type>finishTurn</type>
-          <playerIndex>3</playerIndex>
-        </dB>
-        <dL>
-          <type>rollNumber</type>
-          <playerIndex>0</playerIndex>
-          <number>6</number>
         </dL>
         <dw>
           <type>buyDevCard</type>
           <playerIndex>0</playerIndex>
         </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dw>
+          <type>buyDevCard</type>
+          <playerIndex>0</playerIndex>
+        </dw>
+        <dM>
+          <type>sendChat</type>
+          <playerIndex>0</playerIndex>
+          <content>zxc</content>
+        </dM>
       </commands>
     </h>
     <id>3</id>
@@ -3517,12 +3299,12 @@
         <me reference="../../../model/players/eJ[2]"/>
         <turnIndex>1</turnIndex>
         <playerId>-2</playerId>
-        <name>Miguel</name>
+        <name>Scott</name>
         <type>LARGEST_ARMY</type>
         <rand serialization="custom">
           <java.util.Random>
             <default>
-              <seed>246926506438371</seed>
+              <seed>63028966765057</seed>
               <nextNextGaussian>0.0</nextNextGaussian>
               <haveNextNextGaussian>false</haveNextNextGaussian>
             </default>
@@ -3535,12 +3317,12 @@
         <me reference="../../../model/players/eJ[3]"/>
         <turnIndex>2</turnIndex>
         <playerId>-3</playerId>
-        <name>Ken</name>
+        <name>Steve</name>
         <type>LARGEST_ARMY</type>
         <rand serialization="custom">
           <java.util.Random>
             <default>
-              <seed>104921753379011</seed>
+              <seed>43804300691870</seed>
               <nextNextGaussian>0.0</nextNextGaussian>
               <haveNextNextGaussian>false</haveNextNextGaussian>
             </default>
@@ -3553,12 +3335,12 @@
         <me reference="../../../model/players/eJ[4]"/>
         <turnIndex>3</turnIndex>
         <playerId>-4</playerId>
-        <name>Squall</name>
+        <name>Quinn</name>
         <type>LARGEST_ARMY</type>
         <rand serialization="custom">
           <java.util.Random>
             <default>
-              <seed>167469107114096</seed>
+              <seed>25123587281777</seed>
               <nextNextGaussian>0.0</nextNextGaussian>
               <haveNextNextGaussian>false</haveNextNextGaussian>
             </default>

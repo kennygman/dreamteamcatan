@@ -42,7 +42,6 @@ public class DiscardController extends Controller implements
 	 */
 	public DiscardController(IDiscardView view, IWaitView waitView)
 	{
-
 		super(view);
 		ModelFacade.getInstance().addObserver(this);
 		this.getDiscardView().setDiscardButtonEnabled(false);
@@ -160,13 +159,15 @@ public class DiscardController extends Controller implements
 		brickDiscardAmount = 0;
 		oreDiscardAmount = 0;
 		discarded = true;
+                this.getDiscardView().closeModal();
+                ModelFacade.getInstance().updateGameModel();
 	}
 
 	public void updateArrows(int discardAmount, int max, ResourceType resource)
 	{
 		if (totalDiscardAmount == totalResources / 2)
 		{
-			if (discardAmount < totalDiscardAmount)
+			if (discardAmount < max)
 			{
 				if (discardAmount == 0)
 				{
@@ -191,7 +192,7 @@ public class DiscardController extends Controller implements
 			}
 		} else
 		{
-			if (discardAmount < discardAmount)
+			if (discardAmount < max)
 			{
 				if (discardAmount == 0)
 				{
@@ -242,6 +243,27 @@ public class DiscardController extends Controller implements
 		this.getDiscardView().setResourceDiscardAmount(ResourceType.SHEEP, 0);
 		this.getDiscardView().setResourceDiscardAmount(ResourceType.WHEAT, 0);
 		this.getDiscardView().setResourceDiscardAmount(ResourceType.WOOD, 0);
+                
+                /*if(maxWood > 0)
+                {
+                    this.getDiscardView().setResourceAmountChangeEnabled(ResourceType.WOOD, true, false);
+                }
+                if(maxBrick > 0)
+                {
+                    this.getDiscardView().setResourceAmountChangeEnabled(ResourceType.BRICK, true, false);
+                }
+                if(maxSheep > 0)
+                {
+                    this.getDiscardView().setResourceAmountChangeEnabled(ResourceType.SHEEP, true, false);
+                }
+                if(maxOre > 0)
+                {
+                    this.getDiscardView().setResourceAmountChangeEnabled(ResourceType.ORE, true, false);
+                }
+                if(maxWheat > 0)
+                {
+                    this.getDiscardView().setResourceAmountChangeEnabled(ResourceType.WHEAT, true, false);
+                }*/
 	}
 
 	private void initDiscardValues()
@@ -269,17 +291,22 @@ public class DiscardController extends Controller implements
 	@Override
 	public void update(Observable o, Object arg)
 	{
-		if (ModelFacade.getInstance().getGame().getTurnTracker().getStatus()
-				.equals("Discarding"))// .getStatus().equals("Discarding"))
+		if (ModelFacade.getInstance().getState().equals("Discarding"))// .getStatus().equals("Discarding"))
 		{
 			initDiscardValues();
 			if (totalResources >= 7 && !discarded)
 			{
-				this.getDiscardView().showModal();
-				updateAllResourceValues();
+                                updateAllResourceValues();
+                                if(!this.getDiscardView().isModalShowing())
+                                {
+                                    this.getDiscardView().showModal();
+                                }
 			} else if (totalResources < 7 || discarded)
 			{
-				waitView.showModal();
+                                if(!this.getWaitView().isModalShowing())
+                                {
+                                    waitView.showModal();
+                                }
 			}
 		} else
 		{

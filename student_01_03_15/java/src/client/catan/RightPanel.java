@@ -45,8 +45,7 @@ public class RightPanel extends JPanel
 				mapController.playRoadBuildingCard();
 			}
 		};
-		devCardController = new DevCardController(playCardView, buyCardView,
-												  soldierAction, roadAction);
+		devCardController = new DevCardController(playCardView, buyCardView, soldierAction, roadAction);
 		playCardView.setController(devCardController);
 		buyCardView.setController(devCardController);
 		

@@ -1,5 +1,6 @@
 package model;
 
+import model.player.Developments;
 import model.player.Resources;
 import model.player.Player;
 import model.board.Board;
@@ -10,6 +11,7 @@ public class Game
 {
 	private int playerId;
 	private Resources bank;
+	private Developments deck;
 	private Chat chat;
 	private Log log;
 	private Board map;
@@ -154,4 +156,12 @@ public class Game
         {
                 map.sort();
         }
+		public Developments getDeck()
+		{
+			return deck;
+		}
+		public void setDeck(Developments deck)
+		{
+			this.deck = deck;
+		}
 }

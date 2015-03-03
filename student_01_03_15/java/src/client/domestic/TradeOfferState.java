@@ -31,12 +31,10 @@ public class TradeOfferState
 		
 		controller.getTradeOverlay().setStateMessage(ModelFacade.getInstance().getState());
 		controller.getTradeOverlay().setTradeEnabled(true);
-		controller.getTradeOverlay().setTradeEnabled(true);
 		controller.getTradeOverlay().setPlayerSelectionEnabled(true);
 		controller.getTradeOverlay().setResourceSelectionEnabled(true);
 		tradeOverlay.setStateMessage("Make offer");
 		resetTradeOffer();
-
 
 		//addTempResources();	// REMOVE TEST
 	}
@@ -49,7 +47,6 @@ public class TradeOfferState
 		resources.addResource(ResourceType.WOOD, 3);
 		resources.addResource(ResourceType.BRICK, 2);
 		ModelFacade.getInstance().modelChanged();
-
 	}
 	
 	//---------------------------------------------------------------------------------
@@ -137,7 +134,7 @@ public class TradeOfferState
 	//---------------------------------------------------------------------------------
 	public void setTradableResources(ResourceType resource)
 	{
-		for (ResourceType type : resources.getResourceList())
+		for (ResourceType type : Resources.getResourceList())
 		{
 			if (!type.equals(resource))
 				tradeOverlay.setResourceAmountChangeEnabled(type, false, false);

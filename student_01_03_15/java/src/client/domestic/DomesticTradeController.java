@@ -117,6 +117,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 //		{
 			ModelFacade.getInstance().offerTrade(offerState.getRecipient(), offerState.getOffer());
 			getTradeOverlay().closeModal();
+			
 			getWaitOverlay().setMessage("Waiting for recipient response.");
 			getWaitOverlay().showModal();
 //		}
@@ -159,7 +160,6 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	public void update(Observable arg0, Object arg1)
 	{
 		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
-		System.out.println("====TradeOffer: " + offer);
 		
 		if (offer == null && this.getWaitOverlay().isModalShowing())
 		{

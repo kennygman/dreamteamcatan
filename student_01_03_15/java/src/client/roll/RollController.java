@@ -102,12 +102,9 @@ public class RollController extends Controller implements IRollController, Obser
         {
         	if(ModelFacade.getInstance().CanRollNumber())
         	{
-<<<<<<< HEAD
+
         		
-        		//this.getRollView().closeModal();
-=======
-        		hasRolled = false;
->>>>>>> cc447aeaa68980a54055657b4eb4919f5fda1341
+
         		this.getRollView().showModal();
         		this.runRollTimer();
         	}

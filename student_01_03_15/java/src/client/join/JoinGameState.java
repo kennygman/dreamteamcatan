@@ -7,7 +7,6 @@ import shared.response.StandardResponse;
 import model.ModelFacade;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
-import client.poller.Poller;
 
 public class JoinGameState
 {
@@ -35,7 +34,8 @@ public class JoinGameState
 	public boolean joinGame(CatanColor color)
 	{
 		this.updateGameList();
-		StandardResponse response = ModelFacade.getInstance().joinGame(new JoinGameParam(game.getId(), color.name().toLowerCase()));
+		StandardResponse response = ModelFacade.getInstance().joinGame(
+				new JoinGameParam(game.getId(), color.name().toLowerCase()));
 		if (response.isValid())
 		{
 			setGameInfo();

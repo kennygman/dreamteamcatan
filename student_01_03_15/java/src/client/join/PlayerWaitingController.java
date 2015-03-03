@@ -1,12 +1,10 @@
 package client.join;
 
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
 import shared.parameters.AddAiParam;
 import shared.response.ListAIResponse;
-import shared.response.StandardResponse;
 import model.ModelFacade;
 import client.base.*;
 import client.data.PlayerInfo;
@@ -31,6 +29,12 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
 	@Override
 	public void start() {
+		if (ModelFacade.getInstance().isGameFull()) 
+		{
+			if (getView().isModalShowing())
+				getView().closeModal();
+			return;
+		}
        	getView().showModal();
 	}
 

@@ -48,22 +48,20 @@ public class Poller
 	 */
 	public void pollServer()
 	{
-		if(ModelFacade.getInstance().isHasJoined())
-		{
+//		if(ModelFacade.getInstance().isHasJoined())
+//		{
 			// Notify Model Observers if game is not full
-			if (!ModelFacade.getInstance().isGameFull())
+			if (!ModelFacade.getInstance().isGameFull() )
 			{
 				ModelFacade.getInstance().modelChanged();
 			}
-			
-//			System.out.println("===========Server Version: " + serverVersion);
-//			System.out.println("===========Client Version: " + clientVersion);
-			
+
 			// If Client Game Model has been updated through ModelFacade since last Poll 
-			if (ModelFacade.getInstance().getGame().getVersion() > clientVersion)
+			else if (ModelFacade.getInstance().getGame().getVersion() > clientVersion)
 			{
 				this.serverVersion = ModelFacade.getInstance().getGame().getVersion();
 			}
+			
 			else
 			{
 				GameModelResponse game = proxyServer.getGameModel();
@@ -72,9 +70,11 @@ public class Poller
 					this.serverVersion = game.getGame().getVersion();
 				}
 			}
+			//System.out.println("===========Server Version: " + serverVersion);
+			//System.out.println("===========Client Version: " + clientVersion);
 		}
 		
-	}
+//	}
 
 	/**
 	 * @param oldModel

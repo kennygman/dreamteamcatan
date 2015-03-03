@@ -3,7 +3,6 @@ package model;
 import java.util.Observable;
 
 import shared.definitions.DevCardType;
-import shared.definitions.PortType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
@@ -46,7 +45,6 @@ public class ModelFacade extends Observable implements IModelFacade
     private boolean hasRolled;
     
     private PlayerInfo[] players;
-    private boolean fullGame = false;
 
 	public ModelFacade(IProxy proxy)
 	{
@@ -438,9 +436,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public void sendChat(SendChatParam param)
 	{
-		Game newGame = proxy.sendChat(param).getGame();
-		game = newGame;
-		this.modelChanged();
+		proxy.sendChat(param).getGame();
+		updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
@@ -448,28 +445,18 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void acceptTrade(boolean accept)
 	{
 		Player reciever = game.getPlayers()[game.getTradeOffer().getReciever()];
-                GameModelResponse response = proxy.acceptTrade(
-				new AcceptTradeParam(reciever.getPlayerIndex(), accept));
-                if(response.isValid())
-                {
-                    Game newGame = response.getGame();
-                    if (!accept) return;
-                    game.setTradeOffer(newGame.getTradeOffer());
-                    updateGameModel();
-                }
+		GameModelResponse response = proxy.acceptTrade(new AcceptTradeParam(reciever.getPlayerIndex(), accept));
+		if (!response.isValid()) return;
+		updateGameModel();
 	}
 	
 	//--------------------------------------------------------------------------------
 	@Override
 	public void discardCards(Resources resources)
 	{
-		Player p = game.getPlayer();
-                GameModelResponse response = proxy.discardCards(new DiscardCardsParam(0, resources));
-                if(response.isValid())
-                {
-                    game = response.getGame();
-                    updateGameModel();
-                }
+		GameModelResponse response = proxy.discardCards(new DiscardCardsParam(0, resources));
+		if (!response.isValid()) return;
+		updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
@@ -479,13 +466,10 @@ public class ModelFacade extends Observable implements IModelFacade
 
 		int playerIndex = this.getPlayerInfo().getPlayerIndex();
 		GameModelResponse response = proxy.rollNumber(new RollNumParam(playerIndex, total));
-        if(response.isValid())
-        {
-            updateGameModel();
-            hasPlayedDevCard = false;
- //           System.out.println("inRoll");
-            this.hasRolled = true;
-        }
+		if (!response.isValid()) return;
+		updateGameModel();
+        hasPlayedDevCard = false;
+        this.hasRolled = true;
                 
 	}
         
@@ -494,228 +478,161 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public void buildRoad(EdgeLocation edge, boolean free)
 	{
-                GameModelResponse response = proxy.buildRoad(new BuildRoadParam
-                        (game.getTurnTracker().getCurrentTurn(), edge, free));
-                if(response.isValid())
-                {
-                    game = response.getGame();
-                    updateGameModel();
-                }
+		GameModelResponse response = proxy.buildRoad(new BuildRoadParam
+		        (game.getTurnTracker().getCurrentTurn(), edge, free));
+		if (!response.isValid()) return;
+	    updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void buildSettlement(VertexLocation vert, boolean free)
 	{
-            
-            
-                GameModelResponse response = proxy.buildSettlement(new BuildSettlementParam(
+		GameModelResponse response = proxy.buildSettlement(new BuildSettlementParam(
 				game.getPlayer().getPlayerIndex(), vert, free));
-                if(response.isValid())
-                {
-                    game = response.getGame();
-                    updateGameModel();
-                }
+		if (!response.isValid()) return;
+	    updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void buildCity(VertexLocation vert)
 	{
-                GameModelResponse response = proxy.buildCity(
+		GameModelResponse response = proxy.buildCity(
 				new BuildCityParam(game.getPlayer().getPlayerIndex(), vert));
-                if(response.isValid())
-                {
-                    game = response.getGame();
-                    updateGameModel();
-                }
+		if (!response.isValid()) return;
+	    game = response.getGame();
+	    updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void offerTrade(int receiver, Resources resources)
 	{
-                GameModelResponse response = proxy.offerTrade(new OfferTradeParam(
-			game.getPlayer().getPlayerIndex(), receiver, resources));
-                if(response.isValid())
-                {
-                    game = response.getGame();
-                    updateGameModel();
-                }
+	    GameModelResponse response = proxy.offerTrade(new OfferTradeParam(
+	    		game.getPlayer().getPlayerIndex(), receiver, resources));
+		if (!response.isValid()) return;
+        game = response.getGame();
+        updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void maritimeTrade(int ratio, String inputResource, String outResource)
 	{
-		Player p = game.getPlayer();
-                GameModelResponse response = proxy.maritimeTrade(
-				new MaritimeTradeParam(game.getPlayer().getPlayerIndex(),
-				ratio, inputResource, outResource));
-                if(response.isValid())
-                {
-                    Game newGame =  response.getGame();
-                    game.setBank(newGame.getBank());
-                    p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-                }
+        GameModelResponse response = proxy.maritimeTrade(
+		new MaritimeTradeParam(game.getPlayer().getPlayerIndex(),
+		ratio, inputResource, outResource));
+		if (!response.isValid()) return;
+        updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void robPlayer(HexLocation location, int victimIndex)
 	{
-		Player p = game.getPlayer();
-                GameModelResponse response = proxy.robPlayer(new RobPlayerParam(
-			game.getPlayer().getPlayerIndex(), victimIndex, location));
-                if(response.isValid())
-                {
-                    Game newGame =  response.getGame();
-                    game.getBoard().setRobber(newGame.getBoard().getRobber());
-                    p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-                    updateGameModel();
-                }
+		GameModelResponse response = proxy.robPlayer(new RobPlayerParam(
+				game.getPlayer().getPlayerIndex(), victimIndex, location));
+		if (!response.isValid()) return;
+        updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void finishTurn()
 	{
-		Player p = game.getPlayer();
-        GameModelResponse response = proxy.finishTurn(new FinishTurnParam(p.getPlayerIndex()));
-        if(response.isValid())
-        {
-        	game = response.getGame();
-            updateGameModel();
-            hasRolled = false;
-        }
+        GameModelResponse response = proxy.finishTurn(
+        		new FinishTurnParam(game.getPlayer().getPlayerIndex()));
+		if (!response.isValid()) return;
+		updateGameModel();
+		hasRolled = false;
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void buyDevCard()
 	{
-		Player p = game.getPlayer();
-		 
-                GameModelResponse response = proxy.buyDevCard(
-			new BuyDevCardParam(p.getPlayerIndex()));
-                if(response.isValid())
-                {
-                    p = response.getGame().getPlayer();
-/*                	System.out.println("player's monopoly" + p.getNewDevCards().getMonopoly());
-                	System.out.println("player's monument" + p.getNewDevCards().getMonument());
-                	System.out.println("player's road building" + p.getNewDevCards().getRoadBuilding());
-                	System.out.println("player's soldier" + p.getNewDevCards().getSoldier());
-                	System.out.println("player's year of p" + p.getNewDevCards().getYearOfPlenty());
-*/	                updateGameModel();
-                }
+		GameModelResponse response = proxy.buyDevCard(
+				new BuyDevCardParam(game.getPlayer().getPlayerIndex()));
+		if (!response.isValid()) return;
+		updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void playSoldierCard(int victimIndex, HexLocation location)
 	{
-                GameModelResponse response = proxy.playSoldier(new PlaySoldierParam(
-                game.getPlayer().getPlayerIndex(), victimIndex, location));
-                if(response.isValid())
-                {
-                    game = response.getGame();
-                    hasPlayedDevCard = true;
-//                    System.out.println("inSoldier");
-                    updateGameModel();
-                }
+		GameModelResponse response = proxy.playSoldier(new PlaySoldierParam(
+				game.getPlayer().getPlayerIndex(), victimIndex, location));
+		if (!response.isValid()) return;
+		hasPlayedDevCard = true;
+		updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void playYearOfPlentyCard(String resource1, String resource2)
 	{
-		Player p = game.getPlayer();
         GameModelResponse response = proxy.playYearOfPlenty(new PlayYearOfPlentyParam(
-		game.getPlayer().getPlayerIndex(), resource1, resource2));
-        if(response.isValid())
-        {
-            Game newGame = response.getGame();
-            p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-            hasPlayedDevCard = true;
-//            System.out.println("inYOP");
-            updateGameModel();
-           
-        }
+        		game.getPlayer().getPlayerIndex(), resource1, resource2));
+		if (!response.isValid()) return;
+		hasPlayedDevCard = true;
+		updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void playRoadCard(EdgeLocation spot1, EdgeLocation spot2)
 	{
-		Player p = game.getPlayer();
-        GameModelResponse response = proxy.playRoadBuilding(new PlayRoadBuildingParam(
-		game.getPlayer().getPlayerIndex(), spot1, spot2));
-        if(response.isValid())
-        {
-            Game newGame = response.getGame();
-            p.setRoads(newGame.getPlayers()[p.getPlayerIndex()].getRoads());
-            game.getBoard().setRoads(newGame.getBoard().getRoads());
-            game.getBoard().sort();
-            game.getTurnTracker().setLongestRoad(newGame.getTurnTracker().getLongestRoad());
-            hasPlayedDevCard = true;
-//            System.out.println("inRoad");
-            updateGameModel();
-        }
+		GameModelResponse response = proxy.playRoadBuilding(new PlayRoadBuildingParam(
+				game.getPlayer().getPlayerIndex(), spot1, spot2));
+		if (!response.isValid()) return;
+		hasPlayedDevCard = true;
+		updateGameModel();
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void playMonopolyCard(String resource)
 	{
-		Player p = game.getPlayer();
-        GameModelResponse response = proxy.playMonopoly(new PlayMonopolyParam(
-		game.getPlayer().getPlayerIndex(), resource));
-        if(response.isValid())
-        {
-            Game newGame = response.getGame();
-            p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
-            hasPlayedDevCard = true;
-//            System.out.println("inMonopoly");
-            updateGameModel();  
-        }
+		GameModelResponse response = proxy.playMonopoly(new PlayMonopolyParam(
+				game.getPlayer().getPlayerIndex(), resource));
+		if (!response.isValid()) return;
+	    hasPlayedDevCard = true;
+		updateGameModel();  
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void playMonumentCard()
 	{
-		Player p = game.getPlayer();
-        GameModelResponse response = proxy.playMonument(new PlayMonumentParam(
-		game.getPlayer().getPlayerIndex()));
-        if(response.isValid())
-        {
-            Game newGame = response.getGame();
-            p.setVictoryPoints(newGame.getPlayers()[p.getPlayerIndex()].getVictoryPoints());
-            updateGameModel();
-        }
+		GameModelResponse response = proxy.playMonument(new PlayMonumentParam(
+				game.getPlayer().getPlayerIndex()));
+		if (!response.isValid()) return;
+	    updateGameModel();
 	}
         
-        //--------------------------------------------------------------------------------        
-        public boolean isSetUpRoad()
-        {
-            return startRoad;
-        }
-        
-        public boolean isSetUpSettlement()
-        {
-            return startSettlement;
-        }
-        
-        public void setSetUpRoad(boolean s)
-        {
-            startRoad = s;
-        }
-        
-        public void setSetUpSettlement(boolean s)
-        {
-            startSettlement = s;
-        }
-        
+	//--------------------------------------------------------------------------------        
+	public boolean isSetUpRoad()
+	{
+	    return startRoad;
+	}
+	
+	public boolean isSetUpSettlement()
+	{
+	    return startSettlement;
+	}
+	
+	public void setSetUpRoad(boolean s)
+	{
+	    startRoad = s;
+	}
+	
+	public void setSetUpSettlement(boolean s)
+	{
+	    startSettlement = s;
+	}
+	
 	//================================================================================
 	// MISC PROXY FUNCTIONS
 	//================================================================================
@@ -754,11 +671,6 @@ public class ModelFacade extends Observable implements IModelFacade
         {
             this.player.setColor(CatanColor.stringToColor(params.getColor()));
             this.hasJoined = true;
-//            GameModelResponse gameResponse = proxy.getGameModel();
-//	        if(response.isValid())
-//	        {
-//	            game = gameResponse.getGame();
-//	        }
         }
 		return response;
 	}
@@ -777,7 +689,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	    CreateGameResponse response = proxy.createGame(params);
 	    if(response.isValid())
 	    {
-	    	StandardResponse joinResponse = proxy.joinGame(new JoinGameParam(response.getGameId(), "white"));
+	    	proxy.joinGame(new JoinGameParam(response.getGameId(), "white"));
 	    }
 		return response;
 	}
@@ -807,22 +719,20 @@ public class ModelFacade extends Observable implements IModelFacade
 	//---------------------------------------------------------------------------------
 	public void updateGameModel()
 	{
-//		if(game != null)
-//		{
-	        GameModelResponse response = proxy.getGameModel();
-	        if(response.isValid())
-	        {
-	            game = response.getGame();
-	            this.modelChanged();
-	        }
-//		}
+		GameModelResponse response = proxy.getGameModel();
+		if(response.isValid())
+		{
+		    game = response.getGame();
+		    game.getBoard().sort();
+		    this.modelChanged();
+		}
 	}
 
 	//---------------------------------------------------------------------------------
         public RobPlayerInfo[] getRobPlayerInfoList(HexLocation hexLoc)
 	{
             Object[] objects = game.getBoard().getStructure(hexLoc);
-            List<RobPlayerInfo> players = new ArrayList<RobPlayerInfo>();
+            List<RobPlayerInfo> playersToRob = new ArrayList<RobPlayerInfo>();
             PlayerInfo[] playerInfo = getPlayerInfoList();
             
             int index = 0;
@@ -835,10 +745,10 @@ public class ModelFacade extends Observable implements IModelFacade
                         Settlement s = (Settlement) obj;
                         if(s.getOwner() != game.getPlayer().getPlayerID())
                         {
-                            players.add(new RobPlayerInfo(playerInfo[s.getOwner()]));
+                            playersToRob.add(new RobPlayerInfo(playerInfo[s.getOwner()]));
                             Player[] p = game.getPlayers();
-                            players.get(index).setNumCards(p[s.getOwner()].getNumCards());
-                            players.get(index).setLocation(hexLoc);
+                            playersToRob.get(index).setNumCards(p[s.getOwner()].getNumCards());
+                            playersToRob.get(index).setLocation(hexLoc);
                         }
                     }
                     else //if(obj instanceof City)
@@ -846,26 +756,25 @@ public class ModelFacade extends Observable implements IModelFacade
                         City c = (City) obj;
                         if(c.getOwner() != game.getPlayer().getPlayerID())
                         {
-                            players.add(new RobPlayerInfo(playerInfo[c.getOwner()]));
+                            playersToRob.add(new RobPlayerInfo(playerInfo[c.getOwner()]));
                             Player[] p = game.getPlayers();
-                            players.get(index).setNumCards(p[c.getOwner()].getNumCards());
-                            players.get(index).setLocation(hexLoc);
+                            playersToRob.get(index).setNumCards(p[c.getOwner()].getNumCards());
+                            playersToRob.get(index).setLocation(hexLoc);
                         }
                     }
                     
                     index++;
                 }
             }
-            RobPlayerInfo[] arr = new RobPlayerInfo[players.size()];
-            for(int i = 0; i < players.size(); i++)
+            RobPlayerInfo[] arr = new RobPlayerInfo[playersToRob.size()];
+            for(int i = 0; i < playersToRob.size(); i++)
             {
-                arr[i] = players.get(i);
+                arr[i] = playersToRob.get(i);
             }
-/*            System.out.println("size of infoList: " + players.size());
-            System.err.println(players.toString());
-*/            return arr;
+            
+			return arr;
         }
-            //---------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	public boolean checkGameFull()
 	{
 		ListGamesResponse response = proxy.listGames();
@@ -889,7 +798,7 @@ public class ModelFacade extends Observable implements IModelFacade
 		}
 		return true;
 	}
-
+	
 	//---------------------------------------------------------------------------------
 	public int getGameId()
 	{

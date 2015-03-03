@@ -1,12 +1,13 @@
 package model.board;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-import model.ModelFacade;
 
+import model.ModelFacade;
 import shared.locations.EdgeDirection;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
@@ -47,9 +48,9 @@ public class Board extends Observable
 			playerPorts.put(i, null);
 		sortNumbers();
 		sortRoads();
-		sortPorts();
 		sortStructures();
-                
+
+		sortPorts();
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -116,15 +117,34 @@ public class Board extends Observable
 		int index;
 		for(Port port : ports)
 		{
-			VertexLocation v = new VertexLocation(port.getLocation().getX(),port.getLocation().getY(), port.getDirection());
-			if (cityLocation.containsKey(v))
+			EdgeLocation portEdge = new EdgeLocation(
+					port.getLocation(),
+					EdgeLocation.getEdgeDirection(port.getDirection())
+					).getNormalizedLocation();
+
+			List<VertexLocation> neighbors = portEdge.getAdjacentVertices(); 
+
+			for (VertexLocation v : neighbors)
 			{
-				index = cityLocation.get(v).getOwner();
-				portList = playerPorts.get(index);
-				if (portList == null) portList = new ArrayList<>();
-				portList.add(port);
-				playerPorts.put(index, portList);
+				if (cityLocation.containsKey(v))
+				{
+					index = cityLocation.get(v).getOwner();
+					portList = playerPorts.get(index);
+					if (portList == null) portList = new ArrayList<>();
+					portList.add(port);
+					playerPorts.put(index, portList);
+				}
+				
+				if (settlementLocation.containsKey(v))
+				{
+					index = settlementLocation.get(v).getOwner();
+					portList = playerPorts.get(index);
+					if (portList == null) portList = new ArrayList<>();
+					portList.add(port);
+					playerPorts.put(index, portList);
+				}
 			}
+
 		}
 	}
 
@@ -451,7 +471,12 @@ public class Board extends Observable
  	public List<Port> getPorts(int index)
  	{
  		List<Port> list = playerPorts.get(index);
- 		return list;
+ 		
+/* 		for (Port p : list)
+ 		{
+ 	 		System.out.println("PORT " + p.getDirection() );
+ 		}
+*/ 		return list;
  	}
 	
 	//--------------------------------------------------------------------------------

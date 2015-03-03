@@ -162,6 +162,7 @@ public class EdgeLocation
             {
                 vertexList.add(new VertexLocation(location, VertexDirection.NorthWest));
                 vertexList.add(new VertexLocation(new HexLocation(location.getX() - 1, location.getY() + 1), VertexDirection.NorthEast));
+                //vertexList.add(new VertexLocation(location.getNeighborLoc(EdgeDirection.SouthWest), VertexDirection.NorthEast));
             } 
             else if (dir.equals(EdgeDirection.North))
             {
@@ -172,6 +173,7 @@ public class EdgeLocation
             {
                 vertexList.add(new VertexLocation(location, VertexDirection.NorthEast));
                 vertexList.add(new VertexLocation(new HexLocation(location.getX() + 1, location.getY()), VertexDirection.NorthWest));
+                //vertexList.add(new VertexLocation(location.getNeighborLoc(EdgeDirection.SouthEast), VertexDirection.NorthWest));
             }
             else
             {
@@ -250,6 +252,22 @@ public class EdgeLocation
 				assert false;
 				return null;
 		}
+	}
+	
+	public static EdgeDirection getEdgeDirection(String name)
+	{
+		EdgeDirection dir;
+		switch (name)
+		{
+			case "S":dir = EdgeDirection.South;		break;
+			case "SW":dir = EdgeDirection.SouthWest;	break;
+			case "SE":dir = EdgeDirection.SouthEast;	break;
+			case "N":dir = EdgeDirection.North;		break;
+			case "NW":dir = EdgeDirection.NorthWest;	break;
+			case "NE":dir = EdgeDirection.NorthEast;	break;
+			default: dir = null;break;
+		}
+		return dir;
 	}
 	
 }

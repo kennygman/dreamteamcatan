@@ -7,6 +7,8 @@ import model.ModelFacade;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import client.base.*;
+import client.resources.ResourceBarController;
+import client.resources.ResourceBarElement;
 
 
 /**
@@ -48,10 +50,8 @@ public class DevCardController extends Controller implements IDevCardController,
 	@Override
 	public void startBuyCard() 
 	{
-		if(ModelFacade.getInstance().CanBuyDevCard())
-		{
+	
 			getBuyCardView().showModal();
-		}
 	}
 
 	@Override
@@ -151,7 +151,15 @@ public class DevCardController extends Controller implements IDevCardController,
 	@Override
 	public void update(Observable o, Object arg) 
 	{
-		
+		//this is already being applied in the elements
+		/*if(ModelFacade.getInstance().CanBuyDevCard())
+		{
+			getView().setElementEnabled(ResourceBarElement.BUY_CARD, true);
+		}
+		else
+		{
+			getView().setElementEnabled(ResourceBarElement.BUY_CARD, false);
+		}*/
 		if(ModelFacade.getInstance().canPlayDevCard(DevCardType.MONOPOLY))
 		{
 			getPlayCardView().setCardEnabled(DevCardType.MONOPOLY, true);
@@ -177,7 +185,7 @@ public class DevCardController extends Controller implements IDevCardController,
 			getPlayCardView().setCardEnabled(DevCardType.YEAR_OF_PLENTY, true);
 			getPlayCardView().setCardAmount(DevCardType.YEAR_OF_PLENTY, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getYearOfPlenty());
 		}
-		//IPlayDevCardView.setCardEnabled(DevCardType cardType, boolean enabled);		
+			
 	}
 
 }

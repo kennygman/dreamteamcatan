@@ -59,14 +59,10 @@ public class RollController extends Controller implements IRollController, Obser
 			int total = dice1 + dice2;
 			resultView.setRollValue(total);
 			getResultView().showModal();
-                        
-
 		} 
-		catch (Exception e)
+		catch (IllegalStateException e)
 		{
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-
+                    
 		}
 		
 		
@@ -88,7 +84,6 @@ public class RollController extends Controller implements IRollController, Obser
 				getRollView().closeModal();
 				rollDice();
 			}
-			
 		}
 		
 		TimerToDo task = new TimerToDo(this);
@@ -101,10 +96,7 @@ public class RollController extends Controller implements IRollController, Obser
         public void update(Observable o, Object o1) 
         {
         	if(ModelFacade.getInstance().CanRollNumber())
-
         	{
-
-
         		this.getRollView().showModal();
         		this.runRollTimer();
         	}

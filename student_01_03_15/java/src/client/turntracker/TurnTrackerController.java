@@ -25,6 +25,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		try
 		{
 			poller = new Poller(ModelFacade.getInstance().getProxy());
+                        poller.start();
 		} catch (Exception e)
 		{
 			// TODO Auto-generated catch block
@@ -47,7 +48,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		if (ModelFacade.getInstance().CanFinishTurn())
 		{
 			ModelFacade.getInstance().finishTurn();
-			poller.start();
+			//poller.start();
 		}
 		
 	}
@@ -80,10 +81,14 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		
 		getView().updateGameState(tracker.getStatus(), true);
 		this.poller.setClientVersion(ModelFacade.getInstance().getGame().getVersion());
-		if(ModelFacade.getInstance().isPlayerTurn())
+		/*if(ModelFacade.getInstance().isPlayerTurn())
 		{
 			poller.stop();
 		}
+                else
+                {
+                    poller.start();
+                }*/
 		
 		System.out.println("TurnTracker Game Status: " + tracker.getStatus());
 		System.out.println("Current Turn: " + ModelFacade.getInstance().getGame()

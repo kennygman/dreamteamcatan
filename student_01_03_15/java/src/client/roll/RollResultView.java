@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import client.base.*;
 import client.utils.ImageUtils;
+import model.ModelFacade;
 
 
 /**
@@ -28,6 +29,8 @@ public class RollResultView extends OverlayView implements IRollResultView {
 	private JLabel rollLabel;
 	private ImageIcon picture;
 	private JLabel pictureLabel;
+        
+        private int total;
 
 	public RollResultView() {
 		
@@ -83,6 +86,7 @@ public class RollResultView extends OverlayView implements IRollResultView {
 			if (e.getSource() == okayButton) {
 				
 				closeModal();
+                                ModelFacade.getInstance().rollNumber(total, 0);
 			}
 		}	
 	};
@@ -95,6 +99,7 @@ public class RollResultView extends OverlayView implements IRollResultView {
 
 	@Override
 	public void setRollValue(int value) {
+                total = value;
 		String rollText = String.format("You rolled a %d.", value);
 		rollLabel.setText(rollText);
 	}

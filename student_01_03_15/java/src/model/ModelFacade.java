@@ -441,17 +441,17 @@ public class ModelFacade extends Observable implements IModelFacade
 
 	//--------------------------------------------------------------------------------
 	@Override
-	public void rollNumber(int d1, int d2)
+	public void rollNumber(int total, int dontUseThis)
 	{
 
-		int summedDie = d1 + d2;
 		int playerIndex = this.getPlayerInfo().getPlayerIndex();
-		GameModelResponse response = proxy.rollNumber(new RollNumParam(playerIndex, summedDie));
+		GameModelResponse response = proxy.rollNumber(new RollNumParam(playerIndex, total));
                 if(response.isValid())
                 {
                     updateGameModel();
                 }
 	}
+        
 
 	//--------------------------------------------------------------------------------
 	@Override

@@ -207,7 +207,7 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 ModelFacade.getInstance().updateGameModel();
                 isFirst = false;
-                startMove(PieceType.ROAD, true, true);
+                startMove(PieceType.ROAD, true, false);
             }
             else if(isRoadBuilding)
             {
@@ -252,7 +252,7 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	public void cancelMove() 
         {
-            
+            System.out.println("cancel");
 	}
 	
 	public void playSoldierCard() 

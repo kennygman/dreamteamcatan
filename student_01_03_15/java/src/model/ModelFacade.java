@@ -40,6 +40,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	private GameInfo gameInfo;
         private boolean startRoad = true;
         private boolean startSettlement = false;
+        private boolean hasPlayedDevCard;
 
 	public ModelFacade(IProxy proxy)
 	{
@@ -328,7 +329,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	// DevCard Preconditions ================================================================================
 	public boolean canPlayDevCard(DevCardType devCard)
 	{
-		if (!isPlayerTurn() ||
+		if (!isPlayerTurn() || hasPlayedDevCard ||
 			!game.getTurnTracker().getStatus().equals("Playing")
 			|| !game.getPlayer().getOldDevCards().hasDevCard(devCard)
 			|| game.getPlayer().isPlayedDevCard()
@@ -461,6 +462,7 @@ public class ModelFacade extends Observable implements IModelFacade
                 if(response.isValid())
                 {
                     updateGameModel();
+                    hasPlayedDevCard = false;
                 }
 	}
         
@@ -595,6 +597,7 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     game = response.getGame();
                     updateGameModel();
+                    hasPlayedDevCard = true;
                 }
 	}
 
@@ -610,6 +613,7 @@ public class ModelFacade extends Observable implements IModelFacade
                     Game newGame = response.getGame();
                     p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
                     updateGameModel();
+                    hasPlayedDevCard = true;
                 }
 	}
 
@@ -628,6 +632,7 @@ public class ModelFacade extends Observable implements IModelFacade
                     game.getBoard().sort();
                     game.getTurnTracker().setLongestRoad(newGame.getTurnTracker().getLongestRoad());
                     updateGameModel();
+                    hasPlayedDevCard = true;
                 }
 	}
 
@@ -643,6 +648,7 @@ public class ModelFacade extends Observable implements IModelFacade
                     Game newGame = response.getGame();
                     p.setResources(newGame.getPlayers()[p.getPlayerIndex()].getResources());
                     updateGameModel();
+                    hasPlayedDevCard = true;
                 }
 	}
 

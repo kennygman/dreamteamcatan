@@ -10,7 +10,7 @@ public class Resources {
 	private int wheat;
 	private int brick;
 	private int ore;
-	ResourceType[] list = {ResourceType.WHEAT, ResourceType.WOOD,
+	static ResourceType[] list = {ResourceType.WHEAT, ResourceType.WOOD,
 			ResourceType.BRICK, ResourceType.ORE, ResourceType.SHEEP};
 	
 	public Resources(int wood, int sheep, int wheat, int brick, int ore) 
@@ -22,7 +22,7 @@ public class Resources {
 		this.ore = ore;
 	}
 
-	public ResourceType[] getResourceList()
+	public static ResourceType[] getResourceList()
 	{
 		return list;
 	}

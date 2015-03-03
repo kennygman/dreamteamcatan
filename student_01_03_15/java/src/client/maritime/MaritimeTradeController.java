@@ -1,10 +1,13 @@
 package client.maritime;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
-
 import java.util.Observer;
 
 import model.ModelFacade;
+import model.board.Port;
+import model.player.Resources;
 import shared.definitions.*;
 import client.base.*;
 
@@ -14,8 +17,8 @@ import client.base.*;
  */
 public class MaritimeTradeController extends Controller implements IMaritimeTradeController, Observer
 {
-	private String inputTrade;
-	private String outputTrade;
+	private String giveResource;
+	private String getResource;
 	private int ratio = 4;
 	private IMaritimeTradeOverlay tradeOverlay;
 	
@@ -44,7 +47,24 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	@Override
 	public void startTrade() 
 	{
+		List<Port> ports = ModelFacade.getInstance().getPorts();
+		List<ResourceType> giveResources = new ArrayList<ResourceType>();
+		ResourceType[] resourceList = Resources.getResourceList();
 		
+		Resources resources = ModelFacade.getInstance().getGame().getPlayer().getResources();
+		for (ResourceType r : resourceList)
+		{
+			if (resources.getResourceAmount(r) >=4 )
+				giveResources.add(r);
+		}
+		
+		if (ports != null) {
+			for (Port p : ports)
+			{
+				giveResources.add(ResourceConverter.getType(p.getResource()));
+			}
+		}
+		getTradeOverlay().showGiveOptions(giveResources.toArray(new ResourceType[0]));
 		getTradeOverlay().showModal();
 
 	}
@@ -52,6 +72,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	@Override
 	public void makeTrade() {
 
+		ModelFacade.getInstance().maritimeTrade(ratio,getResource,giveResource);
 		getTradeOverlay().closeModal();
 	}
 
@@ -64,21 +85,20 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	@Override
 	public void setGetResource(ResourceType resource) 
 	{
-			//ModelFacade.getInstance().maritimeTrade(ratio, , outResource);
-		inputTrade = resource.toString();
+		//ModelFacade.getInstance().maritimeTrade(ratio, , outResource);
+		getResource = ResourceConverter.getName(resource);
 	}
 
 	@Override
 	public void setGiveResource(ResourceType resource) 
 	{
-		outputTrade = resource.toString();
+		giveResource = ResourceConverter.getName(resource);
 		
 		getRatio();
 		
-		
-		if(ModelFacade.getInstance().CanMaritimeTrade(ratio, outputTrade, inputTrade))
+		if(ModelFacade.getInstance().CanMaritimeTrade(ratio, getResource, giveResource))
 		{
-			ModelFacade.getInstance().maritimeTrade(ratio,outputTrade,inputTrade);
+			
 		}
 	}
 	public void getRatio()

@@ -312,7 +312,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean canPlaceRobber(HexLocation hexLoc)
 	{
-		return !game.getBoard().getRobber().equals(hexLoc);
+                Board board = game.getBoard();
+                if(board.getRobber().equals(hexLoc)) return false;
+                else if(board.isWaterHex(hexLoc)) return false;
+                return true;
 	}
 
 	//--------------------------------------------------------------------------------

@@ -5,7 +5,7 @@ import java.util.*;
 import model.Lines;
 import model.ModelFacade;
 import client.base.*;
-import client.data.PlayerInfo;
+import model.player.Player;
 import shared.definitions.*;
 
 
@@ -40,7 +40,6 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 		
 		List<Lines> logEntries = ModelFacade.getInstance().getGame().getLog().getLines();
 		getView().setEntries(convertLog(logEntries));
-	
 	}
 
 	//--------------------------------------------------------------------------------
@@ -57,14 +56,14 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 	//--------------------------------------------------------------------------------
 	public CatanColor getColor(String user)
 	{
-		for (PlayerInfo p : ModelFacade.getInstance().getGameInfo().getPlayers())
-		{
-			if (p.getName().equals(user))
-			{
-				return p.getColor();
-			}
-		}
-		return CatanColor.WHITE;
+            for (Player p : ModelFacade.getInstance().getGame().getPlayers())
+            {
+                if (p.getName().equals(user))
+                {
+                        return p.getColor();
+                }
+            }
+            return CatanColor.WHITE;
 	}
 
 	//--------------------------------------------------------------------------------

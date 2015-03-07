@@ -209,7 +209,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 				getWaitOverlay().showModal();
 			}
 		}
-		else if (offer.getReciever() == index)
+		else if (offer.getReceiver() == index)
 		{
 			System.out.println("===========OFFER FROM: " + offer.getSenderName());
 			boolean canAccept = ModelFacade.getInstance().canAcceptTrade();

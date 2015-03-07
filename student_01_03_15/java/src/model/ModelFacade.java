@@ -157,7 +157,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		TradeOffer offer = game.getTradeOffer();
 		if (offer==null) return false;
-		Player recipient = game.getPlayers()[offer.getReciever()];
+		Player recipient = game.getPlayers()[offer.getReceiver()];
 		
 		if (recipient.getPlayerIndex() != game.getPlayer().getPlayerIndex()) return false;
 		return (recipient.getResources().contains(offer.getOffer()));
@@ -446,8 +446,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public void acceptTrade(boolean accept)
 	{
-		Player reciever = game.getPlayers()[game.getTradeOffer().getReciever()];
-		GameModelResponse response = proxy.acceptTrade(new AcceptTradeParam(reciever.getPlayerIndex(), accept));
+		Player receiver = game.getPlayers()[game.getTradeOffer().getReceiver()];
+		GameModelResponse response = proxy.acceptTrade(new AcceptTradeParam(receiver.getPlayerIndex(), accept));
 		if (!response.isValid())
                 {
                     game = response.getGame();

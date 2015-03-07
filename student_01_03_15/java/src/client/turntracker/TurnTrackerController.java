@@ -72,20 +72,23 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	//---------------------------------------------------------------------------------
 	public void updatePlayers()
 	{
-		Player[] players = ModelFacade.getInstance().getGame().getPlayers();
-		TurnTracker tracker = ModelFacade.getInstance().getGame().getTurnTracker();
-		for (Player p : players)
-		{
-			if (p == null|| p.getName() == null) continue;
-		    getView().updatePlayer(
-		            p.getPlayerIndex(),
-		            p.getVictoryPoints(),
-		            tracker.getCurrentTurn() == p.getPlayerIndex(),
-		            tracker.getLargestArmy() == p.getPlayerIndex(),
-		            tracker.getLongestRoad() == p.getPlayerIndex()
-		            );
-		}
-		getView().updateGameState(tracker.getStatus(), true);
+            Player[] players = ModelFacade.getInstance().getGame().getPlayers();
+            TurnTracker tracker = ModelFacade.getInstance().getGame().getTurnTracker();
+            for (Player p : players)
+            {
+                if (p != null && p.getName() != null)
+                {
+                    getView().updatePlayer(
+                            p.getPlayerIndex(),
+                            p.getVictoryPoints(),
+                            tracker.getCurrentTurn() == p.getPlayerIndex(),
+                            tracker.getLargestArmy() == p.getPlayerIndex(),
+                            tracker.getLongestRoad() == p.getPlayerIndex()
+                            );
+                }
+            }
+
+            getView().updateGameState(tracker.getStatus(), true);
 	}
 	//---------------------------------------------------------------------------------
 	private void initFromModel()

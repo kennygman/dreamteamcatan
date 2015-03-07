@@ -9,6 +9,7 @@ import shared.definitions.*;
 import client.base.*;
 import client.catan.*;
 import client.utils.ImageUtils;
+import model.player.Player;
 
 
 /**
@@ -78,6 +79,9 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
                 gameStatePanel.setButtonColor(value.getJavaColor());
 	}
 
+        JPanel[] indicators = new JPanel[4];
+        
+        
 	@Override
 	public void initializePlayer(int playerIndex, String playerName,
 			CatanColor playerColor) {
@@ -91,18 +95,18 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 		name.setFont(labelFont);
 		playerPanel[playerIndex].add(name, BorderLayout.WEST);
 		
-		JPanel indicatorPanel = new JPanel();
-		indicatorPanel.setBackground(playerColor.getJavaColor());
-		playerPanel[playerIndex].add(indicatorPanel, BorderLayout.CENTER);
+		indicators[playerIndex] = new JPanel();
+		indicators[playerIndex].setBackground(playerColor.getJavaColor());
+		playerPanel[playerIndex].add(indicators[playerIndex], BorderLayout.CENTER);
 		
 		playerArmy[playerIndex] = new JLabel();
 		playerArmy[playerIndex].setIcon(new ImageIcon(largestArmyImage));
-		indicatorPanel.add(playerArmy[playerIndex]);
+		indicators[playerIndex].add(playerArmy[playerIndex]);
 		playerArmy[playerIndex].setVisible(false);
 		
 		playerRoad[playerIndex] = new JLabel();
 		playerRoad[playerIndex].setIcon(new ImageIcon(longestRoadImage));
-		indicatorPanel.add(playerRoad[playerIndex]);
+		indicators[playerIndex].add(playerRoad[playerIndex]);
 		playerRoad[playerIndex].setVisible(false);
 		
 		playerPoints[playerIndex] = new JLabel("0");
@@ -112,14 +116,15 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 		
 		playerPanel[playerIndex].setBackground(playerColor.getJavaColor());
 		playerPanel[playerIndex].setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-                
 	}
 
 	@Override
 	public void updatePlayer(int playerIndex, int points, boolean highlight,
 			boolean largestArmy, boolean longestRoad) {
+                refreshColor(playerIndex);
 		playerArmy[playerIndex].setVisible(largestArmy);
 		playerRoad[playerIndex].setVisible(longestRoad);
+                playerPoints[playerIndex].setText("");
 		playerPoints[playerIndex].setText(String.format("%d", points));
 		
 		
@@ -129,6 +134,14 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 			playerPanel[playerIndex].setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		
 	}
+        
+        private void refreshColor(int playerIndex)
+        {            
+            Player[] players = ModelFacade.getInstance().getPlayers();
+            Color color = players[playerIndex].getColor().getJavaColor();
+            playerPanel[playerIndex].setBackground(color);
+            indicators[playerIndex].setBackground(color);
+        }
 
 	@Override
 	public void updateGameState(String stateMessage, boolean enable) {

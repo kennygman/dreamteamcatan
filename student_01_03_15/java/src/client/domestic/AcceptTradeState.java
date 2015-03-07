@@ -21,15 +21,15 @@ public class AcceptTradeState
 		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
 		if (offer == null) return;
 		
+		controller.getAcceptOverlay().reset();
 		controller.getAcceptOverlay().setAcceptEnabled(canAccept);
 		controller.getAcceptOverlay().setPlayerName(offer.getSenderName());
 		
 		for (ResourceType resource : Resources.getResourceList())
 		{
 			int amount = offer.getOffer().getResourceAmount(resource);
-
 			if (amount > 0) {
-				controller.getAcceptOverlay().addGetResource(resource, Math.abs(amount));
+				controller.getAcceptOverlay().addGiveResource(resource, Math.abs(amount));
 			}
 			else if (amount < 0)
 			{

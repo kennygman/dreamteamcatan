@@ -291,6 +291,14 @@ public class LoginView extends OverlayView implements ILoginView
             initLayout();
             initEventListeners();
         }
+        
+        public void enableBtn(boolean enable)
+        {
+            if(btnRegister != null)
+            {
+                btnRegister.setEnabled(enable);
+            }
+        }
 
         private void initComponents()
         {

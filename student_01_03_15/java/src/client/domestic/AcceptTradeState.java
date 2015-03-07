@@ -15,6 +15,7 @@ public class AcceptTradeState
 		this.controller=controller;
 	}
 	
+	//---------------------------------------------------------------------------------
 	public void updateOverlay(boolean canAccept)
 	{
 		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
@@ -34,8 +35,7 @@ public class AcceptTradeState
 			{
 				controller.getAcceptOverlay().addGetResource(resource, Math.abs(amount));
 			}
-			else
-				continue;	
+			else continue;	
 		}
 		controller.getAcceptOverlay().showModal();
 	}

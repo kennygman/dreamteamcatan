@@ -941,6 +941,13 @@ public class ModelFacade extends Observable implements IModelFacade
 		setGameInfo(response.getGameListObject(gameInfo.getId()));
 		return gameInfo.getPlayers().size()==4;
 	}
+	//---------------------------------------------------------------------------------
+	public Player[] getPlayers()
+	{
+        GameModelResponse response = proxy.getGameModel();
+		if (!response.isValid()) return null;
+		return response.getGame().getPlayers();
+	}
 	
 }
 

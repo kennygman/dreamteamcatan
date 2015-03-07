@@ -5,7 +5,6 @@ import java.util.List;
 
 import client.data.PlayerInfo;
 import model.ModelFacade;
-import model.TradeOffer;
 import model.player.Resources;
 import shared.definitions.ResourceType;
 
@@ -14,7 +13,6 @@ public class TradeOfferState
 	private DomesticTradeController controller;
 	private IDomesticTradeOverlay tradeOverlay;
 
-	private TradeOffer tradeOffer;
 	private Resources offer;
 	private ResourceType resourceToSend;
 	private ResourceType resourceToGet;
@@ -28,12 +26,6 @@ public class TradeOfferState
 		this.controller=controller;
 		this.tradeOverlay=controller.getTradeOverlay();
 		resources = ModelFacade.getInstance().getGame().getPlayer().getResources();
-		
-		controller.getTradeOverlay().setStateMessage(ModelFacade.getInstance().getState());
-		controller.getTradeOverlay().setTradeEnabled(true);
-		controller.getTradeOverlay().setPlayerSelectionEnabled(true);
-		controller.getTradeOverlay().setResourceSelectionEnabled(true);
-		tradeOverlay.setStateMessage("Make offer");
 		resetTradeOffer();
 
 		//addTempResources();	// REMOVE TEST
@@ -179,4 +171,22 @@ public class TradeOfferState
 		return offer;
 	}
 	//---------------------------------------------------------------------------------
+	public boolean canTrade()
+	{
+		boolean give = false;
+		boolean get = false;
+		for (ResourceType r : Resources.getResourceList())
+		{
+			if (offer.getResourceAmount(r) > 0) {
+				give = true; break; 
+			}
+		}
+		for (ResourceType r : Resources.getResourceList())
+		{
+			if (offer.getResourceAmount(r) < 0) {
+				get = true; break; 
+			}
+		}
+		return give && get;
+	}
 }

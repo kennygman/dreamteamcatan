@@ -7,7 +7,6 @@ import model.ModelFacade;
 import model.TurnTracker;
 import model.player.Player;
 import client.base.*;
-import client.data.PlayerInfo;
 import client.poller.Poller;
 
 
@@ -15,9 +14,7 @@ import client.poller.Poller;
  * Implementation for the turn tracker controller
  */
 public class TurnTrackerController extends Controller implements ITurnTrackerController, Observer {
-// TODO: add poller to this class :)
 	
-	private boolean firstPass;
 	public TurnTrackerController(ITurnTrackerView view) {		
 		super(view);
 		try
@@ -27,11 +24,11 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		{
 			e.printStackTrace();
 		}
-		firstPass=true;
 		ModelFacade.getInstance().addObserver(this);
 	}
 	
 	
+	//---------------------------------------------------------------------------------
 	@Override
 	public ITurnTrackerView getView() 
 	{
@@ -39,6 +36,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		return (ITurnTrackerView)super.getView();
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void endTurn() {
 		if (ModelFacade.getInstance().CanFinishTurn())
@@ -49,12 +47,45 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		
 	}
 	
-	private void initFromModel() {
-		Player[] players = ModelFacade.getInstance().getGame().getPlayers();
+	//---------------------------------------------------------------------------------
+	private void initPlayers()
+	{
+		Player[] players = ModelFacade.getInstance().getPlayers();
 		Player player = ModelFacade.getInstance().getGame().getPlayer();
-		TurnTracker tracker = ModelFacade.getInstance().getGame().getTurnTracker();
 		
-		if (firstPass) {
+		getView().setLocalPlayerColor(player.getColor());
+		
+		int count = 0;
+		for (Player p : players)
+		{
+			if(p != null && p.getName() != null)
+			{
+				count++;
+				getView().initializePlayer(p.getPlayerIndex(),p.getName(),p.getColor());
+			}
+		}
+		if (count == 4) initialized = true;
+		return;
+	}
+	private boolean initialized = false;
+	
+	//---------------------------------------------------------------------------------
+	public void updatePlayers()
+	{
+		Player[] players = ModelFacade.getInstance().getGame().getPlayers();
+		TurnTracker tracker = ModelFacade.getInstance().getGame().getTurnTracker();
+		for (Player p : players)
+		{
+			if (p == null|| p.getName() == null) continue;
+		    getView().updatePlayer(
+		            p.getPlayerIndex(),
+		            p.getVictoryPoints(),
+		            tracker.getCurrentTurn() == p.getPlayerIndex(),
+		            tracker.getLargestArmy() == p.getPlayerIndex(),
+		            tracker.getLongestRoad() == p.getPlayerIndex()
+		            );
+		}
+/*		if (firstPass) {
                     firstPass = false;
                     getView().setLocalPlayerColor(player.getColor());
                     for (Player p : players)
@@ -78,9 +109,16 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
                         );
                 }
 		
-		getView().updateGameState(tracker.getStatus(), true);
+*/		getView().updateGameState(tracker.getStatus(), true);
+	}
+	//---------------------------------------------------------------------------------
+	private void initFromModel()
+	{
+		if (!initialized) initPlayers();
+		updatePlayers();
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{

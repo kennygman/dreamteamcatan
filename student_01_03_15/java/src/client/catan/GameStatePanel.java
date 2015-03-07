@@ -13,6 +13,7 @@ import client.base.IAction;
 public class GameStatePanel extends JPanel
 {
 	private JButton button;
+        private Color playerColor = Color.BLACK;
 	
 	public GameStatePanel()
 	{
@@ -20,6 +21,7 @@ public class GameStatePanel extends JPanel
 		this.setBackground(Color.white);
 		this.setOpaque(true);
 		
+                
 		button = new JButton();
 		
 		Font font = button.getFont();
@@ -33,6 +35,12 @@ public class GameStatePanel extends JPanel
 		updateGameState("Waiting for other Players", false);
 	}
 	
+        public void setButtonColor(Color color)
+        {
+            button.setBackground(color);
+            this.setOpaque(true);
+            this.repaint();
+        }
 	public void updateGameState(String stateMessage, boolean enable)
 	{
 		button.setText(stateMessage);

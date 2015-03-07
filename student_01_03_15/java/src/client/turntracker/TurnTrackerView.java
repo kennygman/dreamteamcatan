@@ -75,6 +75,7 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 	public void setLocalPlayerColor(CatanColor value) {
 		
 		titlePanel.setLocalPlayerColor(value);
+                gameStatePanel.setButtonColor(value.getJavaColor());
 	}
 
 	@Override
@@ -111,7 +112,7 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 		
 		playerPanel[playerIndex].setBackground(playerColor.getJavaColor());
 		playerPanel[playerIndex].setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-		
+                
 	}
 
 	@Override
@@ -131,7 +132,6 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 
 	@Override
 	public void updateGameState(String stateMessage, boolean enable) {
-
 		if(ModelFacade.getInstance().isPlayerTurn())
 		{
 			if(stateMessage.equals("Rolling"))

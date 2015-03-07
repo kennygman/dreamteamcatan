@@ -50,15 +50,13 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	}
 	
 	private void initFromModel() {
-		
-		PlayerInfo playerInfo = ModelFacade.getInstance().getPlayerInfo();
+		Player[] players = ModelFacade.getInstance().getGame().getPlayers();
 		Player player = ModelFacade.getInstance().getGame().getPlayer();
 		TurnTracker tracker = ModelFacade.getInstance().getGame().getTurnTracker();
 		
 		if (firstPass) {
 			firstPass = false;
-			getView().setLocalPlayerColor(playerInfo.getColor());
-			Player[] players = ModelFacade.getInstance().getGame().getPlayers();
+			getView().setLocalPlayerColor(player.getColor());
 			for (Player p : players)
 			{
 				if(p != null)
@@ -69,13 +67,16 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
            
 		}
 		
-		getView().updatePlayer(
-				player.getPlayerIndex(),
-				player.getVictoryPoints(),
-				tracker.getCurrentTurn() == playerInfo.getPlayerIndex(),
-				tracker.getLargestArmy() == playerInfo.getPlayerIndex(),
-				tracker.getLongestRoad() == playerInfo.getPlayerIndex()
-				);
+                for (Player p : players)
+                {
+                    getView().updatePlayer(
+                            p.getPlayerIndex(),
+                            p.getVictoryPoints(),
+                            tracker.getCurrentTurn() == p.getPlayerIndex(),
+                            tracker.getLargestArmy() == p.getPlayerIndex(),
+                            tracker.getLongestRoad() == p.getPlayerIndex()
+                            );
+                }
 		
 		getView().updateGameState(tracker.getStatus(), true);
 	}

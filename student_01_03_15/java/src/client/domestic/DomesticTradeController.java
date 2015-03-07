@@ -80,25 +80,16 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void startTrade()
 	{
-		if (ModelFacade.getInstance().getState().equals("Playing"))
-		{
-			offerState = new TradeOfferState(this);
-			if (firstRun) {
-				offerState.setPlayers();
-				firstRun = false;
-			}
-			this.getTradeOverlay().setTradeEnabled(false);
-			this.getTradeOverlay().setPlayerSelectionEnabled(false);
-			this.getTradeOverlay().setResourceSelectionEnabled(true);
-			this.getTradeOverlay().setStateMessage("Set the trade you want to make");
+		offerState = new TradeOfferState(this);
+		if (firstRun) {
+			offerState.setPlayers();
+			firstRun = false;
 		}
-		else
-		{
-			this.getTradeOverlay().setTradeEnabled(false);
-			this.getTradeOverlay().setPlayerSelectionEnabled(false);
-			this.getTradeOverlay().setResourceSelectionEnabled(false);
-			this.getTradeOverlay().setStateMessage("Not your turn");
-		}
+		this.getTradeOverlay().reset();
+		this.getTradeOverlay().setTradeEnabled(false);
+		this.getTradeOverlay().setPlayerSelectionEnabled(false);
+		this.getTradeOverlay().setResourceSelectionEnabled(true);
+		this.getTradeOverlay().setStateMessage("Set the trade you want to make");
 		
 		getTradeOverlay().showModal();
 	}
@@ -129,13 +120,14 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void sendTradeOffer() {
 
+		getTradeOverlay().closeModal();
+		getTradeOverlay().reset();
+		
 		if (ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
 		{
 			ModelFacade.getInstance().offerTrade(offerState.getRecipient(), offerState.getOffer());
-			if (getTradeOverlay().isModalShowing()) getTradeOverlay().closeModal();
-			this.getTradeOverlay().reset();
 			
-			getWaitOverlay().setMessage("Waiting for recipient response.");
+			getWaitOverlay().setMessage("Waiting for recipient's response");
 			getWaitOverlay().showModal();
 		}
 	}
@@ -196,13 +188,15 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		if (!ModelFacade.getInstance().isGameFull()) return;
 		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
 		int index = ModelFacade.getInstance().getPlayerInfo().getPlayerIndex();
-		System.out.println("=========Offer: " + offer);
+		
+		getTradeView().enableDomesticTrade(
+				ModelFacade.getInstance().getGame().getTurnTracker().getCurrentTurn() == index);
 
 		if (offer == null)
 		{
 			 if (getWaitOverlay().isModalShowing()) getWaitOverlay().closeModal();
 		}
-		else if (offer.getSender() != index)
+		else if (offer.getSender() == index)
 		{
 			if (!getWaitOverlay().isModalShowing()) 
 			{

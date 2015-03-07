@@ -1,7 +1,6 @@
 package client.resources;
 
 import java.util.*;
-
 import shared.definitions.ResourceType;
 import model.ModelFacade;
 import model.player.Player;
@@ -106,9 +105,15 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		setElement(ResourceBarElement.ORE, resources.getResourceAmount(ResourceType.ORE));
 		setElement(ResourceBarElement.SOLDIERS, player.getSoldiers());
 
+		
 		setElement(ResourceBarElement.ROAD, player.getRoads());
 		setElement(ResourceBarElement.SETTLEMENT, player.getSettlements());
 		setElement(ResourceBarElement.CITY, player.getCities());
+		
+
+		getView().setElementEnabled(ResourceBarElement.ROAD,ModelFacade.getInstance().CanBuyRoad());
+		getView().setElementEnabled(ResourceBarElement.SETTLEMENT,ModelFacade.getInstance().CanBuySettlement());
+		getView().setElementEnabled(ResourceBarElement.CITY,ModelFacade.getInstance().CanBuyCity());
 		
 		valid = ModelFacade.getInstance().CanBuyDevCard();
 		getView().setElementEnabled(ResourceBarElement.BUY_CARD, valid);

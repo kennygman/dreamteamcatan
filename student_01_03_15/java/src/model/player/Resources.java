@@ -208,4 +208,12 @@ public class Resources {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Resources [wood=" + wood + ", sheep=" + sheep + ", wheat="
+				+ wheat + ", brick=" + brick + ", ore=" + ore + "]";
+	}
+	
 }

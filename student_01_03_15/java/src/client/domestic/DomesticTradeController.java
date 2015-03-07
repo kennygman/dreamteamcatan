@@ -132,7 +132,6 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		if (ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
 		{
 			ModelFacade.getInstance().offerTrade(offerState.getRecipient(), offerState.getOffer());
-			
 			if (getTradeOverlay().isModalShowing()) getTradeOverlay().closeModal();
 			this.getTradeOverlay().reset();
 			
@@ -147,6 +146,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	{
 		if (playerIndex >= 0)
 		{
+			System.out.println("===========Recipeint: " + playerIndex);
 			offerState.setRecipient(playerIndex);
 			this.getTradeOverlay().setTradeEnabled(true);
 			this.getTradeOverlay().setStateMessage("Trade!");
@@ -178,9 +178,9 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	//---------------------------------------------------------------------------------
 	@Override
-	public void cancelTrade() {
-		getTradeOverlay().closeModal();
-		this.getTradeOverlay().reset();
+	public void cancelTrade()
+	{	
+		if (getTradeOverlay().isModalShowing()) getTradeOverlay().closeModal();
 	}
 
 	//---------------------------------------------------------------------------------
@@ -194,14 +194,16 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
+		if (!ModelFacade.getInstance().isGameFull()) return;
 		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
 		int index = ModelFacade.getInstance().getPlayerInfo().getPlayerIndex();
-		
+		System.out.println("=========Offer: " + offer);
+
 		if (offer == null)
 		{
 			 if (getWaitOverlay().isModalShowing()) getWaitOverlay().closeModal();
 		}
-		else if (offer.getSender() == index)
+		else if (offer.getSender() != index)
 		{
 			if (!getWaitOverlay().isModalShowing()) 
 			{
@@ -211,7 +213,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		}
 		else if (offer.getReciever() == index)
 		{
-			System.out.println("===========OFFER FROM: " + offer.getSenderName());
+			if (this.getAcceptOverlay().isModalShowing()) return;
 			boolean canAccept = ModelFacade.getInstance().canAcceptTrade();
 			acceptState = new AcceptTradeState(this);
 			acceptState.updateOverlay(canAccept);

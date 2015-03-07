@@ -18,6 +18,8 @@ public class Poller
 	private IProxy proxyServer;
 	private Timer timer;
 	private int timesTimerRan;
+	private int timeDelay;
+	private boolean isRunning;
 
 //	/**
 //	 * Default constructor. Creates a new updatedModelGson object
@@ -40,6 +42,7 @@ public class Poller
 		this.timer = new Timer();
 		this.clientVersion = 0;
 		this.timesTimerRan = 0;
+		this.isRunning = false;
 	}
 	
 
@@ -91,6 +94,8 @@ public class Poller
 	 */
 	public void start()
 	{
+		this.isRunning = true;
+		timer = new Timer();
 		setTimesTimerRan(1);
 		timer.schedule(new TimerTask()
 		{
@@ -113,9 +118,13 @@ public class Poller
 	 */
 	public void stop()
 	{
-		timer.cancel();
-		timer.purge();
-		setTimesTimerRan(0);
+		if(this.isRunning == true)
+		{
+			this.isRunning = false;
+			timer.cancel();
+			timer.purge();
+			setTimesTimerRan(0);
+		}
 	}
 
 	public int getServerVersion()
@@ -166,5 +175,17 @@ public class Poller
 	public void setTimesTimerRan(int timesTimerRan)
 	{
 		this.timesTimerRan = timesTimerRan;
+	}
+
+
+	public int getTimeDelay()
+	{
+		return timeDelay;
+	}
+
+
+	public void setTimeDelay(int timeDelay)
+	{
+		this.timeDelay = timeDelay;
 	}
 }

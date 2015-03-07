@@ -1,10 +1,14 @@
 package client.join;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import model.ModelFacade;
 import shared.definitions.CatanColor;
 import client.base.*;
 import client.data.*;
 import client.misc.*;
+import client.roll.RollController;
 
 
 /**
@@ -90,14 +94,62 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 		this.messageView = messageView;
 	}
 
+	private Timer timer = new Timer();
+	private boolean isRunning;
+	
+	
 	@Override
 	public void start() {
 		state.updateGameList();
 		getJoinGameView().showModal();
+		gameListRefresh();
+	}
+	private void stopTimer()
+	{
+		if(this.isRunning == true)
+		{
+			this.isRunning = false;
+			timer.cancel();
+			timer.purge();
+		}
+		
+	}
+	private void gameListRefresh()
+	{
+		this.isRunning = true;
+		timer = new Timer();
+		timer.schedule(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				
+				getJoinGameView().closeModal();
+				state.updateGameList();
+				getJoinGameView().showModal();
+			}
+		}, 0, 3000);
+	}
+	private void colorSelectRefresh()
+	{
+		this.isRunning = true;
+		timer = new Timer();
+		timer.schedule(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				
+				getSelectColorView().closeModal();
+				state.disableColors();
+				getSelectColorView().showModal();
+			}
+		}, 0, 2000);
 	}
 
 	@Override
 	public void startCreateNewGame() {
+		stopTimer();
 		getJoinGameView().closeModal();
 		getNewGameView().showModal();
 	}
@@ -107,6 +159,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 		
 		getNewGameView().closeModal();
         getJoinGameView().showModal();
+        gameListRefresh();
 	}
 
 	@Override
@@ -121,20 +174,26 @@ public class JoinGameController extends Controller implements IJoinGameControlle
                 {
                     getNewGameView().closeModal();
                     getJoinGameView().showModal();
+                    gameListRefresh();
                 }
 	}
 
 	@Override
-	public void startJoinGame(GameInfo game) {
-                getJoinGameView().closeModal();
-		getSelectColorView().showModal();
-		state.setGame(game);
+	public void startJoinGame(GameInfo game) 
+	{
+		stopTimer();
+        getJoinGameView().closeModal();
+        getSelectColorView().showModal();
+        colorSelectRefresh();
+        state.setGame(game);
 	}
 
 	@Override
 	public void cancelJoinGame() {
+				stopTimer();
                 getSelectColorView().closeModal();
-		getJoinGameView().showModal();
+		        getJoinGameView().showModal();
+		        gameListRefresh();
 	}
 
 	@Override
@@ -144,7 +203,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 		{
                     
 			// If join succeeded\\
-			
+			 stopTimer();
 			if (getSelectColorView().isModalShowing())
 				getSelectColorView().closeModal();
             ModelFacade.getInstance().updateGameModel();

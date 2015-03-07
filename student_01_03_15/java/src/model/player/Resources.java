@@ -133,6 +133,25 @@ public class Resources {
 		
 	}
 	
+	public void setResource(ResourceType type, int amount)
+	{
+		switch(type)
+		{
+		case WOOD: wood=amount; 
+		break;
+		case BRICK: brick=amount;
+		break;
+		case WHEAT: wheat=amount;
+		break;
+		case SHEEP: sheep=amount;
+		break;
+		case ORE: ore=amount;
+		break;
+			default:
+				break;
+		}
+	}
+	
 	public int getResourceAmount(String type)
 	{
 		int amount = 0;

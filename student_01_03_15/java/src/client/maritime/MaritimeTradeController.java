@@ -1,14 +1,11 @@
 package client.maritime;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 import model.ModelFacade;
-import model.board.Port;
 import model.player.Resources;
 import shared.definitions.*;
 import client.base.*;
@@ -22,8 +19,9 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	private ResourceType giveResource;
 	private ResourceType getResource;
 	private IMaritimeTradeOverlay tradeOverlay;
-	private Map<String, Integer> ports;
 	private List<ResourceType> giveResources;
+	private Resources resources;
+	private Resources portList;
 	
 	public MaritimeTradeController(IMaritimeTradeView tradeView, IMaritimeTradeOverlay tradeOverlay) 
 	{
@@ -46,58 +44,16 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 		this.tradeOverlay = tradeOverlay;
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void startTrade() 
 	{
-		ports = new HashMap<>();
-		List<Port> portList = ModelFacade.getInstance().getPorts();
-		giveResources = new ArrayList<ResourceType>();
-		ResourceType[] resourceList = Resources.getResourceList();
-		Resources resources = ModelFacade.getInstance().getGame().getPlayer().getResources();
-		
-	//	resources.addResource(ResourceType.WOOD, 5); // TEST ADD 5 WOOD
+		if (getTradeOverlay().isModalShowing()) getTradeOverlay().closeModal();
+		getTradeOverlay().reset();
 		
 		if (ModelFacade.getInstance().getState().equals("Playing"))
 		{
-			for (ResourceType type : resourceList)
-			{
-				if (resources.getResourceAmount(type) >=4 )
-				{
-					String s = ResourceType.getName(type);
-					ports.put(s, 4);
-					giveResources.add(type);
-				}
-			}
-			
-			if (portList != null)
-			{
-				for (Port p : portList)
-				{
-					String name = p.getResource();
-					
-					if (p.getResource()!=null )
-					{
-						if (resources.getResourceAmount(p.getResource()) >= p.getRatio())
-						{
-							ports.put(name, p.getRatio());
-							giveResources.add(ResourceType.fromString(p.getResource()));
-						}
-					}
-					else
-					{
-						for (ResourceType res : resourceList)
-						{
-							if (!ports.containsKey(ResourceType.getName(res)))
-								ports.put(ResourceType.getName(res), 3);
-
-							if (ports.get(ResourceType.getName(res)) > 3 )
-							{
-								ports.put(ResourceType.getName(res), 3);
-							}
-						}
-					}
-				}
-			}
+			updatePorts();
 			unsetGiveValue();
 		}
 		else
@@ -107,37 +63,52 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 			getTradeOverlay().hideGetOptions();
 			getTradeOverlay().setTradeEnabled(false);
 		}
-
+		
 		getTradeOverlay().showModal();
-
+	}
+	
+	//--------------------------------------------------------------------------------
+	public void updatePorts()
+	{
+		giveResources = new ArrayList<ResourceType>();
+		resources = ModelFacade.getInstance().getGame().getPlayer().getResources();
+		portList = ModelFacade.getInstance().getPorts();
+		
+			for (ResourceType type : Resources.getResourceList())
+			{
+				if (resources.getResourceAmount(type) >= portList.getResourceAmount(type) )
+				{
+					giveResources.add(type);
+				}
+			}
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void makeTrade() {
 
-/*		if (ModelFacade.getInstance().CanMaritimeTrade(
-				ports.get(ResourceType.getName(giveResource)),
-				ResourceConverter.getName(giveResource),
-				ResourceConverter.getName(getResource)
-				)
-			)
+		if (ModelFacade.getInstance().CanMaritimeTrade(
+				portList.getResourceAmount(giveResource),
+				ResourceType.getName(giveResource),
+				ResourceType.getName(getResource)))
 		{
-*/
-		ModelFacade.getInstance().maritimeTrade(
-				ports.get(ResourceType.getName(giveResource)),
-				ResourceConverter.getName(giveResource),
-				ResourceConverter.getName(getResource)
-				);
-//		}
-		getTradeOverlay().closeModal();
+			ModelFacade.getInstance().maritimeTrade(
+				portList.getResourceAmount(giveResource),
+				ResourceType.getName(giveResource),
+				ResourceType.getName(getResource));
+		}
+		
+		if (getTradeOverlay().isModalShowing()) getTradeOverlay().closeModal();
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void cancelTrade() {
-
-		getTradeOverlay().closeModal();
+	public void cancelTrade()
+	{
+		if (getTradeOverlay().isModalShowing()) getTradeOverlay().closeModal();
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void setGetResource(ResourceType resource) 
 	{
@@ -147,23 +118,24 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 		getTradeOverlay().setTradeEnabled(true);
 }
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void setGiveResource(ResourceType resource) 
 	{
 		giveResource = resource;
-		getTradeOverlay().selectGiveOption(resource, ports.get(ResourceType.getName(resource)));
+		getTradeOverlay().selectGiveOption(resource, portList.getResourceAmount(resource));
 		unsetGetValue();
 	}
 	
+	//--------------------------------------------------------------------------------
 	@Override
 	public void unsetGetValue() {
 		List<ResourceType> getList = new ArrayList<ResourceType>();
-		ResourceType[] resourceList = Resources.getResourceList();
-		
-		for (ResourceType r : resourceList)
+		Resources bank = ModelFacade.getInstance().getGame().getBank();
+
+		for (ResourceType r : Resources.getResourceList())
 		{
-			if (ModelFacade.getInstance().getGame().getBank().getResourceAmount(r) > 0)
-				getList.add(r);
+			if (bank.getResourceAmount(r) > 0) getList.add(r);
 		}
 
 		getTradeOverlay().setStateMessage("Select resource to Get");
@@ -171,6 +143,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 		getTradeOverlay().setTradeEnabled(false);
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void unsetGiveValue() {
 		getTradeOverlay().showGiveOptions(giveResources.toArray(new ResourceType[0]));
@@ -179,6 +152,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 		getTradeOverlay().hideGetOptions();
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void update(Observable o, Object arg) 
 	{
@@ -188,5 +162,6 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 		
 	}
 
+	//--------------------------------------------------------------------------------
 }
 

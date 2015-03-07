@@ -50,66 +50,45 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	//---------------------------------------------------------------------------------
 	private void initPlayers()
 	{
-		Player[] players = ModelFacade.getInstance().getPlayers();
-		Player player = ModelFacade.getInstance().getGame().getPlayer();
-		
-		getView().setLocalPlayerColor(player.getColor());
-		
-		int count = 0;
-		for (Player p : players)
-		{
-			if(p != null && p.getName() != null)
-			{
-				count++;
-				getView().initializePlayer(p.getPlayerIndex(),p.getName(),p.getColor());
-			}
-		}
-		if (count == 4) initialized = true;
-		return;
+            Player[] players = ModelFacade.getInstance().getPlayers();
+            Player player = ModelFacade.getInstance().getGame().getPlayer();
+
+            getView().setLocalPlayerColor(player.getColor());
+
+            int count = 0;
+            for (Player p : players)
+            {
+                    if(p != null && p.getName() != null)
+                    {
+                            count++;
+                            getView().initializePlayer(p.getPlayerIndex(),p.getName(),p.getColor());
+                    }
+            }
+            if (count == 4) initialized = true;
+            return;
 	}
 	private boolean initialized = false;
 	
 	//---------------------------------------------------------------------------------
 	public void updatePlayers()
 	{
-		Player[] players = ModelFacade.getInstance().getGame().getPlayers();
-		TurnTracker tracker = ModelFacade.getInstance().getGame().getTurnTracker();
-		for (Player p : players)
-		{
-			if (p == null|| p.getName() == null) continue;
-		    getView().updatePlayer(
-		            p.getPlayerIndex(),
-		            p.getVictoryPoints(),
-		            tracker.getCurrentTurn() == p.getPlayerIndex(),
-		            tracker.getLargestArmy() == p.getPlayerIndex(),
-		            tracker.getLongestRoad() == p.getPlayerIndex()
-		            );
-		}
-/*		if (firstPass) {
-                    firstPass = false;
-                    getView().setLocalPlayerColor(player.getColor());
-                    for (Player p : players)
-                    {
-                        if(p != null)
-                        {
-                                getView().initializePlayer(p.getPlayerIndex(),p.getName(),p.getColor());
-                        }
-                    }
-           
-		}
-		
-                for (Player p : players)
+            Player[] players = ModelFacade.getInstance().getGame().getPlayers();
+            TurnTracker tracker = ModelFacade.getInstance().getGame().getTurnTracker();
+            for (Player p : players)
+            {
+                if (p != null && p.getName() != null)
                 {
                     getView().updatePlayer(
-                        p.getPlayerIndex(),
-                        p.getVictoryPoints(),
-                        tracker.getCurrentTurn() == p.getPlayerIndex(),
-                        tracker.getLargestArmy() == p.getPlayerIndex(),
-                        tracker.getLongestRoad() == p.getPlayerIndex()
-                        );
+                            p.getPlayerIndex(),
+                            p.getVictoryPoints(),
+                            tracker.getCurrentTurn() == p.getPlayerIndex(),
+                            tracker.getLargestArmy() == p.getPlayerIndex(),
+                            tracker.getLongestRoad() == p.getPlayerIndex()
+                            );
                 }
-		
-*/		getView().updateGameState(tracker.getStatus(), true);
+            }
+
+            getView().updateGameState(tracker.getStatus(), true);
 	}
 	//---------------------------------------------------------------------------------
 	private void initFromModel()

@@ -1,13 +1,13 @@
 package model.board;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
-import model.ModelFacade;
+import model.player.Resources;
+import shared.definitions.ResourceType;
 import shared.locations.EdgeDirection;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
@@ -20,7 +20,8 @@ public class Board extends Observable
 	private Map<VertexLocation, Settlement> settlementLocation;
 	private transient Map<VertexLocation, City> cityLocation;
 	private transient Map<EdgeLocation, Road> roadLocation;
-	private transient Map<Integer, List<Port>> playerPorts;
+//	private transient Map<Integer, List<Port>> playerPorts;
+	private transient Map<Integer, Resources> playerPorts;
 	
 	private Hex[] hexes;
 	private Port[] ports;
@@ -35,7 +36,6 @@ public class Board extends Observable
 	 * This function is called after JSON initializations
 	 * JSON Model data is sorted into Maps
 	 */
-        public void Board(){}
         
 	public void sort()
 	{
@@ -45,7 +45,10 @@ public class Board extends Observable
 		cityLocation = new HashMap<>();
 		playerPorts = new HashMap<>();
 		for (int i = 0; i < 4; i++)
+		{
 			playerPorts.put(i, null);
+			playerPorts.put(i, new Resources(4,4,4,4,4));
+		}
 		sortNumbers();
 		sortRoads();
 		sortStructures();
@@ -66,6 +69,10 @@ public class Board extends Observable
 
 	}
 	
+	public void sortPortResources()
+	{
+		
+	}
 	//--------------------------------------------------------------------------------
 	public void sortNumbers()
 	{
@@ -111,12 +118,30 @@ public class Board extends Observable
 	}
 
 	//--------------------------------------------------------------------------------
+	public void updatePlayerPort(Port port, int index)
+	{
+		Resources resources = playerPorts.get(index);
+
+		if (port.getResource() == null)	// 3 for 1
+		{
+			for (ResourceType r : Resources.getResourceList())
+			{
+				resources.setResource(r, 3);
+			}
+		}
+		else
+		{
+			resources.setResource(ResourceType.fromString(port.getResource()), port.getRatio());
+		}
+	}
+
+	//--------------------------------------------------------------------------------
 	public void sortPorts()
 	{
-		List<Port> portList;
-		int index;
+		int index = -1;
 		for(Port port : ports)
 		{
+			
 			EdgeLocation portEdge = new EdgeLocation(
 					port.getLocation(),
 					EdgeLocation.getEdgeDirection(port.getDirection())
@@ -129,32 +154,28 @@ public class Board extends Observable
 				if (cityLocation.containsKey(v))
 				{
 					index = cityLocation.get(v).getOwner();
-					portList = playerPorts.get(index);
-					if (portList == null) portList = new ArrayList<>();
-					portList.add(port);
-					playerPorts.put(index, portList);
+					updatePlayerPort(port,index);
 				}
 				
 				if (settlementLocation.containsKey(v))
 				{
 					index = settlementLocation.get(v).getOwner();
-					portList = playerPorts.get(index);
-					if (portList == null) portList = new ArrayList<>();
-					portList.add(port);
-					playerPorts.put(index, portList);
+					updatePlayerPort(port,index);
 				}
 			}
 
 		}
+		
+		return;
 	}
 
-	public boolean hasPort(int index, String resource)
+	//--------------------------------------------------------------------------------
+	public boolean hasPort(int index, String resource, int ratio)
 	{
-		List<Port> portList = playerPorts.get(index);
-		for (Port p : portList)
-			if (p.getResource().equals(resource)) return true;
-		return false;
+		Resources resources = playerPorts.get(index);
+		return resources.getResourceAmount(resource) == ratio;
 	}
+
 	//--------------------------------------------------------------------------------
 	public Road getRoad(EdgeLocation edge)
 	{
@@ -480,15 +501,9 @@ public class Board extends Observable
             return false;
  	}
 	//--------------------------------------------------------------------------------
- 	public List<Port> getPorts(int index)
+ 	public Resources getPorts(int index)
  	{
- 		List<Port> list = playerPorts.get(index);
- 		
-/* 		for (Port p : list)
- 		{
- 	 		System.out.println("PORT " + p.getDirection() );
- 		}
-*/ 		return list;
+ 		return playerPorts.get(index);
  	}
 	
 	//--------------------------------------------------------------------------------

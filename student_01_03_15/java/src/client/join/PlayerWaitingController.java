@@ -7,8 +7,6 @@ import shared.parameters.AddAiParam;
 import shared.response.ListAIResponse;
 import model.ModelFacade;
 import client.base.*;
-import client.data.PlayerInfo;
-
 
 /**
  * Implementation for the player waiting controller
@@ -28,35 +26,47 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	}
 
 	@Override
-	public void start() {
-		if (ModelFacade.getInstance().isGameFull()) 
-		{
-			if (getView().isModalShowing())
-				getView().closeModal();
-			return;
-		}
-       	getView().showModal();
-	}
+	public void start() {}
 
 	@Override
 	public void addAI() {
 		AddAiParam param = new AddAiParam(getView().getSelectedAI());
-		ModelFacade.getInstance().addAi(param);
+		if (ModelFacade.getInstance().addAi(param).isValid())
+		{
+			refresh();
+		}
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
-		
+		refresh();
+	}
+	
+	public void refresh()
+	{
+		int t = ModelFacade.getInstance().getGameInfo().getPlayers().size();
+		if (t > size) {
+			size = t;
+			refresh = true;
+		}
+
+		if (refresh)
+		{
+			if (getView().isModalShowing()) getView().closeModal();
+			getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
+			getView().showModal();
+			refresh = false;
+		}
+
 		if (ModelFacade.getInstance().isGameFull() && getView().isModalShowing())
 		{
             getView().closeModal();
 		}
-		else {
-			PlayerInfo[] players = ModelFacade.getInstance().getPlayerInfoList();
-			getView().setPlayers(players);
-		}
+		
 	}
-
+	
+	private int size = -1;
+	private boolean refresh = true;
 }
 

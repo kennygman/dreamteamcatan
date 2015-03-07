@@ -289,6 +289,7 @@ public class MapController extends Controller implements IMapController , Observ
     @Override
     public void update(Observable o, Object o1) 
     {
+    	System.out.println("==========State: " + ModelFacade.getInstance().getState());
         initFromModel();
     }
 }

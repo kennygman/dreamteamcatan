@@ -479,6 +479,7 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     game = response.getGame();
                     update();
+                    System.out.println("number state: " + getState());
                     hasPlayedDevCard = false;
                     this.hasRolled = true;
                     //updateGameModel();

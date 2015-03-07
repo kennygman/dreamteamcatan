@@ -33,12 +33,12 @@ import shared.response.StandardResponse;
 
 public class ModelFacade extends Observable implements IModelFacade
 {
-	private IProxy proxy;
-	private Game game;
-	private PlayerInfo player;
-	private GameInfo gameInfo;
-	private Poller poller;
-	private boolean hasJoined = false;
+    private IProxy proxy;
+    private Game game;
+    private PlayerInfo player;
+    private GameInfo gameInfo;
+    private Poller poller;
+    private boolean hasJoined = false;
     private boolean startRoad = true;
     private boolean startSettlement = false;
     private boolean hasPlayedDevCard;
@@ -388,21 +388,18 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanUseRoadBuilder(EdgeLocation spot1, EdgeLocation spot2)
 	{
-		if (!canPlayDevCard(DevCardType.ROAD_BUILD)) {System.out.println("Can't play card"); return false;}
-                else if(!canPlaceRoad(spot1, true)) {System.out.println("Can't place spot1"); return false;}
-                else if (game.getPlayer().getRoads() < 2) {System.out.println("Doesn't have 2 roads left"); return false;}
-                else if (game.getBoard().containsRoad(spot2)) {System.out.println("Can't place spot2"); return false;}
-                else if (spot1.equals(spot2)) {System.out.println("Spot1 and 2 are the same"); return false;}
-		
-		if (game.getBoard().hasNeighborRoad(spot2, game.getPlayer().getPlayerIndex(), getState()))
-		{
-			
-			return true;
-		}
-			
-		
-//		System.out.println("The spot2 doesn't have a neighbor");
-		return false;
+            if (!canPlayDevCard(DevCardType.ROAD_BUILD)) {System.out.println("Can't play card"); return false;}
+            else if(!canPlaceRoad(spot1, true)) {System.out.println("Can't place spot1"); return false;}
+            else if (game.getPlayer().getRoads() < 2) {System.out.println("Doesn't have 2 roads left"); return false;}
+            else if (game.getBoard().containsRoad(spot2)) {System.out.println("Can't place spot2"); return false;}
+            else if (spot1.equals(spot2)) {System.out.println("Spot1 and 2 are the same"); return false;}
+
+            if (game.getBoard().hasNeighborRoad(spot2, game.getPlayer().getPlayerIndex(), getState()))
+            {
+                    return true;
+            }
+
+            return false;
 	}
         
         public boolean canUseRoadBuilderOfficial()
@@ -423,11 +420,11 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanUseMonument()
 	{
-		if (!canPlayDevCard(DevCardType.MONUMENT)) return false;
-		if ( game.getPlayer().getVictoryPoints() +
-				game.getPlayer().getNewDevCards().getMonument() +
-				game.getPlayer().getOldDevCards().getMonument() >= 10) return true;
-		return false;
+            if (!isPlayerTurn()) return false;
+            else if (!getState().equals("Playing")) return false;
+            else if (!game.getPlayer().getOldDevCards().hasDevCard(DevCardType.MONUMENT)) return false;
+            else if (game.getPlayer().isPlayedDevCard()) return false;
+            return true;
 	}
 
 	
@@ -439,8 +436,13 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public void sendChat(SendChatParam param)
 	{
-		proxy.sendChat(param).getGame();
-		updateGameModel();
+            GameModelResponse response = proxy.sendChat(param);
+            if(response.isValid())
+            {
+                game = response.getGame();
+                update();
+                //updateGameModel();
+            }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -449,8 +451,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		Player reciever = game.getPlayers()[game.getTradeOffer().getReciever()];
 		GameModelResponse response = proxy.acceptTrade(new AcceptTradeParam(reciever.getPlayerIndex(), accept));
-		if (!response.isValid()) return;
-		updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -458,22 +464,28 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void discardCards(Resources resources)
 	{
 		GameModelResponse response = proxy.discardCards(new DiscardCardsParam(0, resources));
-		if (!response.isValid()) return;
-		updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void rollNumber(int total, int dontUseThis)
 	{
-
 		int playerIndex = this.getPlayerInfo().getPlayerIndex();
 		GameModelResponse response = proxy.rollNumber(new RollNumParam(playerIndex, total));
-		if (!response.isValid()) return;
-		updateGameModel();
-        hasPlayedDevCard = false;
-        this.hasRolled = true;
-                
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    hasPlayedDevCard = false;
+                    this.hasRolled = true;
+                    //updateGameModel();
+                }     
 	}
         
 
@@ -483,8 +495,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		GameModelResponse response = proxy.buildRoad(new BuildRoadParam
 		        (game.getTurnTracker().getCurrentTurn(), edge, free));
-		if (!response.isValid()) return;
-	    updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -493,8 +509,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		GameModelResponse response = proxy.buildSettlement(new BuildSettlementParam(
 				game.getPlayer().getPlayerIndex(), vert, free));
-		if (!response.isValid()) return;
-	    updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -503,9 +523,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		GameModelResponse response = proxy.buildCity(
 				new BuildCityParam(game.getPlayer().getPlayerIndex(), vert));
-		if (!response.isValid()) return;
-	    game = response.getGame();
-	    updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -514,9 +537,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 	    GameModelResponse response = proxy.offerTrade(new OfferTradeParam(
 	    		game.getPlayer().getPlayerIndex(), receiver, resources));
-		if (!response.isValid()) return;
-        game = response.getGame();
-        updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -526,8 +552,12 @@ public class ModelFacade extends Observable implements IModelFacade
         GameModelResponse response = proxy.maritimeTrade(
 		new MaritimeTradeParam(game.getPlayer().getPlayerIndex(),
 		ratio, inputResource, outResource));
-		if (!response.isValid()) return;
-        updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -536,8 +566,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		GameModelResponse response = proxy.robPlayer(new RobPlayerParam(
 				game.getPlayer().getPlayerIndex(), victimIndex, location));
-		if (!response.isValid()) return;
-        updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -546,9 +580,13 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
         GameModelResponse response = proxy.finishTurn(
         		new FinishTurnParam(game.getPlayer().getPlayerIndex()));
-		if (!response.isValid()) return;
-		updateGameModel();
-		hasRolled = false;
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                    hasRolled = false;
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -557,8 +595,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		GameModelResponse response = proxy.buyDevCard(
 				new BuyDevCardParam(game.getPlayer().getPlayerIndex()));
-		if (!response.isValid()) return;
-		updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -567,20 +609,28 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		GameModelResponse response = proxy.playSoldier(new PlaySoldierParam(
 				game.getPlayer().getPlayerIndex(), victimIndex, location));
-		if (!response.isValid()) return;
-		hasPlayedDevCard = true;
-		updateGameModel();
+		if (!response.isValid()) 
+                {
+                    game = response.getGame();
+                    update();
+                    hasPlayedDevCard = true;
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void playYearOfPlentyCard(String resource1, String resource2)
 	{
-        GameModelResponse response = proxy.playYearOfPlenty(new PlayYearOfPlentyParam(
+            GameModelResponse response = proxy.playYearOfPlenty(new PlayYearOfPlentyParam(
         		game.getPlayer().getPlayerIndex(), resource1, resource2));
-		if (!response.isValid()) return;
-		hasPlayedDevCard = true;
-		updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    hasPlayedDevCard = true;
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -589,30 +639,42 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		GameModelResponse response = proxy.playRoadBuilding(new PlayRoadBuildingParam(
 				game.getPlayer().getPlayerIndex(), spot1, spot2));
-		if (!response.isValid()) return;
-		hasPlayedDevCard = true;
-		updateGameModel();
+		if (!response.isValid())
+                {
+                    game = response.getGame();
+                    update();
+                    hasPlayedDevCard = true;
+                    //updateGameModel();
+                }
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void playMonopolyCard(String resource)
 	{
-		GameModelResponse response = proxy.playMonopoly(new PlayMonopolyParam(
-				game.getPlayer().getPlayerIndex(), resource));
-		if (!response.isValid()) return;
-	    hasPlayedDevCard = true;
-		updateGameModel();  
+            GameModelResponse response = proxy.playMonopoly(new PlayMonopolyParam(
+                            game.getPlayer().getPlayerIndex(), resource));
+            if (!response.isValid())
+            {
+                game = response.getGame();
+                update();
+                hasPlayedDevCard = true;
+		//updateGameModel();  
+            }
 	}
 
 	//--------------------------------------------------------------------------------
 	@Override
 	public void playMonumentCard()
 	{
-		GameModelResponse response = proxy.playMonument(new PlayMonumentParam(
-				game.getPlayer().getPlayerIndex()));
-		if (!response.isValid()) return;
-	    updateGameModel();
+            GameModelResponse response = proxy.playMonument(new PlayMonumentParam(
+                            game.getPlayer().getPlayerIndex()));
+            if (!response.isValid())
+            {
+                game = response.getGame();
+                update();
+                //updateGameModel();
+            }
 	}
         
 	//--------------------------------------------------------------------------------        
@@ -716,21 +778,31 @@ public class ModelFacade extends Observable implements IModelFacade
 	//---------------------------------------------------------------------------------
 	public void resetGame()
 	{
-		proxy.resetGame().getGame();
-		updateGameModel();
+            GameModelResponse response = proxy.resetGame();
+            if(response.isValid())
+            {
+                game = response.getGame();
+                update();
+                //updateGameModel();
+            }
 	}
 	//---------------------------------------------------------------------------------
 	public void updateGameModel()
 	{
-		GameModelResponse response = proxy.getGameModel();
-		if(response.isValid())
-		{
-		    game = response.getGame();
-		    game.getBoard().sort();
-		    this.modelChanged();
-		}
+            GameModelResponse response = proxy.getGameModel();
+            if(response.isValid())
+            {
+                game = response.getGame();
+                game.getBoard().sort();
+                this.modelChanged();
+            }
 	}
-
+        
+        public void update()
+        {
+            game.getBoard().sort();
+            this.modelChanged();
+        }
 	//---------------------------------------------------------------------------------
         public RobPlayerInfo[] getRobPlayerInfoList(HexLocation hexLoc)
 	{

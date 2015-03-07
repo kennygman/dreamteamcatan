@@ -53,7 +53,6 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		Player[] players = ModelFacade.getInstance().getPlayers();
 		Player player = ModelFacade.getInstance().getGame().getPlayer();
 		
-<<<<<<< HEAD
 		getView().setLocalPlayerColor(player.getColor());
 		
 		int count = 0;
@@ -86,8 +85,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		            tracker.getLongestRoad() == p.getPlayerIndex()
 		            );
 		}
-=======
-		if (firstPass) {
+/*		if (firstPass) {
                     firstPass = false;
                     getView().setLocalPlayerColor(player.getColor());
                     for (Player p : players)
@@ -111,8 +109,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
                         );
                 }
 		
->>>>>>> upstream/master
-		getView().updateGameState(tracker.getStatus(), true);
+*/		getView().updateGameState(tracker.getStatus(), true);
 	}
 	//---------------------------------------------------------------------------------
 	private void initFromModel()

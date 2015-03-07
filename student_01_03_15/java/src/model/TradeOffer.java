@@ -6,7 +6,7 @@ public class TradeOffer
 {
 
 	private int sender;
-	private int reciever;
+	private int receiver;
 	private Resources offer;
 	
 	
@@ -14,13 +14,13 @@ public class TradeOffer
 	@Override
 	public String toString()
 	{
-		return "TradeOffer [sender=" + sender + ", reciever=" + reciever
+		return "TradeOffer [sender=" + sender + ", receiver=" + receiver
 				+ ", offer=" + offer + "]";
 	}
-	public TradeOffer(int sender, int reciever, Resources offer)
+	public TradeOffer(int sender, int receiver, Resources offer)
 	{
 		this.sender = sender;
-		this.reciever = reciever;
+		this.receiver = receiver;
 		this.offer = offer;
 	}
 	public String getSenderName()
@@ -35,13 +35,13 @@ public class TradeOffer
 	{
 		this.sender = sender;
 	}
-	public int getReciever()
+	public int getReceiver()
 	{
-		return reciever;
+		return receiver;
 	}
-	public void setReciever(int reciever)
+	public void setReceiver(int receiver)
 	{
-		this.reciever = reciever;
+		this.receiver = receiver;
 	}
 	public Resources getOffer()
 	{

@@ -144,7 +144,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 				state.disableColors();
 				getSelectColorView().showModal();
 			}
-		}, 0, 2000);
+		}, 0, 3000);
 	}
 
 	@Override
@@ -207,8 +207,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 			if (getSelectColorView().isModalShowing())
 				getSelectColorView().closeModal();
             ModelFacade.getInstance().updateGameModel();
+            joinAction.execute();
             ModelFacade.getInstance().getPoller().start();
-            joinAction.execute();			
 		}
 	}
 

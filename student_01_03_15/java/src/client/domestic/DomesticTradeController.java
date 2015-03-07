@@ -146,7 +146,6 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	{
 		if (playerIndex >= 0)
 		{
-			System.out.println("===========Recipeint: " + playerIndex);
 			offerState.setRecipient(playerIndex);
 			this.getTradeOverlay().setTradeEnabled(true);
 			this.getTradeOverlay().setStateMessage("Trade!");

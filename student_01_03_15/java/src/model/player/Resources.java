@@ -39,13 +39,14 @@ public class Resources {
 	 * 
 	 * Used to facilitate trading.
 	 */
-	public void invert()
+	public Resources invert()
 	{
 		wood = -wood;
 		sheep = -sheep;
 		wheat = -wheat;
 		brick = -brick;
 		ore = -ore;
+		return this;
 	}
 
 

@@ -158,9 +158,9 @@ public class ModelFacade extends Observable implements IModelFacade
 		TradeOffer offer = game.getTradeOffer();
 		if (offer==null) return false;
 		Player recipient = game.getPlayers()[offer.getReciever()];
-		
-		if (recipient.getPlayerIndex() != game.getPlayer().getPlayerIndex()) return false;
-		return (recipient.getResources().contains(offer.getOffer()));
+		if (recipient.getPlayerIndex() != player.getPlayerIndex()) return false;
+
+		return (recipient.getResources().contains(offer.getOffer().invert()));
 	}
 
 	//--------------------------------------------------------------------------------

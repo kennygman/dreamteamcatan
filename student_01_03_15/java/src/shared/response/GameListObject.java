@@ -85,5 +85,10 @@ public class GameListObject
 		}
 		return game;
 	}
+	
+	public int size()
+	{
+		return players.size();
+	}
 
 }

@@ -815,7 +815,15 @@ public class ModelFacade extends Observable implements IModelFacade
 	public PlayerInfo[] getPlayerInfoList()
 	{
 		ListGamesResponse response = proxy.listGames();
-                if(!response.isValid())
+		if (!response.isValid()) return null;
+		setGameInfo(response.getGameListObject(gameInfo.getId()));
+		players = gameInfo.getPlayers().toArray(new PlayerInfo[0]);
+		return players;
+
+		
+// The following code repeats what response.getGameListObject() already does:
+		
+/*                if(!response.isValid())
                 {
                     return null;
                 }
@@ -848,18 +856,14 @@ public class ModelFacade extends Observable implements IModelFacade
 		{
 			players[k] = games[gameindex].getPlayers().get(k);
 		}
-		
-		
-		return players;
+*/		
 		
 	}
 
 	//---------------------------------------------------------------------------------
 	public boolean isGameFull()
 	{
-		getPlayerInfoList();
-		if (players == null) return false;
-		return players.length >= 4;
+		return proxy.listGames().getGameListObject(gameInfo.getId()).getPlayers().size() == 4;
 	}
 	
 }

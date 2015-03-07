@@ -26,17 +26,13 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	}
 
 	@Override
-	public void start() {
-//		refresh = true;
-//		refresh();
-	}
+	public void start() {}
 
 	@Override
 	public void addAI() {
 		AddAiParam param = new AddAiParam(getView().getSelectedAI());
 		if (ModelFacade.getInstance().addAi(param).isValid())
 		{
-			refresh = true;
 			refresh();
 		}
 	}
@@ -49,24 +45,28 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	
 	public void refresh()
 	{
+		int t = ModelFacade.getInstance().getGameInfo().getPlayers().size();
+		if (t > size) {
+			size = t;
+			refresh = true;
+		}
+
+		if (refresh)
+		{
+			if (getView().isModalShowing()) getView().closeModal();
+			getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
+			getView().showModal();
+			refresh = false;
+		}
+
 		if (ModelFacade.getInstance().isGameFull() && getView().isModalShowing())
 		{
             getView().closeModal();
 		}
-		else {
-			if (refresh) {
-				if (getView().isModalShowing()) getView().closeModal();
-
-				getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
-				
-				if (!ModelFacade.getInstance().isGameFull())
-					getView().showModal();
-				
-				refresh = false;
-			}
-		}
+		
 	}
 	
+	private int size = -1;
 	private boolean refresh = true;
 }
 

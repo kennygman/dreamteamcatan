@@ -863,7 +863,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	//---------------------------------------------------------------------------------
 	public boolean isGameFull()
 	{
-		return proxy.listGames().getGameListObject(gameInfo.getId()).getPlayers().size() == 4;
+		ListGamesResponse response = proxy.listGames();
+		if (!response.isValid()) return false;
+		setGameInfo(response.getGameListObject(gameInfo.getId()));
+		return gameInfo.getPlayers().size()==4;
 	}
 	
 }

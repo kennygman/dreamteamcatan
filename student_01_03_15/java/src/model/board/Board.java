@@ -467,6 +467,18 @@ public class Board extends Observable
             
             return false;
  	}
+        
+        public boolean isWaterHex(HexLocation hex)
+ 	{
+            int x = hex.getX();
+            int y = hex.getY();
+            if(Math.abs(x) >= 3 || Math.abs(y) >= 3) return true;
+            else if(x == 1 && y == 2) return true;
+            else if(x == 2 && y == 1) return true;
+            else if(x == -1 && y == -2) return true;
+            else if(x == -2 && y == -1) return true;
+            return false;
+ 	}
 	//--------------------------------------------------------------------------------
  	public List<Port> getPorts(int index)
  	{

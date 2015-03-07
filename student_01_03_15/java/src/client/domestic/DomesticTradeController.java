@@ -46,6 +46,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		firstRun = true;
 	}
 	
+	//---------------------------------------------------------------------------------
 	public IDomesticTradeView getTradeView() {
 		
 		return (IDomesticTradeView)super.getView();
@@ -77,7 +78,8 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	//---------------------------------------------------------------------------------
 	@Override
-	public void startTrade() {
+	public void startTrade()
+	{
 		if (ModelFacade.getInstance().getState().equals("Playing"))
 		{
 			offerState = new TradeOfferState(this);
@@ -85,13 +87,17 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 				offerState.setPlayers();
 				firstRun = false;
 			}
+			this.getTradeOverlay().setTradeEnabled(false);
+			this.getTradeOverlay().setPlayerSelectionEnabled(false);
+			this.getTradeOverlay().setResourceSelectionEnabled(true);
+			this.getTradeOverlay().setStateMessage("Set the trade you want to make");
 		}
 		else
 		{
 			this.getTradeOverlay().setTradeEnabled(false);
 			this.getTradeOverlay().setPlayerSelectionEnabled(false);
 			this.getTradeOverlay().setResourceSelectionEnabled(false);
-			this.getTradeOverlay().setStateMessage(ModelFacade.getInstance().getState());
+			this.getTradeOverlay().setStateMessage("Not your turn");
 		}
 		
 		getTradeOverlay().showModal();
@@ -101,51 +107,80 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void decreaseResourceAmount(ResourceType resource) {
 		offerState.decreaseResourceAmount(resource);
+		if (!offerState.canTrade())
+		{
+			this.getTradeOverlay().setStateMessage("Set the trade you want to make");
+			this.getTradeOverlay().setPlayerSelectionEnabled(false);
+		}
 	}
 
 	//---------------------------------------------------------------------------------
 	@Override
 	public void increaseResourceAmount(ResourceType resource) {
 		offerState.increaseResourceAmount(resource);
+		if (offerState.canTrade())
+		{
+			this.getTradeOverlay().setStateMessage("Select a player");
+			this.getTradeOverlay().setPlayerSelectionEnabled(true);
+		}
 	}
 
 	//---------------------------------------------------------------------------------
 	@Override
 	public void sendTradeOffer() {
 
-//		if (ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
-//		{
+		if (ModelFacade.getInstance().CanOfferTrade(offerState.getOffer()))
+		{
 			ModelFacade.getInstance().offerTrade(offerState.getRecipient(), offerState.getOffer());
-			getTradeOverlay().closeModal();
+			
+			if (getTradeOverlay().isModalShowing()) getTradeOverlay().closeModal();
+			this.getTradeOverlay().reset();
 			
 			getWaitOverlay().setMessage("Waiting for recipient response.");
 			getWaitOverlay().showModal();
-//		}
+		}
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
-	public void setPlayerToTradeWith(int playerIndex) {
-		offerState.setRecipient(playerIndex);
+	public void setPlayerToTradeWith(int playerIndex)
+	{
+		if (playerIndex >= 0)
+		{
+			offerState.setRecipient(playerIndex);
+			this.getTradeOverlay().setTradeEnabled(true);
+			this.getTradeOverlay().setStateMessage("Trade!");
+		}
+		else 
+		{
+			this.getTradeOverlay().setTradeEnabled(false);
+			this.getTradeOverlay().setStateMessage("Select a player");
+		}
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void setResourceToReceive(ResourceType resource) {
 		offerState.setGetResource(resource);
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void setResourceToSend(ResourceType resource) {
 		offerState.setSendResource(resource);
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void unsetResource(ResourceType resource) {
 		offerState.getOffer().resetResource(resource);
 	}
 
+	//---------------------------------------------------------------------------------
 	@Override
 	public void cancelTrade() {
 		getTradeOverlay().closeModal();
+		this.getTradeOverlay().reset();
 	}
 
 	//---------------------------------------------------------------------------------
@@ -160,14 +195,23 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	public void update(Observable arg0, Object arg1)
 	{
 		TradeOffer offer = ModelFacade.getInstance().getGame().getTradeOffer();
+		int index = ModelFacade.getInstance().getPlayerInfo().getPlayerIndex();
 		
-		if (offer == null && this.getWaitOverlay().isModalShowing())
+		if (offer == null)
 		{
-			this.getWaitOverlay().closeModal();
+			 if (getWaitOverlay().isModalShowing()) getWaitOverlay().closeModal();
 		}
-		
-		if (offer != null && offer.getReciever() == ModelFacade.getInstance().getPlayerInfo().getPlayerIndex())
+		else if (offer.getSender() == index)
 		{
+			if (!getWaitOverlay().isModalShowing()) 
+			{
+				getWaitOverlay().setMessage("Waiting for recipient response.");
+				getWaitOverlay().showModal();
+			}
+		}
+		else if (offer.getReciever() == index)
+		{
+			System.out.println("===========OFFER FROM: " + offer.getSenderName());
 			boolean canAccept = ModelFacade.getInstance().canAcceptTrade();
 			acceptState = new AcceptTradeState(this);
 			acceptState.updateOverlay(canAccept);
@@ -175,5 +219,6 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		
 	}
 	
+	//---------------------------------------------------------------------------------
 }
 

@@ -18,27 +18,13 @@ public class TradeOfferState
 	private ResourceType resourceToGet;
 	private int recipient;
 	private int resourceMax;
-	private Resources resources;
 	boolean send;
 	
 	public TradeOfferState(DomesticTradeController controller)
 	{
 		this.controller=controller;
 		this.tradeOverlay=controller.getTradeOverlay();
-		resources = ModelFacade.getInstance().getGame().getPlayer().getResources();
 		resetTradeOffer();
-
-		//addTempResources();	// REMOVE TEST
-	}
-	
-	//---------------------------------------------------------------------------------
-	public void addTempResources()
-	{
-		resources.resetResource(ResourceType.WOOD);
-		resources.resetResource(ResourceType.BRICK);
-		resources.addResource(ResourceType.WOOD, 3);
-		resources.addResource(ResourceType.BRICK, 2);
-		ModelFacade.getInstance().modelChanged();
 	}
 	
 	//---------------------------------------------------------------------------------

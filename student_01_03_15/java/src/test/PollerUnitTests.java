@@ -56,7 +56,7 @@ public class PollerUnitTests
 	{
 		int test = -4212012;
 		poller.setClientVersion(test);
-		poller.start();
+		poller.pollerStart();
 		assertTrue(poller.getTimesTimerRan() > 0);
 	}
 

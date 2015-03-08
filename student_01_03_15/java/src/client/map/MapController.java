@@ -68,10 +68,11 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 case "Robbing": 
                 {
+                	System.out.println("ROBBING IS GOING TO STOP POLLER!!!");
+                	ModelFacade.getInstance().getPoller().stop();
                     if(!isOpen)
                     {
                         isOpen = true;
-                        ModelFacade.getInstance().getPoller().stop();
                         startMove(PieceType.ROBBER, true, false);
                     }
                     break;

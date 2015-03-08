@@ -42,7 +42,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
             if (ModelFacade.getInstance().CanFinishTurn())
             {
                     ModelFacade.getInstance().finishTurn();
-                    ModelFacade.getInstance().getPoller().start();
+                    ModelFacade.getInstance().getPoller().pollerStart();
             }
 	}
 	

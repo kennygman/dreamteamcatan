@@ -183,7 +183,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	private boolean canPlay()
 	{
 		boolean valid = true;
-		if (!isPlayerTurn() ) valid = false;
+		if (!isPlayerTurn()) valid = false;
 		if (!game.getTurnTracker().getStatus().equals("Playing")) valid = false;
 		return valid;
 	}
@@ -474,7 +474,6 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     game = response.getGame();
                     update();
-                    System.out.println("number state: " + getState());
                     hasPlayedDevCard = false;
                     this.hasRolled = true;
                     this.getPoller().stop();
@@ -531,7 +530,6 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 	    GameModelResponse response = proxy.offerTrade(new OfferTradeParam(
 	    		player.getPlayerIndex(), receiver, resources));
-	    System.out.println("======Reciever: " + receiver);
 		if (response.isValid())
 		{
 			game = response.getGame();

@@ -150,8 +150,9 @@ public class DiscardController extends Controller implements
 		Resources resourceHand = new Resources(woodDiscardAmount,
 				sheepDiscardAmount, wheatDiscardAmount, brickDiscardAmount,
 				oreDiscardAmount);
-		ModelFacade.getInstance().discardCards(resourceHand);
+		
 		this.getDiscardView().closeModal();
+                ModelFacade.getInstance().discardCards(resourceHand);
 		this.getDiscardView().setDiscardButtonEnabled(false);
 		woodDiscardAmount = 0;
 		sheepDiscardAmount = 0;
@@ -159,7 +160,6 @@ public class DiscardController extends Controller implements
 		brickDiscardAmount = 0;
 		oreDiscardAmount = 0;
 		discarded = true;
-		//this.getDiscardView().closeModal();
 		ModelFacade.getInstance().updateGameModel();
 	}
 
@@ -300,31 +300,33 @@ public class DiscardController extends Controller implements
                                         }
 					this.getDiscardView().showModal();
 				}
-			} else if (totalResources < 7 || discarded)
+			} 
+                        else if (totalResources <= 7 || discarded)
 			{
 				if (!this.getWaitView().isModalShowing())
 				{
+                                        ModelFacade.getInstance().updateGameModel();
+                                        ModelFacade.getInstance().getPoller().pollerStart();
 					waitView.showModal();
 				}
 			}
-		} else
+		} 
+                else
 		{
-			if (waitView.isModalShowing())
-			{
-				waitView.closeModal();
-			}
+                    if (waitView.isModalShowing())
+                    {
+                            waitView.closeModal();
+                    }
 
-			if (this.getDiscardView().isModalShowing()
-					&& ModelFacade.getInstance().getState().toLowerCase().equals("robbing"))
-			{
-				this.getDiscardView().closeModal();
-                                if(!ModelFacade.getInstance().isPlayerTurn())
-                                {
-                                    ModelFacade.getInstance().getPoller().pollerStart();
-                                }
-			}
+                    if(ModelFacade.getInstance().getState().toLowerCase().equals("robbing"))
+                    {
+                        if (this.getDiscardView().isModalShowing())
+                        {
+                            this.getDiscardView().closeModal();
+                        }
+                    }
 
-			discarded = false;
+                    discarded = false;
 		}
 	}
 }

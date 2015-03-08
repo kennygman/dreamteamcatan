@@ -68,8 +68,7 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 case "Robbing": 
                 {
-                	System.out.println("ROBBING IS GOING TO STOP POLLER!!!");
-                	ModelFacade.getInstance().getPoller().stop();
+                    ModelFacade.getInstance().getPoller().stop();
                     if(!isOpen)
                     {
                         isOpen = true;
@@ -304,7 +303,7 @@ public class MapController extends Controller implements IMapController , Observ
     @Override
     public void update(Observable o, Object o1) 
     {
-    	System.out.println("==========State: " + ModelFacade.getInstance().getState());
+    	//System.out.println("==========State: " + ModelFacade.getInstance().getState());
         initFromModel();
     }
 }

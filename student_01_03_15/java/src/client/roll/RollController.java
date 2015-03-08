@@ -63,9 +63,10 @@ public class RollController extends Controller implements IRollController,
 			timer.cancel();
 			Random generator = new Random(System.currentTimeMillis());
 			int dice1 = generator.nextInt(6) + 1;
-			int dice2 = generator.nextInt(6) + 1;
+                        int dice2 = generator.nextInt(6) + 1;
 			int total = dice1 + dice2;
-			resultView.setRollValue(total);
+			//resultView.setRollValue(total);
+                        resultView.setRollValue(7);
 
 			getResultView().showModal();
 		} catch (IllegalStateException e)

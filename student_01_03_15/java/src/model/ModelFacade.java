@@ -38,8 +38,6 @@ public class ModelFacade extends Observable implements IModelFacade
     private GameInfo gameInfo;
     private Poller poller;
     private boolean hasJoined = false;
-    private boolean startRoad = true;
-    private boolean startSettlement = false;
     private boolean hasPlayedDevCard;
     private boolean hasRolled;
     
@@ -675,25 +673,6 @@ public class ModelFacade extends Observable implements IModelFacade
 	}
         
 	//--------------------------------------------------------------------------------        
-	public boolean isSetUpRoad()
-	{
-	    return startRoad;
-	}
-	
-	public boolean isSetUpSettlement()
-	{
-	    return startSettlement;
-	}
-	
-	public void setSetUpRoad(boolean s)
-	{
-	    startRoad = s;
-	}
-	
-	public void setSetUpSettlement(boolean s)
-	{
-	    startSettlement = s;
-	}
 	
 	//================================================================================
 	// MISC PROXY FUNCTIONS
@@ -806,8 +785,46 @@ public class ModelFacade extends Observable implements IModelFacade
             Object[] objects = game.getBoard().getStructure(hexLoc);
             List<RobPlayerInfo> playersToRob = new ArrayList<RobPlayerInfo>();
             PlayerInfo[] playerInfo = getPlayerInfoList();
+            Player[] players = game.getPlayers();
             
-            int index = 0;
+            for(Player p : players)
+            {
+                if(p.getPlayerIndex() != game.getPlayer().getPlayerIndex())
+                {
+                    for(Object obj : objects)
+                    {
+                        if(obj != null)
+                        {
+                            if(obj instanceof Settlement)
+                            {
+                                Settlement s = (Settlement) obj;
+                                if(s.getOwner() == p.getPlayerIndex())
+                                {
+                                    playersToRob.add(new RobPlayerInfo(playerInfo[s.getOwner()]));
+                                    int index = playersToRob.size() - 1;
+                                    playersToRob.get(index).setNumCards(p.getNumCards());
+                                    playersToRob.get(index).setLocation(hexLoc);
+                                    break;
+                                }
+                            } 
+                            else //if city
+                            {
+                                City c = (City) obj;
+                                if(c.getOwner() == p.getPlayerIndex())
+                                {
+                                    playersToRob.add(new RobPlayerInfo(playerInfo[c.getOwner()]));
+                                    int index = playersToRob.size() - 1;
+                                    playersToRob.get(index).setNumCards(p.getNumCards());
+                                    playersToRob.get(index).setLocation(hexLoc);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            /*int index = 0;
             for(Object obj : objects)
             {
                 if(obj != null)
@@ -837,14 +854,21 @@ public class ModelFacade extends Observable implements IModelFacade
                     
                     index++;
                 }
-            }
-            RobPlayerInfo[] arr = new RobPlayerInfo[playersToRob.size()];
-            for(int i = 0; i < playersToRob.size(); i++)
+            }*/
+            RobPlayerInfo[] arr;
+            if(playersToRob.isEmpty())
             {
-                arr[i] = playersToRob.get(i);
+                arr = null;
             }
-            
-			return arr;
+            else
+            {
+                arr = new RobPlayerInfo[playersToRob.size()];
+                for(int i = 0; i < playersToRob.size(); i++)
+                {
+                    arr[i] = playersToRob.get(i);
+                }
+            }
+            return arr;
         }
 	//---------------------------------------------------------------------------------
 	public boolean checkGameFull()

@@ -25,6 +25,7 @@ public class MapController extends Controller implements IMapController , Observ
 	private IRobView robView;
         private boolean isRoadBuilding = false;
         private boolean isFirst = false;
+        private boolean isOpenSetup = false;
         private boolean isSoldier = false;
         private EdgeLocation first;
 	
@@ -51,6 +52,7 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	protected void initFromModel()
     {
+                
         Game game = ModelFacade.getInstance().getGame();            
         Board board = game.getBoard();
         String status = ModelFacade.getInstance().getState();
@@ -66,29 +68,32 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 case "Robbing": 
                 {
+                    ModelFacade.getInstance().getPoller().stop();
                     startMove(PieceType.ROBBER, true, false);
+                    System.out.println("ROBBING!!!!!!!!!!!!!!!");
                     break;
                 }  
-                case "FirstRound": 
+                case "FirstRound":   
                 case "SecondRound":
-                {
+                {  
+                 
+                 
+                    ModelFacade.getInstance().getPoller().stop();
                     if(ModelFacade.getInstance().checkGameFull())
                     {
-                        if(ModelFacade.getInstance().isSetUpRoad() && !ModelFacade.getInstance().isSetUpSettlement())
+                        int roads = ModelFacade.getInstance().getGame().getPlayer().getRoads();
+                        int settlements = ModelFacade.getInstance().getGame().getPlayer().getSettlements();
+                        if((roads == 15 || (roads == 14 && settlements == 4)) && !isOpenSetup)
                         {
+                            System.out.println("I AM HERE SIMBA!!");
+                 
+                            isOpenSetup = true;
                             startMove(PieceType.ROAD, true, false);
-                            ModelFacade.getInstance().setSetUpRoad(false);
                         }
-                        else if(!ModelFacade.getInstance().isSetUpRoad() && ModelFacade.getInstance().isSetUpSettlement())
+                        else if(((roads == 14 && settlements == 5) || (roads == 13 && settlements == 4)))
                         {
+                            System.out.println("I AM HERE MUFASA!!");
                             startMove(PieceType.SETTLEMENT, true, false);
-                            ModelFacade.getInstance().setSetUpSettlement(false);
-                        }
-                        else if(ModelFacade.getInstance().isSetUpRoad() && ModelFacade.getInstance().isSetUpSettlement())
-                        {
-                            ModelFacade.getInstance().setSetUpRoad(true);
-                            ModelFacade.getInstance().setSetUpSettlement(false);
-                            ModelFacade.getInstance().finishTurn();
                         }
                     }
                     break;
@@ -98,8 +103,7 @@ public class MapController extends Controller implements IMapController , Observ
                 case "Rolling": break;
             }
         }
-            
-	}
+    }
         
     private void drawHexes(Game game, Board board)
     {
@@ -193,22 +197,27 @@ public class MapController extends Controller implements IMapController , Observ
 		return ModelFacade.getInstance().canPlaceRobber(hexLoc);
 	}
 
-	public void placeRoad(EdgeLocation edgeLoc) 
+    public void placeRoad(EdgeLocation edgeLoc) 
     {
         boolean isFree = false;
+        boolean isSetup = false;
         String status = ModelFacade.getInstance().getState();
         if(status.equals("FirstRound") || status.equals("SecondRound") || isRoadBuilding)
         {
             isFree = true;
-            ModelFacade.getInstance().setSetUpSettlement(true);
+            isSetup = true;
         }
         
         ModelFacade.getInstance().buildRoad(edgeLoc, isFree);
         PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
         getView().placeRoad(edgeLoc, player.getColor());
+        if(isSetup)
+        {
+            isOpenSetup = false;
+        }
         if(isRoadBuilding && isFirst)
         {
-        	first = edgeLoc;
+            first = edgeLoc;
             ModelFacade.getInstance().updateGameModel();
             isFirst = false;
             startMove(PieceType.ROAD, true, false);
@@ -218,42 +227,46 @@ public class MapController extends Controller implements IMapController , Observ
             isRoadBuilding = false;
             ModelFacade.getInstance().playRoadCard(first, edgeLoc);
         }
-	}
+    }
 
-	public void placeSettlement(VertexLocation vertLoc) 
+    public void placeSettlement(VertexLocation vertLoc) 
     {
         boolean isFree = false;
+        boolean isEnd = false;
         String status = ModelFacade.getInstance().getState();
         if(status.equals("FirstRound") || status.equals("SecondRound"))
         {
             isFree = true;
-            ModelFacade.getInstance().setSetUpSettlement(true);
-            ModelFacade.getInstance().setSetUpRoad(true);
+            isEnd = true;
         }
         
         ModelFacade.getInstance().buildSettlement(vertLoc, isFree);
         PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
         getView().placeSettlement(vertLoc, player.getColor());
-	}
+        if(isEnd)
+        {
+            ModelFacade.getInstance().finishTurn();
+        }
+    }
 
-	public void placeCity(VertexLocation vertLoc) 
+    public void placeCity(VertexLocation vertLoc) 
     {
         ModelFacade.getInstance().buildCity(vertLoc);
         PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
         getView().placeCity(vertLoc, player.getColor());
-	}
+    }
 
 	public void placeRobber(HexLocation hexLoc) 
-    {
-        RobPlayerInfo[] players = ModelFacade.getInstance().getRobPlayerInfoList(hexLoc);
-        getRobView().setPlayers(players);
-        getRobView().showModal();
+        {
+            RobPlayerInfo[] players = ModelFacade.getInstance().getRobPlayerInfoList(hexLoc);
+            getRobView().setPlayers(players);
+            getRobView().showModal();
 	}
 	
 	public void startMove(PieceType pieceType, boolean isFree, boolean allowCancel) 
-    {
-        CatanColor color = ModelFacade.getInstance().getPlayerInfo().getColor();
-        getView().startDrop(pieceType, color, allowCancel);
+        {
+            CatanColor color = ModelFacade.getInstance().getPlayerInfo().getColor();
+            getView().startDrop(pieceType, color, allowCancel);
 	}
 	
 	public void cancelMove() 

@@ -90,10 +90,16 @@ public class MapView extends PanelView implements IMapView
 	public void startDrop(PieceType pieceType, CatanColor pieceColor,
 						  boolean isCancelAllowed)
 	{
+              
 		overlay = new MapOverlay(map);
 		overlay.setController(overlayController);
 		overlay.startDrop(pieceType, pieceColor, isCancelAllowed);
+                if(overlay.isShowing())
+                {
+                    overlay.closeModal();
+                }
 		overlay.showModal();
+                
 	}
 	
 	private IMapController overlayController = new IMapController() {

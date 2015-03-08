@@ -107,31 +107,39 @@ public class RobView extends OverlayView implements IRobView {
                 buttonPanel.setBorder(BorderFactory.createEmptyBorder(25,0,25,0));
                 victimButtons = new ArrayList<JButton>();
                 
-                if(numberOfPlayers != 0){
-         
-                       
-			
-			for(int i=0; i < numberOfPlayers; i++){
-				JButton victimButton = new JButton("<html>"
-						+ "<body style=\"text-align:center\">"
-						+ "<p style=\"font-size:" + TOP_SIZE + "%\">" + victims[i].getName() + "</p>"
-						+ "<p></p>"
-						+ "<p style=\"font-size:" + BOTTOM_SIZE + "%\">" + victims[i].getNumCards() + "</p>"
-						+ "</body>"
-						+ "</html>");
-				victimButton.addActionListener(actionListener);
-				victimButton.setPreferredSize(ITEM_SIZE);
-				victimButton.setContentAreaFilled(false);
-				victimButton.setOpaque(true);
-				victimButton.setAlignmentY(0);
-				victimButton.setBackground(victims[i].getColor().getJavaColor());
-				
-				buttonPanel.add(victimButton);
-				victimButtons.add(victimButton);
-				this.add(buttonPanel, BorderLayout.CENTER);
-				revalidate();
-			}
-		}
+            if(numberOfPlayers != 0)
+            {
+				for(int i=0; i < numberOfPlayers; i++){
+					JButton victimButton = new JButton("<html>"
+							+ "<body style=\"text-align:center\">"
+							+ "<p style=\"font-size:" + TOP_SIZE + "%\">" + victims[i].getName() + "</p>"
+							+ "<p></p>"
+							+ "<p style=\"font-size:" + BOTTOM_SIZE + "%\">" + victims[i].getNumCards() + "</p>"
+							+ "</body>"
+							+ "</html>");
+					victimButton.addActionListener(actionListener);
+					victimButton.setPreferredSize(ITEM_SIZE);
+					victimButton.setContentAreaFilled(false);
+					victimButton.setOpaque(true);
+					victimButton.setAlignmentY(0);
+					victimButton.setBackground(victims[i].getColor().getJavaColor());
+					
+					buttonPanel.add(victimButton);
+					victimButtons.add(victimButton);
+					this.add(buttonPanel, BorderLayout.CENTER);
+					revalidate();
+				}
+					
+            }
+            else
+            {
+            	buttonPanel.add(defaultButton);
+            	victimButtons.add(defaultButton);
+            	this.add(buttonPanel, BorderLayout.CENTER);
+            	revalidate();
+            }
+            
+            
 	}
 
 }

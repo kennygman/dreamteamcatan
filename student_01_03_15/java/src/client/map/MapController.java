@@ -25,7 +25,7 @@ public class MapController extends Controller implements IMapController , Observ
 	private IRobView robView;
         private boolean isRoadBuilding = false;
         private boolean isFirst = false;
-        private boolean isOpenSetup = false;
+        private boolean isOpen = false;
         private boolean isSoldier = false;
         private EdgeLocation first;
 	
@@ -68,9 +68,12 @@ public class MapController extends Controller implements IMapController , Observ
             {
                 case "Robbing": 
                 {
-                    ModelFacade.getInstance().getPoller().stop();
-                    startMove(PieceType.ROBBER, true, false);
-                    System.out.println("ROBBING!!!!!!!!!!!!!!!");
+                    if(!isOpen)
+                    {
+                        isOpen = true;
+                        ModelFacade.getInstance().getPoller().stop();
+                        startMove(PieceType.ROBBER, true, false);
+                    }
                     break;
                 }  
                 case "FirstRound":   
@@ -83,24 +86,21 @@ public class MapController extends Controller implements IMapController , Observ
                     {
                         int roads = ModelFacade.getInstance().getGame().getPlayer().getRoads();
                         int settlements = ModelFacade.getInstance().getGame().getPlayer().getSettlements();
-                        if((roads == 15 || (roads == 14 && settlements == 4)) && !isOpenSetup)
-                        {
-                            System.out.println("I AM HERE SIMBA!!");
-                 
-                            isOpenSetup = true;
+                        if((roads == 15 || (roads == 14 && settlements == 4)) && !isOpen)
+                        {                 
+                            isOpen = true;
                             startMove(PieceType.ROAD, true, false);
                         }
                         else if(((roads == 14 && settlements == 5) || (roads == 13 && settlements == 4)))
                         {
-                            System.out.println("I AM HERE MUFASA!!");
                             startMove(PieceType.SETTLEMENT, true, false);
                         }
                     }
                     break;
                 }
-                case "Playing": break;
-                case "Discarding": break;
-                case "Rolling": break;
+                case "Playing":
+                case "Discarding":
+                case "Rolling": ModelFacade.getInstance().getPoller().stop(); break;
             }
         }
     }
@@ -213,7 +213,7 @@ public class MapController extends Controller implements IMapController , Observ
         getView().placeRoad(edgeLoc, player.getColor());
         if(isSetup)
         {
-            isOpenSetup = false;
+            isOpen = false;
         }
         if(isRoadBuilding && isFirst)
         {
@@ -261,6 +261,7 @@ public class MapController extends Controller implements IMapController , Observ
             RobPlayerInfo[] players = ModelFacade.getInstance().getRobPlayerInfoList(hexLoc);
             getRobView().setPlayers(players);
             getRobView().showModal();
+            isOpen = false;
 	}
 	
 	public void startMove(PieceType pieceType, boolean isFree, boolean allowCancel) 

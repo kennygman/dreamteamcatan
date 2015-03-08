@@ -39,12 +39,11 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	//---------------------------------------------------------------------------------
 	@Override
 	public void endTurn() {
-		if (ModelFacade.getInstance().CanFinishTurn())
-		{
-			ModelFacade.getInstance().getPoller().start();
-			ModelFacade.getInstance().finishTurn();
-		}
-		
+            if (ModelFacade.getInstance().CanFinishTurn())
+            {
+                    ModelFacade.getInstance().finishTurn();
+                    ModelFacade.getInstance().getPoller().start();
+            }
 	}
 	
 	//---------------------------------------------------------------------------------

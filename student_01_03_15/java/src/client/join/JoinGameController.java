@@ -199,17 +199,17 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	@Override
 	public void joinGame(CatanColor color) {
 		
-		if (state.joinGame(color))
-		{
-                    
-			// If join succeeded\\
-			 stopTimer();
-			if (getSelectColorView().isModalShowing())
-				getSelectColorView().closeModal();
-            ModelFacade.getInstance().updateGameModel();
-            joinAction.execute();
-            ModelFacade.getInstance().getPoller().start();
-		}
+            if (state.joinGame(color))
+            {
+
+                // If join succeeded\\
+                stopTimer();
+                if (getSelectColorView().isModalShowing())
+                        getSelectColorView().closeModal();
+                ModelFacade.getInstance().updateGameModel();
+                joinAction.execute();
+                ModelFacade.getInstance().getPoller().start();
+            }
 	}
 
 }

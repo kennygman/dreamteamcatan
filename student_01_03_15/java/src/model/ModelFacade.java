@@ -619,13 +619,13 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
             GameModelResponse response = proxy.playYearOfPlenty(new PlayYearOfPlentyParam(
         		game.getPlayer().getPlayerIndex(), resource1, resource2));
-		if (response.isValid())
-                {
-                    game = response.getGame();
-                    update();
-                    hasPlayedDevCard = true;
-                    //updateGameModel();
-                }
+            if (response.isValid())
+            {
+                game = response.getGame();
+                update();
+                hasPlayedDevCard = true;
+                //updateGameModel();
+            }
 	}
 
 	//--------------------------------------------------------------------------------
@@ -707,13 +707,13 @@ public class ModelFacade extends Observable implements IModelFacade
 	//--------------------------------------------------------------------------------
 	public StandardResponse joinGame(JoinGameParam params)
 	{
-        StandardResponse response = proxy.joinGame(params);
-        if(response.isValid())
-        {
-            this.player.setColor(CatanColor.stringToColor(params.getColor()));
-            this.hasJoined = true;
-        }
-		return response;
+            StandardResponse response = proxy.joinGame(params);
+            if(response.isValid())
+            {
+                this.player.setColor(CatanColor.stringToColor(params.getColor()));
+                this.hasJoined = true;
+            }
+                    return response;
 	}
 
 	public boolean isHasJoined()
@@ -967,9 +967,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	//---------------------------------------------------------------------------------
 	public Player[] getPlayers()
 	{
-        GameModelResponse response = proxy.getGameModel();
-		if (!response.isValid()) return null;
-		return response.getGame().getPlayers();
+		return game.getPlayers();
 	}
 	
 }

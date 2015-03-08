@@ -159,7 +159,7 @@ public class DiscardController extends Controller implements
 		brickDiscardAmount = 0;
 		oreDiscardAmount = 0;
 		discarded = true;
-		this.getDiscardView().closeModal();
+		//this.getDiscardView().closeModal();
 		ModelFacade.getInstance().updateGameModel();
 	}
 
@@ -294,6 +294,10 @@ public class DiscardController extends Controller implements
 				updateAllResourceValues();
 				if (!this.getDiscardView().isModalShowing())
 				{
+                                        if(!ModelFacade.getInstance().isPlayerTurn())
+                                        {
+                                            ModelFacade.getInstance().getPoller().stop();
+                                        }
 					this.getDiscardView().showModal();
 				}
 			} else if (totalResources < 7 || discarded)
@@ -311,10 +315,13 @@ public class DiscardController extends Controller implements
 			}
 
 			if (this.getDiscardView().isModalShowing()
-					&& ModelFacade.getInstance().getGame().getTurnTracker()
-							.getStatus().toLowerCase().equals("robbing"))
+					&& ModelFacade.getInstance().getState().toLowerCase().equals("robbing"))
 			{
 				this.getDiscardView().closeModal();
+                                if(!ModelFacade.getInstance().isPlayerTurn())
+                                {
+                                    ModelFacade.getInstance().getPoller().start();
+                                }
 			}
 
 			discarded = false;

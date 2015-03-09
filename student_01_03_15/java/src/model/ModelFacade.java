@@ -355,7 +355,7 @@ public class ModelFacade extends Observable implements IModelFacade
 		if (!isPlayerTurn() || hasPlayedDevCard ||
 			!getState().equals("Playing")
 			|| !game.getPlayer().getOldDevCards().hasDevCard(devCard)
-			|| game.getPlayer().isPlayedDevCard()
+			//|| game.getPlayer().isPlayedDevCard()
 			) return false;
 		return true;
 	}

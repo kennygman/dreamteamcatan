@@ -177,11 +177,54 @@ public class EdgeLocation
             }
             else
             {
-                System.err.println("Bad getAdjacentEdge() in EdgeLocation class");
+                System.err.println("Bad getAdjacentVertices() in EdgeLocation class");
             }
 
             return vertexList;
 	}
+        
+        public boolean isNeighbor(EdgeLocation neighbor)
+        {
+            EdgeLocation edge = getNormalizedLocation();
+            EdgeDirection dir = edge.getDir();
+            HexLocation location = edge.getHexLoc();
+            HexLocation temp;
+            neighbor = neighbor.getNormalizedLocation();
+            
+            if (dir.equals(EdgeDirection.NorthWest))
+            {
+                if(neighbor.equals(new EdgeLocation(location, EdgeDirection.North))) return true;
+                temp = new HexLocation(location.getX() - 1, location.getY() + 1);
+                if(neighbor.equals(new EdgeLocation(temp, EdgeDirection.NorthEast))) return true;
+                if(neighbor.equals(new EdgeLocation(temp, EdgeDirection.North))) return true;
+                temp = new HexLocation(location.getX() - 1, location.getY());
+                if(neighbor.equals(new EdgeLocation(temp, EdgeDirection.NorthEast))) return true;
+            } 
+            else if (dir.equals(EdgeDirection.North))
+            {
+                if(neighbor.equals(new EdgeLocation(location, EdgeDirection.NorthWest))) return true;
+                if(neighbor.equals(new EdgeLocation(location, EdgeDirection.NorthEast))) return true;
+                temp = new HexLocation(location.getX() + 1, location.getY() - 1);
+                if(neighbor.equals(new EdgeLocation(temp, EdgeDirection.NorthWest))) return true;
+                temp = new HexLocation(location.getX() - 1, location.getY());
+                if(neighbor.equals(new EdgeLocation(temp, EdgeDirection.NorthEast))) return true; 
+            }
+            else if(dir.equals(EdgeDirection.NorthEast))
+            {
+                if(neighbor.equals(new EdgeLocation(location, EdgeDirection.North))) return true;
+                temp = new HexLocation(location.getX() + 1, location.getY());
+                if(neighbor.equals(new EdgeLocation(temp, EdgeDirection.NorthWest))) return true;
+                if(neighbor.equals(new EdgeLocation(temp, EdgeDirection.North))) return true;
+                temp = new HexLocation(location.getX() + 1, location.getY() - 1);
+                if(neighbor.equals(new EdgeLocation(temp, EdgeDirection.NorthWest))) return true; 
+            }
+            else
+            {
+                System.err.println("Bad isNeighbor() in EdgeLocation class");
+            }
+
+            return false;
+        }
         
 	@Override
 	public String toString()

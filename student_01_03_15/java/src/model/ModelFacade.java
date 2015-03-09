@@ -39,6 +39,8 @@ public class ModelFacade extends Observable implements IModelFacade
     private Poller poller;
     private boolean hasJoined = false;
     private boolean hasPlayedDevCard;
+    private boolean isRoadBuilding;
+    private EdgeLocation firstRoadInRoadBuilding;
     private boolean hasRolled;
     
     private PlayerInfo[] players;
@@ -138,6 +140,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		return poller;
 	}
+        
+        public void setFirstRoadBuidingRoad(EdgeLocation edge)
+        {
+            this.firstRoadInRoadBuilding = edge;
+            isRoadBuilding = true;
+        }
 	// ===============================================================================
 	// CAN-DO METHODS & PRECONDITIONS
 	// ===============================================================================
@@ -208,9 +216,11 @@ public class ModelFacade extends Observable implements IModelFacade
             Board board = game.getBoard();
 
             if (board.containsRoad(edge)) {return false;}
+            else if (isRoadBuilding && firstRoadInRoadBuilding != null && firstRoadInRoadBuilding.equals(edgeLoc)) {return false;}
             else if (!free && !CanBuyRoad()) {return false;}
             else if (board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) {return false;}
             else if (board.hasNeighborRoad(edge, player.getPlayerIndex(), getState()))  {return true;}
+            else if (isRoadBuilding && firstRoadInRoadBuilding.isNeighbor(edgeLoc)) {return true;}
 			
              return false;
 	}	
@@ -633,12 +643,14 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void playRoadCard(EdgeLocation spot1, EdgeLocation spot2)
 	{
 		GameModelResponse response = proxy.playRoadBuilding(new PlayRoadBuildingParam(
-				game.getPlayer().getPlayerIndex(), spot1, spot2));
+				game.getPlayer().getPlayerIndex(), firstRoadInRoadBuilding, spot2));
 		if (response.isValid())
                 {
                     game = response.getGame();
                     update();
                     hasPlayedDevCard = true;
+                    isRoadBuilding = false;
+                    firstRoadInRoadBuilding = null;
                     //updateGameModel();
                 }
 	}

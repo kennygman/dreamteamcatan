@@ -172,7 +172,7 @@ public class MapController extends Controller implements IMapController , Observ
         {
             return ModelFacade.getInstance().canPlaceRoad(edgeLoc, false);
         }
-	}
+    }
 
 	public boolean canPlaceSettlement(VertexLocation vertLoc) 
     {	
@@ -217,15 +217,15 @@ public class MapController extends Controller implements IMapController , Observ
         }
         if(isRoadBuilding && isFirst)
         {
-            first = edgeLoc;
-            ModelFacade.getInstance().updateGameModel();
+            getView().placeRoad(edgeLoc, player.getColor());
+            ModelFacade.getInstance().setFirstRoadBuidingRoad(edgeLoc);
             isFirst = false;
             startMove(PieceType.ROAD, true, false);
         }
         else if(isRoadBuilding)
         {
             isRoadBuilding = false;
-            ModelFacade.getInstance().playRoadCard(first, edgeLoc);
+            ModelFacade.getInstance().playRoadCard(null, edgeLoc);
         }
     }
 
@@ -303,7 +303,7 @@ public class MapController extends Controller implements IMapController , Observ
     @Override
     public void update(Observable o, Object o1) 
     {
-    	System.out.println("==========State: " + ModelFacade.getInstance().getState());
+    	//System.out.println("==========State: " + ModelFacade.getInstance().getState());
         initFromModel();
     }
 }

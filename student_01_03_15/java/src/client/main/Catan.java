@@ -17,104 +17,128 @@ import client.base.*;
 @SuppressWarnings("serial")
 public class Catan extends JFrame
 {
-	
 	private CatanPanel catanPanel;
-	
+
 	public Catan()
 	{
-		
+
 		client.base.OverlayView.setWindow(this);
-		
+
 		this.setTitle("Settlers of Catan");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		catanPanel = new CatanPanel();
 		this.setContentPane(catanPanel);
-		
+
 		display();
 	}
-	
+
 	private void display()
 	{
-		////----------------------COMMENTED OUT PACK NEED TO CHANGE BEFORE SUBMIT
+		// //----------------------COMMENTED OUT PACK NEED TO CHANGE BEFORE
+		// SUBMIT
 		pack();
 		setVisible(true);
 	}
-	
+
 	//
 	// Main
 	//
-	
+
 	public static void main(final String[] args)
 	{
-		//------------------------------------------------------------------
-		//		SETUP STUFF
-		//------------------------------------------------------------------
-		//		1. Make a proxy
+		// ------------------------------------------------------------------
+		// SETUP STUFF
+		// ------------------------------------------------------------------
+		// 1. Make a proxy
 		IProxy gameProxy = new Proxy();
-		//		2. Make clientFacade
+		// 2. Make clientFacade
 		ModelFacade.createInstance(gameProxy);
 
-		//		Setup Poller later in the facade or something.....
-		//------------------------------------------------------------------
+		// Setup Poller later in the facade or something.....
+		// ------------------------------------------------------------------
 
 		try
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch(Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		
-		SwingUtilities.invokeLater(new Runnable() {
+
+		SwingUtilities.invokeLater(new Runnable()
+		{
 			public void run()
 			{
-                            new Catan();
+				new Catan();
 
-                            PlayerWaitingView playerWaitingView = new PlayerWaitingView();
-                            final PlayerWaitingController playerWaitingController = new PlayerWaitingController(
-                                                                                                                                                                                                    playerWaitingView);
-                            playerWaitingView.setController(playerWaitingController);
+				PlayerWaitingView playerWaitingView = new PlayerWaitingView();
+				final PlayerWaitingController playerWaitingController = new PlayerWaitingController(
+						playerWaitingView);
+				playerWaitingView.setController(playerWaitingController);
 
-                            JoinGameView joinView = new JoinGameView();
-                            NewGameView newGameView = new NewGameView();
-                            SelectColorView selectColorView = new SelectColorView();
-                            MessageView joinMessageView = new MessageView();
-                            final JoinGameController joinController = new JoinGameController(
-                                                                                                                                                             joinView,
-                                                                                                                                                             newGameView,
-                                                                                                                                                             selectColorView,
-                                                                                                                                                             joinMessageView);
-                            joinController.setJoinAction(new IAction() {
-                                    @Override
-                                    public void execute()
-                                    {
-                                            playerWaitingController.start();
-                                    }
-                            });
-                            joinView.setController(joinController);
-                            newGameView.setController(joinController);
-                            selectColorView.setController(joinController);
-                            joinMessageView.setController(joinController);
+				JoinGameView joinView = new JoinGameView();
+				NewGameView newGameView = new NewGameView();
+				SelectColorView selectColorView = new SelectColorView();
+				MessageView joinMessageView = new MessageView();
+				final JoinGameController joinController = new JoinGameController(
+						joinView, newGameView, selectColorView, joinMessageView);
+				joinController.setJoinAction(new IAction()
+				{
+					@Override
+					public void execute()
+					{
+						playerWaitingController.start();
+					}
+				});
+				joinView.setController(joinController);
+				newGameView.setController(joinController);
+				selectColorView.setController(joinController);
+				joinMessageView.setController(joinController);
 
-                            LoginView loginView = new LoginView();
-                            MessageView loginMessageView = new MessageView();
-                            LoginController loginController = new LoginController(loginView,loginMessageView);
-                            loginController.setLoginAction(new IAction() {
-                                    @Override
-                                    public void execute()
-                                    {
-                                            joinController.start();
-                                    }
-                            });
+				LoginView loginView = new LoginView();
+				MessageView loginMessageView = new MessageView();
+				LoginController loginController = new LoginController(
+						loginView, loginMessageView);
+				loginController.setLoginAction(new IAction()
+				{
+					@Override
+					public void execute()
+					{
+						joinController.start();
+					}
+				});
 
-                            loginView.setController(loginController);
-
-                            loginController.start();
+				loginView.setController(loginController);
+				loginController.start();
 			}
 		});
 	}
-	
-}
 
+	public static void lobby()
+	{
+		PlayerWaitingView playerWaitingView = new PlayerWaitingView();
+		final PlayerWaitingController playerWaitingController = new PlayerWaitingController(
+				playerWaitingView);
+		playerWaitingView.setController(playerWaitingController);
+		JoinGameView joinView = new JoinGameView();
+		NewGameView newGameView = new NewGameView();
+		SelectColorView selectColorView = new SelectColorView();
+		MessageView joinMessageView = new MessageView();
+		final JoinGameController joinController = new JoinGameController(
+				joinView, newGameView, selectColorView, joinMessageView);
+		joinController.setJoinAction(new IAction()
+		{
+			@Override
+			public void execute()
+			{
+				playerWaitingController.start();
+			}
+		});
+		joinView.setController(joinController);
+		newGameView.setController(joinController);
+		selectColorView.setController(joinController);
+		joinMessageView.setController(joinController);
+		joinController.start();
+	}
+}

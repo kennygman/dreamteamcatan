@@ -31,7 +31,6 @@ public class PointsController extends Controller implements IPointsController,
 
 		setFinishedView(finishedView);
 
-//		initFromModel();
 		ModelFacade.getInstance().addObserver(this);
 	}
 
@@ -62,20 +61,26 @@ public class PointsController extends Controller implements IPointsController,
 		{
 			int monument = player.getNewDevCards().getMonument();
 			monument += player.getOldDevCards().getMonument();
-			if (player.getVictoryPoints() + monument >= 10) 
+			if (monument < 0)
 			{
-				this.getFinishedView().setWinner(player.getName(), player.getPlayerID()==playerId);
-				this.getFinishedView().showModal();
-				return;
+				monument = 0;
 			}
 			if (player.getPlayerID() == playerId)
 			{
 				getPointsView().setPoints(player.getVictoryPoints());
+				if (player.getVictoryPoints() + monument >= 10)
+				{
+					this.getFinishedView().setWinner(player.getName(),
+							player.getPlayerID() == playerId);
+					this.getFinishedView().showModal();
+					ModelFacade.getInstance().getGame()
+							.setWinner(player.getPlayerIndex());
+					return;
+				}
 				return;
 			}
 		}
 		getPointsView().setPoints(-1);
-		// </temp>
 	}
 
 	@Override

@@ -143,12 +143,12 @@ public class DevCardController extends Controller implements IDevCardController,
 	public void update(Observable o, Object arg) 
 	{
 		
-/*			System.out.println(" monopoly amount is : " + ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonopoly());
+		 /*System.out.println(" monopoly amount is : " + ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonopoly());
 			System.out.println(" mon amount is : " +  ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonument());
 			System.out.println(" road amount is : " + ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getRoadBuilding());
 			System.out.println(" soldier amount is : " + ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getSoldier());
 			System.out.println(" year amount is : " +  ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getYearOfPlenty());
-*/			
+		*/
 			getPlayCardView().setCardEnabled(DevCardType.MONOPOLY, ModelFacade.getInstance().canPlayDevCard(DevCardType.MONOPOLY));
 			getPlayCardView().setCardAmount(DevCardType.MONOPOLY, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonopoly());
 	

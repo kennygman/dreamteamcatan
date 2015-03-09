@@ -209,13 +209,7 @@ public class MapController extends Controller implements IMapController , Observ
             isSetup = true;
         }
         
-        ModelFacade.getInstance().buildRoad(edgeLoc, isFree);
         PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
-        getView().placeRoad(edgeLoc, player.getColor());
-        if(isSetup)
-        {
-            isOpen = false;
-        }
         if(isRoadBuilding && isFirst)
         {
             getView().placeRoad(edgeLoc, player.getColor());
@@ -227,6 +221,15 @@ public class MapController extends Controller implements IMapController , Observ
         {
             isRoadBuilding = false;
             ModelFacade.getInstance().playRoadCard(null, edgeLoc);
+        }
+        else
+        {
+	        ModelFacade.getInstance().buildRoad(edgeLoc, isFree);
+	        getView().placeRoad(edgeLoc, player.getColor());
+	        if(isSetup)
+	        {
+	            isOpen = false;
+	        }
         }
     }
 

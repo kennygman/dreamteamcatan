@@ -130,22 +130,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 			}
 		}, 0, 3000);
 	}
-	private void colorSelectRefresh()
-	{
-		this.isRunning = true;
-		timer = new Timer();
-		timer.schedule(new TimerTask()
-		{
-			@Override
-			public void run()
-			{
-				
-				getSelectColorView().closeModal();
-				state.disableColors();
-				getSelectColorView().showModal();
-			}
-		}, 0, 3000);
-	}
+
 
 	@Override
 	public void startCreateNewGame() {
@@ -184,7 +169,6 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 		stopTimer();
         getJoinGameView().closeModal();
         getSelectColorView().showModal();
-        colorSelectRefresh();
         state.setGame(game);
 	}
 

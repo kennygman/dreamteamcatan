@@ -28,6 +28,7 @@ public class MapController extends Controller implements IMapController , Observ
         private boolean isOpen = false;
         private boolean isSoldier = false;
         private EdgeLocation first;
+        private HexLocation robberLocation;
 	
 	public MapController(IMapView view, IRobView robView) 
     {
@@ -260,6 +261,7 @@ public class MapController extends Controller implements IMapController , Observ
         {
             RobPlayerInfo[] players = ModelFacade.getInstance().getRobPlayerInfoList(hexLoc);
             getRobView().setPlayers(players);
+            robberLocation = hexLoc;
             getRobView().showModal();
             isOpen = false;
 	}
@@ -290,7 +292,11 @@ public class MapController extends Controller implements IMapController , Observ
 	
 	public void robPlayer(RobPlayerInfo victim) 
     {
-        if(isSoldier)
+		if(victim == null)
+		{
+			 ModelFacade.getInstance().robPlayer(robberLocation, -1);
+		}
+		else if(isSoldier)
         {
             ModelFacade.getInstance().playSoldierCard(victim.getPlayerIndex(), victim.getLocation());
         }

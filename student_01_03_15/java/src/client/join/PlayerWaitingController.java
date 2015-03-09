@@ -33,6 +33,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
             AddAiParam param = new AddAiParam(getView().getSelectedAI());
             if (ModelFacade.getInstance().addAi(param).isValid())
             {
+            	
                 refresh();
             }
 	}
@@ -45,8 +46,10 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	
 	public void refresh()
 	{
+
+		
 		int t = ModelFacade.getInstance().getGameInfo().getPlayers().size();
-		if (t > size) {
+		if (t >= size && t != 4) {
 			size = t;
 			refresh = true;
 		}

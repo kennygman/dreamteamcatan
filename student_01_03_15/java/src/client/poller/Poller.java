@@ -114,6 +114,18 @@ public class Poller
 		}, 0, 3000);
 	}
 
+	public boolean isRunning()
+	{
+		return isRunning;
+	}
+
+
+	public void setRunning(boolean isRunning)
+	{
+		this.isRunning = isRunning;
+	}
+
+
 	/**
 	 * Stops the polling service
 	 */

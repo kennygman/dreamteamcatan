@@ -129,6 +129,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 			
 			getWaitOverlay().setMessage("Waiting for recipient's response");
 			getWaitOverlay().showModal();
+			ModelFacade.getInstance().getPoller().pollerStart();
 		}
 	}
 
@@ -194,7 +195,11 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 		if (offer == null)
 		{
-			 if (getWaitOverlay().isModalShowing()) getWaitOverlay().closeModal();
+			 if (getWaitOverlay().isModalShowing()) 
+			 {
+				 getWaitOverlay().closeModal();
+				 //ModelFacade.getInstance().getPoller().stop();
+			 }
 		}
 		else if (offer.getSender() == index)
 		{

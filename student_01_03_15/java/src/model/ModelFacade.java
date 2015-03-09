@@ -571,10 +571,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public void finishTurn()
 	{
+		
         GameModelResponse response = proxy.finishTurn(
         		new FinishTurnParam(game.getPlayer().getPlayerIndex()));
 		if (response.isValid())
                 {
+					poller.pollerStart();
                     game = response.getGame();
                     update();
                     //updateGameModel();

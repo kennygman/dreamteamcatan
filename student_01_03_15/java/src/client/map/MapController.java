@@ -98,9 +98,9 @@ public class MapController extends Controller implements IMapController , Observ
                     }
                     break;
                 }
-                case "Playing":
+                case "Playing":break;
                 case "Discarding":
-                case "Rolling": ModelFacade.getInstance().getPoller().stop(); break;
+                case "Rolling": System.out.println("IN SWITCH END"); ModelFacade.getInstance().getPoller().stop(); break;
             }
         }
     }
@@ -303,7 +303,7 @@ public class MapController extends Controller implements IMapController , Observ
     @Override
     public void update(Observable o, Object o1) 
     {
-    	//System.out.println("==========State: " + ModelFacade.getInstance().getState());
+    	System.out.println("==========State: " + ModelFacade.getInstance().getState());
         initFromModel();
     }
 }

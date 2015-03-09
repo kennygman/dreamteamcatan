@@ -2,6 +2,8 @@ package client.join;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import shared.parameters.AddAiParam;
 import shared.response.ListAIResponse;
@@ -13,11 +15,15 @@ import client.base.*;
  */
 public class PlayerWaitingController extends Controller implements IPlayerWaitingController, Observer {
 
+	public Timer timer = new Timer();
+	public boolean isRunning;
+	
 	public PlayerWaitingController(IPlayerWaitingView view) {
             super(view);
             ListAIResponse aiList = ModelFacade.getInstance().listAi();
             getView().setAIChoices(aiList.getAiTypes());
             ModelFacade.getInstance().addObserver(this);
+            isRunning = false;
 	}
 
 	@Override
@@ -26,10 +32,13 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	}
 
 	@Override
-	public void start() {}
+	public void start() {aiRefresh();}
 
+	
+	
 	@Override
 	public void addAI() {
+			
             AddAiParam param = new AddAiParam(getView().getSelectedAI());
             if (ModelFacade.getInstance().addAi(param).isValid())
             {
@@ -44,10 +53,35 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
             refresh();
 	}
 	
+	private void aiRefresh()
+	{
+		this.isRunning = true;
+		timer = new Timer();
+		timer.schedule(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				refresh();
+			}
+		}, 0, 1500);
+	}
+	private void stopTimer()
+	{
+		if(this.isRunning == true)
+		{
+			this.isRunning = false;
+			timer.cancel();
+			timer.purge();
+		}
+		
+	}
+	
+	
+	
 	public void refresh()
 	{
 
-		
 		int t = ModelFacade.getInstance().getGameInfo().getPlayers().size();
 		if (t >= size && t != 4) {
 			size = t;
@@ -64,6 +98,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
 		if (ModelFacade.getInstance().isGameFull() && getView().isModalShowing())
 		{
+					stopTimer();
                     getView().closeModal();
                     ModelFacade.getInstance().updateGameModel();
 		}

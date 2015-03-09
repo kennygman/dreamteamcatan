@@ -95,7 +95,7 @@ public class Poller
 	public void pollerStart()
 	{
 		this.isRunning = true;
-		System.out.println("I AM Started!!!!");
+		//System.out.println("I AM Started!!!!");
 		timer = new Timer();
 		setTimesTimerRan(1);
 		timer.schedule(new TimerTask()
@@ -131,10 +131,10 @@ public class Poller
 	 */
 	public void stop()
 	{
-		System.out.println("I AM IN THE STOPPING METHOD");
+		//System.out.println("I AM IN THE STOPPING METHOD");
 		if(this.isRunning == true)
 		{
-			System.out.println("I AM STOPPED");
+			//System.out.println("I AM STOPPED");
 			this.isRunning = false;
 			timer.cancel();
 			timer.purge();

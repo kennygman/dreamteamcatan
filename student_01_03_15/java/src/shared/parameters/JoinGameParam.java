@@ -14,5 +14,9 @@ public class JoinGameParam {
         {
             return this.color;
         }
+        public int getId()
+        {
+        	return id;
+        }
 
 }

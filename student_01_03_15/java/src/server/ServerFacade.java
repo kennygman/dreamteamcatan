@@ -1,6 +1,9 @@
 package server;
 
 import model.ModelFacade;
+import java.util.*;
+import server.database.Database;
+import server.database.DatabaseException;
 import shared.parameters.AcceptTradeParam;
 import shared.parameters.AddAiParam;
 import shared.parameters.BuildCityParam;
@@ -23,9 +26,22 @@ import shared.parameters.RobPlayerParam;
 import shared.parameters.RollNumParam;
 import shared.parameters.SendChatParam;
 
+
 public class ServerFacade implements IServerFacade
 {
 
+	public static void initialize() throws ServerException 
+	{		
+		try 
+		{
+			Database.initialize();	
+		}
+		
+		catch (DatabaseException e) 	
+		{
+			throw new ServerException(e.getMessage(), e);
+		}		
+	}
 	@Override
 	public void sendChat(SendChatParam param)
 	{

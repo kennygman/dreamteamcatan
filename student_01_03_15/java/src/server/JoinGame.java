@@ -1,5 +1,6 @@
 package server;
 
+import model.Game;
 import model.player.Player;
 import shared.parameters.JoinGameParam;
 
@@ -16,7 +17,7 @@ public class JoinGame implements Command
 	}
 	
 	@Override
-	public void execute()
+	public void execute(Game game)
 	{
 		// Join or Re-Join?
 		// Initialize Player, resources, and pieces

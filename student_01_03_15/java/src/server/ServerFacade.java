@@ -1,166 +1,202 @@
 package server;
 
-import model.ModelFacade;
-import java.util.*;
-import server.database.Database;
-import server.database.DatabaseException;
-import shared.parameters.AcceptTradeParam;
-import shared.parameters.AddAiParam;
-import shared.parameters.BuildCityParam;
-import shared.parameters.BuildRoadParam;
-import shared.parameters.BuildSettlementParam;
-import shared.parameters.BuyDevCardParam;
-import shared.parameters.CreateGameParam;
-import shared.parameters.CredentialsParam;
-import shared.parameters.DiscardCardsParam;
-import shared.parameters.FinishTurnParam;
-import shared.parameters.JoinGameParam;
-import shared.parameters.MaritimeTradeParam;
-import shared.parameters.OfferTradeParam;
-import shared.parameters.PlayMonopolyParam;
-import shared.parameters.PlayMonumentParam;
-import shared.parameters.PlayRoadBuildingParam;
-import shared.parameters.PlaySoldierParam;
-import shared.parameters.PlayYearOfPlentyParam;
-import shared.parameters.RobPlayerParam;
-import shared.parameters.RollNumParam;
-import shared.parameters.SendChatParam;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import model.Game;
+import shared.parameters.*;
 
 public class ServerFacade implements IServerFacade
 {
+	private Map<Integer, User> users;
+	private Map<Integer, Game> games;
+	private Map<Integer, List<Command>> commands;
 
-	public static void initialize() throws ServerException 
-	{		
-		try 
-		{
-			Database.initialize();	
+	public ServerFacade()
+	{
+		users = new HashMap<>();
+		games = new HashMap<>();
+		commands = new HashMap<>();
+	}
+	
+	// ===============================================================================
+	// SINGLETON IMPLEMENTATION
+	// ===============================================================================
+	private static ServerFacade instance;
+	public static ServerFacade getInstance()
+	{
+		if (instance == null) {
+			throw new IllegalStateException("Tried to get instance of ServerFacade"
+					+ " without initializing it first!");
 		}
-		
-		catch (DatabaseException e) 	
-		{
-			throw new ServerException(e.getMessage(), e);
-		}		
+		return instance;
 	}
+
+	// ===============================================================================
+	// GETTERS AND SETTERS
+	// ===============================================================================
+	
+	public User getUser(int id){return users.get(id);}
+	public Game getGame(int id) { return games.get(id);}
+	public List<Command> getCommandList(int id) {return commands.get(id);}
+	
+	public void setUser(User user){users.put(user.getId(), user);}
+	public void setGame(Game game)
+	{
+		int gameID = games.size()+1;
+		games.put(gameID, game);
+		commands.put(gameID, new ArrayList<Command>());
+	}
+	public void addCommand(int id, Command cmd)
+	{
+		List<Command> commandList = commands.get(id);
+		commandList.add(cmd);
+		commands.put(id, commandList);
+	}
+	
+	// ===============================================================================
+	// GAME COMMANDS
+	// ===============================================================================
+
+	//--------------------------------------------------------------------------------
 	@Override
-	public void sendChat(SendChatParam param)
+	public void sendChat(SendChatParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void acceptTrade(AcceptTradeParam param)
+	public void acceptTrade(AcceptTradeParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void discardCards(DiscardCardsParam param)
+	public void discardCards(DiscardCardsParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void rollNumber(RollNumParam param)
+	public void rollNumber(RollNumParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void buildRoad(BuildRoadParam param)
+	public void buildRoad(BuildRoadParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void buildSettlement(BuildSettlementParam param)
+	public void buildSettlement(BuildSettlementParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void buildCity(BuildCityParam param)
+	public void buildCity(BuildCityParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void offerTrade(OfferTradeParam param)
+	public void offerTrade(OfferTradeParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void maritimeTrade(MaritimeTradeParam param)
+	public void maritimeTrade(MaritimeTradeParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void robPlayer(RobPlayerParam param)
+	public void robPlayer(RobPlayerParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void finishTurn(FinishTurnParam param)
+	public void finishTurn(FinishTurnParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void buyDevCard(BuyDevCardParam param)
+	public void buyDevCard(BuyDevCardParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void playSoldierCard(PlaySoldierParam param)
+	public void playSoldierCard(PlaySoldierParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void playYearOfPlentyCard(PlayYearOfPlentyParam param)
+	public void playYearOfPlentyCard(PlayYearOfPlentyParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void playRoadCard(PlayRoadBuildingParam param)
+	public void playRoadCard(PlayRoadBuildingParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void playMonopolyCard(PlayMonopolyParam param)
+	public void playMonopolyCard(PlayMonopolyParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void playMonumentCard(PlayMonumentParam param)
+	public void playMonumentCard(PlayMonumentParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void login(CredentialsParam param)
 	{
@@ -168,6 +204,7 @@ public class ServerFacade implements IServerFacade
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void register(CredentialsParam param)
 	{
@@ -175,14 +212,15 @@ public class ServerFacade implements IServerFacade
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void join(JoinGameParam param)
 	{
 		JoinGame cmd = new JoinGame(param);
-		// if canJoinGame();
-		cmd.execute();
+		cmd.execute(games.get(param.getId()));
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void create(CreateGameParam param)
 	{
@@ -190,13 +228,15 @@ public class ServerFacade implements IServerFacade
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void addAI(AddAiParam param)
+	public void addAI(AddAiParam param, int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
 	public void listGames()
 	{
@@ -204,53 +244,61 @@ public class ServerFacade implements IServerFacade
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void listAI()
+	public void listAI(int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void getGameModel()
+	public void getGameModel(int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void save()
+	public void save(int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void load()
+	public void load(int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void resetGame()
+	public void resetGame(int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void getCommands()
+	public void getCommands(int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 	@Override
-	public void commands()
+	public void commands(int id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
+	//--------------------------------------------------------------------------------
 }

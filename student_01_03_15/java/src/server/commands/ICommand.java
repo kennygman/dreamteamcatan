@@ -1,8 +1,8 @@
-package server;
+package server.commands;
 
 import model.Game;
 
-public interface Command
+public interface ICommand
 {
 	abstract void execute(Game game);
 }

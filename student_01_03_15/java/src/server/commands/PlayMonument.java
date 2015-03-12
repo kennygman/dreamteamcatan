@@ -13,6 +13,9 @@ public class PlayMonument implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Plays monument dev card for the player that is using it
+	 */
 	@Override
 	public void execute(Game game)
 	{

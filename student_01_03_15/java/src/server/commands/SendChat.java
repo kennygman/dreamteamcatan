@@ -12,7 +12,9 @@ public class SendChat implements ICommand
 		super();
 		this.param = param;
 	}
-
+	/**
+	 * Sends a chat message
+	 */
 	@Override
 	public void execute(Game game)
 	{

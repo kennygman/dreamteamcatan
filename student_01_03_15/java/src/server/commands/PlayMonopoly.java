@@ -13,6 +13,9 @@ public class PlayMonopoly implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Plays monopoly dev card for the player that is using it
+	 */
 	@Override
 	public void execute(Game game)
 	{

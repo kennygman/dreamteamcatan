@@ -13,6 +13,9 @@ public class PlaySoldier implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Plays rob dev card for the player that is using it, puts the robber in the new location the player indicated and robs the selected player.
+	 */
 	@Override
 	public void execute(Game game)
 	{

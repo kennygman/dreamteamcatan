@@ -12,7 +12,9 @@ public class RollNumber implements ICommand
 		super();
 		this.param = param;
 	}
-
+	/**
+	 * Roll a number at the beginning of your turn.
+	 */
 	@Override
 	public void execute(Game game)
 	{

@@ -13,6 +13,9 @@ public class PlayRoadBuilding implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Plays roadbuilding dev card for the player that is using it and places 2 roads where player indicated
+	 */
 	@Override
 	public void execute(Game game)
 	{

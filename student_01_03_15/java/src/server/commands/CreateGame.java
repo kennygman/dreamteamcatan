@@ -15,9 +15,8 @@ public class CreateGame implements ICommand
 	}
 
 	/**
-	 * Create game object,
-	 * Initialize objects in the game model,
-	 * Add game to server games list
+	 * Creates and initializes  game object with the specified properties,
+	 * Adds game to server games list
 	 */
 	@Override
 	public void execute(Game game)

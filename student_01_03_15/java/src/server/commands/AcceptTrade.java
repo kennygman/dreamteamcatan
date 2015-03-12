@@ -14,6 +14,10 @@ public class AcceptTrade implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Swaps the resources for the players in the trade if the trade was accepted
+	 * then removes the trade offer from the game.
+	 */
 	@Override
 	public void execute(Game game)
 	{

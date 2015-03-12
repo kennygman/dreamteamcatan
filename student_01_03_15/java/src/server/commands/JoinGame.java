@@ -15,6 +15,9 @@ public class JoinGame implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Adds the player to the game
+	 */
 	@Override
 	public void execute(Game game)
 	{

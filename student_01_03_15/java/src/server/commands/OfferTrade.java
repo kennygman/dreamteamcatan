@@ -13,6 +13,9 @@ public class OfferTrade implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Offers trade to receiving player
+	 */
 	@Override
 	public void execute(Game game)
 	{

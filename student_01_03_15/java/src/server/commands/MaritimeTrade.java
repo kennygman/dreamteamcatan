@@ -13,6 +13,9 @@ public class MaritimeTrade implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Trades with resources with bank depending on building built by ports
+	 */
 	@Override
 	public void execute(Game game)
 	{

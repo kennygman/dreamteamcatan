@@ -13,6 +13,9 @@ public class PlayYearOfPlenty implements ICommand
 	this.param = param;
 }
 
+	/**
+	 * Plays a 'Year of Plenty' card from your hand to gain the two specified resources
+	 */
 	@Override
 	public void execute(Game game)
 	{

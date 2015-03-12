@@ -12,7 +12,9 @@ public class RobPlayer implements ICommand
 		super();
 		this.param = param;
 	}
-
+	/**
+	 * Moves the robber, selecting the new robber position and player to rob
+	 */
 	@Override
 	public void execute(Game game)
 	{

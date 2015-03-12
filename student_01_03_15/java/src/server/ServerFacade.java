@@ -1,7 +1,11 @@
 package server;
 
 import model.Game;
+
 import java.util.*;
+
+import server.commands.ICommand;
+import server.commands.JoinGame;
 import shared.parameters.*;
 import shared.response.*;
 
@@ -9,7 +13,8 @@ public class ServerFacade implements IServerFacade
 {
 	private Map<Integer, User> users;
 	private Map<Integer, Game> games;
-	private Map<Integer, List<Command>> commands;
+	private Map<Integer, List<ICommand>> commands;
+	private static String[] aiTypes = {"LARGEST_ARMY"};
 
 	public ServerFacade()
 	{
@@ -37,18 +42,30 @@ public class ServerFacade implements IServerFacade
 	
 	public User getUser(int id){return users.get(id);}
 	public Game getGame(int id) { return games.get(id);}
-	public List<Command> getCommandList(int id) {return commands.get(id);}
-	
+	public List<ICommand> getCommandList(int id) {return commands.get(id);}
+
 	public void setUser(User user){users.put(user.getId(), user);}
+	
+	/**
+	 * Increment gameID by 1, add game to server game list, then add new key with
+	 * gameID to commands list
+	 * @param game the game
+	 */
 	public void setGame(Game game)
 	{
 		int gameID = games.size()+1;
 		games.put(gameID, game);
-		commands.put(gameID, new ArrayList<Command>());
+		commands.put(gameID, new ArrayList<ICommand>());
 	}
-	public void addCommand(int id, Command cmd)
+	
+	/**
+	 * Add the command to the game's command list
+	 * @param id the game's id
+	 * @param cmd the command
+	 */
+	public void setCommand(int id, ICommand cmd)
 	{
-		List<Command> commandList = commands.get(id);
+		List<ICommand> commandList = commands.get(id);
 		commandList.add(cmd);
 		commands.put(id, commandList);
 	}
@@ -274,8 +291,7 @@ public class ServerFacade implements IServerFacade
 
 	public ListAIResponse listAI(int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new ListAIResponse(aiTypes, true);
 	}
 
 	//---------------------------------------------------------------------------------

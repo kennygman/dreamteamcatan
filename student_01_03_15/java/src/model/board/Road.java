@@ -20,6 +20,7 @@ public class Road extends Piece
 	{
 		this.owner = owner;
 	}
+
 	public EdgeLocation getEdgeLocation()
 	{
 		return location;

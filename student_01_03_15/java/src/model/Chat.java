@@ -2,12 +2,12 @@ package model;
 
 import java.util.List;
 
-public class Chat 
+public class Chat
 {
-	
+
 	private Lines[] lines;
-	
-	public Lines[] getLines() 
+
+	public Lines[] getLines()
 	{
 		return lines;
 	}
@@ -21,10 +21,11 @@ public class Chat
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		for (Lines line : lines) {
+		for (Lines line : lines)
+		{
 			sb.append(line.getMessage());
 		}
 		return sb.toString();
 	}
-	
+
 }

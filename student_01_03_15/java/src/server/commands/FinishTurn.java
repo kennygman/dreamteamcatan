@@ -13,6 +13,10 @@ public class FinishTurn implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Moves cards from the newDevCardList to the oldDevCardList,
+	 * Set's the current Player's turn to the next Player's turn.
+	 */
 	@Override
 	public void execute(Game game)
 	{

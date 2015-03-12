@@ -13,6 +13,10 @@ public class DiscardCards implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * Decrease Player's resources by specified amounts,
+	 * If Player is last in list then sets model status to 'Robbing'.
+	 */
 	@Override
 	public void execute(Game game)
 	{

@@ -13,6 +13,11 @@ public class BuildRoad implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * If not free, Decreases Player's resources for the cost of the Road,
+	 * adds Road to the map at the specified location,
+	 * updates longest road if applicable.
+	 */
 	@Override
 	public void execute(Game game)
 	{

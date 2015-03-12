@@ -159,18 +159,16 @@ public interface IServerFacade
 	GameModelResponse playMonumentCard(PlayMonumentParam param, int id);
 	
 	/**
-	 * This method creates a command object for the command
-	 * then validates the command through the ModelFacade
-	 * then calls the execute method on the command object
+	 * This method validates the credentials through the ModelFacade
+	 * then validates if the credentials match a valid User for the server
 	 * @param param Login parameters for the command
 	 * @return login response
 	 */
 	LoginResponse login(CredentialsParam param);
 	
 	/**
-	 * This method creates a command object for the command
-	 * then validates the command through the ModelFacade
-	 * then calls the execute method on the command object
+	 * This method validates the credentials through the ModelFacade
+	 * then creates and adds a new User account the the server User list
 	 * @param param Register parameters for the command
 	 * @return register response
 	 */
@@ -193,9 +191,8 @@ public interface IServerFacade
 	CreateGameResponse create(CreateGameParam param);
 	
 	/**
-	 * This method creates a command object for the command
-	 * then validates the command through the ModelFacade
-	 * then calls the execute method on the command object
+	 * This method validates the credentials through the ModelFacade then
+	 * adds an AI User to the specified game.
 	 * @param param Add AI parameters for the command
 	 * @param id the id of the game
 	 */

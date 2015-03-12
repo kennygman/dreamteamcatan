@@ -13,6 +13,10 @@ public class BuildSettlement implements ICommand
 		this.param = param;
 	}
 
+	/**
+	 * If not free, Decreases Player's resources for the cost of the Settlement,
+	 * adds Settlement to the map at the specified location.
+	 */
 	@Override
 	public void execute(Game game)
 	{

@@ -1,21 +1,23 @@
-package server;
+package server.commands;
 
 import model.Game;
 import model.player.Player;
 import shared.parameters.JoinGameParam;
 
 
-public class JoinGame implements Command
+public class JoinGame implements ICommand
 {
-	private int id;
-	private String color;
+	private JoinGameParam param;
 	
 	public JoinGame(JoinGameParam param)
 	{
-		this.id=param.getId();
-		this.color=param.getColor();
+		super();
+		this.param = param;
 	}
-	
+
+	/**
+	 * Adds the player to the game
+	 */
 	@Override
 	public void execute(Game game)
 	{

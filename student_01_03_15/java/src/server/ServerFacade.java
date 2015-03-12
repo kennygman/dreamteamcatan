@@ -1,18 +1,20 @@
 package server;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import model.Game;
+
+import java.util.*;
+
+import server.commands.ICommand;
+import server.commands.JoinGame;
 import shared.parameters.*;
+import shared.response.*;
 
 public class ServerFacade implements IServerFacade
 {
 	private Map<Integer, User> users;
 	private Map<Integer, Game> games;
-	private Map<Integer, List<Command>> commands;
+	private Map<Integer, List<ICommand>> commands;
+	private static String[] aiTypes = {"LARGEST_ARMY"};
 
 	public ServerFacade()
 	{
@@ -40,265 +42,313 @@ public class ServerFacade implements IServerFacade
 	
 	public User getUser(int id){return users.get(id);}
 	public Game getGame(int id) { return games.get(id);}
-	public List<Command> getCommandList(int id) {return commands.get(id);}
-	
+	public List<ICommand> getCommandList(int id) {return commands.get(id);}
+
 	public void setUser(User user){users.put(user.getId(), user);}
+	
+	/**
+	 * Increment gameID by 1, add game to server game list, then add new key with
+	 * gameID to commands list
+	 * @param game the game
+	 */
 	public void setGame(Game game)
 	{
 		int gameID = games.size()+1;
 		games.put(gameID, game);
-		commands.put(gameID, new ArrayList<Command>());
+		commands.put(gameID, new ArrayList<ICommand>());
 	}
-	public void addCommand(int id, Command cmd)
+	
+	/**
+	 * Add the command to the game's command list
+	 * @param id the game's id
+	 * @param cmd the command
+	 */
+	public void setCommand(int id, ICommand cmd)
 	{
-		List<Command> commandList = commands.get(id);
+		List<ICommand> commandList = commands.get(id);
 		commandList.add(cmd);
 		commands.put(id, commandList);
 	}
-	
+
 	// ===============================================================================
 	// GAME COMMANDS
 	// ===============================================================================
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void sendChat(SendChatParam param, int id)
+
+	public GameModelResponse sendChat(SendChatParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void acceptTrade(AcceptTradeParam param, int id)
+
+	public GameModelResponse acceptTrade(AcceptTradeParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void discardCards(DiscardCardsParam param, int id)
+
+	public GameModelResponse discardCards(DiscardCardsParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void rollNumber(RollNumParam param, int id)
+
+	public GameModelResponse rollNumber(RollNumParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void buildRoad(BuildRoadParam param, int id)
+
+	public GameModelResponse buildRoad(BuildRoadParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void buildSettlement(BuildSettlementParam param, int id)
+
+	public GameModelResponse buildSettlement(BuildSettlementParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void buildCity(BuildCityParam param, int id)
+
+	public GameModelResponse buildCity(BuildCityParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void offerTrade(OfferTradeParam param, int id)
+
+	public GameModelResponse offerTrade(OfferTradeParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void maritimeTrade(MaritimeTradeParam param, int id)
+
+	public GameModelResponse maritimeTrade(MaritimeTradeParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void robPlayer(RobPlayerParam param, int id)
+
+	public GameModelResponse robPlayer(RobPlayerParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void finishTurn(FinishTurnParam param, int id)
+
+	public GameModelResponse finishTurn(FinishTurnParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void buyDevCard(BuyDevCardParam param, int id)
+
+	public GameModelResponse buyDevCard(BuyDevCardParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void playSoldierCard(PlaySoldierParam param, int id)
+
+	public GameModelResponse playSoldierCard(PlaySoldierParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void playYearOfPlentyCard(PlayYearOfPlentyParam param, int id)
+
+	public GameModelResponse playYearOfPlentyCard(PlayYearOfPlentyParam param,
+			int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void playRoadCard(PlayRoadBuildingParam param, int id)
+
+	public GameModelResponse playRoadCard(PlayRoadBuildingParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void playMonopolyCard(PlayMonopolyParam param, int id)
+
+	public GameModelResponse playMonopolyCard(PlayMonopolyParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void playMonumentCard(PlayMonumentParam param, int id)
+
+	public GameModelResponse playMonumentCard(PlayMonumentParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void login(CredentialsParam param)
+
+	public LoginResponse login(CredentialsParam param)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void register(CredentialsParam param)
+
+	public LoginResponse register(CredentialsParam param)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void join(JoinGameParam param)
+
+	public StandardResponse join(JoinGameParam param)
 	{
 		JoinGame cmd = new JoinGame(param);
 		cmd.execute(games.get(param.getId()));
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void create(CreateGameParam param)
+
+
+	public CreateGameResponse create(CreateGameParam param)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void addAI(AddAiParam param, int id)
+
+
+	public StandardResponse addAI(AddAiParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void listGames()
+
+
+	public ListGamesResponse listGames()
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void listAI(int id)
+
+	public ListAIResponse listAI(int id)
+	{
+		return new ListAIResponse(aiTypes, true);
+	}
+
+	//---------------------------------------------------------------------------------
+	@Override
+
+	public GameModelResponse getGameModel(int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void getGameModel(int id)
+
+	public GameModelResponse save(int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void save(int id)
+
+	public GameModelResponse load(int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void load(int id)
+
+	public GameModelResponse resetGame(int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void resetGame(int id)
+
+	public CommandResponse getCommands(int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	//--------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	@Override
-	public void getCommands(int id)
+
+	public StandardResponse commands(int id)
 	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
-
-	//--------------------------------------------------------------------------------
-	@Override
-	public void commands(int id)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	//--------------------------------------------------------------------------------
+	
+	// ===============================================================================
+	// END
+	// ===============================================================================
 }

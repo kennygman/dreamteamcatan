@@ -2,11 +2,11 @@ package model;
 
 import java.util.List;
 
-public class Log 
+public class Log
 {
 	private List<Lines> lines;
-	
-	public List<Lines> getLines() 
+
+	public List<Lines> getLines()
 	{
 		return lines;
 	}
@@ -15,5 +15,5 @@ public class Log
 	{
 		this.lines = lines;
 	}
-	
+
 }

@@ -10,7 +10,9 @@ public interface IModelFacade
 {
 	/**
 	 * This method is called when a player sends a trade offer to another player
-	 * @return if the recipient of the trade has sufficient resources for the trade
+	 * 
+	 * @return if the recipient of the trade has sufficient resources for the
+	 *         trade
 	 */
 	boolean canAcceptTrade();
 
@@ -170,32 +172,47 @@ public interface IModelFacade
 	 *            The player to be robbed
 	 */
 	void robPlayer(HexLocation location, int victimIndex);
-	
+
 	/**
 	 * This method determines if the turn belongs to this client
+	 * 
 	 * @return true if turn belongs to client, false otherwise
 	 */
 	boolean isPlayerTurn();
+
 	boolean CanDiscardCards(Resources resources);
+
 	boolean canRobPlayer(HexLocation location, int victimIndex);
-	
+
 	void playSoldierCard(int victimIndex, HexLocation location);
+
 	void playYearOfPlentyCard(String resource1, String resource2);
+
 	void playRoadCard(EdgeLocation spot1, EdgeLocation spot2);
+
 	void playMonopolyCard(String resource);
+
 	void playMonumentCard();
 
 	void rollNumber(int d1, int d2);
+
 	void sendChat(SendChatParam param);
+
 	void acceptTrade(boolean accept);
+
 	void discardCards(Resources resources);
 
-	void buildRoad(EdgeLocation edge, boolean free);	
+	void buildRoad(EdgeLocation edge, boolean free);
+
 	void buildSettlement(VertexLocation vert, boolean free);
+
 	void buildCity(VertexLocation vert);
 
 	void offerTrade(int receiver, Resources resources);
+
 	void maritimeTrade(int ratio, String inputResource, String outResource);
+
 	void finishTurn();
+
 	void buyDevCard();
 }

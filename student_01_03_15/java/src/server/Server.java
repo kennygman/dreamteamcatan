@@ -8,9 +8,10 @@ import server.ServerFacade;
 public class Server 
 {
 	
-	private static int SERVER_PORT_NUMBER = 8080;
+	private static int SERVER_PORT_NUMBER = 8081;
 	private static final int MAX_WAITING_CONNECTIONS = 10;
 	private HttpServer server;
+        private IServerFacade facade;
 	private static Logger logger;
 	
 	static 
@@ -46,29 +47,17 @@ public class Server
 		
 	
 		
-		private Server() 
+		private Server(IServerFacade f) 
 		{
-			return;
+                    facade = f;
 		}
-		private Server(String[]args)
+		private Server(String[]args, IServerFacade f)
 		{
 			SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
-			return;
+			facade = f;
 		}
 		private void run() 
 		{
-			
-			logger.info("Initializing Model");
-			
-			try
-			{
-				ServerFacade.initialize();		
-			}
-			catch (ServerException e) 
-			{
-				logger.log(Level.SEVERE, e.getMessage(), e);
-				return;
-			}
 			
 			logger.info("Initializing HTTP Server");
 			
@@ -110,13 +99,18 @@ public class Server
 		
 		public static void main(String[] args) 
 		{
+                        IServerFacade f = new ServerFacade();
+                        //f.initialize();
+                        
+                        //Or if testing
+                        //IServerFacade f = new MockServerFacade();
 			if(args.length<1)
 			{
-				new Server().run();
+				new Server(f).run();
 			}
 			else
 			{
-				new Server(args).run();
+				new Server(args, f).run();
 			}
 		}
 		

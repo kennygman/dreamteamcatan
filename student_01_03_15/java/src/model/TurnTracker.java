@@ -1,28 +1,25 @@
 package model;
 
-public class TurnTracker 
+public class TurnTracker
 {
-//	private int currentPlayerId;
-//	private State currentState;
-//	private List<Player> playerList;
 	private int currentTurn;
 	private String status;
 	int longestRoad;
 	int largestArmy;
-	
+
+	/**
+	 * This method updates the current TurnTracker with the new given
+	 * TurnTracker
+	 * 
+	 * @param t
+	 *            TurnTracker to pull updates from
+	 */
 	public void update(TurnTracker t)
 	{
 		this.setCurrentTurn(t.getCurrentTurn());
 		this.setStatus(t.getStatus());
 		this.setLongestRoad(t.getLongestRoad());
 		this.setLargestArmy(t.getLargestArmy());
-	}
-	public void nextTurn()
-	{
-	}
-	
-	public void alertPlayer()
-	{
 	}
 
 	public int getCurrentTurn()
@@ -65,5 +62,4 @@ public class TurnTracker
 		this.largestArmy = largestArmy;
 	}
 
-	
 }

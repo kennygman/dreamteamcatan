@@ -180,6 +180,9 @@ public class Game
 		this.map = board;
 	}
 
+	/**
+	 * Calls sort on the map/Board
+	 */
 	public void sortBoard()
 	{
 		map.sort();

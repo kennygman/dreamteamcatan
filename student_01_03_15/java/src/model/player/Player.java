@@ -257,4 +257,9 @@ public class Player
 	{
 		return CatanColor.stringToColor(color);
 	}
+
+	public void playDevcard(DevCardType soldier)
+	{		
+		//this is empty, but the mockproxy calls it
+	}
 }

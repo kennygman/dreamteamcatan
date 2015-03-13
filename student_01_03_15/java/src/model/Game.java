@@ -5,9 +5,7 @@ import model.player.Resources;
 import model.player.Player;
 import model.board.Board;
 
-
-
-public class Game 
+public class Game
 {
 	private int playerId;
 	private Resources bank;
@@ -21,147 +19,182 @@ public class Game
 	private String title;
 	private int version;
 	private int winner;
-	private Dice dice;
-	
+
+	/**
+	 * Get the player from the players array that is using this game model
+	 * 
+	 * @return player that the current game model is being used by
+	 */
 	public Player getPlayer()
 	{
-		return players[ModelFacade.getInstance().getPlayerInfo().getPlayerIndex()];
+		return players[ModelFacade.getInstance().getPlayerInfo()
+				.getPlayerIndex()];
 	}
+
 	public int getPlayerId()
 	{
 		return playerId;
 	}
+
 	public void setPlayerId(int id)
 	{
-		this.playerId=id;
+		this.playerId = id;
 	}
-	public String getTitle() {
+
+	public String getTitle()
+	{
 		return title;
 	}
-	public void setTitle(String title) {
+
+	public void setTitle(String title)
+	{
 		this.title = title;
 	}
 
-//	public boolean canInitGame()
-//	{
-//		//returns false if it cant initialize
-//		return true;
-//	}
-//	public Board createBoard()
-//	{
-//		return new Board();
-//	}
-//	public void endGame()
-//	{
-//		
-//	}
+	// public boolean canInitGame()
+	// {
+	// //returns false if it cant initialize
+	// return true;
+	// }
+	// public Board createBoard()
+	// {
+	// return new Board();
+	// }
+	// public void endGame()
+	// {
+	//
+	// }
+
+	/**
+	 * Updates the current game with a new game
+	 * 
+	 * @param newGame
+	 *            game to update the old game with
+	 */
 	public void update(Game newGame)
 	{
-            map.update(newGame.getBoard());
-            turnTracker.update(newGame.getTurnTracker());
-            this.setTradeOffer(newGame.getTradeOffer());
-            this.setChat(newGame.getChat());
-            this.setDice(newGame.getDice());
-            this.setLog(newGame.getLog());
+		map.update(newGame.getBoard());
+		turnTracker.update(newGame.getTurnTracker());
+		this.setTradeOffer(newGame.getTradeOffer());
+		this.setChat(newGame.getChat());
+		this.setLog(newGame.getLog());
 	}
-	public Resources getBank() 
+
+	public Resources getBank()
 	{
 		return bank;
 	}
-	public void setBank(Resources bank) 
+
+	public void setBank(Resources bank)
 	{
 		this.bank = bank;
 	}
+
 	public Chat getChat()
 	{
 		return chat;
 	}
+
 	public void setChat(Chat chat)
 	{
 		this.chat = chat;
 	}
-	public Log getLog() 
+
+	public Log getLog()
 	{
 		return log;
 	}
-	public void setLog(Log log) 
+
+	public void setLog(Log log)
 	{
 		this.log = log;
 	}
-	public Board getMap() 
+
+	public Board getMap()
 	{
 		return map;
 	}
-	public void setMap(Board map) 
+
+	public void setMap(Board map)
 	{
 		this.map = map;
 	}
-	public Player[] getPlayers() 
+
+	public Player[] getPlayers()
 	{
 		return players;
 	}
-	public void setPlayers(Player[] players) 
+
+	public void setPlayers(Player[] players)
 	{
 		this.players = players;
 	}
-	public TradeOffer getTradeOffer() 
+
+	public TradeOffer getTradeOffer()
 	{
 		return tradeOffer;
 	}
-	public void setTradeOffer(TradeOffer tradeOffer) 
+
+	public void setTradeOffer(TradeOffer tradeOffer)
 	{
 		this.tradeOffer = tradeOffer;
 	}
-	public TurnTracker getTurnTracker() 
+
+	public TurnTracker getTurnTracker()
 	{
 		return turnTracker;
 	}
-	public void setTurnTracker(TurnTracker turnTracker) 
+
+	public void setTurnTracker(TurnTracker turnTracker)
 	{
 		this.turnTracker = turnTracker;
 	}
-	public int getVersion() 
+
+	public int getVersion()
 	{
 		return version;
 	}
-	public void setVersion(int version) 
+
+	public void setVersion(int version)
 	{
 		this.version = version;
 	}
-	public int getWinner() 
+
+	public int getWinner()
 	{
 		return winner;
 	}
-	public void setWinner(int winner) 
+
+	public void setWinner(int winner)
 	{
 		this.winner = winner;
 	}
-	public Dice getDice() 
-	{
-		return dice;
-	}
-	public void setDice(Dice dice) 
-	{
-		this.dice = dice;
-	}
-	public Board getBoard() 
+
+	public Board getBoard()
 	{
 		return map;
 	}
-	public void setBoard(Board board) 
+
+	public void setBoard(Board board)
 	{
 		this.map = board;
 	}
-        public void sortBoard()
-        {
-                map.sort();
-        }
-		public Developments getDeck()
-		{
-			return deck;
-		}
-		public void setDeck(Developments deck)
-		{
-			this.deck = deck;
-		}
+
+	/**
+	 * Calls sort on the map/Board
+	 */
+	public void sortBoard()
+	{
+		map.sort();
+	}
+
+	public Developments getDeck()
+	{
+		return deck;
+	}
+
+	public void setDeck(Developments deck)
+	{
+		this.deck = deck;
+	}
 }

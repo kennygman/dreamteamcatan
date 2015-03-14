@@ -48,7 +48,13 @@ public class Player
 		cities = 4;
 
 	}
-	
+
+	/**
+	 * Updates the current player by using the passed in player
+	 * 
+	 * @param p
+	 *            Player model to use to update
+	 */
 	public void update(Player p)
 	{
 		this.setVictoryPoints(p.getVictoryPoints());
@@ -78,69 +84,7 @@ public class Player
 	public Player(int playerIndex, int userId, CatanColor catanColor)
 	{
 		this.playerIndex = playerIndex;
-//		this.color = catanColor;		// NEEDS TO BE FIXED LATER
-	}
-
-	/**
-	 * 
-	 * @return true if player has 10 VP.
-	 */
-	public boolean winCheck()
-	{
-		return false;
-	}
-
-	/**
-	 * 
-	 * @return true if player's turn is over;
-	 */
-	public boolean endTurn()
-	{
-		return false;
-	}
-
-	/**
-	 * places a road on the board
-	 */
-	public void buildRoad()
-	{
-
-	}
-
-	/**
-	 * places settlement on the board
-	 */
-	public void buildSettlement()
-	{
-
-	}
-
-	/**
-	 * places city on the board
-	 */
-	public void buildCity()
-	{
-
-	}
-
-	/**
-	 * This plays devCard that player selects
-	 * 
-	 * @param devCard
-	 *            from DevelopmentList
-	 */
-	public void playDevcard(DevCardType devCard)
-	{
-
-	}
-
-	/**
-	 * 
-	 * @return true if player can trade
-	 */
-	public boolean canTrade()
-	{
-		return false;
+		// this.color = catanColor; // NEEDS TO BE FIXED LATER
 	}
 
 	public int getPlayerIndex()
@@ -162,7 +106,6 @@ public class Player
 	{
 		this.playerID = playerID;
 	}
-
 
 	public boolean isTurn()
 	{
@@ -228,17 +171,22 @@ public class Player
 	{
 		return resources;
 	}
-        
-        public int getNumCards()
-        {
-            int numResources = 0;
-            numResources += resources.getResourceAmount(ResourceType.WOOD);
-            numResources += resources.getResourceAmount(ResourceType.BRICK);
-            numResources += resources.getResourceAmount(ResourceType.WHEAT);
-            numResources += resources.getResourceAmount(ResourceType.SHEEP);
-            numResources += resources.getResourceAmount(ResourceType.ORE);
-            return numResources;
-        }
+
+	/**
+	 * Gets the number resource cards this player has
+	 * 
+	 * @return number of resource cards this player has
+	 */
+	public int getNumCards()
+	{
+		int numResources = 0;
+		numResources += resources.getResourceAmount(ResourceType.WOOD);
+		numResources += resources.getResourceAmount(ResourceType.BRICK);
+		numResources += resources.getResourceAmount(ResourceType.WHEAT);
+		numResources += resources.getResourceAmount(ResourceType.SHEEP);
+		numResources += resources.getResourceAmount(ResourceType.ORE);
+		return numResources;
+	}
 
 	public void setResources(Resources resources)
 	{
@@ -304,9 +252,14 @@ public class Player
 	{
 		this.playedDevCard = playedDevCard;
 	}
-        
-        public CatanColor getColor()
-        {
-            return CatanColor.stringToColor(color);
-        }
+
+	public CatanColor getColor()
+	{
+		return CatanColor.stringToColor(color);
+	}
+
+	public void playDevcard(DevCardType soldier)
+	{		
+		//this is empty, but the mockproxy calls it
+	}
 }

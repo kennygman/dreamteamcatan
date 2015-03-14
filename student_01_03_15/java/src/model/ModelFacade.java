@@ -109,7 +109,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	}
 	public Player getPlayer()
 	{
-		return getPlayer();
+		return game.getPlayer(player.getPlayerIndex());
 	}
 	public Game getGame()
 	{

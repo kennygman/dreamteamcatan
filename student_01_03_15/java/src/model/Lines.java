@@ -1,25 +1,28 @@
 package model;
 
-public class Lines 
+public class Lines
 {
 	private String message;
 	private String source;
-	
-	public String getMessage() 
+
+	public String getMessage()
 	{
 		return message;
 	}
-	public void setMessage(String message) 
+
+	public void setMessage(String message)
 	{
 		this.message = message;
 	}
-	public String getSource() 
+
+	public String getSource()
 	{
 		return source;
 	}
-	public void setSource(String source) 
+
+	public void setSource(String source)
 	{
 		this.source = source;
 	}
-	
+
 }

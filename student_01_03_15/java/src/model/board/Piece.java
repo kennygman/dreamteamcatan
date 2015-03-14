@@ -14,5 +14,5 @@ public class Piece
 	public void setType(PieceType type)
 	{
 		this.type = type;
-	} 
+	}
 }

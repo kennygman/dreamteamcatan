@@ -7,9 +7,6 @@ import model.ModelFacade;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import client.base.*;
-import client.resources.ResourceBarController;
-import client.resources.ResourceBarElement;
-
 
 /**
  * "Dev card" controller implementation
@@ -150,19 +147,19 @@ public class DevCardController extends Controller implements IDevCardController,
 			System.out.println(" year amount is : " +  ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getYearOfPlenty());
 		*/
 			getPlayCardView().setCardEnabled(DevCardType.MONOPOLY, ModelFacade.getInstance().canPlayDevCard(DevCardType.MONOPOLY));
-			getPlayCardView().setCardAmount(DevCardType.MONOPOLY, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonopoly());
+			getPlayCardView().setCardAmount(DevCardType.MONOPOLY, ModelFacade.getInstance().getPlayer().getOldDevCards().getMonopoly());
 	
 			getPlayCardView().setCardEnabled(DevCardType.MONUMENT,ModelFacade.getInstance().canPlayDevCard(DevCardType.MONUMENT));
-			getPlayCardView().setCardAmount(DevCardType.MONUMENT, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getMonument());
+			getPlayCardView().setCardAmount(DevCardType.MONUMENT, ModelFacade.getInstance().getPlayer().getOldDevCards().getMonument());
 	
 			getPlayCardView().setCardEnabled(DevCardType.ROAD_BUILD, ModelFacade.getInstance().canPlayDevCard(DevCardType.ROAD_BUILD));
-			getPlayCardView().setCardAmount(DevCardType.ROAD_BUILD, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getRoadBuilding());
+			getPlayCardView().setCardAmount(DevCardType.ROAD_BUILD, ModelFacade.getInstance().getPlayer().getOldDevCards().getRoadBuilding());
 
 			getPlayCardView().setCardEnabled(DevCardType.SOLDIER, ModelFacade.getInstance().canPlayDevCard(DevCardType.SOLDIER));
-			getPlayCardView().setCardAmount(DevCardType.SOLDIER, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getSoldier());
+			getPlayCardView().setCardAmount(DevCardType.SOLDIER, ModelFacade.getInstance().getPlayer().getOldDevCards().getSoldier());
 		
 			getPlayCardView().setCardEnabled(DevCardType.YEAR_OF_PLENTY, ModelFacade.getInstance().canPlayDevCard(DevCardType.YEAR_OF_PLENTY));
-			getPlayCardView().setCardAmount(DevCardType.YEAR_OF_PLENTY, ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getYearOfPlenty());
+			getPlayCardView().setCardAmount(DevCardType.YEAR_OF_PLENTY, ModelFacade.getInstance().getPlayer().getOldDevCards().getYearOfPlenty());
 
 	}
 }

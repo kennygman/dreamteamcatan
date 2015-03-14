@@ -63,7 +63,7 @@ public class TradeOfferState
 		send = true;
 		resourceToSend=resource;
 		setTradableResources(resource);
-		resourceMax = ModelFacade.getInstance().getGame().getPlayer().getResources()
+		resourceMax = ModelFacade.getInstance().getPlayer().getResources()
 				.getResourceAmount(resource);
 		resetResourceValue(resource);
 		toggleSendResourceAdjust(resource);

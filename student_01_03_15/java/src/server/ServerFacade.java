@@ -1,6 +1,7 @@
 package server;
 
 import model.Game;
+import model.ModelFacade;
 
 import java.util.*;
 
@@ -11,16 +12,17 @@ import shared.response.*;
 
 public class ServerFacade implements IServerFacade
 {
+
 	private Map<Integer, User> users;
 	private Map<Integer, Game> games;
 	private Map<Integer, List<ICommand>> commands;
-	private static String[] aiTypes = {"LARGEST_ARMY"};
-
+	
 	public ServerFacade()
 	{
 		users = new HashMap<>();
 		games = new HashMap<>();
 		commands = new HashMap<>();
+		initAiUsers();
 	}
 	
 	// ===============================================================================
@@ -36,6 +38,17 @@ public class ServerFacade implements IServerFacade
 		return instance;
 	}
 
+	// ===============================================================================
+	// INITIALIZE SERVER VARIABLES
+	// ===============================================================================
+	public void initAiUsers()
+	{
+		int id = users.size();
+		
+		for (String s: ServerUtils.aiNames)
+			users.put(-(++id), new User(-id,s,s.toLowerCase()));
+	}
+	
 	// ===============================================================================
 	// GETTERS AND SETTERS
 	// ===============================================================================
@@ -69,7 +82,7 @@ public class ServerFacade implements IServerFacade
 		commandList.add(cmd);
 		commands.put(id, commandList);
 	}
-
+	
 	// ===============================================================================
 	// GAME COMMANDS
 	// ===============================================================================
@@ -266,24 +279,36 @@ public class ServerFacade implements IServerFacade
 		return null;
 	}
 
+	// ===============================================================================
+	// SERVER COMMANDS
+	// ===============================================================================
+
 	//---------------------------------------------------------------------------------
 	@Override
 
-
 	public StandardResponse addAI(AddAiParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		boolean valid = false;
+		if (this.canAddAi(0, id, param.getType()))
+		{
+			valid = true;
+		}
+		return new StandardResponse(valid);
 	}
 
 	//---------------------------------------------------------------------------------
 	@Override
 
-
 	public ListGamesResponse listGames()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<GameListObject> gamesList = new ArrayList<GameListObject>();
+		for (int i = 0; i < games.size(); i++)
+		{
+			gamesList.add(games.get(i).getGameListObject());
+		}
+		ListGamesResponse response = new ListGamesResponse(gamesList.toArray(new GameListObject[0]), true);
+		
+		return response;
 	}
 
 	//---------------------------------------------------------------------------------
@@ -291,7 +316,7 @@ public class ServerFacade implements IServerFacade
 
 	public ListAIResponse listAI(int id)
 	{
-		return new ListAIResponse(aiTypes, true);
+		return new ListAIResponse(ServerUtils.aiTypes, true);
 	}
 
 	//---------------------------------------------------------------------------------
@@ -299,8 +324,10 @@ public class ServerFacade implements IServerFacade
 
 	public GameModelResponse getGameModel(int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		GameModelResponse response = new GameModelResponse();
+		Game game = games.get(id);
+		response.setGame(game);
+		return response;
 	}
 
 	//---------------------------------------------------------------------------------
@@ -347,6 +374,30 @@ public class ServerFacade implements IServerFacade
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	// ===============================================================================
+	// SERVER CAN DO METHODS
+	// ===============================================================================
+
+	/**
+	 * Validates if the preconditions are met for adding the AI:
+	 * - The caller is logged into the server
+	 * - The caller has joined a game
+	 * - The type is a valid AI Type
+	 * @param userId
+	 * @param gameId
+	 * @param type
+	 * @return True if all preconditions are satisfied, False otherwise
+	 */
+	public boolean canAddAi(int userId, int gameId, String type)
+	{
+		return users.get(userId).isLoggedIn() &&
+				ServerUtils.isGameFull(games.get(gameId)) &&
+				ServerUtils.aiTypes[0].equals(type);
+	}
+	
+	//---------------------------------------------------------------------------------
+	
 	
 	// ===============================================================================
 	// END

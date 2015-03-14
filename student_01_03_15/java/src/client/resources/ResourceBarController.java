@@ -95,7 +95,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		// WOOD, BRICK, SHEEP, WHEAT, ORE, ROAD, SETTLEMENT, CITY, BUY_CARD, PLAY_CARD, SOLDIERS
 
 		boolean valid = false;
-		Player player = ModelFacade.getInstance().getGame().getPlayer();
+		Player player = ModelFacade.getInstance().getPlayer();
 		Resources resources = player.getResources();
 		
 		setElement(ResourceBarElement.WOOD, resources.getResourceAmount(ResourceType.WOOD));

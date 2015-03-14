@@ -107,7 +107,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		return player;
 	}
-	
+	public Player getPlayer()
+	{
+		return getPlayer();
+	}
 	public Game getGame()
 	{
             if(game == null)
@@ -154,7 +157,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean isPlayerTurn()
 	{
-            return game.getTurnTracker().getCurrentTurn() == game.getPlayer().getPlayerIndex();
+            return game.getTurnTracker().getCurrentTurn() == player.getPlayerIndex();
 	}
 
 	//--------------------------------------------------------------------------------
@@ -177,12 +180,12 @@ public class ModelFacade extends Observable implements IModelFacade
 			{
 				return false;
 			}
-		if (game.getPlayer().getResources().size() < 8) 
+		if (getPlayer().getResources().size() < 8) 
 			{
 				return false;
 			}
 		resources.invert();
-		boolean valid = game.getPlayer().getResources().contains(resources);
+		boolean valid = getPlayer().getResources().contains(resources);
 		resources.invert();
 		return valid;
 	}
@@ -261,8 +264,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanBuyRoad()
 	{
-		if (game.getPlayer().getRoads() <= 0) return false;
-		Resources hand = game.getPlayer().getResources();
+		if (getPlayer().getRoads() <= 0) return false;
+		Resources hand = getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WOOD) > 0 &&
 				hand.getResourceAmount(ResourceType.BRICK) > 0;
 	}
@@ -272,8 +275,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean CanBuySettlement()
 	{
 		
-		if (game.getPlayer().getSettlements() < 1) return false;
-		Resources hand = game.getPlayer().getResources();
+		if (getPlayer().getSettlements() < 1) return false;
+		Resources hand = getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WOOD) > 0 &&
 				hand.getResourceAmount(ResourceType.SHEEP) > 0 &&
 				hand.getResourceAmount(ResourceType.WHEAT) > 0 &&
@@ -285,8 +288,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanBuyCity()
 	{
-		if (game.getPlayer().getCities() < 1) return false;
-		Resources hand = game.getPlayer().getResources();
+		if (getPlayer().getCities() < 1) return false;
+		Resources hand = getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WHEAT) > 1 &&
 				hand.getResourceAmount(ResourceType.ORE) > 2;
 	}
@@ -296,7 +299,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean CanOfferTrade(Resources offer)
 	{
 		if (!canPlay()) return false;
-		return game.getPlayer().getResources().contains(offer);
+		return getPlayer().getResources().contains(offer);
 	}
 
 	//--------------------------------------------------------------------------------
@@ -304,7 +307,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean CanMaritimeTrade(int ratio, String inputResource, String outResource)
 	{
 		if (!canPlay()) return false;
-		if (game.getPlayer().getResources().getResourceAmount(inputResource) < ratio) return false;
+		if (getPlayer().getResources().getResourceAmount(inputResource) < ratio) return false;
 		if (game.getBoard().hasPort(player.getPlayerIndex(), inputResource, ratio)) return true;
 
 		return false;
@@ -343,7 +346,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		if (!canPlay()) return false;
 		if (game.getDeck().size() < 1) return false;
-		Resources hand = game.getPlayer().getResources();
+		Resources hand = getPlayer().getResources();
 		return hand.getResourceAmount(ResourceType.WHEAT) > 0 &&
 				hand.getResourceAmount(ResourceType.SHEEP) > 0 &&
 				hand.getResourceAmount(ResourceType.ORE) > 0;
@@ -354,8 +357,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		if (!isPlayerTurn() || hasPlayedDevCard ||
 			!getState().equals("Playing")
-			|| !game.getPlayer().getOldDevCards().hasDevCard(devCard)
-			//|| game.getPlayer().isPlayedDevCard()
+			|| !getPlayer().getOldDevCards().hasDevCard(devCard)
+			//|| getPlayer().isPlayedDevCard()
 			) return false;
 		return true;
 	}
@@ -392,11 +395,11 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
             if (!canPlayDevCard(DevCardType.ROAD_BUILD)) {System.out.println("Can't play card"); return false;}
             else if(!canPlaceRoad(spot1, true)) {System.out.println("Can't place spot1"); return false;}
-            else if (game.getPlayer().getRoads() < 2) {System.out.println("Doesn't have 2 roads left"); return false;}
+            else if (getPlayer().getRoads() < 2) {System.out.println("Doesn't have 2 roads left"); return false;}
             else if (game.getBoard().containsRoad(spot2)) {System.out.println("Can't place spot2"); return false;}
             else if (spot1.equals(spot2)) {System.out.println("Spot1 and 2 are the same"); return false;}
 
-            if (game.getBoard().hasNeighborRoad(spot2, game.getPlayer().getPlayerIndex(), getState()))
+            if (game.getBoard().hasNeighborRoad(spot2, getPlayer().getPlayerIndex(), getState()))
             {
                     return true;
             }
@@ -407,7 +410,7 @@ public class ModelFacade extends Observable implements IModelFacade
         public boolean canUseRoadBuilderOfficial()
         {
             if (!canPlayDevCard(DevCardType.ROAD_BUILD)) {return false;}
-                else if (game.getPlayer().getRoads() < 2) {return false;}	
+                else if (getPlayer().getRoads() < 2) {return false;}	
             return true;
         }
 
@@ -424,8 +427,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
             if (!isPlayerTurn()) return false;
             else if (!getState().equals("Playing")) return false;
-            else if (!game.getPlayer().getOldDevCards().hasDevCard(DevCardType.MONUMENT)) return false;
-            else if (game.getPlayer().isPlayedDevCard()) return false;
+            else if (!getPlayer().getOldDevCards().hasDevCard(DevCardType.MONUMENT)) return false;
+            else if (getPlayer().isPlayedDevCard()) return false;
             return true;
 	}
 
@@ -511,7 +514,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void buildSettlement(VertexLocation vert, boolean free)
 	{
 		GameModelResponse response = proxy.buildSettlement(new BuildSettlementParam(
-				game.getPlayer().getPlayerIndex(), vert, free));
+				player.getPlayerIndex(), vert, free));
 		if (response.isValid())
                 {
                     game = response.getGame();
@@ -525,7 +528,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void buildCity(VertexLocation vert)
 	{
 		GameModelResponse response = proxy.buildCity(
-				new BuildCityParam(game.getPlayer().getPlayerIndex(), vert));
+				new BuildCityParam(player.getPlayerIndex(), vert));
 		if (response.isValid())
                 {
                     game = response.getGame();
@@ -553,7 +556,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void maritimeTrade(int ratio, String inputResource, String outResource)
 	{
         GameModelResponse response = proxy.maritimeTrade(
-		new MaritimeTradeParam(game.getPlayer().getPlayerIndex(),
+		new MaritimeTradeParam(player.getPlayerIndex(),
 		ratio, inputResource, outResource));
 		if (response.isValid())
                 {
@@ -568,7 +571,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void robPlayer(HexLocation location, int victimIndex)
 	{
 		GameModelResponse response = proxy.robPlayer(new RobPlayerParam(
-				game.getPlayer().getPlayerIndex(), victimIndex, location));
+				player.getPlayerIndex(), victimIndex, location));
 		if (response.isValid())
                 {
                     game = response.getGame();
@@ -583,7 +586,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		
         GameModelResponse response = proxy.finishTurn(
-        		new FinishTurnParam(game.getPlayer().getPlayerIndex()));
+        		new FinishTurnParam(player.getPlayerIndex()));
 		if (response.isValid())
                 {
 					poller.pollerStart();
@@ -599,7 +602,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void buyDevCard()
 	{
 		GameModelResponse response = proxy.buyDevCard(
-				new BuyDevCardParam(game.getPlayer().getPlayerIndex()));
+				new BuyDevCardParam(player.getPlayerIndex()));
 		if (response.isValid())
                 {
                     game = response.getGame();
@@ -613,7 +616,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void playSoldierCard(int victimIndex, HexLocation location)
 	{
 		GameModelResponse response = proxy.playSoldier(new PlaySoldierParam(
-				game.getPlayer().getPlayerIndex(), victimIndex, location));
+				player.getPlayerIndex(), victimIndex, location));
 		if (response.isValid()) 
                 {
                     game = response.getGame();
@@ -628,7 +631,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void playYearOfPlentyCard(String resource1, String resource2)
 	{
             GameModelResponse response = proxy.playYearOfPlenty(new PlayYearOfPlentyParam(
-        		game.getPlayer().getPlayerIndex(), resource1, resource2));
+        		player.getPlayerIndex(), resource1, resource2));
             if (response.isValid())
             {
                 game = response.getGame();
@@ -643,7 +646,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void playRoadCard(EdgeLocation spot1, EdgeLocation spot2)
 	{
 		GameModelResponse response = proxy.playRoadBuilding(new PlayRoadBuildingParam(
-				game.getPlayer().getPlayerIndex(), firstRoadInRoadBuilding, spot2));
+				player.getPlayerIndex(), firstRoadInRoadBuilding, spot2));
 		if (response.isValid())
                 {
                     game = response.getGame();
@@ -660,7 +663,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void playMonopolyCard(String resource)
 	{
             GameModelResponse response = proxy.playMonopoly(new PlayMonopolyParam(
-                            game.getPlayer().getPlayerIndex(), resource));
+                            player.getPlayerIndex(), resource));
             if (response.isValid())
             {
                 game = response.getGame();
@@ -675,7 +678,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public void playMonumentCard()
 	{
             GameModelResponse response = proxy.playMonument(new PlayMonumentParam(
-                            game.getPlayer().getPlayerIndex()));
+                            player.getPlayerIndex()));
             if (response.isValid())
             {
                 game = response.getGame();
@@ -801,7 +804,7 @@ public class ModelFacade extends Observable implements IModelFacade
             
             for(Player p : players)
             {
-                if(p.getPlayerIndex() != game.getPlayer().getPlayerIndex())
+                if(p.getPlayerIndex() != player.getPlayerIndex())
                 {
                     for(Object obj : objects)
                     {

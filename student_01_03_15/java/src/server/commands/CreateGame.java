@@ -1,7 +1,7 @@
 package server.commands;
 
 import model.Game;
-import server.ServerFacade;
+import server.facade.ServerFacade;
 import shared.parameters.CreateGameParam;
 
 public class CreateGame implements ICommand

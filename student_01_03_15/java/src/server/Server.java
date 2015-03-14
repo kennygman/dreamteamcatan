@@ -2,8 +2,11 @@ package server;
 import java.io.*;
 import java.net.*;
 import java.util.logging.*;
+
 import com.sun.net.httpserver.*;
-import server.ServerFacade;
+
+import server.facade.IServerFacade;
+import server.facade.ServerFacade;
 
 public class Server 
 {

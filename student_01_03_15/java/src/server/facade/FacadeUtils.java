@@ -1,14 +1,15 @@
-package server;
+package server.facade;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import server.User;
 import model.Game;
 import model.player.Player;
 
-public class ServerUtils
+public class FacadeUtils
 {
 	static final String[] aiTypes = {"LARGEST_ARMY"};
 	static final String[] aiNames = {"Sam", "Pete", "Sven", "Kunkka", "Ember Spirit", "Pudge", "Techies"};

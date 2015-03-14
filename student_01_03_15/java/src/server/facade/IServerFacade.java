@@ -1,4 +1,4 @@
-package server;
+package server.facade;
 
 import shared.parameters.*;
 import shared.response.*;

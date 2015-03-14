@@ -1,10 +1,12 @@
-package server;
+package server.facade;
 
 import model.Game;
 import model.ModelFacade;
 
 import java.util.*;
 
+import client.proxy.IProxy;
+import server.User;
 import server.commands.ICommand;
 import server.commands.JoinGame;
 import shared.parameters.*;
@@ -12,7 +14,6 @@ import shared.response.*;
 
 public class ServerFacade implements IServerFacade
 {
-
 	private Map<Integer, User> users;
 	private Map<Integer, Game> games;
 	private Map<Integer, List<ICommand>> commands;
@@ -45,7 +46,7 @@ public class ServerFacade implements IServerFacade
 	{
 		int id = users.size();
 		
-		for (String s: ServerUtils.aiNames)
+		for (String s: FacadeUtils.aiNames)
 			users.put(-(++id), new User(-id,s,s.toLowerCase()));
 	}
 	
@@ -316,7 +317,7 @@ public class ServerFacade implements IServerFacade
 
 	public ListAIResponse listAI(int id)
 	{
-		return new ListAIResponse(ServerUtils.aiTypes, true);
+		return new ListAIResponse(FacadeUtils.aiTypes, true);
 	}
 
 	//---------------------------------------------------------------------------------
@@ -392,8 +393,8 @@ public class ServerFacade implements IServerFacade
 	public boolean canAddAi(int userId, int gameId, String type)
 	{
 		return users.get(userId).isLoggedIn() &&
-				ServerUtils.isGameFull(games.get(gameId)) &&
-				ServerUtils.aiTypes[0].equals(type);
+				FacadeUtils.isGameFull(games.get(gameId)) &&
+				FacadeUtils.aiTypes[0].equals(type);
 	}
 	
 	//---------------------------------------------------------------------------------

@@ -5,6 +5,7 @@ import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
 import shared.response.CreateGameResponse;
 import shared.response.GameModelResponse;
+import shared.response.ListAIResponse;
 import shared.response.ListGamesResponse;
 import shared.response.StandardResponse;
 
@@ -40,17 +41,22 @@ public class PreGameFacade implements IPreGameFacade
 	}
 
 	@Override
-	public GameModelResponse save(int id)
+	public GameModelResponse save(String name, int id)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public GameModelResponse load(int id)
+	public GameModelResponse load(String name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public ListAIResponse listAI(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

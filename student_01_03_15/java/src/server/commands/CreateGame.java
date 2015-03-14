@@ -21,7 +21,7 @@ public class CreateGame implements ICommand
 	@Override
 	public void execute(Game game)
 	{
-		ServerFacade.getInstance().setGame(game);
+            
 	}
 
 }

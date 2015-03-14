@@ -1,5 +1,7 @@
 package server.facade;
 
+import java.util.Map;
+import model.Game;
 import shared.parameters.AddAiParam;
 import shared.response.CommandResponse;
 import shared.response.GameModelResponse;
@@ -8,7 +10,7 @@ import shared.response.StandardResponse;
 
 public class GameFacade implements IGameFacade
 {
-
+        private Map<Integer, Game> games;
 	@Override
 	public GameModelResponse getGameModel(int id)
 	{

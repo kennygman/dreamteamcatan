@@ -5,6 +5,7 @@ import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
 import shared.response.CreateGameResponse;
 import shared.response.GameModelResponse;
+import shared.response.ListAIResponse;
 import shared.response.ListGamesResponse;
 import shared.response.StandardResponse;
 
@@ -33,6 +34,11 @@ public interface IPreGameFacade
 	 * @param id the id of the game
 	 */
 	StandardResponse addAI(AddAiParam param, int id);
+        
+        /**
+	 * @param id the id of the game
+	 */
+        ListAIResponse listAI(int id);
 	
 	/**
 	 * This method returns a list of games on the server
@@ -44,12 +50,12 @@ public interface IPreGameFacade
 	 * This method saves the current state of the server model
 	 * @param id the id of the game
 	 */
-	GameModelResponse save(int id);
+	GameModelResponse save(String name, int id);
 	
 	/**
 	 * This method loads the last saved state of the server model
 	 * @param id the id of the game
 	 */
-	GameModelResponse load(int id);
+	GameModelResponse load(String name);
 
 }

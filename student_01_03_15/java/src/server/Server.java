@@ -5,7 +5,6 @@ import java.util.logging.*;
 
 import com.sun.net.httpserver.*;
 
-import server.facade.IServerFacade;
 import server.facade.ServerFacade;
 
 public class Server 
@@ -14,7 +13,6 @@ public class Server
 	private static int SERVER_PORT_NUMBER = 8081;
 	private static final int MAX_WAITING_CONNECTIONS = 10;
 	private HttpServer server;
-        private IServerFacade facade;
 	private static Logger logger;
 	
 	static 
@@ -50,14 +48,13 @@ public class Server
 		
 	
 		
-		private Server(IServerFacade f) 
+		private Server() 
 		{
-                    facade = f;
+                    ServerFacade.createInstance();
 		}
-		private Server(String[]args, IServerFacade f)
+		private Server(String[]args)
 		{
 			SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
-			facade = f;
 		}
 		private void run() 
 		{
@@ -102,18 +99,13 @@ public class Server
 		
 		public static void main(String[] args) 
 		{
-                        IServerFacade f = new ServerFacade();
-                        //f.initialize();
-                        
-                        //Or if testing
-                        //IServerFacade f = new MockServerFacade();
 			if(args.length<1)
 			{
-				new Server(f).run();
+				new Server().run();
 			}
 			else
 			{
-				new Server(args, f).run();
+				new Server(args).run();
 			}
 		}
 		

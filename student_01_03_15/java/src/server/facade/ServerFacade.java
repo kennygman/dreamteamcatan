@@ -12,272 +12,175 @@ import server.commands.JoinGame;
 import shared.parameters.*;
 import shared.response.*;
 
-public class ServerFacade implements IServerFacade
+public class ServerFacade
 {
-	private Map<Integer, User> users;
-	private Map<Integer, Game> games;
-	private Map<Integer, List<ICommand>> commands;
-	
-	public ServerFacade()
-	{
-		users = new HashMap<>();
-		games = new HashMap<>();
-		commands = new HashMap<>();
-		initAiUsers();
-	}
+        private static IUserFacade userInstance;
+        private static IPreGameFacade pregameInstance;
+        private static IGameFacade gameInstance;
+        private static IMovesFacade movesInstance;
+    
+	public ServerFacade() {}
 	
 	// ===============================================================================
 	// SINGLETON IMPLEMENTATION
 	// ===============================================================================
-	private static ServerFacade instance;
-	public static ServerFacade getInstance()
+        
+	public static void createInstance()
 	{
-		if (instance == null) {
-			throw new IllegalStateException("Tried to get instance of ServerFacade"
-					+ " without initializing it first!");
-		}
-		return instance;
+            userInstance = new UserFacade();
+            pregameInstance = new PreGameFacade();
+            gameInstance = new GameFacade();
+            movesInstance = new MovesFacade();
+	}
+        
+        public static void createInstance(boolean testing)
+	{
+            /*
+            if(testing)
+            {
+                userInstance = new MockUserFacade();
+                pregameInstance = new MockPreGameFacade();
+                gameInstance = new MockGameFacade();
+                movesInstance = new MockMovesFacade();
+            }
+            else*/
+            //{
+            
+                userInstance = new UserFacade();
+                pregameInstance = new PreGameFacade();
+                gameInstance = new GameFacade();
+                movesInstance = new MovesFacade();
+            //}
 	}
 
-	// ===============================================================================
-	// INITIALIZE SERVER VARIABLES
-	// ===============================================================================
-	public void initAiUsers()
-	{
-		int id = users.size();
-		
-		for (String s: FacadeUtils.aiNames)
-			users.put(-(++id), new User(-id,s,s.toLowerCase()));
-	}
-	
-	// ===============================================================================
-	// GETTERS AND SETTERS
-	// ===============================================================================
-	
-	public User getUser(int id){return users.get(id);}
-	public Game getGame(int id) { return games.get(id);}
-	public List<ICommand> getCommandList(int id) {return commands.get(id);}
-
-	public void setUser(User user){users.put(user.getId(), user);}
-	
-	/**
-	 * Increment gameID by 1, add game to server game list, then add new key with
-	 * gameID to commands list
-	 * @param game the game
-	 */
-	public void setGame(Game game)
-	{
-		int gameID = games.size()+1;
-		games.put(gameID, game);
-		commands.put(gameID, new ArrayList<ICommand>());
-	}
-	
-	/**
-	 * Add the command to the game's command list
-	 * @param id the game's id
-	 * @param cmd the command
-	 */
-	public void setCommand(int id, ICommand cmd)
-	{
-		List<ICommand> commandList = commands.get(id);
-		commandList.add(cmd);
-		commands.put(id, commandList);
-	}
-	
 	// ===============================================================================
 	// GAME COMMANDS
 	// ===============================================================================
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse sendChat(SendChatParam param, int id)
+	public static GameModelResponse sendChat(SendChatParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.sendChat(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse acceptTrade(AcceptTradeParam param, int id)
+	public static GameModelResponse acceptTrade(AcceptTradeParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.acceptTrade(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse discardCards(DiscardCardsParam param, int id)
+	public static GameModelResponse discardCards(DiscardCardsParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.discardCards(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse rollNumber(RollNumParam param, int id)
+	public static GameModelResponse rollNumber(RollNumParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.rollNumber(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse buildRoad(BuildRoadParam param, int id)
+	public static GameModelResponse buildRoad(BuildRoadParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.buildRoad(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse buildSettlement(BuildSettlementParam param, int id)
+	public static GameModelResponse buildSettlement(BuildSettlementParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.buildSettlement(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse buildCity(BuildCityParam param, int id)
+	public static GameModelResponse buildCity(BuildCityParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.buildCity(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse offerTrade(OfferTradeParam param, int id)
+	public static GameModelResponse offerTrade(OfferTradeParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.offerTrade(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse maritimeTrade(MaritimeTradeParam param, int id)
+	public static GameModelResponse maritimeTrade(MaritimeTradeParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.maritimeTrade(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse robPlayer(RobPlayerParam param, int id)
+	public static GameModelResponse robPlayer(RobPlayerParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.robPlayer(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse finishTurn(FinishTurnParam param, int id)
+	public static GameModelResponse finishTurn(FinishTurnParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.finishTurn(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse buyDevCard(BuyDevCardParam param, int id)
+	public static GameModelResponse buyDevCard(BuyDevCardParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.buyDevCard(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse playSoldierCard(PlaySoldierParam param, int id)
+	public static GameModelResponse playSoldierCard(PlaySoldierParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.playSoldierCard(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse playYearOfPlentyCard(PlayYearOfPlentyParam param,
-			int id)
+	public static GameModelResponse playYearOfPlentyCard(PlayYearOfPlentyParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.playYearOfPlentyCard(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse playRoadCard(PlayRoadBuildingParam param, int id)
+	public static GameModelResponse playRoadCard(PlayRoadBuildingParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.playRoadCard(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse playMonopolyCard(PlayMonopolyParam param, int id)
+	public static GameModelResponse playMonopolyCard(PlayMonopolyParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.playMonopolyCard(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse playMonumentCard(PlayMonumentParam param, int id)
+	public static GameModelResponse playMonumentCard(PlayMonumentParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return movesInstance.playMonumentCard(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public LoginResponse login(CredentialsParam param)
+	public static LoginResponse login(CredentialsParam param)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return userInstance.login(param);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public LoginResponse register(CredentialsParam param)
+	public static LoginResponse register(CredentialsParam param)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return userInstance.register(param);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public StandardResponse join(JoinGameParam param)
+	public static StandardResponse join(JoinGameParam param)
 	{
-		JoinGame cmd = new JoinGame(param);
-		cmd.execute(games.get(param.getId()));
-		return null;
+            return pregameInstance.join(param);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-
-	public CreateGameResponse create(CreateGameParam param)
+	public static CreateGameResponse create(CreateGameParam param)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return pregameInstance.create(param);
 	}
 
 	// ===============================================================================
@@ -285,120 +188,58 @@ public class ServerFacade implements IServerFacade
 	// ===============================================================================
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public StandardResponse addAI(AddAiParam param, int id)
+	public static StandardResponse addAI(AddAiParam param, int id)
 	{
-		boolean valid = false;
-		if (this.canAddAi(0, id, param.getType()))
-		{
-			valid = true;
-		}
-		return new StandardResponse(valid);
+            return pregameInstance.addAI(param, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public ListGamesResponse listGames()
+	public static ListGamesResponse listGames()
 	{
-		List<GameListObject> gamesList = new ArrayList<GameListObject>();
-		for (int i = 0; i < games.size(); i++)
-		{
-			gamesList.add(games.get(i).getGameListObject());
-		}
-		ListGamesResponse response = new ListGamesResponse(gamesList.toArray(new GameListObject[0]), true);
-		
-		return response;
+            return pregameInstance.listGames();
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public ListAIResponse listAI(int id)
+	public static ListAIResponse listAI(int id)
 	{
-		return new ListAIResponse(FacadeUtils.aiTypes, true);
+            return pregameInstance.listAI(id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse getGameModel(int id)
+	public static GameModelResponse getGameModel(int id)
 	{
-		GameModelResponse response = new GameModelResponse();
-		Game game = games.get(id);
-		response.setGame(game);
-		return response;
+            return gameInstance.getGameModel(id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse save(int id)
+	public static GameModelResponse save(String name, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return pregameInstance.save(name, id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse load(int id)
+	public static GameModelResponse load(String name)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return pregameInstance.load(name);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public GameModelResponse resetGame(int id)
+	public static GameModelResponse resetGame(int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return gameInstance.resetGame(id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public CommandResponse getCommands(int id)
+	public static CommandResponse getCommands(int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return gameInstance.getCommands(id);
 	}
 
 	//---------------------------------------------------------------------------------
-	@Override
-
-	public StandardResponse commands(int id)
+	public static StandardResponse commands(int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+            return gameInstance.commands(id);
 	}
-	
-	// ===============================================================================
-	// SERVER CAN DO METHODS
-	// ===============================================================================
-
-	/**
-	 * Validates if the preconditions are met for adding the AI:
-	 * - The caller is logged into the server
-	 * - The caller has joined a game
-	 * - The type is a valid AI Type
-	 * @param userId
-	 * @param gameId
-	 * @param type
-	 * @return True if all preconditions are satisfied, False otherwise
-	 */
-	public boolean canAddAi(int userId, int gameId, String type)
-	{
-		return users.get(userId).isLoggedIn() &&
-				FacadeUtils.isGameFull(games.get(gameId)) &&
-				FacadeUtils.aiTypes[0].equals(type);
-	}
-	
-	//---------------------------------------------------------------------------------
-	
 	
 	// ===============================================================================
 	// END

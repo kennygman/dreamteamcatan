@@ -1,5 +1,8 @@
 package server.facade;
 
+import java.util.List;
+import java.util.Map;
+import server.commands.ICommand;
 import shared.parameters.AcceptTradeParam;
 import shared.parameters.BuildCityParam;
 import shared.parameters.BuildRoadParam;
@@ -21,7 +24,8 @@ import shared.response.GameModelResponse;
 
 public class MovesFacade implements IMovesFacade
 {
-
+        private Map<Integer, List<ICommand>> commands;
+    
 	@Override
 	public GameModelResponse sendChat(SendChatParam param, int id)
 	{

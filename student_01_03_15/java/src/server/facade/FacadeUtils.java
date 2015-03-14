@@ -17,7 +17,6 @@ public class FacadeUtils
 
 	public static User getAi()
 	{
-		
 		return null;
 	}
 	/**

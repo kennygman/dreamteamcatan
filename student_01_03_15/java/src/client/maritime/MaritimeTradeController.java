@@ -71,7 +71,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	public void updatePorts()
 	{
 		giveResources = new ArrayList<ResourceType>();
-		resources = ModelFacade.getInstance().getGame().getPlayer().getResources();
+		resources = ModelFacade.getInstance().getPlayer().getResources();
 		portList = ModelFacade.getInstance().getPorts();
 		
 			for (ResourceType type : Resources.getResourceList())

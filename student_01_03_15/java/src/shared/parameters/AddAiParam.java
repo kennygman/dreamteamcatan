@@ -7,5 +7,8 @@ public class AddAiParam {
 	{
 		AIType = ai;
 	}
-
+	public String getType()
+	{
+		return AIType;
+	}
 }

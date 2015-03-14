@@ -32,18 +32,18 @@ import shared.response.StandardResponse;
 
 public class ModelFacade extends Observable implements IModelFacade
 {
-	private IProxy proxy;
-	private Game game;
-	private PlayerInfo player;
-	private GameInfo gameInfo;
-	private Poller poller;
-	private boolean hasJoined = false;
-	private boolean hasPlayedDevCard;
-	private boolean isRoadBuilding;
-	private EdgeLocation firstRoadInRoadBuilding;
-	private boolean hasRolled;
-
-	private PlayerInfo[] players;
+    private IProxy proxy;
+    private Game game;
+    private PlayerInfo player;
+    private GameInfo gameInfo;
+    private Poller poller;
+    private boolean hasJoined = false;
+    private boolean hasPlayedDevCard;
+    private boolean isRoadBuilding;
+    private EdgeLocation firstRoadInRoadBuilding;
+    private boolean hasRolled;
+    
+    private PlayerInfo[] players;
 
 	public ModelFacade(IProxy proxy)
 	{
@@ -56,25 +56,14 @@ public class ModelFacade extends Observable implements IModelFacade
 	 * Singleton implementation
 	 */
 	private static ModelFacade instance;
-
-	/**
-	 * @return ModelFacade instance if not null
-	 */
+	
 	public static ModelFacade getInstance()
 	{
-		if (instance == null)
-		{
-			throw new IllegalStateException(
-					"Tried to get instance of ModelFacade without initializing it first!");
+		if (instance == null) {
+			throw new IllegalStateException("Tried to get instance of ModelFacade without initializing it first!");
 		}
 		return instance;
 	}
-
-	/**
-	 * Creates a new instance based off the given proxy
-	 * 
-	 * @param proxy
-	 */
 	public static void createInstance(IProxy proxy)
 	{
 		instance = new ModelFacade(proxy);
@@ -85,72 +74,66 @@ public class ModelFacade extends Observable implements IModelFacade
 	 */
 	public void modelChanged()
 	{
-		if (this.getGame() == null)
-			return;
+		if (this.getGame() == null) return;
 		this.setChanged();
 		this.notifyObservers();
 	}
-
+	
 	// ===============================================================================
 	// GETTERS AND SETTERS
 	// ===============================================================================
-
+	
 	public Resources getPorts()
 	{
 		return this.getGame().getBoard().getPorts(player.getPlayerIndex());
 	}
-
 	public String getState()
 	{
 		return this.getGame().getTurnTracker().getStatus();
 	}
-
 	public void setPlayerInfo(PlayerInfo player)
 	{
-		this.player = player;
+		this.player=player;
 	}
-
 	public GameInfo getGameInfo()
 	{
 		return gameInfo;
 	}
-
 	public void setGameInfo(GameInfo gameInfo)
 	{
 		this.gameInfo = gameInfo;
 	}
-
 	public PlayerInfo getPlayerInfo()
 	{
 		return player;
 	}
-
+	public Player getPlayer()
+	{
+		return game.getPlayer(player.getPlayerIndex());
+	}
 	public Game getGame()
 	{
-		if (game == null)
-		{
-			updateGameModel();
-		}
-		return game;
+            if(game == null)
+            {
+                updateGameModel();
+            }
+            return game;
 	}
-
 	public void setGame(Game game)
 	{
-		if (game != null)
-		{
-			this.game = game;
-		}
+            if(game != null)
+            {
+		this.game=game;
+            }
 	}
-
 	public IProxy getProxy() throws Exception
 	{
-		if (proxy == null)
-		{
-			throw new Exception("Proxy not initialized!");
-		}
-		return proxy;
+            if (proxy == null) {
+                    throw new Exception("Proxy not initialized!");
+            }
+            return proxy;
 	}
-
+	
 	public void setPoller(Poller p)
 	{
 		poller = p;
@@ -160,945 +143,763 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		return poller;
 	}
-
-	/**
-	 * Sets the edge to the first built road sets the state of isRoadBuilding to
-	 * true
-	 * 
-	 * @param edge
-	 */
-	public void setFirstRoadBuidingRoad(EdgeLocation edge)
-	{
-		this.firstRoadInRoadBuilding = edge;
-		isRoadBuilding = true;
-	}
-
+        
+        public void setFirstRoadBuidingRoad(EdgeLocation edge)
+        {
+            this.firstRoadInRoadBuilding = edge;
+            isRoadBuilding = true;
+        }
 	// ===============================================================================
 	// CAN-DO METHODS & PRECONDITIONS
 	// ===============================================================================
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean isPlayerTurn()
 	{
-		return game.getTurnTracker().getCurrentTurn() == game.getPlayer()
-				.getPlayerIndex();
+            return game.getTurnTracker().getCurrentTurn() == player.getPlayerIndex();
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean canAcceptTrade()
 	{
 		TradeOffer offer = game.getTradeOffer();
-		if (offer == null)
-			return false;
+		if (offer==null) return false;
 		Player recipient = game.getPlayers()[offer.getReceiver()];
-		if (recipient.getPlayerIndex() != player.getPlayerIndex())
-			return false;
+		if (recipient.getPlayerIndex() != player.getPlayerIndex()) return false;
 
 		return (recipient.getResources().contains(offer.getOffer().invert()));
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanDiscardCards(Resources resources)
 	{
-		if (!game.getTurnTracker().getStatus().equals("Discarding"))
-		{
-			return false;
-		}
-		if (game.getPlayer().getResources().size() < 8)
-		{
-			return false;
-		}
+		if (!game.getTurnTracker().getStatus().equals("Discarding")) 
+			{
+				return false;
+			}
+		if (getPlayer().getResources().size() < 8) 
+			{
+				return false;
+			}
 		resources.invert();
-		boolean valid = game.getPlayer().getResources().contains(resources);
+		boolean valid = getPlayer().getResources().contains(resources);
 		resources.invert();
 		return valid;
 	}
 
-	// Playing Preconditions
-	// ================================================================================
-	/**
-	 * This method checks to see if it the players turn or not
-	 * 
-	 * @return true if it is the players turn and is in the "Playing" state
-	 */
+	// Playing Preconditions ================================================================================
 	private boolean canPlay()
 	{
 		boolean valid = true;
-		if (!isPlayerTurn())
-			valid = false;
-		if (!game.getTurnTracker().getStatus().equals("Playing"))
-			valid = false;
+		if (!isPlayerTurn()) valid = false;
+		if (!game.getTurnTracker().getStatus().equals("Playing")) valid = false;
 		return valid;
 	}
-
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanRollNumber()
 	{
-		boolean result = (this.isPlayerTurn()
-				&& game.getTurnTracker().getStatus().equals("Rolling") && !hasRolled);
-		if (result)
+		boolean result = (this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Rolling") && !hasRolled);
+		if(result)
 		{
 			hasRolled = true;
 		}
 		return result;
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean canPlaceRoad(EdgeLocation edgeLoc, boolean free)
 	{
-		if (!isPlayerTurn())
-		{
-			return false;
-		}
-		EdgeLocation edge = edgeLoc.getNormalizedLocation();
-		Board board = game.getBoard();
+            if (!isPlayerTurn()) {return false;}
+            EdgeLocation edge = edgeLoc.getNormalizedLocation();
+            Board board = game.getBoard();
 
-		if (board.containsRoad(edge))
-		{
-			return false;
-		} else if (isRoadBuilding && firstRoadInRoadBuilding != null
-				&& firstRoadInRoadBuilding.equals(edgeLoc))
-		{
-			return false;
-		} else if (!free && !CanBuyRoad())
-		{
-			return false;
-		} else if (board.hasWaterEdge(edge.getHexLoc(), edge.getDir()))
-		{
-			return false;
-		} else if (board.hasNeighborRoad(edge, player.getPlayerIndex(),
-				getState()))
-		{
-			return true;
-		} else if (isRoadBuilding
-				&& firstRoadInRoadBuilding.isNeighbor(edgeLoc))
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	// --------------------------------------------------------------------------------
+            if (board.containsRoad(edge)) {return false;}
+            else if (isRoadBuilding && firstRoadInRoadBuilding != null && firstRoadInRoadBuilding.equals(edgeLoc)) {return false;}
+            else if (!free && !CanBuyRoad()) {return false;}
+            else if (board.hasWaterEdge(edge.getHexLoc(), edge.getDir())) {return false;}
+            else if (board.hasNeighborRoad(edge, player.getPlayerIndex(), getState()))  {return true;}
+            else if (isRoadBuilding && firstRoadInRoadBuilding.isNeighbor(edgeLoc)) {return true;}
+			
+             return false;
+	}	
+ 		
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean canPlaceSettlement(VertexLocation vertLoc, boolean isSetup)
 	{
-		if (!isPlayerTurn())
-		{
-			return false;
-		}
+		if (!isPlayerTurn()) {return false;}
 		VertexLocation vertex = vertLoc.getNormalizedLocation();
-		Board board = game.getBoard();
-
-		if ((!isSetup && !CanBuySettlement()))
-		{
-			return false;
-		} else if (board.containsStructure(vertex))
-		{
-			return false;
-		} else if (board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir()))
-		{
-			return false;
-		} else if (!board.hasNeighborRoad(vertex, player.getPlayerIndex()))
-		{
-			return false;
-		} else if (board.hasNeighborStructure(vertex))
-		{
-			return false;
-		}
-
+                Board board =  game.getBoard();
+		
+		if ((!isSetup && !CanBuySettlement())){return false;}
+                else if (board.containsStructure(vertex)){return false;}
+                else if (board.hasWaterVertex(vertex.getHexLoc(), vertex.getDir())) {return false;}
+                else if (!board.hasNeighborRoad(vertex, player.getPlayerIndex())) {return false;}
+                else if (board.hasNeighborStructure(vertex)) {return false;}
+		
 		return true;
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean canPlaceCity(VertexLocation vertLoc)
 	{
-		if (!canPlay())
-			return false;
-		if (!CanBuyCity())
-			return false;
+		if (!canPlay()) return false;
+		if (!CanBuyCity()) return false;
 
 		Object obj = game.getBoard().getStructure(vertLoc);
-		if (obj == null)
-			return false;
-		else if (obj instanceof City)
-			return false;
-		else if (((Settlement) (obj)).getOwner() == player.getPlayerIndex())
-			return true;
+		if (obj == null) return false;
+                else if (obj instanceof City) return false;
+                else if (((Settlement)(obj)).getOwner() == player.getPlayerIndex()) return true;
 
 		return false;
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanBuyRoad()
 	{
-		if (game.getPlayer().getRoads() <= 0)
-			return false;
-		Resources hand = game.getPlayer().getResources();
-		return hand.getResourceAmount(ResourceType.WOOD) > 0
-				&& hand.getResourceAmount(ResourceType.BRICK) > 0;
+		if (getPlayer().getRoads() <= 0) return false;
+		Resources hand = getPlayer().getResources();
+		return hand.getResourceAmount(ResourceType.WOOD) > 0 &&
+				hand.getResourceAmount(ResourceType.BRICK) > 0;
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanBuySettlement()
 	{
-
-		if (game.getPlayer().getSettlements() < 1)
-			return false;
-		Resources hand = game.getPlayer().getResources();
-		return hand.getResourceAmount(ResourceType.WOOD) > 0
-				&& hand.getResourceAmount(ResourceType.SHEEP) > 0
-				&& hand.getResourceAmount(ResourceType.WHEAT) > 0
-				&& hand.getResourceAmount(ResourceType.BRICK) > 0;
-
+		
+		if (getPlayer().getSettlements() < 1) return false;
+		Resources hand = getPlayer().getResources();
+		return hand.getResourceAmount(ResourceType.WOOD) > 0 &&
+				hand.getResourceAmount(ResourceType.SHEEP) > 0 &&
+				hand.getResourceAmount(ResourceType.WHEAT) > 0 &&
+				hand.getResourceAmount(ResourceType.BRICK) > 0;
+				
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanBuyCity()
 	{
-		if (game.getPlayer().getCities() < 1)
-			return false;
-		Resources hand = game.getPlayer().getResources();
-		return hand.getResourceAmount(ResourceType.WHEAT) > 1
-				&& hand.getResourceAmount(ResourceType.ORE) > 2;
+		if (getPlayer().getCities() < 1) return false;
+		Resources hand = getPlayer().getResources();
+		return hand.getResourceAmount(ResourceType.WHEAT) > 1 &&
+				hand.getResourceAmount(ResourceType.ORE) > 2;
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanOfferTrade(Resources offer)
 	{
-		if (!canPlay())
-			return false;
-		return game.getPlayer().getResources().contains(offer);
+		if (!canPlay()) return false;
+		return getPlayer().getResources().contains(offer);
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
-	public boolean CanMaritimeTrade(int ratio, String inputResource,
-			String outResource)
+	public boolean CanMaritimeTrade(int ratio, String inputResource, String outResource)
 	{
-		if (!canPlay())
-			return false;
-		if (game.getPlayer().getResources().getResourceAmount(inputResource) < ratio)
-			return false;
-		if (game.getBoard().hasPort(player.getPlayerIndex(), inputResource,
-				ratio))
-			return true;
+		if (!canPlay()) return false;
+		if (getPlayer().getResources().getResourceAmount(inputResource) < ratio) return false;
+		if (game.getBoard().hasPort(player.getPlayerIndex(), inputResource, ratio)) return true;
 
 		return false;
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean canPlaceRobber(HexLocation hexLoc)
 	{
-		Board board = game.getBoard();
-		if (board.getRobber().equals(hexLoc))
-			return false;
-		else if (board.isWaterHex(hexLoc))
-			return false;
-		return true;
+                Board board = game.getBoard();
+                if(board.getRobber().equals(hexLoc)) return false;
+                else if(board.isWaterHex(hexLoc)) return false;
+                return true;
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean canRobPlayer(HexLocation location, int victimIndex)
 	{
-		if (!canPlay())
-			return false;
-		if (!canPlaceRobber(location)
-				|| game.getPlayers()[victimIndex].getResources().size() < 1)
-			return false;
-		return true;
+		if (!canPlay()) return false;
+		if (!canPlaceRobber(location) ||
+		game.getPlayers()[victimIndex].getResources().size()<1) return false;
+		return true; 
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanFinishTurn()
 	{
 		return canPlay();
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanBuyDevCard()
 	{
-		if (!canPlay())
-			return false;
-		if (game.getDeck().size() < 1)
-			return false;
-		Resources hand = game.getPlayer().getResources();
-		return hand.getResourceAmount(ResourceType.WHEAT) > 0
-				&& hand.getResourceAmount(ResourceType.SHEEP) > 0
-				&& hand.getResourceAmount(ResourceType.ORE) > 0;
+		if (!canPlay()) return false;
+		if (game.getDeck().size() < 1) return false;
+		Resources hand = getPlayer().getResources();
+		return hand.getResourceAmount(ResourceType.WHEAT) > 0 &&
+				hand.getResourceAmount(ResourceType.SHEEP) > 0 &&
+				hand.getResourceAmount(ResourceType.ORE) > 0;
 	}
-
-	// DevCard Preconditions
-	// ================================================================================
-	/**
-	 * This method checks if the player can play the specified devcard
-	 * 
-	 * @param devCard
-	 *            DevCard that is trying to be discarded
-	 * @return True if the card can be played
-	 */
+	
+	// DevCard Preconditions ================================================================================
 	public boolean canPlayDevCard(DevCardType devCard)
 	{
-		if (!isPlayerTurn() || hasPlayedDevCard
-				|| !getState().equals("Playing")
-				|| !game.getPlayer().getOldDevCards().hasDevCard(devCard))
-			return false;
+		if (!isPlayerTurn() || hasPlayedDevCard ||
+			!getState().equals("Playing")
+			|| !getPlayer().getOldDevCards().hasDevCard(devCard)
+			//|| getPlayer().isPlayedDevCard()
+			) return false;
 		return true;
 	}
-
-	// --------------------------------------------------------------------------------
+	
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanUseSoldier(int victimIndex, HexLocation location)
 	{
-		if (!canPlayDevCard(DevCardType.SOLDIER)
-				|| !canRobPlayer(location, victimIndex))
-			return false;
+		if (!canPlayDevCard(DevCardType.SOLDIER) ||
+			!canRobPlayer(location, victimIndex)
+			) return false;
 		return true;
 	}
+        
+        public boolean canUseSoldierOfficial()
+        {
+            return canPlayDevCard(DevCardType.SOLDIER);
+        }
 
-	/**
-	 * This method checks to see if the soldier card can be played
-	 * 
-	 * @return true if the soldier card can be played
-	 */
-	public boolean canUseSoldierOfficial()
-	{
-		return canPlayDevCard(DevCardType.SOLDIER);
-	}
-
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanUseYearOfPlenty(String resource1, String resource2)
 	{
-		if (!canPlayDevCard(DevCardType.YEAR_OF_PLENTY))
-			return false;
-		if (game.getBank().getResourceAmount(resource1) > 0
-				&& game.getBank().getResourceAmount(resource2) > 0)
-			return true;
+		if (!canPlayDevCard(DevCardType.YEAR_OF_PLENTY)) return false;
+		if (game.getBank().getResourceAmount(resource1) > 0 &&
+			game.getBank().getResourceAmount(resource2) > 0
+			) return true;
 		return false;
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanUseRoadBuilder(EdgeLocation spot1, EdgeLocation spot2)
 	{
-		if (!canPlayDevCard(DevCardType.ROAD_BUILD))
-		{
-			System.out.println("Can't play card");
-			return false;
-		} else if (!canPlaceRoad(spot1, true))
-		{
-			System.out.println("Can't place spot1");
-			return false;
-		} else if (game.getPlayer().getRoads() < 2)
-		{
-			System.out.println("Doesn't have 2 roads left");
-			return false;
-		} else if (game.getBoard().containsRoad(spot2))
-		{
-			System.out.println("Can't place spot2");
-			return false;
-		} else if (spot1.equals(spot2))
-		{
-			System.out.println("Spot1 and 2 are the same");
-			return false;
-		}
+            if (!canPlayDevCard(DevCardType.ROAD_BUILD)) {System.out.println("Can't play card"); return false;}
+            else if(!canPlaceRoad(spot1, true)) {System.out.println("Can't place spot1"); return false;}
+            else if (getPlayer().getRoads() < 2) {System.out.println("Doesn't have 2 roads left"); return false;}
+            else if (game.getBoard().containsRoad(spot2)) {System.out.println("Can't place spot2"); return false;}
+            else if (spot1.equals(spot2)) {System.out.println("Spot1 and 2 are the same"); return false;}
 
-		if (game.getBoard().hasNeighborRoad(spot2,
-				game.getPlayer().getPlayerIndex(), getState()))
-		{
-			return true;
-		}
+            if (game.getBoard().hasNeighborRoad(spot2, getPlayer().getPlayerIndex(), getState()))
+            {
+                    return true;
+            }
 
-		return false;
+            return false;
 	}
+        
+        public boolean canUseRoadBuilderOfficial()
+        {
+            if (!canPlayDevCard(DevCardType.ROAD_BUILD)) {return false;}
+                else if (getPlayer().getRoads() < 2) {return false;}	
+            return true;
+        }
 
-	/**
-	 * This method checks to see if the road building card can be played
-	 * 
-	 * @return true if the road building card can be played
-	 */
-	public boolean canUseRoadBuilderOfficial()
-	{
-		if (!canPlayDevCard(DevCardType.ROAD_BUILD))
-		{
-			return false;
-		} else if (game.getPlayer().getRoads() < 2)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanUseMonopoly(String resource)
 	{
 		return canPlayDevCard(DevCardType.MONOPOLY);
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanUseMonument()
 	{
-		if (!isPlayerTurn())
-			return false;
-		else if (!getState().equals("Playing"))
-			return false;
-		else if (!game.getPlayer().getOldDevCards()
-				.hasDevCard(DevCardType.MONUMENT))
-			return false;
-		else if (game.getPlayer().isPlayedDevCard())
-			return false;
-		return true;
+            if (!isPlayerTurn()) return false;
+            else if (!getState().equals("Playing")) return false;
+            else if (!getPlayer().getOldDevCards().hasDevCard(DevCardType.MONUMENT)) return false;
+            else if (getPlayer().isPlayedDevCard()) return false;
+            return true;
 	}
 
+	
 	// ===============================================================================
 	// PROXY METHODS & POST CONDITIONS
 	// ===============================================================================
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void sendChat(SendChatParam param)
 	{
-		GameModelResponse response = proxy.sendChat(param);
-		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+            GameModelResponse response = proxy.sendChat(param);
+            if(response.isValid())
+            {
+                game = response.getGame();
+                update();
+                //updateGameModel();
+            }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void acceptTrade(boolean accept)
 	{
 		Player receiver = game.getPlayers()[game.getTradeOffer().getReceiver()];
-		GameModelResponse response = proxy.acceptTrade(new AcceptTradeParam(
-				receiver.getPlayerIndex(), accept));
+		GameModelResponse response = proxy.acceptTrade(new AcceptTradeParam(receiver.getPlayerIndex(), accept));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
-
-	// --------------------------------------------------------------------------------
+	
+	//--------------------------------------------------------------------------------
 	@Override
 	public void discardCards(Resources resources)
 	{
-		GameModelResponse response = proxy.discardCards(new DiscardCardsParam(
-				0, resources));
+		GameModelResponse response = proxy.discardCards(new DiscardCardsParam(0, resources));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void rollNumber(int total, int dontUseThis)
 	{
 		int playerIndex = this.getPlayerInfo().getPlayerIndex();
-		GameModelResponse response = proxy.rollNumber(new RollNumParam(
-				playerIndex, total));
+		GameModelResponse response = proxy.rollNumber(new RollNumParam(playerIndex, total));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			hasPlayedDevCard = false;
-			this.hasRolled = true;
-			this.getPoller().stop();
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    hasPlayedDevCard = false;
+                    this.hasRolled = true;
+                    this.getPoller().stop();
+                    //updateGameModel();
+                }     
 	}
+        
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void buildRoad(EdgeLocation edge, boolean free)
 	{
-		GameModelResponse response = proxy.buildRoad(new BuildRoadParam(game
-				.getTurnTracker().getCurrentTurn(), edge, free));
+		GameModelResponse response = proxy.buildRoad(new BuildRoadParam
+		        (game.getTurnTracker().getCurrentTurn(), edge, free));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void buildSettlement(VertexLocation vert, boolean free)
 	{
-		GameModelResponse response = proxy
-				.buildSettlement(new BuildSettlementParam(game.getPlayer()
-						.getPlayerIndex(), vert, free));
+		GameModelResponse response = proxy.buildSettlement(new BuildSettlementParam(
+				player.getPlayerIndex(), vert, free));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void buildCity(VertexLocation vert)
 	{
-		GameModelResponse response = proxy.buildCity(new BuildCityParam(game
-				.getPlayer().getPlayerIndex(), vert));
+		GameModelResponse response = proxy.buildCity(
+				new BuildCityParam(player.getPlayerIndex(), vert));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void offerTrade(int receiver, Resources resources)
 	{
-		GameModelResponse response = proxy.offerTrade(new OfferTradeParam(
-				player.getPlayerIndex(), receiver, resources));
+	    GameModelResponse response = proxy.offerTrade(new OfferTradeParam(
+	    		player.getPlayerIndex(), receiver, resources));
 		if (response.isValid())
 		{
 			game = response.getGame();
 			update();
-			// updateGameModel();
+			//updateGameModel();
 		}
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
-	public void maritimeTrade(int ratio, String inputResource,
-			String outResource)
+	public void maritimeTrade(int ratio, String inputResource, String outResource)
 	{
-		GameModelResponse response = proxy
-				.maritimeTrade(new MaritimeTradeParam(game.getPlayer()
-						.getPlayerIndex(), ratio, inputResource, outResource));
+        GameModelResponse response = proxy.maritimeTrade(
+		new MaritimeTradeParam(player.getPlayerIndex(),
+		ratio, inputResource, outResource));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void robPlayer(HexLocation location, int victimIndex)
 	{
-		GameModelResponse response = proxy.robPlayer(new RobPlayerParam(game
-				.getPlayer().getPlayerIndex(), victimIndex, location));
+		GameModelResponse response = proxy.robPlayer(new RobPlayerParam(
+				player.getPlayerIndex(), victimIndex, location));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void finishTurn()
 	{
-
-		GameModelResponse response = proxy.finishTurn(new FinishTurnParam(game
-				.getPlayer().getPlayerIndex()));
+		
+        GameModelResponse response = proxy.finishTurn(
+        		new FinishTurnParam(player.getPlayerIndex()));
 		if (response.isValid())
-		{
-			poller.pollerStart();
-			game = response.getGame();
-			update();
-			// updateGameModel();
-			hasRolled = false;
-		}
+                {
+					poller.pollerStart();
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                    hasRolled = false;
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void buyDevCard()
 	{
-		GameModelResponse response = proxy.buyDevCard(new BuyDevCardParam(game
-				.getPlayer().getPlayerIndex()));
+		GameModelResponse response = proxy.buyDevCard(
+				new BuyDevCardParam(player.getPlayerIndex()));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    //updateGameModel();
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void playSoldierCard(int victimIndex, HexLocation location)
 	{
 		GameModelResponse response = proxy.playSoldier(new PlaySoldierParam(
-				game.getPlayer().getPlayerIndex(), victimIndex, location));
-		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			hasPlayedDevCard = true;
-			// updateGameModel();
-		}
+				player.getPlayerIndex(), victimIndex, location));
+		if (response.isValid()) 
+                {
+                    game = response.getGame();
+                    update();
+                    hasPlayedDevCard = true;
+                    //updateGameModel();
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void playYearOfPlentyCard(String resource1, String resource2)
 	{
-		GameModelResponse response = proxy
-				.playYearOfPlenty(new PlayYearOfPlentyParam(game.getPlayer()
-						.getPlayerIndex(), resource1, resource2));
-		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			hasPlayedDevCard = true;
-			// updateGameModel();
-		}
+            GameModelResponse response = proxy.playYearOfPlenty(new PlayYearOfPlentyParam(
+        		player.getPlayerIndex(), resource1, resource2));
+            if (response.isValid())
+            {
+                game = response.getGame();
+                update();
+                hasPlayedDevCard = true;
+                //updateGameModel();
+            }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void playRoadCard(EdgeLocation spot1, EdgeLocation spot2)
 	{
-		GameModelResponse response = proxy
-				.playRoadBuilding(new PlayRoadBuildingParam(game.getPlayer()
-						.getPlayerIndex(), firstRoadInRoadBuilding, spot2));
+		GameModelResponse response = proxy.playRoadBuilding(new PlayRoadBuildingParam(
+				player.getPlayerIndex(), firstRoadInRoadBuilding, spot2));
 		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			hasPlayedDevCard = true;
-			isRoadBuilding = false;
-			firstRoadInRoadBuilding = null;
-			// updateGameModel();
-		}
+                {
+                    game = response.getGame();
+                    update();
+                    hasPlayedDevCard = true;
+                    isRoadBuilding = false;
+                    firstRoadInRoadBuilding = null;
+                    //updateGameModel();
+                }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void playMonopolyCard(String resource)
 	{
-		GameModelResponse response = proxy.playMonopoly(new PlayMonopolyParam(
-				game.getPlayer().getPlayerIndex(), resource));
-		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			hasPlayedDevCard = true;
-			// updateGameModel();
-		}
+            GameModelResponse response = proxy.playMonopoly(new PlayMonopolyParam(
+                            player.getPlayerIndex(), resource));
+            if (response.isValid())
+            {
+                game = response.getGame();
+                update();
+                hasPlayedDevCard = true;
+		//updateGameModel();  
+            }
 	}
 
-	// --------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------
 	@Override
 	public void playMonumentCard()
 	{
-		GameModelResponse response = proxy.playMonument(new PlayMonumentParam(
-				game.getPlayer().getPlayerIndex()));
-		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-			// updateGameModel();
-		}
+            GameModelResponse response = proxy.playMonument(new PlayMonumentParam(
+                            player.getPlayerIndex()));
+            if (response.isValid())
+            {
+                game = response.getGame();
+                update();
+                //updateGameModel();
+            }
 	}
-
-	// --------------------------------------------------------------------------------
-
-	// ================================================================================
+        
+	//--------------------------------------------------------------------------------        
+	
+	//================================================================================
 	// MISC PROXY FUNCTIONS
-	// ================================================================================
-
-	// --------------------------------------------------------------------------------
-	/**
-	 * This method logs the player in
-	 * 
-	 * @param params
-	 *            Params sent to server
-	 * @return Response from server
-	 */
+	//================================================================================
+	
+	//--------------------------------------------------------------------------------
 	public LoginResponse login(CredentialsParam params)
 	{
 		LoginResponse response = proxy.login(params);
-		if (response.isValid())
+		if(response.isValid())
 		{
 			player = response.getPlayerInfo();
 			player.setName(params.getUser());
 		}
-
+		
 		return response;
 	}
-
-	// --------------------------------------------------------------------------------
-	/**
-	 * This method registers a new player
-	 * 
-	 * @param params
-	 *            Params sent to server
-	 * @return Response from server
-	 */
+	
+	//--------------------------------------------------------------------------------
 	public LoginResponse register(CredentialsParam params)
 	{
 		LoginResponse response = proxy.register(params);
-		if (response.isValid())
+		if(response.isValid())
 		{
 			player = response.getPlayerInfo();
 			player.setName(params.getUser());
 		}
-
+		
 		return response;
 	}
-
-	// --------------------------------------------------------------------------------
-	/**
-	 * This method adds a player to the game
-	 * 
-	 * @param params
-	 *            Params sent to server
-	 * @return Response from server
-	 */
+	
+	//--------------------------------------------------------------------------------
 	public StandardResponse joinGame(JoinGameParam params)
 	{
-		StandardResponse response = proxy.joinGame(params);
-		if (response.isValid())
-		{
-			this.player.setColor(CatanColor.stringToColor(params.getColor()));
-			this.hasJoined = true;
-		}
-		return response;
+            StandardResponse response = proxy.joinGame(params);
+            if(response.isValid())
+            {
+                this.player.setColor(CatanColor.stringToColor(params.getColor()));
+                this.hasJoined = true;
+            }
+                    return response;
 	}
 
 	public boolean isHasJoined()
 	{
 		return hasJoined;
 	}
-
 	public void setHasJoined(boolean hasJoined)
 	{
 		this.hasJoined = hasJoined;
 	}
-
-	// --------------------------------------------------------------------------------
-	/**
-	 * This method creates a new game
-	 * 
-	 * @param params
-	 *            Params sent to server
-	 * @return Response received from server
-	 */
+	//--------------------------------------------------------------------------------
 	public CreateGameResponse createGame(CreateGameParam params)
 	{
-		CreateGameResponse response = proxy.createGame(params);
-		if (response.isValid())
-		{
-			proxy.joinGame(new JoinGameParam(response.getGameId(), "white"));
-		}
+	    CreateGameResponse response = proxy.createGame(params);
+	    if(response.isValid())
+	    {
+	    	proxy.joinGame(new JoinGameParam(response.getGameId(), "white"));
+	    }
 		return response;
 	}
 
-	// --------------------------------------------------------------------------------
-	/**
-	 * @return List of games from the server
-	 */
+	//--------------------------------------------------------------------------------
 	public ListGamesResponse listGames()
 	{
 		return proxy.listGames();
 	}
 
-	// --------------------------------------------------------------------------------
-	/**
-	 * This method adds an ai player to the current game
-	 * 
-	 * @param input
-	 *            Params to be sent to server
-	 * @return Response from the server
-	 */
+	//--------------------------------------------------------------------------------
 	public StandardResponse addAi(AddAiParam input)
 	{
 		return proxy.addAi(input);
 	}
-
-	// ---------------------------------------------------------------------------------
-	/**
-	 * @return List of ais from server
-	 */
+	//---------------------------------------------------------------------------------
 	public ListAIResponse listAi()
 	{
 		return proxy.listAi();
 	}
-
-	// ---------------------------------------------------------------------------------
-	/**
-	 * Resets the game so no moves have been done
-	 */
+	//---------------------------------------------------------------------------------
 	public void resetGame()
 	{
-		GameModelResponse response = proxy.resetGame();
-		if (response.isValid())
-		{
-			game = response.getGame();
-			update();
-		}
+            GameModelResponse response = proxy.resetGame();
+            if(response.isValid())
+            {
+                game = response.getGame();
+                update();
+                //updateGameModel();
+            }
 	}
-
-	// ---------------------------------------------------------------------------------
-	/**
-	 * This method updates the game model from the server model
-	 */
+	//---------------------------------------------------------------------------------
 	public void updateGameModel()
 	{
-		GameModelResponse response = proxy.getGameModel();
-		if (response.isValid())
-		{
-			game = response.getGame();
-			game.getBoard().sort();
-			this.modelChanged();
-		}
+            GameModelResponse response = proxy.getGameModel();
+            if(response.isValid())
+            {
+                game = response.getGame();
+                game.getBoard().sort();
+                this.modelChanged();
+            }
 	}
-
-	/**
-	 * This method sorts the board and notifies the model of change
-	 */
-	public void update()
+        
+        public void update()
+        {
+            game.getBoard().sort();
+            this.modelChanged();
+        }
+	//---------------------------------------------------------------------------------
+        public RobPlayerInfo[] getRobPlayerInfoList(HexLocation hexLoc)
 	{
-		game.getBoard().sort();
-		this.modelChanged();
-	}
-
-	// ---------------------------------------------------------------------------------
-	/**
-	 * This method gets the info needed to rob a player
-	 * 
-	 * @param hexLoc
-	 *            The hex of where the robber was placed
-	 * @return The information needed to display after the robber is placed
-	 */
-	public RobPlayerInfo[] getRobPlayerInfoList(HexLocation hexLoc)
-	{
-		Object[] objects = game.getBoard().getStructure(hexLoc);
-		List<RobPlayerInfo> playersToRob = new ArrayList<RobPlayerInfo>();
-		PlayerInfo[] playerInfo = getPlayerInfoList();
-		Player[] players = game.getPlayers();
-
-		for (Player p : players)
-		{
-			if (p.getPlayerIndex() != game.getPlayer().getPlayerIndex())
-			{
-				for (Object obj : objects)
-				{
-					if (obj != null)
-					{
-						if (obj instanceof Settlement)
-						{
-							Settlement s = (Settlement) obj;
-							if (s.getOwner() == p.getPlayerIndex())
-							{
-								playersToRob.add(new RobPlayerInfo(playerInfo[s
-										.getOwner()]));
-								int index = playersToRob.size() - 1;
-								playersToRob.get(index).setNumCards(
-										p.getNumCards());
-								playersToRob.get(index).setLocation(hexLoc);
-								break;
-							}
-						} else
-						// if city
-						{
-							City c = (City) obj;
-							if (c.getOwner() == p.getPlayerIndex())
-							{
-								playersToRob.add(new RobPlayerInfo(playerInfo[c
-										.getOwner()]));
-								int index = playersToRob.size() - 1;
-								playersToRob.get(index).setNumCards(
-										p.getNumCards());
-								playersToRob.get(index).setLocation(hexLoc);
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		/*
-		 * int index = 0; for(Object obj : objects) { if(obj != null) { if(obj
-		 * instanceof Settlement) { Settlement s = (Settlement) obj;
-		 * if(s.getOwner() != game.getPlayer().getPlayerID()) {
-		 * playersToRob.add(new RobPlayerInfo(playerInfo[s.getOwner()]));
-		 * Player[] p = game.getPlayers();
-		 * playersToRob.get(index).setNumCards(p[s.getOwner()].getNumCards());
-		 * playersToRob.get(index).setLocation(hexLoc); } } else //if(obj
-		 * instanceof City) { City c = (City) obj; if(c.getOwner() !=
-		 * game.getPlayer().getPlayerID()) { playersToRob.add(new
-		 * RobPlayerInfo(playerInfo[c.getOwner()])); Player[] p =
-		 * game.getPlayers();
-		 * playersToRob.get(index).setNumCards(p[c.getOwner()].getNumCards());
-		 * playersToRob.get(index).setLocation(hexLoc); } }
-		 * 
-		 * index++; } }
-		 */
-		RobPlayerInfo[] arr;
-		if (playersToRob.isEmpty())
-		{
-			arr = null;
-		} else
-		{
-			arr = new RobPlayerInfo[playersToRob.size()];
-			for (int i = 0; i < playersToRob.size(); i++)
-			{
-				arr[i] = playersToRob.get(i);
-			}
-		}
-		return arr;
-	}
-
-	// ---------------------------------------------------------------------------------
-	/**
-	 * This method checks whether or not there are already 4 players in the game
-	 * 
-	 * @return true if the game is full
-	 */
+            Object[] objects = game.getBoard().getStructure(hexLoc);
+            List<RobPlayerInfo> playersToRob = new ArrayList<RobPlayerInfo>();
+            PlayerInfo[] playerInfo = getPlayerInfoList();
+            Player[] players = game.getPlayers();
+            
+            for(Player p : players)
+            {
+                if(p.getPlayerIndex() != player.getPlayerIndex())
+                {
+                    for(Object obj : objects)
+                    {
+                        if(obj != null)
+                        {
+                            if(obj instanceof Settlement)
+                            {
+                                Settlement s = (Settlement) obj;
+                                if(s.getOwner() == p.getPlayerIndex())
+                                {
+                                    playersToRob.add(new RobPlayerInfo(playerInfo[s.getOwner()]));
+                                    int index = playersToRob.size() - 1;
+                                    playersToRob.get(index).setNumCards(p.getNumCards());
+                                    playersToRob.get(index).setLocation(hexLoc);
+                                    break;
+                                }
+                            } 
+                            else //if city
+                            {
+                                City c = (City) obj;
+                                if(c.getOwner() == p.getPlayerIndex())
+                                {
+                                    playersToRob.add(new RobPlayerInfo(playerInfo[c.getOwner()]));
+                                    int index = playersToRob.size() - 1;
+                                    playersToRob.get(index).setNumCards(p.getNumCards());
+                                    playersToRob.get(index).setLocation(hexLoc);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            /*int index = 0;
+            for(Object obj : objects)
+            {
+                if(obj != null)
+                {
+                    if(obj instanceof Settlement)
+                    {
+                        Settlement s = (Settlement) obj;
+                        if(s.getOwner() != game.getPlayer().getPlayerID())
+                        {
+                            playersToRob.add(new RobPlayerInfo(playerInfo[s.getOwner()]));
+                            Player[] p = game.getPlayers();
+                            playersToRob.get(index).setNumCards(p[s.getOwner()].getNumCards());
+                            playersToRob.get(index).setLocation(hexLoc);
+                        }
+                    }
+                    else //if(obj instanceof City)
+                    {
+                        City c = (City) obj;
+                        if(c.getOwner() != game.getPlayer().getPlayerID())
+                        {
+                            playersToRob.add(new RobPlayerInfo(playerInfo[c.getOwner()]));
+                            Player[] p = game.getPlayers();
+                            playersToRob.get(index).setNumCards(p[c.getOwner()].getNumCards());
+                            playersToRob.get(index).setLocation(hexLoc);
+                        }
+                    }
+                    
+                    index++;
+                }
+            }*/
+            RobPlayerInfo[] arr;
+            if(playersToRob.isEmpty())
+            {
+                arr = null;
+            }
+            else
+            {
+                arr = new RobPlayerInfo[playersToRob.size()];
+                for(int i = 0; i < playersToRob.size(); i++)
+                {
+                    arr[i] = playersToRob.get(i);
+                }
+            }
+            return arr;
+        }
+	//---------------------------------------------------------------------------------
 	public boolean checkGameFull()
 	{
 		ListGamesResponse response = proxy.listGames();
 		int gameId = proxy.getGameId();
 		GameInfo[] games = response.getGameListObject();
-		// check the games in the game list for matching desired id and for
-		// capacity less than
-		for (int i = 0; i < games.length; i++)
+		//check the games in the game list for matching desired id and for capacity less than 
+		for(int i = 0; i < games.length; i++)
 		{
-			if (gameId == games[i].getId())
+			if(gameId == games[i].getId())
 			{
-				for (int j = 0; j < games[i].getPlayers().size(); j++)
+				for(int j = 0; j <games[i].getPlayers().size(); j++ )
 				{
-
-					if (games[i].getPlayers().size() < 4
-							|| games[i].getPlayers().get(j).getId() == -1)
+					
+					if(games[i].getPlayers().size() < 4 || games[i].getPlayers().get(j).getId() == -1)
 					{
 						return false;
 					}
@@ -1108,79 +909,84 @@ public class ModelFacade extends Observable implements IModelFacade
 		}
 		return true;
 	}
-
-	// ---------------------------------------------------------------------------------
-	/**
-	 * @return the gameId from the server model
-	 */
+	
+	//---------------------------------------------------------------------------------
 	public int getGameId()
 	{
 		return proxy.getGameId();
 	}
 
-	// ---------------------------------------------------------------------------------
-
+	//---------------------------------------------------------------------------------
+	
 	/***
-	 * Will call the list games and pull the players from there as it is in the
-	 * desired format for parts of the view controllers. Different from the
-	 * players stored in the game object.
-	 * 
-	 * @return the players info for this game model
+	 * Will call the list games and pull the players from there as it is in the desired format for parts of the view controllers.
+	 * Different from the players stored in the game object.
+	 * @return
 	 */
 	public PlayerInfo[] getPlayerInfoList()
 	{
 		ListGamesResponse response = proxy.listGames();
-		if (!response.isValid())
-			return null;
+		if (!response.isValid()) return null;
 		setGameInfo(response.getGameListObject(gameInfo.getId()));
 		players = gameInfo.getPlayers().toArray(new PlayerInfo[0]);
 		return players;
 
-		// The following code repeats what response.getGameListObject() already
-		// does:
-
-		/*
-		 * if(!response.isValid()) { return null; } int gameId =
-		 * proxy.getGameId(); GameInfo[] games = response.getGameListObject();
-		 * 
-		 * int gameindex = -1; int numPlayers = 0; for(int i = 0; i <
-		 * games.length; i++) { if(gameId == games[i].getId()) { gameindex = i;
-		 * for(int j = 0; j <games[i].getPlayers().size(); j++ ) {
-		 * 
-		 * if(games[i].getPlayers().get(j).getId() != -1) { numPlayers ++;
-		 * 
-		 * }
-		 * 
-		 * } break; } }
-		 * 
-		 * players = new PlayerInfo[numPlayers]; for(int k = 0; k < numPlayers;
-		 * k++) { players[k] = games[gameindex].getPlayers().get(k); }
-		 */
+		
+// The following code repeats what response.getGameListObject() already does:
+		
+/*                if(!response.isValid())
+                {
+                    return null;
+                }
+		int gameId = proxy.getGameId();
+		GameInfo[] games = response.getGameListObject();
+		
+		int gameindex = -1;
+		int numPlayers = 0;
+		for(int i = 0; i < games.length; i++)
+		{
+			if(gameId == games[i].getId())
+			{
+				gameindex = i;
+				for(int j = 0; j <games[i].getPlayers().size(); j++ )
+				{
+					
+					if(games[i].getPlayers().get(j).getId() != -1)
+					{
+						numPlayers ++;
+					
+					}
+					
+				}
+				break;
+			}
+		}
+		
+		players = new PlayerInfo[numPlayers];
+		for(int k = 0; k < numPlayers; k++)
+		{
+			players[k] = games[gameindex].getPlayers().get(k);
+		}
+*/		
+		
 	}
 
-	// ---------------------------------------------------------------------------------
-	/**
-	 * Checks to see if the game is full of players
-	 * 
-	 * @return true if the game has 4 players
-	 */
+	//---------------------------------------------------------------------------------
 	public boolean isGameFull()
 	{
 		ListGamesResponse response = proxy.listGames();
-		if (!response.isValid())
-			return false;
+		if (!response.isValid()) return false;
 		setGameInfo(response.getGameListObject(gameInfo.getId()));
-		return gameInfo.getPlayers().size() == 4;
+		return gameInfo.getPlayers().size()==4;
 	}
-
-	// ---------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	public Player[] getPlayers()
 	{
 		return game.getPlayers();
 	}
-
+	
 }
 
-// ================================================================================
-// END
-// ================================================================================
+	//================================================================================
+	// END
+	//================================================================================

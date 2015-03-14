@@ -49,7 +49,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	private void initPlayers()
 	{
 		Player[] players = ModelFacade.getInstance().getPlayers();
-		Player player = ModelFacade.getInstance().getGame().getPlayer();
+		Player player = ModelFacade.getInstance().getPlayer();
 		
 		getView().setLocalPlayerColor(player.getColor());
 		

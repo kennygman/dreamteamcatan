@@ -5,12 +5,24 @@ public class User
 	private int id;
 	private String name;
 	private String password;
+	private boolean loggedIn;
 	
 	public User(int id, String name, String password)
 	{
 		this.id = id;
 		this.name=name;
 		this.password=password;
+		this.loggedIn = false;
+	}
+
+	public boolean isLoggedIn()
+	{
+		return loggedIn;
+	}
+
+	public void setLoggedIn(boolean loggedIn)
+	{
+		this.loggedIn = loggedIn;
 	}
 
 	public int getId()

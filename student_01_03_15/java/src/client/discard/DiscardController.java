@@ -263,7 +263,7 @@ public class DiscardController extends Controller implements
 
 	private void initDiscardValues()
 	{
-		Resources r = ModelFacade.getInstance().getGame().getPlayer()
+		Resources r = ModelFacade.getInstance().getPlayer()
 				.getResources();
 		this.maxBrick = r.getResourceAmount(ResourceType.BRICK);
 		this.maxOre = r.getResourceAmount(ResourceType.ORE);

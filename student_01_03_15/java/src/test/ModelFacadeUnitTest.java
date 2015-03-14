@@ -402,7 +402,7 @@ public class ModelFacadeUnitTest
 		game.getTurnTracker().setStatus("Discarding");
 		boolean result = true;
 		
-		Player player = game.getPlayer();
+		Player player = game.getPlayer(ModelFacade.getInstance().getPlayerInfo().getPlayerIndex());
 		
 		if(!ModelFacade.getInstance().CanDiscardCards(player.getResources()))
 		{

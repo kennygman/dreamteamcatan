@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import shared.response.GameListObject;
+import shared.response.PlayerListObject;
 import model.player.Developments;
 import model.player.Resources;
 import model.player.Player;
@@ -20,15 +23,41 @@ public class Game
 	private int version;
 	private int winner;
 
-	/**
-	 * Get the player from the players array that is using this game model
-	 * 
-	 * @return player that the current game model is being used by
-	 */
-	public Player getPlayer()
+	public void initialize()
 	{
-		return players[ModelFacade.getInstance().getPlayerInfo()
-				.getPlayerIndex()];
+		// Add model initialize methods here
+		players = new Player[4];
+	}
+
+	public GameListObject getGameListObject()
+	{
+		GameListObject gameObject = new GameListObject();
+		gameObject.title = title;
+		gameObject.players = getPlayerListObject(gameObject);
+		return gameObject;
+	}
+
+	public ArrayList<PlayerListObject> getPlayerListObject(
+			GameListObject gameObject)
+	{
+		PlayerListObject playerObject;
+		ArrayList<PlayerListObject> playerList = new ArrayList<PlayerListObject>();
+		for (Player p : players)
+		{
+			playerObject = new PlayerListObject();
+			playerObject.color = p.getColor().name();
+			playerObject.id = p.getPlayerID();
+			playerObject.name = p.getName();
+			playerList.add(playerObject);
+		}
+		return playerList;
+	}
+
+	public Player getPlayer(int index)
+	{
+		if (index > 3)
+			return null;
+		return players[index];
 	}
 
 	public int getPlayerId()
@@ -51,26 +80,6 @@ public class Game
 		this.title = title;
 	}
 
-	// public boolean canInitGame()
-	// {
-	// //returns false if it cant initialize
-	// return true;
-	// }
-	// public Board createBoard()
-	// {
-	// return new Board();
-	// }
-	// public void endGame()
-	// {
-	//
-	// }
-
-	/**
-	 * Updates the current game with a new game
-	 * 
-	 * @param newGame
-	 *            game to update the old game with
-	 */
 	public void update(Game newGame)
 	{
 		map.update(newGame.getBoard());
@@ -180,9 +189,6 @@ public class Game
 		this.map = board;
 	}
 
-	/**
-	 * Calls sort on the map/Board
-	 */
 	public void sortBoard()
 	{
 		map.sort();

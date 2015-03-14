@@ -85,8 +85,8 @@ public class MapController extends Controller implements IMapController , Observ
                     ModelFacade.getInstance().getPoller().stop();
                     if(ModelFacade.getInstance().checkGameFull())
                     {
-                        int roads = ModelFacade.getInstance().getGame().getPlayer().getRoads();
-                        int settlements = ModelFacade.getInstance().getGame().getPlayer().getSettlements();
+                        int roads = ModelFacade.getInstance().getPlayer().getRoads();
+                        int settlements = ModelFacade.getInstance().getPlayer().getSettlements();
                         if((roads == 15 || (roads == 14 && settlements == 4)) && !isOpen)
                         {                 
                             isOpen = true;

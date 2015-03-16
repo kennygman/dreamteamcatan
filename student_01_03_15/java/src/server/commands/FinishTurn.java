@@ -6,11 +6,13 @@ import shared.parameters.FinishTurnParam;
 public class FinishTurn implements ICommand
 {
 	private FinishTurnParam param;
+	private Game game;
 	
-	public FinishTurn(FinishTurnParam param)
+	public FinishTurn(FinishTurnParam param, Game game)
 	{
 		super();
 		this.param = param;
+		this.game=game;
 	}
 
 	/**
@@ -18,7 +20,7 @@ public class FinishTurn implements ICommand
 	 * Set's the current Player's turn to the next Player's turn.
 	 */
 	@Override
-	public void execute(Game game)
+	public void execute()
 	{
 		// TODO Auto-generated method stub
 

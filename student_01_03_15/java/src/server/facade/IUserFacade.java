@@ -6,18 +6,17 @@ import shared.response.LoginResponse;
 public interface IUserFacade
 {
 	/**
-	 * This method validates the credentials through the ModelFacade
-	 * then validates if the credentials match a valid User for the server
+	 * This method validates if the credentials match a valid User for the server
 	 * @param param Login parameters for the command
-	 * @return login response
+	 * @return login response: TRUE if valid and populated with name and UserId, FALSE otherwise
 	 */
 	LoginResponse login(CredentialsParam param);
 	
 	/**
-	 * This method validates the credentials through the ModelFacade
-	 * then creates and adds a new User account the the server User list
+	 * This method validates if the user can be registered then creates and adds a new User
+	 * account to the UserManager
 	 * @param param Register parameters for the command
-	 * @return register response
+	 * @return register response: TRUE if valid and populated with name and UserId, FALSE otherwise
 	 */
 	LoginResponse register(CredentialsParam param);
 }

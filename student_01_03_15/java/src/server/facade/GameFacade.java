@@ -1,35 +1,23 @@
 package server.facade;
 
-import java.util.Map;
 import model.Game;
+import server.GameManager;
 import shared.parameters.AddAiParam;
-import shared.response.CommandResponse;
-import shared.response.GameModelResponse;
-import shared.response.ListAIResponse;
-import shared.response.StandardResponse;
+import shared.response.*;
 
 public class GameFacade implements IGameFacade
 {
-        private Map<Integer, Game> games;
+    private GameManager games;
+    
+    public GameFacade(GameManager games)
+    {
+    	this.games=games;
+    }
+    
 	@Override
 	public GameModelResponse getGameModel(int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public StandardResponse addAI(AddAiParam param, int id)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ListAIResponse listAI(int id)
-	{
-		// TODO Auto-generated method stub
-		return null;
+		return buildGameResponse(games.getGame(id));
 	}
 
 	@Override
@@ -53,4 +41,33 @@ public class GameFacade implements IGameFacade
 		return null;
 	}
 
+	@Override
+	public StandardResponse addAI(AddAiParam param, int id)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ListAIResponse listAI(int id)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private GameModelResponse buildGameResponse(Game game)
+	{
+		GameModelResponse response = new GameModelResponse();
+    	if (game != null)
+    	{
+    		 response.setGame(game);
+    		 response.setValid(true);
+    	}
+    	else
+    	{
+    		response.setValid(false); 
+    	}
+    	
+    	return response;
+	}
 }

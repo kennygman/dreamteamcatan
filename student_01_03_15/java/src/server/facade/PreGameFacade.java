@@ -1,5 +1,6 @@
 package server.facade;
 
+import server.GameManager;
 import shared.parameters.AddAiParam;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
@@ -11,7 +12,13 @@ import shared.response.StandardResponse;
 
 public class PreGameFacade implements IPreGameFacade
 {
+	private GameManager games;
 
+	public PreGameFacade(GameManager games)
+	{
+		this.games=games;
+	}
+	
 	@Override
 	public StandardResponse join(JoinGameParam param)
 	{

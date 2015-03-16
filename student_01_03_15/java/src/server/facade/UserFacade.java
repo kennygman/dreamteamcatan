@@ -1,26 +1,45 @@
 package server.facade;
 
-import java.util.Map;
 import server.User;
+import server.UserManager;
 import shared.parameters.CredentialsParam;
 import shared.response.LoginResponse;
 
 public class UserFacade implements IUserFacade
 {
-    private Map<Integer, User> users;
+    private UserManager users;
     
+    public UserFacade(UserManager users)
+    {
+    	this.users=users;
+    }
+	
     @Override
     public LoginResponse login(CredentialsParam param)
     {
-            // TODO Auto-generated method stub
-            return null;
+    	return buildResponse(users.getUser(param));
     }
 
     @Override
     public LoginResponse register(CredentialsParam param)
     {
-            // TODO Auto-generated method stub
-            return null;
+    	return buildResponse(users.add(param));
+    }
+    
+    private LoginResponse buildResponse(User user)
+    {
+       	LoginResponse response;
+    	if (user != null)
+    	{
+    		 response = new LoginResponse(true, user.getId());
+    		 response.setPlayerName(user.getName());
+    	}
+    	else
+    	{
+    		response = new LoginResponse(false);
+    	}
+    	
+    	return response;
     }
 
 }

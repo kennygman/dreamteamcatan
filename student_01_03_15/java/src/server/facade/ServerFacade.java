@@ -1,14 +1,7 @@
 package server.facade;
 
-import model.Game;
-import model.ModelFacade;
-
-import java.util.*;
-
-import client.proxy.IProxy;
-import server.User;
-import server.commands.ICommand;
-import server.commands.JoinGame;
+import server.GameManager;
+import server.UserManager;
 import shared.parameters.*;
 import shared.response.*;
 
@@ -18,8 +11,15 @@ public class ServerFacade
         private static IPreGameFacade pregameInstance;
         private static IGameFacade gameInstance;
         private static IMovesFacade movesInstance;
+        
+    private static UserManager users;
+    private static GameManager games;
     
-	public ServerFacade() {}
+	public ServerFacade()
+	{
+		users = new UserManager();
+		games = new GameManager();
+	}
 	
 	// ===============================================================================
 	// SINGLETON IMPLEMENTATION
@@ -27,9 +27,9 @@ public class ServerFacade
         
 	public static void createInstance()
 	{
-            userInstance = new UserFacade();
-            pregameInstance = new PreGameFacade();
-            gameInstance = new GameFacade();
+            userInstance = new UserFacade(users);
+            pregameInstance = new PreGameFacade(games);
+            gameInstance = new GameFacade(games);
             movesInstance = new MovesFacade();
 	}
         
@@ -46,9 +46,9 @@ public class ServerFacade
             else*/
             //{
             
-                userInstance = new UserFacade();
-                pregameInstance = new PreGameFacade();
-                gameInstance = new GameFacade();
+                userInstance = new UserFacade(users);
+                pregameInstance = new PreGameFacade(games);
+                gameInstance = new GameFacade(games);
                 movesInstance = new MovesFacade();
             //}
 	}

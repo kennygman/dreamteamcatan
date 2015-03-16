@@ -1,43 +1,45 @@
 package server.facade;
 
-import java.util.List;
-import java.util.Map;
-import server.commands.ICommand;
-import shared.parameters.AcceptTradeParam;
-import shared.parameters.BuildCityParam;
-import shared.parameters.BuildRoadParam;
-import shared.parameters.BuildSettlementParam;
-import shared.parameters.BuyDevCardParam;
-import shared.parameters.DiscardCardsParam;
-import shared.parameters.FinishTurnParam;
-import shared.parameters.MaritimeTradeParam;
-import shared.parameters.OfferTradeParam;
-import shared.parameters.PlayMonopolyParam;
-import shared.parameters.PlayMonumentParam;
-import shared.parameters.PlayRoadBuildingParam;
-import shared.parameters.PlaySoldierParam;
-import shared.parameters.PlayYearOfPlentyParam;
-import shared.parameters.RobPlayerParam;
-import shared.parameters.RollNumParam;
-import shared.parameters.SendChatParam;
+import model.Game;
+import model.ModelFacade;
+import server.GameManager;
+import server.commands.*;
+import shared.parameters.*;
 import shared.response.GameModelResponse;
 
 public class MovesFacade implements IMovesFacade
 {
-        private Map<Integer, List<ICommand>> commands;
+	private GameManager games;
+	
+	public MovesFacade(GameManager games)
+	{
+		this.games=games;
+	}
     
 	@Override
 	public GameModelResponse sendChat(SendChatParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Game game = games.getGame(id);
+		SendChat cmd = new SendChat(param, game);
+		
+		// CanDo? goes here
+		if (true)
+		{
+			cmd.execute();
+			games.addCommand(id, cmd);
+		}
+		return getResponse(id);
 	}
 
 	@Override
 	public GameModelResponse acceptTrade(AcceptTradeParam param, int id)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		if (ModelFacade.getInstance().canAcceptTrade())
+		{
+		
+		}
+		return getResponse(id);
 	}
 
 	@Override
@@ -146,4 +148,10 @@ public class MovesFacade implements IMovesFacade
 		return null;
 	}
 
+	private GameModelResponse getResponse(int id)
+	{
+		GameModelResponse response = new GameModelResponse();
+		response.setGame(games.getGame(id));
+		return response;
+	}
 }

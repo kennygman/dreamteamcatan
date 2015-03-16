@@ -1,7 +1,9 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import server.commands.ICommand;
 import model.Game;
@@ -9,12 +11,12 @@ import model.Game;
 public class GameManager
 {
 	private List<Game> games;
-	private List<ICommand> commands;
+	private Map<Integer, List<ICommand>> commands;
 	
 	public GameManager()
 	{
 		games = new ArrayList<>();
-		commands = new ArrayList<>(); 
+		commands = new HashMap<>(); 
 	}
 	
 	/**
@@ -57,21 +59,26 @@ public class GameManager
 	}
 	
 	/**
-	 * Appends command to the list
+	 * Appends command to list for the specified game
+	 * @param id the game's id
 	 * @param command the command
 	 */
-	public void addCommand(ICommand command)
+	public void addCommand(int id, ICommand command)
 	{
-		commands.add(command);
+		List<ICommand> list = commands.get(id);
+		if (list == null) list = new ArrayList<ICommand>();
+		list.add(command);
+		commands.put(id, list);
 	}
 	
 	/**
-	 * Returns the list of commands
+	 * Returns the list of commands for the specified game
+	 * @param id the game's id
 	 * @return the list
 	 */
-	public List<ICommand> getCommands()
+	public List<ICommand> getCommands(int id)
 	{
-		return commands;
+		return commands.get(id);
 	}
 	
 	/**

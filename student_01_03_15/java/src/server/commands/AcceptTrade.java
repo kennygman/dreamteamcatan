@@ -7,11 +7,13 @@ public class AcceptTrade implements ICommand
 {
 
 	private AcceptTradeParam param;
+	private Game game;
 	
-	public AcceptTrade(AcceptTradeParam param)
+	public AcceptTrade(AcceptTradeParam param, Game game)
 	{
 		super();
 		this.param = param;
+		this.game=game;
 	}
 
 	/**
@@ -19,7 +21,7 @@ public class AcceptTrade implements ICommand
 	 * then removes the trade offer from the game.
 	 */
 	@Override
-	public void execute(Game game)
+	public void execute()
 	{
 		// TODO Auto-generated method stub
 		

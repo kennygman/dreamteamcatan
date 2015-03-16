@@ -6,11 +6,13 @@ import shared.parameters.BuildCityParam;
 public class BuildCity implements ICommand
 {
 	private BuildCityParam param;
+	private Game game;
 	
-	public BuildCity(BuildCityParam param)
+	public BuildCity(BuildCityParam param, Game game)
 	{
 		super();
 		this.param = param;
+		this.game=game;
 	}
 
 	/**
@@ -19,7 +21,7 @@ public class BuildCity implements ICommand
 	 * Player's pieces.
 	 */
 	@Override
-	public void execute(Game game)
+	public void execute()
 	{
 		// TODO Auto-generated method stub
 

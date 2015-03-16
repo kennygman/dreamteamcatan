@@ -6,11 +6,13 @@ import shared.parameters.BuildRoadParam;
 public class BuildRoad implements ICommand
 {
 	private BuildRoadParam param;
-	
-	public BuildRoad(BuildRoadParam param)
+	private Game game;
+
+	public BuildRoad(BuildRoadParam param, Game game)
 	{
 		super();
 		this.param = param;
+		this.game=game;
 	}
 
 	/**
@@ -19,7 +21,7 @@ public class BuildRoad implements ICommand
 	 * updates longest road if applicable.
 	 */
 	@Override
-	public void execute(Game game)
+	public void execute()
 	{
 		// TODO Auto-generated method stub
 

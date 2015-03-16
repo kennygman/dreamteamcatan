@@ -6,11 +6,13 @@ import shared.parameters.DiscardCardsParam;
 public class DiscardCards implements ICommand
 {
 	private DiscardCardsParam param;
+	private Game game;
 	
-	public DiscardCards(DiscardCardsParam param)
+	public DiscardCards(DiscardCardsParam param, Game game)
 	{
 		super();
 		this.param = param;
+		this.game=game;
 	}
 
 	/**
@@ -18,7 +20,7 @@ public class DiscardCards implements ICommand
 	 * If Player is last in list then sets model status to 'Robbing'.
 	 */
 	@Override
-	public void execute(Game game)
+	public void execute()
 	{
 		// TODO Auto-generated method stub
 

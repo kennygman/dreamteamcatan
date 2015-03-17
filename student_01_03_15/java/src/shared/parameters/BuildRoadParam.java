@@ -27,5 +27,6 @@ public class BuildRoadParam {
 	public void setRoadLocation(EdgeLocation roadLocation) {
 		this.roadLocation = roadLocation;
 	}
+	public boolean isFree(){return free;}
 
 }

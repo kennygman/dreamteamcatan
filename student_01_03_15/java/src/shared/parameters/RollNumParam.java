@@ -10,5 +10,7 @@ public class RollNumParam {
 		playerIndex = p;
 		number = n;
 	}
+	
+	public int getNumber() {return number;}
 
 }

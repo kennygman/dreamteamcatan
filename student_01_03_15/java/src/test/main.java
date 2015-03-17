@@ -7,10 +7,11 @@ public class main {
 
 		String[] testClasses = new String[] 
 		{
-				"test.ProxyRegisterTests","test.ProxyLoginTests"
-				,"test.ProxyGameStartTests","test.ProxyInGameTests",
-				"test.ModelFacadeUnitTest"
-				,"test.PollerUnitTests"
+//				"test.ProxyRegisterTests","test.ProxyLoginTests"
+//				,"test.ProxyGameStartTests","test.ProxyInGameTests",
+//				"test.ModelFacadeUnitTest"
+//				,"test.PollerUnitTests"
+				"test.UserFacadeTests"
 		};
 		org.junit.runner.JUnitCore.main(testClasses);
 	}

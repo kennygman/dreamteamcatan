@@ -18,11 +18,15 @@ public class Server
 	private Server()
 	{
 		ServerFacade.createInstance();
+		SERVER_PORT_NUMBER = 8081;
 	}
 
 	private Server(String[] args)
 	{
-		SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
+		if(args.length ===1)
+			SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
+		else
+			SERVER_PORT_NUMBER = 8081;
 	}
 
 	private void run()

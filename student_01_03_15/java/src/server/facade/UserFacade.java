@@ -14,18 +14,21 @@ public class UserFacade implements IUserFacade
     	this.users=users;
     }
 	
+	//------------------------------------------------------------------------------
     @Override
     public LoginResponse login(CredentialsParam param)
     {
     	return buildResponse(users.getUser(param));
     }
 
+	//------------------------------------------------------------------------------
     @Override
     public LoginResponse register(CredentialsParam param)
     {
     	return buildResponse(users.add(param));
     }
     
+	//------------------------------------------------------------------------------
     private LoginResponse buildResponse(User user)
     {
        	LoginResponse response;
@@ -42,4 +45,5 @@ public class UserFacade implements IUserFacade
     	return response;
     }
 
+	//------------------------------------------------------------------------------
 }

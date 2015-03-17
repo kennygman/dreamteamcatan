@@ -35,18 +35,20 @@ public class ServerFacade
 
 	public static void createInstance(boolean testing)
 	{
-		/*
-		 * if(testing) { userInstance = new MockUserFacade(); pregameInstance =
-		 * new MockPreGameFacade(); gameInstance = new MockGameFacade();
-		 * movesInstance = new MockMovesFacade(); } else
-		 */
-		// {
-
-		userInstance = new UserFacade(users);
-		pregameInstance = new PreGameFacade(games);
-		gameInstance = new GameFacade(games);
-		movesInstance = new MovesFacade(games);
-		// }
+		 if(testing)
+		 {
+			 userInstance = new MockUserFacade();
+			 //pregameInstance =new MockPreGameFacade();
+			 //gameInstance = new MockGameFacade();
+			 //movesInstance = new MockMovesFacade();
+		 }
+		 else
+		{
+			userInstance = new UserFacade(users);
+			pregameInstance = new PreGameFacade(games);
+			gameInstance = new GameFacade(games);
+			movesInstance = new MovesFacade(games);
+		}
 	}
 
 	// ===============================================================================

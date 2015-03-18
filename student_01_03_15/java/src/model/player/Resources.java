@@ -18,6 +18,16 @@ public class Resources
 		wood = wheat = sheep = brick = ore = 0;
 	}
 
+	public Resources init()
+	{
+		wood=24;
+		sheep=24;
+		wheat=24;
+		brick=24;
+		ore=24;
+		return this;
+	}
+	
 	public Resources(int wood, int sheep, int wheat, int brick, int ore)
 	{
 		this.wood = wood;

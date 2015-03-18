@@ -21,6 +21,23 @@ public enum HexType
         }
         return ht;
     }
+    public static String asString(HexType ht)
+    {
+    	String s = "desert";
+    	if (ht != null)
+    	{
+    		switch (ht)
+    		{
+				case WOOD: s = "wood"; break;
+				case BRICK: s = "brick"; break;
+				case SHEEP: s = "sheep"; break;
+				case WHEAT: s = "wheat"; break;
+				case ORE: s = "ore"; break;
+				default: break;
+    		}
+    	}
+    	return s;
+    }
 }
 
 

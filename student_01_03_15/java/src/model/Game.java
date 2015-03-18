@@ -23,10 +23,21 @@ public class Game
 	private int version;
 	private int winner;
 
-	public void initialize()
+	// Add model initialize methods here
+	public void initialize(String title, boolean randHexes, boolean randNumbers, boolean randPorts)
 	{
-		// Add model initialize methods here
+		this.title = title;
+		version = 0;
+		winner = -1;
+
 		players = new Player[4];
+		map = new Board().init(randHexes, randNumbers, randPorts);
+		bank = new Resources().init();
+		deck = new Developments().init();
+		chat = new Chat().init();
+		log = new Log().init();
+		turnTracker = new TurnTracker().init();
+		tradeOffer = null;
 	}
 
 	public GameListObject getGameListObject()

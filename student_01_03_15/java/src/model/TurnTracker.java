@@ -2,6 +2,12 @@ package model;
 
 public class TurnTracker
 {
+	public static String PLAYING = "Playing";
+	public static String ROBBING = "Robbing";
+	public static String FIRSTROUND = "FirstRound";
+	public static String SECONDROUND = "SecondRound";
+	public static String TRADING = "Trading";
+	
 	private int currentTurn;
 	private String status;
 	int longestRoad;
@@ -22,6 +28,14 @@ public class TurnTracker
 		this.setLargestArmy(t.getLargestArmy());
 	}
 
+	public TurnTracker init()
+	{
+		currentTurn = 0;
+		status = FIRSTROUND;
+		longestRoad = -1;
+		largestArmy = -1;
+		return this;
+	}
 	public int getCurrentTurn()
 	{
 		return currentTurn;

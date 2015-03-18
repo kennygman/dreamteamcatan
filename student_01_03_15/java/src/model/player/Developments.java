@@ -9,7 +9,22 @@ public class Developments
 	int roadBuilding;
 	int soldier;
 	int yearOfPlenty;
-
+	
+	public void reset()
+	{
+		init();
+	}
+	
+	public Developments init()
+	{
+		monopoly = 2;
+		monument = 5;
+		roadBuilding = 2;
+		soldier = 14;
+		yearOfPlenty = 2;
+		return this;
+	}
+	
 	/**
 	 * Checks to see if the DevCardType given is contained in the developments
 	 * 

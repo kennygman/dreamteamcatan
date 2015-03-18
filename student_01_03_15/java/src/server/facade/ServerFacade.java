@@ -18,6 +18,7 @@ public class ServerFacade
 	public ServerFacade()
 	{
 		users = new UserManager();
+		users.initAi();
 		games = new GameManager();
 	}
 
@@ -38,9 +39,9 @@ public class ServerFacade
 		 if(testing)
 		 {
 			 userInstance = new MockUserFacade();
-			 //pregameInstance =new MockPreGameFacade();
-			 //gameInstance = new MockGameFacade();
-			 //movesInstance = new MockMovesFacade();
+			 pregameInstance =new MockPreGameFacade();
+			 gameInstance = new MockGameFacade();
+			 movesInstance = new MockMovesFacade();
 		 }
 		 else
 		{

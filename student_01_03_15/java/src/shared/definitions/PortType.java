@@ -25,5 +25,23 @@ public enum PortType
     	PortType[] list = {WOOD, BRICK, SHEEP, WHEAT, ORE, THREE};
     	return list;
     }
+    
+    public static String asString(PortType pt)
+    {
+    	String s = null;
+    	if (pt != null)
+    	{
+    		switch(pt)
+    		{
+	    		case WOOD: s = "wood"; break;
+	    		case BRICK: s = "brick"; break;
+	    		case SHEEP: s = "sheep"; break;
+	    		case WHEAT: s = "wheat"; break;
+	    		case ORE: s = "ore"; break;
+	    		default: break;
+    		}
+    	}
+    	return s;
+    }
 }
 

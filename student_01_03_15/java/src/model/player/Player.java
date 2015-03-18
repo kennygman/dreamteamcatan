@@ -27,7 +27,6 @@ public class Player
 	private Developments newDevCards;
 	private Developments oldDevCards;
 	private String color;
-	private CatanColor catanColor;
 
 	/**
 	 * All players will begin with boolean isTurn as false,0 VP
@@ -36,7 +35,19 @@ public class Player
 	 */
 	public Player()
 	{
-
+		reset();
+	}
+	
+	public Player(String name, String color, int playerIndex, int playerId)
+	{
+		this.name=name;
+		this.color=color;
+		this.playerIndex=playerIndex;
+		this.playerID=playerId;
+	}
+	
+	public void reset()
+	{
 		isTurn = false;
 		discarded = false;
 		playedDevCard = false;
@@ -46,7 +57,6 @@ public class Player
 		roads = 15;
 		settlements = 5;
 		cities = 4;
-
 	}
 
 	/**

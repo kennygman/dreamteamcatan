@@ -30,6 +30,21 @@ public class Board extends Observable
 	private HexLocation robber;
 	private int radius;
 
+	public Board init(boolean r1, boolean r2, boolean r3)
+	{
+		BoardBuilder bb = new BoardBuilder();
+		bb.build(r1, r2, r3);
+		setHexes(bb.getHexes());
+		setPorts(bb.getPorts());
+		roads = new Road[0];
+		settlements = new Settlement[0];
+		cities = new City[0];
+		robber = bb.getRobber();
+		radius = 0;
+		sort();
+		return this;
+	}
+	
 	// --------------------------------------------------------------------------------
 	/**
 	 * This function is called after JSON initializations JSON Model data is
@@ -715,45 +730,6 @@ public class Board extends Observable
 	{
 		this.robber = loc;
 	}
+
 }
 
-// Extra Code for use in PHASE 2
-// --------------------------------------------------------------------------------
-/*
- * public void _initBoard(boolean randTiles, boolean randNumbers, boolean
- * randPorts) { hexTypes = Arrays.asList( HexType.DESERT, HexType.BRICK,
- * HexType.BRICK, HexType.BRICK, HexType.ORE, HexType.ORE, HexType.ORE,
- * HexType.WOOD, HexType.WOOD, HexType.WOOD, HexType.WOOD, HexType.WHEAT,
- * HexType.WHEAT, HexType.WHEAT, HexType.WHEAT, HexType.SHEEP, HexType.SHEEP,
- * HexType.SHEEP, HexType.SHEEP); numbers =
- * Arrays.asList(2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12); ports =
- * Arrays.asList
- * (PortType.ORE,PortType.WHEAT,PortType.SHEEP,PortType.BRICK,PortType.WOOD,
- * PortType.THREE,PortType.THREE,PortType.THREE,PortType.THREE);
- * 
- * if(randTiles) shuffleHexTypes(); if(randNumbers) shuffleHexNumbers();
- * if(randPorts) shuffleHexPorts(); setHexes( _initHexes() ); setHexNum(); }
- * //--
- * --------------------------------------------------------------------------
- * ---- public void _initHexes() { List<Hex> hexes = new ArrayList<>(); for (int
- * i = 0; i < 18; i++) { if (hexTypes.get(i).equals(HexType.DESERT))
- * robber.setLocation(hexLocations.get(i)); hexes.add(new
- * Hex(hexLocations.get(i), hexTypes.get(i), numbers.get(i))); } return hexes; }
- * /
- * /----------------------------------------------------------------------------
- * ---- public void shuffleHexTypes() { Collections.shuffle(hexTypes); }
- * //------
- * --------------------------------------------------------------------------
- * public void shuffleHexNumbers() { Collections.shuffle(numbers); }
- * //----------
- * ---------------------------------------------------------------------- public
- * void shuffleHexPorts() { Collections.shuffle(ports); }
- * //----------------------
- * ---------------------------------------------------------- public void
- * setHexLocations() { hexLocations = new ArrayList<>(); setEdges(); int[] x =
- * {0,1,2,-1,0,1,2,-2,-1,0,1,2,-2,-1,0,1,-2,-1,0}; int[] y =
- * {-2,-2,-2,-1,-1,-1,-1,0,0,0,0,0,1,1,1,1,2,2,2}; for (int i = 0; i < x.length;
- * i++) { hexLocations.add(new HexLocation(x[i], y[i])); } } public void
- * setHexNum() { for (Integer n : numbers) { List<Hex> hexList = new
- * ArrayList<>(); hexNumbers.put(n, hexList); } }
- */

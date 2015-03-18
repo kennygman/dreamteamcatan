@@ -23,7 +23,7 @@ public class Server
 
 	private Server(String[] args)
 	{
-		if(args.length ===1)
+		if(args.length == 1)
 			SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
 		else
 			SERVER_PORT_NUMBER = 8081;

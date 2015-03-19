@@ -68,23 +68,18 @@ public class Server
     
     //--------------------------------------------------------------------------------
 
-    private Server()
-    {
-        ServerFacade.createInstance();
-        SERVER_PORT_NUMBER = 8081;
-    }
+	private Server()
+	{
+		ServerFacade.createInstance();
+	}
 
-    private Server(String[] args)
-    {
-        if(args.length == 1)
-                SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
-        else
-                SERVER_PORT_NUMBER = 8081;
-    }
+	private Server(String[] args)
+	{
+		SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
+	}
 
-    private void run()
-    {
-        System.out.println("===============:" + SERVER_PORT_NUMBER);
+	private void run()
+	{
 
         try
         {
@@ -95,10 +90,10 @@ public class Server
                 return;
         }
 
-        server.setExecutor(null); // use the default executor
-        
         //server.createContext("/docs/api/data", new Handlers.JSONAppender(""));
         //server.createContext("/docs/api/view", new Handlers.BasicFile(""));
+        server.setExecutor(null); // use the default executor
+
 
         //--------------------------------------------------------------------------------
         server.createContext("/user/login", loginHandler);

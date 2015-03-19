@@ -22,10 +22,7 @@ public class ServerFacade
 		games = new GameManager();
 	}
 
-	// ===============================================================================
-	// SINGLETON IMPLEMENTATION
-	// ===============================================================================
-
+	// ---------------------------------------------------------------------------------
 	public static void createInstance()
 	{
 		userInstance = new UserFacade(users);
@@ -34,6 +31,7 @@ public class ServerFacade
 		movesInstance = new MovesFacade(games);
 	}
 
+	// ---------------------------------------------------------------------------------
 	public static void createInstance(boolean testing)
 	{
 		 if(testing)
@@ -53,10 +51,9 @@ public class ServerFacade
 	}
 
 	// ===============================================================================
-	// GAME COMMANDS
+	// HANDLER METHODS
 	// ===============================================================================
 
-	// ---------------------------------------------------------------------------------
 	public static GameModelResponse sendChat(SendChatParam param, int id)
 	{
 		return movesInstance.sendChat(param, id);
@@ -189,10 +186,6 @@ public class ServerFacade
 		return pregameInstance.create(param);
 	}
 
-	// ===============================================================================
-	// SERVER COMMANDS
-	// ===============================================================================
-
 	// ---------------------------------------------------------------------------------
 	public static StandardResponse addAI(AddAiParam param, int id)
 	{
@@ -247,7 +240,5 @@ public class ServerFacade
 		return gameInstance.commands(id);
 	}
 
-	// ===============================================================================
-	// END
-	// ===============================================================================
+	// ---------------------------------------------------------------------------------
 }

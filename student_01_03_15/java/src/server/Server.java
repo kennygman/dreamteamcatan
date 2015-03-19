@@ -2,7 +2,6 @@ package server;
 
 import java.io.*;
 import java.net.*;
-import java.util.logging.*;
 
 import com.sun.net.httpserver.*;
 
@@ -18,20 +17,15 @@ public class Server
 	private Server()
 	{
 		ServerFacade.createInstance();
-		SERVER_PORT_NUMBER = 8081;
 	}
 
 	private Server(String[] args)
 	{
-		if(args.length ===1)
-			SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
-		else
-			SERVER_PORT_NUMBER = 8081;
+		SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
 	}
 
 	private void run()
 	{
-		System.out.println("===============:" + SERVER_PORT_NUMBER);
 
 		try
 		{
@@ -43,6 +37,10 @@ public class Server
 			return;
 		}
 
+		server.createContext("/docs/api/data", new Handlers.JSONAppender(""));
+		server.createContext("/docs/api/view", new Handlers.BasicFile(""));
+
+		
 		server.setExecutor(null); // use the default executor
 
 		/*

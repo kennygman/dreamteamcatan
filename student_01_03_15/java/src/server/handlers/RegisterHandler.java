@@ -33,7 +33,7 @@ public class RegisterHandler  implements HttpHandler {
         String inputLine;
         while((inputLine = buffRead.readLine()) != null)
         {
-                stringBuffer.append(inputLine);
+            stringBuffer.append(inputLine);
         }
 
         exchange.getRequestBody().close();

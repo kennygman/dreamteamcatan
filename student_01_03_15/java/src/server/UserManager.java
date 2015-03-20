@@ -19,9 +19,8 @@ public class UserManager
 		String[] aiNames = {"Sam", "Pete", "Sven", "Kunkka", "Ember Spirit", "Pudge", "Techies"};
 		for (String s : aiNames)
 		{
-			User user = new User(users.size() + 1, s, s.toLowerCase());
+			User user = new User(-(users.size() + 1), s, s.toLowerCase());
 			users.put(s, user);
-			System.out.println("USER: " + user);
 		}
 	}
 	

@@ -19,52 +19,52 @@ public class Server
     // ===============================================================================
     // USER
     // ===============================================================================
-    private LoginHandler loginHandler;
-    private RegisterHandler registerHandler;
+    private LoginHandler loginHandler = new LoginHandler();
+    private RegisterHandler registerHandler = new RegisterHandler();
     
     // ===============================================================================
     // GAMES
     // ===============================================================================
-    private GameListHandler gameListHandler;
-    private CreateGameHandler createGameHandler;
-    private JoinGameHandler joinGameHandler;
-    private SaveGameHandler saveGameHandler;
-    private LoadGameHandler loadGameHandler;
+    private GameListHandler gameListHandler = new GameListHandler();
+    private CreateGameHandler createGameHandler = new CreateGameHandler();
+    private JoinGameHandler joinGameHandler = new JoinGameHandler();
+    private SaveGameHandler saveGameHandler = new SaveGameHandler();
+    private LoadGameHandler loadGameHandler = new LoadGameHandler();
     
     // ===============================================================================
     // GAME
     // ===============================================================================
-    private GameModelHandler gameModelHandler;
-    private ResetHandler resetHandler;
-    private CommandsHandler commandsHandler;
-    private AddAIHandler addAIHandler;
-    private ListAIHandler listAIHandler;
+    private GameModelHandler gameModelHandler = new GameModelHandler();
+    private ResetHandler resetHandler = new ResetHandler();
+    private CommandsHandler commandsHandler = new CommandsHandler();
+    private AddAIHandler addAIHandler = new AddAIHandler();
+    private ListAIHandler listAIHandler = new ListAIHandler();
     
     // ===============================================================================
     // MOVES
     // ===============================================================================
-    private AcceptTradeHandler acceptTradeHandler;
-    private BuildCityHandler buildCityHandler;
-    private BuildRoadHandler buildRoadHandler;
-    private BuildSettlementHandler buildSettlementHandler;
-    private BuyDevCardHandler buyDevCardHandler;
-    private DiscardCardsHandler discardCardsHandler;
-    private FinishTurnHandler finishTurnHandler;
-    private MaritimeTradeHandler maritimeTradeHandler;
-    private OfferTradeHandler offerTradeHandler;
-    private PlayMonopolyHandler playMonopolyHandler;
-    private PlayMonumentHandler playMonumentHandler;
-    private PlayRoadBuildingHandler playRoadBuildHandler;
-    private PlaySoldierHandler playSoldierHandler;
-    private PlayYearOfPlentyHandler playYearHandler;
-    private RobPlayerHandler robPlayerHandler;
-    private RollNumberHandler rollNumberHandler;
-    private SendChatHandler sendChatHandler;
+    private AcceptTradeHandler acceptTradeHandler = new AcceptTradeHandler();
+    private BuildCityHandler buildCityHandler = new BuildCityHandler();
+    private BuildRoadHandler buildRoadHandler = new BuildRoadHandler();
+    private BuildSettlementHandler buildSettlementHandler = new BuildSettlementHandler();
+    private BuyDevCardHandler buyDevCardHandler = new BuyDevCardHandler();
+    private DiscardCardsHandler discardCardsHandler = new DiscardCardsHandler();
+    private FinishTurnHandler finishTurnHandler = new FinishTurnHandler();
+    private MaritimeTradeHandler maritimeTradeHandler = new MaritimeTradeHandler();
+    private OfferTradeHandler offerTradeHandler = new OfferTradeHandler();
+    private PlayMonopolyHandler playMonopolyHandler = new PlayMonopolyHandler();
+    private PlayMonumentHandler playMonumentHandler = new PlayMonumentHandler();
+    private PlayRoadBuildingHandler playRoadBuildHandler = new PlayRoadBuildingHandler();
+    private PlaySoldierHandler playSoldierHandler = new PlaySoldierHandler();
+    private PlayYearOfPlentyHandler playYearHandler = new PlayYearOfPlentyHandler();
+    private RobPlayerHandler robPlayerHandler = new RobPlayerHandler();
+    private RollNumberHandler rollNumberHandler = new RollNumberHandler();
+    private SendChatHandler sendChatHandler = new SendChatHandler();
     
     // ===============================================================================
     // UTIL
     // ===============================================================================
-    private ChangeLogLevelHandler changeLogLevelHandler;
+    private ChangeLogLevelHandler changeLogLevelHandler = new ChangeLogLevelHandler();
     
     //--------------------------------------------------------------------------------
 
@@ -90,8 +90,8 @@ public class Server
                 return;
         }
 
-        //server.createContext("/docs/api/data", new Handlers.JSONAppender(""));
-        //server.createContext("/docs/api/view", new Handlers.BasicFile(""));
+        server.createContext("/docs/api/data", new Handlers.JSONAppender(""));
+        server.createContext("/docs/api/view", new Handlers.BasicFile(""));
         server.setExecutor(null); // use the default executor
 
 

@@ -28,6 +28,11 @@ public class Translator
 		g = new Gson();
 	}
 	
+        public String convert(Object input)
+	{
+		String translation = g.toJson(input);
+		return translation;
+	}
 	
 	public GameModelResponse translateGetGameModel(String input)
 	{		
@@ -47,12 +52,6 @@ public class Translator
 		}
 		
 		return response;
-	}
-
-	public String convert(Object input)
-	{
-		String translation = g.toJson(input);
-		return translation;
 	}
 	
 	public StandardResponse translateStandard(String input)

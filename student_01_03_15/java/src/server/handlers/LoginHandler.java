@@ -26,7 +26,7 @@ public class LoginHandler  implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         Gson g = new Gson();
         
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         InputStreamReader reader = new InputStreamReader(exchange.getRequestBody());
         BufferedReader buffRead = new BufferedReader(reader);
 
@@ -41,8 +41,18 @@ public class LoginHandler  implements HttpHandler {
         
         CredentialsParam param = g.fromJson(stringBuffer.toString(), CredentialsParam.class);
         LoginResponse response = ServerFacade.login(param);
-        String info = g.toJson(response);
-        //Add cookie and "Success"
+        String info = "";
+        //int responseCode = 400;
+        
+        if(response.isValid())
+        {
+            info = "Success";
+            //responseCode = 200;
+        }
+        String cookie = ""; //Generate cookie
+        exchange.getResponseHeaders().add("Set-cookie", cookie);
+        //set Response Code???
+        
         
         OutputStreamWriter writer = new OutputStreamWriter(exchange.getResponseBody());
         writer.write(info);

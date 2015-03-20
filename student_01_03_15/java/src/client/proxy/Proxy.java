@@ -212,18 +212,18 @@ public class Proxy implements IProxy
 	@SuppressWarnings("deprecation")
 	private int decodePlayerId()
 	{
-		if(cookie != null)
-		{
-			StringBuilder cookieParser = new StringBuilder(URLDecoder.decode(cookie));
-			int lastColon = cookieParser.lastIndexOf(":");
-			String id = cookieParser.substring(lastColon +1,cookieParser.length()-1);
-			return Integer.parseInt(id);
+            if(cookie != null)
+            {
+                    StringBuilder cookieParser = new StringBuilder(URLDecoder.decode(cookie));
+                    int lastColon = cookieParser.lastIndexOf(":");
+                    String id = cookieParser.substring(lastColon +1,cookieParser.length()-1);
+                    return Integer.parseInt(id);
 
-		}
-		else
-		{
-			return -1;
-		}
+            }
+            else
+            {
+                    return -1;
+            }
 	}
 	@Override
 	public LoginResponse login(CredentialsParam input) 

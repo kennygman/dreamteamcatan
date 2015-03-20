@@ -17,7 +17,8 @@ public class CommandsHandler  implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //check to see if it is a get or post...
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
 }

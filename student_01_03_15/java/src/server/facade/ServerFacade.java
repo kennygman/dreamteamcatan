@@ -17,14 +17,18 @@ public class ServerFacade
 
 	public ServerFacade()
 	{
+	}
+
+	private static void init()
+	{
 		users = new UserManager();
 		users.initAi();
 		games = new GameManager();
 	}
-
 	// ---------------------------------------------------------------------------------
 	public static void createInstance()
 	{
+		init();
 		userInstance = new UserFacade(users);
 		pregameInstance = new PreGameFacade(games);
 		gameInstance = new GameFacade(games);
@@ -34,6 +38,7 @@ public class ServerFacade
 	// ---------------------------------------------------------------------------------
 	public static void createInstance(boolean testing)
 	{
+		init();
 		 if(testing)
 		 {
 			 userInstance = new MockUserFacade();

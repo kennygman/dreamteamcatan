@@ -38,10 +38,10 @@ public class JoinGameHandler  implements HttpHandler {
         exchange.getRequestBody().close();
         
         //parse cookie & call login before looking at the gson
-
+        int playerId = 0;
         
         JoinGameParam param = g.fromJson(stringBuffer.toString(), JoinGameParam.class);
-        StandardResponse response = ServerFacade.join(param); //add playerId
+        StandardResponse response = ServerFacade.join(param, playerId); //add playerId
         String info = "";
         //int responseCode = 400;
         

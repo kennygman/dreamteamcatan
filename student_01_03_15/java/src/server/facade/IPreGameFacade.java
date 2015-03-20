@@ -17,7 +17,7 @@ public interface IPreGameFacade
 	 * to the UserManager
 	 * @param param Join Game parameters for the command
 	 */
-	StandardResponse join(JoinGameParam param);
+	StandardResponse join(JoinGameParam param, int playerId);
 	
 	/**
 	 * This method validates the command through the ModelFacade

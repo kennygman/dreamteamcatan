@@ -175,9 +175,9 @@ public class ServerFacade
 	}
 
 	// ---------------------------------------------------------------------------------
-	public static StandardResponse join(JoinGameParam param)
+	public static StandardResponse join(JoinGameParam param, int playerId)
 	{
-		return pregameInstance.join(param);
+		return pregameInstance.join(param, playerId);
 	}
 
 	// ---------------------------------------------------------------------------------

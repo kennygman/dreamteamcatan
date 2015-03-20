@@ -28,7 +28,7 @@ public class PreGameFacade implements IPreGameFacade
 	}
 
 	@Override
-	public StandardResponse join(JoinGameParam param)
+	public StandardResponse join(JoinGameParam param, int playerId)
 	{
 		Game game = games.getGame(param.getId());
 		Player[] players = game.getPlayers();

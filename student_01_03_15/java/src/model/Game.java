@@ -44,12 +44,11 @@ public class Game
 	{
 		GameListObject gameObject = new GameListObject();
 		gameObject.title = title;
-		gameObject.players = getPlayerListObject(gameObject);
+		gameObject.players = getPlayerListObject();
 		return gameObject;
 	}
 
-	public ArrayList<PlayerListObject> getPlayerListObject(
-			GameListObject gameObject)
+	public ArrayList<PlayerListObject> getPlayerListObject()
 	{
 		PlayerListObject playerObject;
 		ArrayList<PlayerListObject> playerList = new ArrayList<PlayerListObject>();

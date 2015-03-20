@@ -15,7 +15,7 @@ public class MockPreGameFacade implements IPreGameFacade
 {
 
 	@Override
-	public StandardResponse join(JoinGameParam param)
+	public StandardResponse join(JoinGameParam param, int playerId)
 	{
 		StandardResponse response = new StandardResponse(true);
 		return response;

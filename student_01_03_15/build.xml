@@ -13,8 +13,8 @@
     <property name="java.lib" location="${java.dir}/lib"/>
     
 	<!-- Directory paths for the java server, javascript, and dest dir for the student copy -->
-    <property name="host.arg" value="${host.arg}"/>
-	<property name="port.arg" value="${port.arg}"/>
+    <property name="host.arg" value="localhost"/>
+	<property name="port.arg" value="8081"/>
     <property name="web.arg" value="gameplay"/>
     <property name="options.arg" value="ug"/>
      

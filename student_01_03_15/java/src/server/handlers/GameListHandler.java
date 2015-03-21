@@ -40,14 +40,14 @@ public class GameListHandler  implements HttpHandler {
         
         ListGamesResponse response = ServerFacade.listGames();
         String info = "";
-        //int responseCode = 400;
+        int responseCode = 400;
         
         if(response.isValid())
         {
             info = g.toJson(response.getGameListObject());
-            //responseCode = 200;
+            responseCode = 200;
         }
-        //set Response Code???
+        exchange.sendResponseHeaders(responseCode, 0);
         
         
         OutputStreamWriter writer = new OutputStreamWriter(exchange.getResponseBody());

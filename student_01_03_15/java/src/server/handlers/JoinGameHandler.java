@@ -39,21 +39,24 @@ public class JoinGameHandler  implements HttpHandler {
         exchange.getRequestBody().close();
         
         //parse cookie & call login before looking at the gson
+        
+        //User user = ServerFacade.getUser(playerId);
         User user = new User(0,"","");
         
         JoinGameParam param = g.fromJson(stringBuffer.toString(), JoinGameParam.class);
-        StandardResponse response = ServerFacade.join(param, user); //add playerId
+        StandardResponse response = ServerFacade.join(param, user);
         String info = "";
-        //int responseCode = 400;
+        int responseCode = 400;
         
         if(response.isValid())
         {
             info = "Success";
-            //responseCode = 200;
+            responseCode = 200;
         }
         String cookie = ""; //Modify cookie
+        
         exchange.getResponseHeaders().add("Set-cookie", cookie);
-        //set Response Code???
+        exchange.sendResponseHeaders(responseCode, 0);
         
         
         OutputStreamWriter writer = new OutputStreamWriter(exchange.getResponseBody());

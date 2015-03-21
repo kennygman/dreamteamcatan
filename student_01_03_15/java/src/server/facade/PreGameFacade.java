@@ -37,7 +37,6 @@ public class PreGameFacade implements IPreGameFacade
 		{
 			if (players[i].equals(null))
 			{
-
 				Player newPlayer = new Player();
 				// TODO: set the new players color
 				// how does the player name get set?????

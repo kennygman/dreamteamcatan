@@ -19,7 +19,8 @@
   <script type="text/javascript">
     $(function () {
       window.swaggerUi = new SwaggerUi({
-      url: "http://localhost:8081/docs/api/data",
+      url: window.location.protocol+"//"+window.location.host+"/docs/api/data",
+      // url: "http://localhost:8000/docs/api/data",
       dom_id: "swagger-ui-container",
       supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
       onComplete: function(swaggerApi, swaggerUi){

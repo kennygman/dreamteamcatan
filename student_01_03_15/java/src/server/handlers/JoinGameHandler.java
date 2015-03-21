@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import server.User;
 import server.facade.ServerFacade;
 import shared.parameters.JoinGameParam;
 import shared.response.StandardResponse;
@@ -38,10 +39,10 @@ public class JoinGameHandler  implements HttpHandler {
         exchange.getRequestBody().close();
         
         //parse cookie & call login before looking at the gson
-        int playerId = 0;
+        User user = new User(0,"","");
         
         JoinGameParam param = g.fromJson(stringBuffer.toString(), JoinGameParam.class);
-        StandardResponse response = ServerFacade.join(param, playerId); //add playerId
+        StandardResponse response = ServerFacade.join(param, user); //add playerId
         String info = "";
         //int responseCode = 400;
         

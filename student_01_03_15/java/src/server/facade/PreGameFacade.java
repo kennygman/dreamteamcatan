@@ -8,6 +8,7 @@ import model.Game;
 import model.board.Board;
 import model.player.Player;
 import server.GameManager;
+import server.User;
 import shared.parameters.AddAiParam;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
@@ -28,7 +29,7 @@ public class PreGameFacade implements IPreGameFacade
 	}
 
 	@Override
-	public StandardResponse join(JoinGameParam param, int playerId)
+	public StandardResponse join(JoinGameParam param, User user)
 	{
 		Game game = games.getGame(param.getId());
 		Player[] players = game.getPlayers();

@@ -1,6 +1,7 @@
 package server.facade;
 
 import server.GameManager;
+import server.User;
 import server.UserManager;
 import shared.parameters.*;
 import shared.response.*;
@@ -180,9 +181,9 @@ public class ServerFacade
 	}
 
 	// ---------------------------------------------------------------------------------
-	public static StandardResponse join(JoinGameParam param, int playerId)
+	public static StandardResponse join(JoinGameParam param, User user)
 	{
-		return pregameInstance.join(param, playerId);
+		return pregameInstance.join(param, user);
 	}
 
 	// ---------------------------------------------------------------------------------

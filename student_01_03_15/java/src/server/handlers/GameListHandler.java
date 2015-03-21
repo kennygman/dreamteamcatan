@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import server.facade.ServerFacade;
 import shared.response.ListGamesResponse;
 
@@ -27,17 +26,16 @@ public class GameListHandler extends ServerHandler implements HttpHandler {
         {
             responseBody = g.toJson(response.getGameListObject());
             responseCode = 200;
+            System.out.println(responseBody);
         }
         else
         {
-            responseBody = "Failure";
+            responseBody = "\"Failure\"";
         }
         exchange.sendResponseHeaders(responseCode, 0);
         
         
-        OutputStreamWriter writer = new OutputStreamWriter(exchange.getResponseBody());
-        writer.write(responseBody);
-        writer.close();
+        write(exchange.getResponseBody(), responseBody);
     }
     
 }

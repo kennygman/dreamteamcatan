@@ -34,7 +34,7 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler {
         
         if(!loginResponse.isValid())
         {
-            responseBody = "Error: bad cookie";
+            responseBody = "\"Error: bad cookie\"";
         }
         else
         {
@@ -45,7 +45,7 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler {
 
             if(response.isValid())
             {
-                responseBody = "Success";
+                responseBody = "\"Success\"";
                 responseCode = 200;
                 
                cookie = "catan.game=" + joinParam.getId() + ";Path=/;";
@@ -53,7 +53,7 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler {
             }
             else
             {
-                responseBody = "Error: invalid request";
+                responseBody = "\"Error: invalid request\"";
             }
         }
         exchange.sendResponseHeaders(responseCode, 0);

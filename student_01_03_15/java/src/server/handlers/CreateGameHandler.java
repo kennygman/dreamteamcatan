@@ -25,7 +25,7 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler {
         
         if(!login.isValid())
         {
-            responseBody = "Error: bad cookie";
+            responseBody = "\"Error: bad cookie\"";
         }
         else
         {
@@ -35,12 +35,12 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler {
             
             if(response.isValid())
             {
-                responseBody = "Success";
+                responseBody = "\"Success\"";
                 responseCode = 200;
             }
             else
             {
-                responseBody = "Error: invalid request";
+                responseBody = "\"Error: invalid request\"";
             }
         }
         

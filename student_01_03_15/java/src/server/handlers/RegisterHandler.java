@@ -30,7 +30,7 @@ public class RegisterHandler extends ServerHandler implements HttpHandler {
         if(response.isValid())
         {
             
-            responseBody = "Success";
+            responseBody = "\"Success\"";
             responseCode = 200;
             PreGameCookie user = new PreGameCookie(response.getPlayerInfo().getId(), param.getUser(), param.getPassword());
             String cookie = "catan.user=";
@@ -40,13 +40,12 @@ public class RegisterHandler extends ServerHandler implements HttpHandler {
         }
         else
         {
-            responseBody = "Error: that username is already being used";
+            responseBody = "\"Error: that username is already being used\"";
         }
         
         
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
-        
         write(exchange.getResponseBody(), responseBody);
     }
     

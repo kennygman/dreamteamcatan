@@ -29,7 +29,7 @@ public class LoginHandler extends ServerHandler implements HttpHandler {
         
         if(response.isValid())
         {
-            responseBody = "Success";
+            responseBody = "\"Success\"";
             responseCode = 200;
             PreGameCookie u = new PreGameCookie(response.getPlayerInfo().getId(), param.getUser(), param.getPassword());
             String cookie = "catan.user=";
@@ -39,7 +39,7 @@ public class LoginHandler extends ServerHandler implements HttpHandler {
         }
         else
         {
-            responseBody = "Error: invalid username or password";
+            responseBody = "\"Error: invalid username or password\"";
         }
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);

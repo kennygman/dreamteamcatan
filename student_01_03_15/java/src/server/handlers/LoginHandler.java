@@ -12,7 +12,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
 import server.facade.ServerFacade;
+import shared.Cookie;
 import shared.parameters.CredentialsParam;
 import shared.response.LoginResponse;
 
@@ -41,15 +43,22 @@ public class LoginHandler  implements HttpHandler {
         
         CredentialsParam param = g.fromJson(stringBuffer.toString(), CredentialsParam.class);
         LoginResponse response = ServerFacade.login(param);
+        
+        
         String info = "";
         int responseCode = 400;
+        String cookie = ""; 
         
         if(response.isValid())
         {
             info = "Success";
             responseCode = 200;
+            Cookie u = new Cookie(response.getPlayerInfo().getId(), param.getUser(), param.getPassword());
+            cookie = "catan.user=";
+            cookie += URLEncoder.encode(g.toJson(u));
+            cookie += ";Path=/;";
         }
-        String cookie = ""; //Generate cookie
+        
         
         
         exchange.getResponseHeaders().add("Set-cookie", cookie);

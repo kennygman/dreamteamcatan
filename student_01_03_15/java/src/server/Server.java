@@ -75,7 +75,7 @@ public class Server
 
 	private Server(String[] args)
 	{
-		SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
+		//SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
 	}
 
 	private void run()

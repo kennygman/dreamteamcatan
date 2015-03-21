@@ -12,9 +12,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URLDecoder;
+import java.util.List;
 import server.User;
 import server.facade.ServerFacade;
+import shared.parameters.CredentialsParam;
 import shared.parameters.JoinGameParam;
+import shared.response.LoginResponse;
 import shared.response.StandardResponse;
 
 /**
@@ -26,6 +30,7 @@ public class JoinGameHandler  implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         Gson g = new Gson();
+        String info = "";
         
         StringBuilder stringBuffer = new StringBuilder();
         InputStreamReader reader = new InputStreamReader(exchange.getRequestBody());
@@ -38,26 +43,35 @@ public class JoinGameHandler  implements HttpHandler {
         }
         exchange.getRequestBody().close();
         
-        //parse cookie & call login before looking at the gson
-        
-        //User user = ServerFacade.getUser(playerId);
-        User user = new User(0,"","");
-        
-        JoinGameParam param = g.fromJson(stringBuffer.toString(), JoinGameParam.class);
-        StandardResponse response = ServerFacade.join(param, user);
-        String info = "";
+
+        String cookie = exchange.getRequestHeaders().getFirst("Cookie");
+        String userInfo = URLDecoder.decode(cookie);
+        CredentialsParam loginParam = g.fromJson(userInfo, CredentialsParam.class);
+        LoginResponse loginResponse = ServerFacade.login(loginParam);
         int responseCode = 400;
         
-        if(response.isValid())
+        
+        if(loginResponse.isValid())
         {
-            info = "Success";
-            responseCode = 200;
+            User user = g.fromJson(userInfo, User.class);
+
+
+            JoinGameParam joinParam = g.fromJson(stringBuffer.toString(), JoinGameParam.class);
+            StandardResponse response = ServerFacade.join(joinParam, user);
+            
+            
+
+            if(response.isValid())
+            {
+                info = "Success";
+                responseCode = 200;
+                
+               cookie = "catan.game=" + joinParam.getId() + ";Path=/;";
+               exchange.getResponseHeaders().add("Set-cookie", cookie); 
+            }
+            
         }
-        String cookie = ""; //Modify cookie
-        
-        exchange.getResponseHeaders().add("Set-cookie", cookie);
         exchange.sendResponseHeaders(responseCode, 0);
-        
         
         OutputStreamWriter writer = new OutputStreamWriter(exchange.getResponseBody());
         writer.write(info);

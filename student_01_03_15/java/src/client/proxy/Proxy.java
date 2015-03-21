@@ -21,9 +21,9 @@ public class Proxy implements IProxy
 
 	public Proxy()
 	{
-		translator = new Translator();
-		cookie = null;
-		gameId = null;
+            translator = new Translator();
+            cookie = null;
+            gameId = null;
 	}
 	
 	private Translator translator;
@@ -218,7 +218,6 @@ public class Proxy implements IProxy
                     int lastColon = cookieParser.lastIndexOf(":");
                     String id = cookieParser.substring(lastColon +1,cookieParser.length()-1);
                     return Integer.parseInt(id);
-
             }
             else
             {

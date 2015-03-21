@@ -1,6 +1,8 @@
 package server.commands;
 
 import model.Game;
+import model.player.Player;
+import model.player.Resources;
 import shared.parameters.AcceptTradeParam;
 
 public class AcceptTrade implements ICommand
@@ -23,8 +25,15 @@ public class AcceptTrade implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
-		
+		Player sender = game.getPlayer(game.getTradeOffer().getSender());
+		Player receiver = game.getPlayer(game.getTradeOffer().getReceiver());
+		Resources offer = game.getTradeOffer().getOffer();
+		if (param.isWillAccept())
+		{
+			sender.getResources().doTrade(offer);
+			receiver.getResources().doTrade(offer.invert());
+		}
+		game.setTradeOffer(null);
 	}
 
 }

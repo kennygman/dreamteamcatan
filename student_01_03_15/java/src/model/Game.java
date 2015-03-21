@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import shared.response.GameListObject;
 import shared.response.PlayerListObject;
 import model.player.Developments;
@@ -24,7 +26,7 @@ public class Game
 	private int winner;
 
 	// Add model initialize methods here
-	public void initialize(String title, boolean randHexes, boolean randNumbers, boolean randPorts)
+	public Game initialize(String title, boolean randHexes, boolean randNumbers, boolean randPorts)
 	{
 		this.title = title;
 		version = 0;
@@ -38,6 +40,7 @@ public class Game
 		log = new Log().init();
 		turnTracker = new TurnTracker().init();
 		tradeOffer = null;
+		return this;
 	}
 
 	public GameListObject getGameListObject()
@@ -213,4 +216,15 @@ public class Game
 	{
 		this.deck = deck;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Game [playerId=" + playerId + ", bank=" + bank + ", deck="
+				+ deck + ", chat=" + chat + ", log=" + log + ", map=" + map
+				+ ", players=" + Arrays.toString(players) + ", tradeOffer="
+				+ tradeOffer + ", turnTracker=" + turnTracker + ", title="
+				+ title + ", version=" + version + ", winner=" + winner + "]";
+	}
+	
 }

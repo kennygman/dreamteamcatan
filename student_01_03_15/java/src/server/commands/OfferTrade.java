@@ -1,6 +1,7 @@
 package server.commands;
 
 import model.Game;
+import model.TradeOffer;
 import shared.parameters.OfferTradeParam;
 
 public class OfferTrade implements ICommand
@@ -21,8 +22,13 @@ public class OfferTrade implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
-
+		game.setTradeOffer(
+				new TradeOffer(
+						param.getPlayerIndex(),
+						param.getreceiver(),
+						param.getOffer()
+						)
+				);
 	}
 
 }

@@ -2,6 +2,7 @@ package server.commands;
 
 import shared.parameters.SendChatParam;
 import model.Game;
+import model.Lines;
 
 public class SendChat implements ICommand
 {
@@ -21,8 +22,10 @@ public class SendChat implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
-
+		Lines line = new Lines();
+		line.setMessage(param.getMessae());
+		line.setSource(game.getPlayer(param.getSource()).getName());
+		game.getChat().addLine(line);
 	}
 
 }

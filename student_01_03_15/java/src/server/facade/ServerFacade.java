@@ -16,9 +16,7 @@ public class ServerFacade
 	private static UserManager users;
 	private static GameManager games;
 
-	public ServerFacade()
-	{
-	}
+	public ServerFacade(){}
 
 	private static void init()
 	{

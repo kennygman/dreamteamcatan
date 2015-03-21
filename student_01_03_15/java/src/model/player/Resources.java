@@ -301,5 +301,20 @@ public class Resources
 		return "Resources [wood=" + wood + ", sheep=" + sheep + ", wheat="
 				+ wheat + ", brick=" + brick + ", ore=" + ore + "]";
 	}
+	
+	public void doTrade(Resources trade)
+	{
+		for (ResourceType r : list)
+		{
+			if (trade.getResourceAmount(r) > 0)
+			{
+				useResource(r, Math.abs(trade.getResourceAmount(r)) );
+			}
+			else if (trade.getResourceAmount(r) < 0)
+			{
+				addResource(r, Math.abs(trade.getResourceAmount(r)) );
+			}
+		}
+	}
 
 }

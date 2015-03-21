@@ -1,6 +1,9 @@
 package server.commands;
 
 import model.Game;
+import model.board.City;
+import model.player.Player;
+import shared.definitions.ResourceType;
 import shared.parameters.BuildCityParam;
 
 public class BuildCity implements ICommand
@@ -23,8 +26,14 @@ public class BuildCity implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		City city = new City(param.getPlayerIndex(), param.getLocation());
 
+		player.getResources().useResource(ResourceType.WHEAT, 2);
+		player.getResources().useResource(ResourceType.ORE, 3);
+		player.setCities(player.getCities()-1);
+		player.setSettlements(player.getSettlements()+1);
+		game.getBoard().setCity(city);
 	}
 
 }

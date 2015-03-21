@@ -41,8 +41,6 @@ public class UserFacade implements IUserFacade
 			response = new LoginResponse(false);
 		}
 
-		System.out.println("============UserFacade (Response): "
-				+ response.isValid());
 		return response;
 	}
 

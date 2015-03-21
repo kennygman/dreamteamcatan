@@ -1,6 +1,9 @@
 package server.commands;
 
 import model.Game;
+import model.board.Settlement;
+import model.player.Player;
+import shared.definitions.ResourceType;
 import shared.parameters.BuildSettlementParam;
 
 public class BuildSettlement implements ICommand
@@ -22,8 +25,18 @@ public class BuildSettlement implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		Settlement settlement = new Settlement(param.getPlayerIndex(), param.getLocation());
 
+		if (!param.isFree())
+		{
+			player.getResources().useResource(ResourceType.WOOD, 1);
+			player.getResources().useResource(ResourceType.BRICK, 1);
+			player.getResources().useResource(ResourceType.SHEEP, 1);
+			player.getResources().useResource(ResourceType.WHEAT, 1);
+		}
+		player.setSettlements(player.getSettlements()-1);
+		game.getBoard().setSettlement(settlement);
 	}
 
 }

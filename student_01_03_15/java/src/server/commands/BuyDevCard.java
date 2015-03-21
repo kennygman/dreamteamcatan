@@ -1,6 +1,9 @@
 package server.commands;
 
 import model.Game;
+import model.player.Player;
+import shared.definitions.DevCardType;
+import shared.definitions.ResourceType;
 import shared.parameters.BuyDevCardParam;
 
 public class BuyDevCard implements ICommand
@@ -21,8 +24,19 @@ public class BuyDevCard implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		DevCardType card = game.getDeck().drawCard();
 		
+		if (card.equals(DevCardType.MONUMENT))
+		{
+			 player.getOldDevCards().addCard(card);
+		} else {
+			player.getNewDevCards().addCard(card);
+		}
+
+		player.getResources().useResource(ResourceType.ORE, 1);
+		player.getResources().useResource(ResourceType.SHEEP, 1);
+		player.getResources().useResource(ResourceType.WHEAT, 1);
 	}
 
 }

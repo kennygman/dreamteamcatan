@@ -1,6 +1,9 @@
 package server.commands;
 
 import model.Game;
+import model.board.Road;
+import model.player.Player;
+import shared.definitions.ResourceType;
 import shared.parameters.BuildRoadParam;
 
 public class BuildRoad implements ICommand
@@ -23,8 +26,24 @@ public class BuildRoad implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		Road road = new Road(param.getPlayerIndex(), param.getRoadLocation());
 
+		if (!param.isFree())
+		{
+			player.getResources().useResource(ResourceType.WOOD, 1);
+			player.getResources().useResource(ResourceType.BRICK, 1);
+		}
+		player.setRoads(player.getRoads()-1);
+		game.getBoard().setRoad(road);
+		if (isLongestRoad()) game.getTurnTracker().setLongestRoad(player.getPlayerIndex());
 	}
 
+	private boolean isLongestRoad()
+	{
+		int index = game.getTurnTracker().getLongestRoad();
+		int longestRoad = game.getPlayer(index).getRoads();
+		int playerRoads = game.getPlayer(param.getPlayerIndex()).getRoads();
+		return playerRoads > longestRoad;
+	}
 }

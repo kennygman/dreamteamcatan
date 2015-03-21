@@ -8,4 +8,8 @@ public class BuyDevCardParam {
 	{
 		playerIndex = p;
 	}	
+	public int getPlayerIndex()
+	{
+		return playerIndex;
+	}
 }

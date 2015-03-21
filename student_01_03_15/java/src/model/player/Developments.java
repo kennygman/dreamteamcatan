@@ -1,5 +1,9 @@
 package model.player;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import shared.definitions.DevCardType;
 
 public class Developments
@@ -9,6 +13,8 @@ public class Developments
 	int roadBuilding;
 	int soldier;
 	int yearOfPlenty;
+	
+	List<DevCardType> deck;
 	
 	public void reset()
 	{
@@ -22,7 +28,51 @@ public class Developments
 		roadBuilding = 2;
 		soldier = 14;
 		yearOfPlenty = 2;
+		deck = new ArrayList<>();
+		this.initDeck();
 		return this;
+	}
+	
+	public void initDeck()
+	{
+		for (int i = 0; i < 14; i++)
+		{
+			if (i < 2)
+			{
+				deck.add(DevCardType.MONOPOLY);
+				deck.add(DevCardType.ROAD_BUILD);
+				deck.add(DevCardType.YEAR_OF_PLENTY);
+			}
+			if (i < 5)
+			{
+				deck.add(DevCardType.MONUMENT);
+			}
+			deck.add(DevCardType.SOLDIER);
+		}
+		Collections.shuffle(deck);
+	}
+	
+	public DevCardType drawCard()
+	{
+		DevCardType card = deck.get(0);
+		deck.remove(0);
+		return card;
+	}
+	
+	public void addCard(DevCardType type)
+	{
+		if (type != null)
+		{
+			switch (type)
+			{
+				case MONOPOLY: monopoly++;break;
+				case ROAD_BUILD: roadBuilding++; break;
+				case YEAR_OF_PLENTY: yearOfPlenty++; break;
+				case SOLDIER: soldier++; break;
+				case MONUMENT: monument++; break;
+				default: break;
+			}
+		}
 	}
 	
 	/**

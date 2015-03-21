@@ -11,5 +11,14 @@ public class SendChatParam
 		playerIndex = p;
 		content = c;
 	}
+
+	public String getMessae()
+	{
+		return content;
+	}
 	
+	public int getSource()
+	{
+		return playerIndex;
+	}
 }

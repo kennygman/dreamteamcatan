@@ -1,5 +1,6 @@
 package server.facade;
 
+import server.User;
 import shared.parameters.AddAiParam;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
@@ -17,7 +18,7 @@ public interface IPreGameFacade
 	 * to the UserManager
 	 * @param param Join Game parameters for the command
 	 */
-	StandardResponse join(JoinGameParam param, int playerId);
+	StandardResponse join(JoinGameParam param, User user);
 	
 	/**
 	 * This method validates the command through the ModelFacade

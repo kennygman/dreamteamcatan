@@ -42,16 +42,18 @@ public class LoginHandler  implements HttpHandler {
         CredentialsParam param = g.fromJson(stringBuffer.toString(), CredentialsParam.class);
         LoginResponse response = ServerFacade.login(param);
         String info = "";
-        //int responseCode = 400;
+        int responseCode = 400;
         
         if(response.isValid())
         {
             info = "Success";
-            //responseCode = 200;
+            responseCode = 200;
         }
         String cookie = ""; //Generate cookie
+        
+        
         exchange.getResponseHeaders().add("Set-cookie", cookie);
-        //set Response Code???
+        exchange.sendResponseHeaders(responseCode, 0);
         
         
         OutputStreamWriter writer = new OutputStreamWriter(exchange.getResponseBody());

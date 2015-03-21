@@ -1,6 +1,7 @@
 package server.facade;
 
 import model.Game;
+import server.User;
 import shared.parameters.AddAiParam;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
@@ -15,7 +16,7 @@ public class MockPreGameFacade implements IPreGameFacade
 {
 
 	@Override
-	public StandardResponse join(JoinGameParam param, int playerId)
+	public StandardResponse join(JoinGameParam param, User user)
 	{
 		StandardResponse response = new StandardResponse(true);
 		return response;

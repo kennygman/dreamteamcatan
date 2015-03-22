@@ -15,5 +15,21 @@ public class PreGameCookie {
         password = p;
         playerID = id;
     }
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public String getPassword()
+	{
+		return password;
+	}
+
+	public int getPlayerID()
+	{
+		return playerID;
+	}
+    
     
 }

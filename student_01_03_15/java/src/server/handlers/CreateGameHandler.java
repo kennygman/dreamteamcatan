@@ -37,7 +37,8 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler {
             
             if(response.isValid())
             {
-                responseBody = "\"Success\"";
+            	responseBody = g.toJson(response);
+                //responseBody = "\"Success\"";
                 responseCode = 200;
             }
             else

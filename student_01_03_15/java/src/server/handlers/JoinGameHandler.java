@@ -56,6 +56,8 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler {
                 responseBody = "\"Error: invalid request\"";
             }
         }
+
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         write(exchange.getResponseBody(), responseBody);
     }

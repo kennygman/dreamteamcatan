@@ -8,6 +8,16 @@ public class PlayerListObject
 	public String color;
 	public String name;
 	public int id;
+	
+	
+
+	public PlayerListObject(String color, String name, int id)
+	{
+		super();
+		this.color = color;
+		this.name = name;
+		this.id = id;
+	}
 	public PlayerInfo getPlayerInfo()
 	{
 		PlayerInfo player = new PlayerInfo();
@@ -16,7 +26,7 @@ public class PlayerListObject
 		player.setColor(getCatanColor(color));
 		return player;
 	}
-	public CatanColor getCatanColor(String color)
+	public static CatanColor getCatanColor(String color)
 	{
 		if (color == null) return CatanColor.WHITE;
 		CatanColor cc;

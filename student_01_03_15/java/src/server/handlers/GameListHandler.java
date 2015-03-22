@@ -21,20 +21,17 @@ public class GameListHandler extends ServerHandler implements HttpHandler {
           
         ListGamesResponse response = ServerFacade.listGames();
         
-        
         if(response.isValid())
         {
             responseBody = g.toJson(response.getGameListObject());
             responseCode = 200;
-            System.out.println(responseBody);
         }
         else
         {
             responseBody = "\"Failure\"";
         }
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
-        
-        
         write(exchange.getResponseBody(), responseBody);
     }
     

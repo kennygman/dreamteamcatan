@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import shared.definitions.CatanColor;
 import shared.definitions.ResourceType;
 import shared.response.GameListObject;
 import shared.response.PlayerListObject;
@@ -33,13 +34,19 @@ public class Game
 	private int winner;
 
 	// Add model initialize methods here
-	public Game initialize(String title, boolean randHexes, boolean randNumbers, boolean randPorts)
+	public Game initialize(String title, boolean randHexes,
+			boolean randNumbers, boolean randPorts)
 	{
 		this.title = title;
 		version = 0;
 		winner = -1;
 
 		players = new Player[4];
+		for (int i = 0; i < players.length; i++)
+		{
+			players[i] = new Player();
+			players[i].setPlayerIndex(i);
+		}
 		map = new Board().init(randHexes, randNumbers, randPorts);
 		initialMap = map;
 		bank = new Resources().init();
@@ -66,8 +73,7 @@ public class Game
 				{
 					owner = getPlayer(((City) p).getOwner());
 					owner.getResources().addResource(resource, 2);
-				}
-				else if (p instanceof Settlement)
+				} else if (p instanceof Settlement)
 				{
 					owner = getPlayer(((Settlement) p).getOwner());
 					owner.getResources().addResource(resource, 1);
@@ -86,15 +92,21 @@ public class Game
 
 	public ArrayList<PlayerListObject> getPlayerListObject()
 	{
-		PlayerListObject playerObject;
-		ArrayList<PlayerListObject> playerList = new ArrayList<PlayerListObject>();
+
+		ArrayList<PlayerListObject> playerList = new ArrayList<>();
 		for (Player p : players)
 		{
-			playerObject = new PlayerListObject();
-			playerObject.color = p.getColor().name();
-			playerObject.id = p.getPlayerID();
-			playerObject.name = p.getName();
-			playerList.add(playerObject);
+			try
+			{
+				CatanColor cc = p.getColor();
+				PlayerListObject playerObject = new PlayerListObject(
+						CatanColor.asString(cc), p.getName(), p.getPlayerID());
+				playerList.add(playerObject);
+			} catch (Exception e)
+			{
+				System.err.println(e);
+				System.err.println(e.getLocalizedMessage());
+			}
 		}
 		return playerList;
 	}
@@ -259,7 +271,7 @@ public class Game
 				+ tradeOffer + ", turnTracker=" + turnTracker + ", title="
 				+ title + ", version=" + version + ", winner=" + winner + "]";
 	}
-	
+
 	public void addLogEntry(String source, String message)
 	{
 		Lines lines = new Lines();
@@ -267,22 +279,22 @@ public class Game
 		lines.setSource(source);
 		log.addLine(lines);
 	}
-	
+
 	public Game reset()
 	{
 		Player[] players = this.getPlayers();
-		for(int i=0; i<players.length;i++)
+		for (int i = 0; i < players.length; i++)
 		{
 			players[i].reset();
 		}
-		
+
 		setMap(initialMap);
-		
+
 		getBank().init();
 		getChat().init();
 		getLog().init();
 		getTurnTracker().init();
-		
+
 		return this;
 	}
 }

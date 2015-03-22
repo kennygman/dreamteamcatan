@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import model.Game;
 import model.player.Player;
@@ -56,29 +59,27 @@ public class PreGameFacade implements IPreGameFacade
 		Game game = new Game();
 		game.initialize(param.getName(), param.isRandomTiles(),
 				param.isRandomNumbers(), param.isRandomPorts());
-		if (games.addGame(game)) 
+		if (games.addGame(game))
 		{
 			return new CreateGameResponse(param.getName(), games.gamesSize(),
 					game.getPlayers(), true);
-		}
-		else
+		} else
 		{
-			return new CreateGameResponse(param.getName(), -1,
-					game.getPlayers(), false);
+			return new CreateGameResponse(false);
 		}
 	}
 
 	@Override
 	public ListGamesResponse listGames()
 	{
-		GameListObject[] allGames = new GameListObject[games.gamesSize()];
-		for (int i = 0; i < games.gamesSize(); i++)
+		List<GameListObject> allGames = new ArrayList<>();
+		for (Game g : games.getGames())
 		{
-			GameListObject game = new GameListObject(games.getGame(i)
-					.getTitle(), i, games.getGame(i).getPlayerListObject());
-			allGames[i] = game;
+			allGames.add(new GameListObject(g.getTitle(), games.getGames()
+					.indexOf(g), g.getPlayerListObject()));
 		}
-		return new ListGamesResponse(allGames, true);
+		return new ListGamesResponse(allGames.toArray(new GameListObject[0]),
+				true);
 	}
 
 	@Override

@@ -1,9 +1,5 @@
 package shared.parameters;
 
-import java.util.ArrayList;
-
-import shared.response.GameCommand;
-
 public class PostCommandsParam {
 	// For testing
 	private String commands;

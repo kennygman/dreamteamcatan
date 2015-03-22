@@ -2,7 +2,6 @@ package shared.response;
 
 import java.util.ArrayList;
 
-import shared.definitions.CatanColor;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
 
@@ -25,7 +24,6 @@ public class GameListObject
 	public GameListObject(String title, int id,
 			ArrayList<PlayerListObject> players)
 	{
-		super();
 		this.title = title;
 		this.id = id;
 		this.players = players;

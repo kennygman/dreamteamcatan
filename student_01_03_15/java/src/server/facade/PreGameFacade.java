@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import model.Game;
 import model.player.Player;
@@ -56,6 +55,7 @@ public class PreGameFacade implements IPreGameFacade
 	@Override
 	public CreateGameResponse create(CreateGameParam param)
 	{
+            System.out.println("PreGameFacade-create()");
 		Game game = new Game();
 		game.initialize(param.getName(), param.isRandomTiles(),
 				param.isRandomNumbers(), param.isRandomPorts());
@@ -72,6 +72,7 @@ public class PreGameFacade implements IPreGameFacade
 	@Override
 	public ListGamesResponse listGames()
 	{
+            System.out.println("PreGameFacade-listGames()");
 		List<GameListObject> allGames = new ArrayList<>();
 		for (Game g : games.getGames())
 		{

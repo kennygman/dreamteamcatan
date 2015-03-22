@@ -22,8 +22,9 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler {
         Gson g = new Gson();
         String responseBody;
         int responseCode = 400;
-        
+        System.out.println("CreateGameHandler-handle()");
         LoginResponse login = getLoginFromCookie(exchange.getRequestHeaders().getFirst("Cookie"));
+        System.out.println("CreateGameHandler-login()");
         
         if(!login.isValid())
         {
@@ -32,6 +33,7 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler {
         else
         {
             String input = read(exchange.getRequestBody());
+            System.out.println("CreateGameRequest: !" + input + "!");
             CreateGameParam param = g.fromJson(input, CreateGameParam.class);
             CreateGameResponse response = ServerFacade.create(param);
             
@@ -49,6 +51,7 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler {
         
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
+        System.out.println("CreateGameResponse: !" + responseBody + "!");
         write(exchange.getResponseBody(), responseBody);
     }
     

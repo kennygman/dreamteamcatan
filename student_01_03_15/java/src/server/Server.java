@@ -68,10 +68,7 @@ public class Server
     
     //--------------------------------------------------------------------------------
 
-	private Server()
-	{
-		ServerFacade.createInstance();
-	}
+	private Server(){}
 
 	private Server(String[] args)
 	{
@@ -135,7 +132,7 @@ public class Server
         server.createContext("/util/changeLogLevel", changeLogLevelHandler);
         //--------------------------------------------------------------------------------
         
-        ServerFacade.createInstance();
+        ServerFacade.createInstance(true);
         server.start();
     }
 

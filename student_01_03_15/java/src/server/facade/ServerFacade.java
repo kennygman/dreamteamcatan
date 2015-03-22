@@ -25,14 +25,14 @@ public class ServerFacade
 		games = new GameManager();
 	}
 	// ---------------------------------------------------------------------------------
-	public static void createInstance()
+	/*public static void createInstance()
 	{
 		init();
 		userInstance = new UserFacade(users);
 		pregameInstance = new PreGameFacade(games);
 		gameInstance = new GameFacade(games);
 		movesInstance = new MovesFacade(games);
-	}
+	}*/
 
 	// ---------------------------------------------------------------------------------
 	public static void createInstance(boolean testing)

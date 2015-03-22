@@ -2,6 +2,7 @@ package server.commands;
 
 import model.Game;
 import model.TradeOffer;
+import model.player.Player;
 import shared.parameters.OfferTradeParam;
 
 public class OfferTrade implements ICommand
@@ -22,6 +23,7 @@ public class OfferTrade implements ICommand
 	@Override
 	public void execute()
 	{
+		Player player = game.getPlayer(param.getPlayerIndex());
 		game.setTradeOffer(
 				new TradeOffer(
 						param.getPlayerIndex(),
@@ -29,6 +31,7 @@ public class OfferTrade implements ICommand
 						param.getOffer()
 						)
 				);
+		game.addLogEntry(player.getName(), player.getName() + " has made a trade offer");
 	}
 
 }

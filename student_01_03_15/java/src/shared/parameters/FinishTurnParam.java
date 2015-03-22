@@ -9,4 +9,8 @@ public class FinishTurnParam {
 		playerIndex = p;
 	}
 
+	public int getPlayerIndex()
+	{
+		return playerIndex;
+	}
 }

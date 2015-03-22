@@ -33,11 +33,15 @@ public class BuildRoad implements ICommand
 		{
 			player.getResources().useResource(ResourceType.WOOD, 1);
 			player.getResources().useResource(ResourceType.BRICK, 1);
+			game.getBank().addResource(ResourceType.WOOD, 1);
+			game.getBank().addResource(ResourceType.BRICK, 1);
 		}
 		player.setRoads(player.getRoads()-1);
 		game.getBoard().setRoad(road);
 		if (isLongestRoad()) game.getTurnTracker().setLongestRoad(player.getPlayerIndex());
-	}
+
+		game.addLogEntry(player.getName(), player.getName() + " built a Road");
+}
 
 	private boolean isLongestRoad()
 	{

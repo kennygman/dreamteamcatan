@@ -37,15 +37,25 @@ public class Player
 	{
 		reset();
 	}
-	
+
 	public Player(String name, String color, int playerIndex, int playerId)
 	{
-		this.name=name;
-		this.color=color;
-		this.playerIndex=playerIndex;
-		this.playerID=playerId;
+		this.name = name;
+		this.color = color;
+		this.playerIndex = playerIndex;
+		this.playerID = playerId;
 	}
-	
+
+	public void updateDevCards()
+	{
+		oldDevCards.setMonopoly(oldDevCards.getMonopoly()+newDevCards.getMonopoly());
+		oldDevCards.setMonument(oldDevCards.getMonument()+newDevCards.getMonument());
+		oldDevCards.setRoadBuilding(oldDevCards.getRoadBuilding()+newDevCards.getRoadBuilding());
+		oldDevCards.setMonopoly(oldDevCards.getSoldier()+newDevCards.getSoldier());
+		oldDevCards.setYearOfPlenty(oldDevCards.getYearOfPlenty()+newDevCards.getYearOfPlenty());
+		setPlayedDevCard(false);
+	}
+
 	public void reset()
 	{
 		isTurn = false;
@@ -274,7 +284,7 @@ public class Player
 	}
 
 	public void playDevcard(DevCardType soldier)
-	{		
-		//this is empty, but the mockproxy calls it
+	{
+		// this is empty, but the mockproxy calls it
 	}
 }

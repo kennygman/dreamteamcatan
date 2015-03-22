@@ -1,6 +1,9 @@
 package server.commands;
 
 import model.Game;
+import model.board.Road;
+import model.player.Player;
+import shared.definitions.DevCardType;
 import shared.parameters.PlayRoadBuildingParam;
 
 public class PlayRoadBuilding implements ICommand
@@ -21,8 +24,27 @@ public class PlayRoadBuilding implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		player.setRoads(player.getRoads()-2);
+		game.getBoard().setRoad(new Road(param.getPlayerIndex(), param.getSpot1()));
+		game.getBoard().setRoad(new Road(param.getPlayerIndex(), param.getSpot2()));
+		player.getOldDevCards().useCard(DevCardType.ROAD_BUILD);
+		player.setPlayedDevCard(true);
+		game.addLogEntry(player.getName(), player.getName() + " just built two roads");
 
+		if (isLongestRoad())
+		{
+			game.getTurnTracker().setLongestRoad(player.getPlayerIndex());
+			game.addLogEntry(player.getName(), player.getName() + " has the longest road");
+		}
+
+}
+
+	private boolean isLongestRoad()
+	{
+		int index = game.getTurnTracker().getLongestRoad();
+		int longestRoad = game.getPlayer(index).getRoads();
+		int playerRoads = game.getPlayer(param.getPlayerIndex()).getRoads();
+		return playerRoads > longestRoad;
 	}
-
 }

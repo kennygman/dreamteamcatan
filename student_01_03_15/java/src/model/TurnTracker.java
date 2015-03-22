@@ -36,6 +36,13 @@ public class TurnTracker
 		largestArmy = -1;
 		return this;
 	}
+	
+	public void nextTurn()
+	{
+		currentTurn++;
+		if(currentTurn>3)currentTurn=0;
+	}
+	
 	public int getCurrentTurn()
 	{
 		return currentTurn;

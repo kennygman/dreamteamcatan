@@ -1,6 +1,7 @@
 package server.commands;
 
 import model.Game;
+import model.player.Player;
 import shared.parameters.FinishTurnParam;
 
 public class FinishTurn implements ICommand
@@ -22,8 +23,11 @@ public class FinishTurn implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
-
+		Player player = game.getPlayer(param.getPlayerIndex());
+		player.updateDevCards();
+		game.getTurnTracker().nextTurn();
+		
+		game.addLogEntry(player.getName(), player.getName() + "'s turn just ended");
 	}
 
 }

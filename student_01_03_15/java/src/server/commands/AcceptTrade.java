@@ -32,6 +32,12 @@ public class AcceptTrade implements ICommand
 		{
 			sender.getResources().doTrade(offer);
 			receiver.getResources().doTrade(offer.invert());
+
+			game.addLogEntry(receiver.getName(), receiver.getName() + " has accepted the trade");
+		}
+		else
+		{
+			game.addLogEntry(receiver.getName(), receiver.getName() + " has declined the trade");
 		}
 		game.setTradeOffer(null);
 	}

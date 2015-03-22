@@ -1,6 +1,7 @@
 package server.commands;
 
 import model.Game;
+import model.player.Player;
 import shared.parameters.DiscardCardsParam;
 
 public class DiscardCards implements ICommand
@@ -22,8 +23,13 @@ public class DiscardCards implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		player.getResources().doTrade(param.getDiscardCards());
+		game.getBank().doTrade(param.getDiscardCards().invert());
+		
+		if (param.getPlayerIndex() == 3) game.getTurnTracker().setStatus("Robbing");
 
-	}
+		game.addLogEntry(player.getName(), player.getName() + " has discarded");
+}
 
 }

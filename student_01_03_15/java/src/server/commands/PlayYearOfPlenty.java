@@ -1,6 +1,9 @@
 package server.commands;
 
 import model.Game;
+import model.player.Player;
+import shared.definitions.DevCardType;
+import shared.definitions.ResourceType;
 import shared.parameters.PlayYearOfPlentyParam;
 
 public class PlayYearOfPlenty implements ICommand
@@ -21,8 +24,17 @@ public class PlayYearOfPlenty implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		ResourceType r1 = ResourceType.fromString(param.getResource1());
+		ResourceType r2 = ResourceType.fromString(param.getResource2());
+		player.setPlayedDevCard(true);
+		player.getOldDevCards().useCard(DevCardType.YEAR_OF_PLENTY);
+		player.getResources().addResource(r1, 1);
+		player.getResources().addResource(r2, 1);
+		game.getBank().useResource(r1, 1);
+		game.getBank().useResource(r2, 1);
 
+		game.addLogEntry(player.getName(), player.getName() + " gained two resources from year of plenty");
 	}
 
 }

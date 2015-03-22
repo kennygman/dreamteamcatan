@@ -5,19 +5,44 @@
  */
 package server.handlers;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
+import server.facade.ServerFacade;
+import shared.parameters.ChangeLogLevelParam;
+import shared.response.StandardResponse;
 
 /**
  *
  * @author Drew
  */
-public class ChangeLogLevelHandler implements HttpHandler {
+public class ChangeLogLevelHandler extends ServerHandler implements HttpHandler {
 
     @Override
-    public void handle(HttpExchange he) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void handle(HttpExchange exchange) throws IOException {
+        /*Gson g = new Gson();
+        String responseBody = "";
+        int responseCode = 400;
+        
+        String input = read(exchange.getRequestBody());
+        ChangeLogLevelParam param = g.fromJson(input, ChangeLogLevelParam.class);
+        StandardResponse response = ServerFacade.changeLogLevel(param);
+
+
+        if(response.isValid())
+        {
+            responseBody = "\"Success\"";
+            responseCode = 200;
+        }
+        else
+        {
+            responseBody = "\"Failure\"";
+        }
+        exchange.sendResponseHeaders(responseCode, 0);
+        
+        
+        write(exchange.getResponseBody(), responseBody);*/
     }
     
 }

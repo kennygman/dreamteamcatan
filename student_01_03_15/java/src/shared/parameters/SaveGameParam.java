@@ -9,4 +9,14 @@ public class SaveGameParam {
 		id = i;
 		name = f;
 	}
+        
+        public String getName()
+        {
+            return name;
+        }
+        
+        public int getId()
+        {
+            return id;
+        }
 }

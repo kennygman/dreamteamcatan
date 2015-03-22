@@ -5,19 +5,44 @@
  */
 package server.handlers;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
+import server.facade.ServerFacade;
+import shared.parameters.SaveGameParam;
+import shared.response.GameModelResponse;
 
 /**
  *
  * @author Drew
  */
-public class SaveGameHandler  implements HttpHandler {
+public class SaveGameHandler extends ServerHandler implements HttpHandler {
 
     @Override
-    public void handle(HttpExchange he) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void handle(HttpExchange exchange) throws IOException {
+        Gson g = new Gson();
+        String responseBody = "";
+        int responseCode = 400;
+        
+        String input = read(exchange.getRequestBody());
+        SaveGameParam param = g.fromJson(input, SaveGameParam.class);
+        GameModelResponse response = ServerFacade.save(param);
+
+
+        if(response.isValid())
+        {
+            responseBody = g.toJson(response.getGame());
+            responseCode = 200;
+        }
+        else
+        {
+            responseBody = "\"Failure\"";
+        }
+        exchange.sendResponseHeaders(responseCode, 0);
+        
+        
+        write(exchange.getResponseBody(), responseBody);
     }
     
 }

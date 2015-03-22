@@ -23,18 +23,25 @@ public class AddAIHandler extends ServerHandler implements HttpHandler {
         String cookie = exchange.getRequestHeaders().getFirst("Cookie");
         LoginResponse login = getLoginFromCookie(cookie);
         
-        int gameId = getGameIdFromCookie(cookie);
-        StandardResponse response = ServerFacade.addAI(gameId);
-        
-        
-        if(response.isValid())
+        if(!login.isValid())
         {
-            responseBody = "\"Success\"";
-            responseCode = 200;
+            responseBody = "\"Error: bad cookie\"";
         }
         else
         {
-            responseBody = "\"Failure\"";
+            int gameId = getGameIdFromCookie(cookie);
+            StandardResponse response = ServerFacade.addAI(gameId);
+
+
+            if(response.isValid())
+            {
+                responseBody = "\"Success\"";
+                responseCode = 200;
+            }
+            else
+            {
+                responseBody = "\"Failure\"";
+            }
         }
         exchange.sendResponseHeaders(responseCode, 0);
         

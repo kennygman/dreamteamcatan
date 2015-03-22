@@ -3,7 +3,9 @@ package server.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
+
 import server.facade.ServerFacade;
 import shared.parameters.CreateGameParam;
 import shared.response.CreateGameResponse;
@@ -45,7 +47,8 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler {
                 responseBody = "\"Error: invalid request\"";
             }
         }
-        System.out.println("CreateGameHeaders");
+        
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         System.out.println("CreateGameResponse: !" + responseBody + "!");
         write(exchange.getResponseBody(), responseBody);

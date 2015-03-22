@@ -57,12 +57,16 @@ public class PreGameFacade implements IPreGameFacade
 		Game game = new Game();
 		game.initialize(param.getName(), param.isRandomTiles(),
 				param.isRandomNumbers(), param.isRandomPorts());
-		if (games.addGame(game))
+		if (games.addGame(game)) 
+		{
 			return new CreateGameResponse(param.getName(), games.gamesSize(),
 					game.getPlayers(), true);
+		}
 		else
+		{
 			return new CreateGameResponse(param.getName(), -1,
 					game.getPlayers(), false);
+		}
 	}
 
 	@Override

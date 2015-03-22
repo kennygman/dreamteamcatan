@@ -18,15 +18,15 @@ public class GameListHandler extends ServerHandler implements HttpHandler {
         Gson g = new Gson();
         String responseBody;
         int responseCode = 400;
-          
-        ListGamesResponse response = ServerFacade.listGames();
+        System.out.println("GameListHandler-handle()");
         
+        ListGamesResponse response = ServerFacade.listGames();
         
         if(response.isValid())
         {
+            System.out.println("GameListHandler-isValid");
             responseBody = g.toJson(response.getGameListObject());
             responseCode = 200;
-            System.out.println(responseBody);
         }
         else
         {
@@ -34,7 +34,7 @@ public class GameListHandler extends ServerHandler implements HttpHandler {
         }
         exchange.sendResponseHeaders(responseCode, 0);
         
-        
+        System.out.println("GameListResponse: !" + responseBody + "!");
         write(exchange.getResponseBody(), responseBody);
     }
     

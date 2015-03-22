@@ -53,6 +53,7 @@ public class PreGameFacade implements IPreGameFacade
 	@Override
 	public CreateGameResponse create(CreateGameParam param)
 	{
+            System.out.println("PreGameFacade-create()");
 		Game game = new Game();
 		game.initialize(param.getName(), param.isRandomTiles(),
 				param.isRandomNumbers(), param.isRandomPorts());
@@ -67,6 +68,7 @@ public class PreGameFacade implements IPreGameFacade
 	@Override
 	public ListGamesResponse listGames()
 	{
+            System.out.println("PreGameFacade-listGames()");
 		GameListObject[] allGames = new GameListObject[games.gamesSize()];
 		for (int i = 0; i < games.gamesSize(); i++)
 		{

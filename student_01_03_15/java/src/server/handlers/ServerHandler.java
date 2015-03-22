@@ -6,14 +6,18 @@
 package server.handlers;
 
 import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+
 import server.facade.ServerFacade;
+import shared.PreGameCookie;
 import shared.parameters.CredentialsParam;
 import shared.response.LoginResponse;
 
@@ -46,8 +50,30 @@ public class ServerHandler {
     
     public LoginResponse getLoginFromCookie(String cookie)
     {
-        String userInfo = URLDecoder.decode(cookie);
-        CredentialsParam loginParam = g.fromJson(userInfo, CredentialsParam.class);
+    	String formattedCookie = cookie.substring(11);
+    	
+        String userInfo = null;
+        CredentialsParam loginParam = null;
+
+        try
+		{
+			userInfo = URLDecoder.decode(formattedCookie, "UTF-8");
+			
+		} catch (UnsupportedEncodingException e1)
+		{
+			e1.printStackTrace();
+		}
+        
+        try
+        {
+            PreGameCookie param = g.fromJson(userInfo, PreGameCookie.class);
+            loginParam = new CredentialsParam(param.getName(), param.getPassword());
+        }
+        catch(Exception e)
+        {
+        	System.err.println(e.getMessage());
+        }
+        
         return ServerFacade.login(loginParam);
     }
     

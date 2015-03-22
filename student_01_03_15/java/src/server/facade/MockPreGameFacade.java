@@ -61,5 +61,4 @@ public class MockPreGameFacade implements IPreGameFacade
 		response.setValid(true);
 		return response;
 	}
-
 }

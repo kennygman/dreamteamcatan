@@ -15,7 +15,7 @@ import com.google.gson.JsonObject;
 import model.Game;
 import shared.response.*;
 
-public class Translator 
+public class Translator
 {
 	/**
 	 * 
@@ -23,74 +23,72 @@ public class Translator
 	 * @return A game model based on the json file.
 	 */
 	private Gson g;
+
 	public Translator()
 	{
 		g = new Gson();
 	}
-	
-        public String convert(Object input)
+
+	public String convert(Object input)
 	{
 		String translation = g.toJson(input);
 		return translation;
 	}
-	
+
 	public GameModelResponse translateGetGameModel(String input)
-	{		
+	{
 		Game game = g.fromJson(input, Game.class);
 		GameModelResponse response = new GameModelResponse();
-		
-		if(game != null)
+
+		if (game != null)
 		{
-                        game.sortBoard();
+			game.sortBoard();
 			response.setGame(game);
 			response.setValid(true);
-		}
-		else
+		} else
 		{
 			response.setValid(false);
-			//System.err.println(input);
+			// System.err.println(input);
 		}
-		
+
 		return response;
 	}
-	
+
 	public StandardResponse translateStandard(String input)
 	{
 		StandardResponse translation;
-		if(input.equals("Success"))
+		if (input.equals("Success"))
 		{
 			translation = new StandardResponse(true);
-		}
-		else
+		} else
 		{
 			translation = new StandardResponse(false);
-			//System.err.println(input);
+			// System.err.println(input);
 		}
-		
+
 		return translation;
 	}
-	
+
 	public LoginResponse translateLogin(String input, int playerId)
 	{
 		LoginResponse translation;
-		if(input.equals("Success"))
+		if (input.equals("Success"))
 		{
 
-			translation = new LoginResponse(true,playerId);
-		}
-		else
+			translation = new LoginResponse(true, playerId);
+		} else
 		{
 			translation = new LoginResponse(false);
-			//System.err.println(input);
+			// System.err.println(input);
 		}
-		
+
 		return translation;
 	}
-	
+
 	public ListAIResponse translateListAi(String input)
 	{
-		String[] aiList = g.fromJson(input,String[].class);
-		if(aiList == null)
+		String[] aiList = g.fromJson(input, String[].class);
+		if (aiList == null)
 		{
 			return new ListAIResponse(null, false);
 		}
@@ -99,18 +97,17 @@ public class Translator
 
 		return translation;
 	}
-	
+
 	public CommandResponse translateCommands(String input)
 	{
-		
+
 		boolean valid = true;
-		if(input == null)
+		if (input == null)
 		{
 			valid = false;
 		}
 
 		CommandResponse translation = new CommandResponse(input, valid);
-
 
 		return translation;
 	}
@@ -118,25 +115,26 @@ public class Translator
 	public ListGamesResponse translateListGames(String input)
 	{
 		boolean valid = true;
-		GameListObject[] gamesList = g.fromJson(input,GameListObject[].class);
-		if(gamesList == null)
+		GameListObject[] gamesList = g.fromJson(input, GameListObject[].class);
+		if (gamesList == null)
 		{
 			valid = false;
 		}
-		//ArrayList<GameListObject> gamesResponse = (ArrayList<GameListObject>) Arrays.asList(gamesList);
+		// ArrayList<GameListObject> gamesResponse = (ArrayList<GameListObject>)
+		// Arrays.asList(gamesList);
 		ListGamesResponse translation = new ListGamesResponse(gamesList, valid);
 
 		return translation;
 	}
-	
+
 	public CreateGameResponse translateCreateGame(String input)
 	{
-		CreateGameResponse response = g.fromJson(input,CreateGameResponse.class);
-		if(response != null)
+		CreateGameResponse response = g.fromJson(input,
+				CreateGameResponse.class);
+		if (response != null)
 		{
 			response.setValid(true);
-		}
-		else
+		} else
 		{
 			response = new CreateGameResponse(false);
 		}

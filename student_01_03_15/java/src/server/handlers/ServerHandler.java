@@ -50,19 +50,19 @@ public class ServerHandler {
     
     public LoginResponse getLoginFromCookie(String cookie)
     {
-    	String formattedCookie = cookie.substring(11);
+    	String formattedCookie = cookie.substring(11); //remove "catan.user="
     	
         String userInfo = null;
         CredentialsParam loginParam = null;
 
         try
-		{
-			userInfo = URLDecoder.decode(formattedCookie, "UTF-8");
-			
-		} catch (UnsupportedEncodingException e1)
-		{
-			e1.printStackTrace();
-		}
+        {
+            userInfo = URLDecoder.decode(formattedCookie, "UTF-8");
+        } 
+        catch (UnsupportedEncodingException e1)
+        {
+            e1.printStackTrace();
+        }
         
         try
         {
@@ -71,7 +71,7 @@ public class ServerHandler {
         }
         catch(Exception e)
         {
-        	System.err.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
         
         return ServerFacade.login(loginParam);
@@ -79,6 +79,20 @@ public class ServerHandler {
     
     public int getGameIdFromCookie(String cookie)
     {
-        return -1;
+        String formattedCookie = cookie.substring(11); //remove "catan.user="
+    	
+        String userInfo = null;
+
+        try
+        {
+            userInfo = URLDecoder.decode(formattedCookie, "UTF-8");
+        } 
+        catch (UnsupportedEncodingException e1)
+        {
+            e1.printStackTrace();
+        }
+        String game = userInfo.substring(userInfo.indexOf("=")+1);
+        
+        return Integer.parseInt(game);
     }
 }

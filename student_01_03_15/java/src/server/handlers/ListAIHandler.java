@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URLDecoder;
 import server.facade.ServerFacade;
-import shared.InGameCookie;
 import shared.response.ListAIResponse;
 import shared.response.ListGamesResponse;
 import shared.response.LoginResponse;
@@ -25,28 +24,25 @@ public class ListAIHandler extends ServerHandler implements HttpHandler {
         int responseCode = 400;
         
         String cookie = exchange.getRequestHeaders().getFirst("Cookie");
-        LoginResponse login = readCookie(cookie);
-        cookie = URLDecoder.decode(cookie);
-        InGameCookie user = g.fromJson(cookie, InGameCookie.class);
+        LoginResponse login = getLoginFromCookie(cookie);
         
-        ListAIResponse response = ServerFacade.listAI();
+        int gameId = getGameIdFromCookie(cookie);
+        ListAIResponse response = ServerFacade.listAI(gameId);
         
         
         if(response.isValid())
         {
-            responseBody = g.toJson(response.getGameListObject());
+            responseBody = g.toJson(response.getAiTypes());
             responseCode = 200;
         }
         else
         {
-            responseBody = "Failure";
+            responseBody = "\"Failure\"";
         }
         exchange.sendResponseHeaders(responseCode, 0);
         
         
-        OutputStreamWriter writer = new OutputStreamWriter(exchange.getResponseBody());
-        writer.write(responseBody);
-        writer.close();*/
+        write(exchange.getResponseBody(), responseBody);*/
     }
     
 }

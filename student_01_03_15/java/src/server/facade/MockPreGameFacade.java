@@ -2,13 +2,11 @@ package server.facade;
 
 import model.Game;
 import server.User;
-import shared.parameters.AddAiParam;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
 import shared.response.CreateGameResponse;
 import shared.response.GameListObject;
 import shared.response.GameModelResponse;
-import shared.response.ListAIResponse;
 import shared.response.ListGamesResponse;
 import shared.response.StandardResponse;
 
@@ -31,20 +29,6 @@ public class MockPreGameFacade implements IPreGameFacade
 		CreateGameResponse response = new CreateGameResponse(param.getName(),
 				1, game.getPlayers(), true);
 		return response;
-	}
-
-	@Override
-	public StandardResponse addAI(AddAiParam param, int id)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ListAIResponse listAI(int id)
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

@@ -5,17 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import model.Game;
-import model.board.Board;
 import model.player.Player;
 import server.GameManager;
 import server.User;
-import shared.parameters.AddAiParam;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
 import shared.response.CreateGameResponse;
 import shared.response.GameListObject;
 import shared.response.GameModelResponse;
-import shared.response.ListAIResponse;
 import shared.response.ListGamesResponse;
 import shared.response.StandardResponse;
 
@@ -63,13 +60,6 @@ public class PreGameFacade implements IPreGameFacade
 	}
 
 	@Override
-	public StandardResponse addAI(AddAiParam param, int id)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public ListGamesResponse listGames()
 	{
 		GameListObject[] allGames = new GameListObject[games.gamesSize()];
@@ -114,12 +104,5 @@ public class PreGameFacade implements IPreGameFacade
 			response.setValid(false);
 		}
 		return response;
-	}
-
-	@Override
-	public ListAIResponse listAI(int id)
-	{
-		throw new UnsupportedOperationException("Not supported yet.");
-		// To change body of generated methods, choose Tools|Templates.
 	}
 }

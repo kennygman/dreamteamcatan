@@ -23,36 +23,40 @@ public class GameFacade implements IGameFacade
 	@Override
 	public GameModelResponse resetGame(int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return buildGameResponse(games.getGame(id).reset());
 	}
 
 	@Override
 	public CommandResponse getCommands(int id)
 	{
-		// TODO Auto-generated method stub
+		games.getCommands(id);
 		return null;
 	}
 
 	@Override
 	public StandardResponse commands(int id)
 	{
-		// TODO Auto-generated method stub
+		// exectues list of commands
+		
 		return null;
 	}
 
 	@Override
 	public StandardResponse addAI(AddAiParam param, int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		
+		StandardResponse response = new StandardResponse(true);
+		
+		return response;
+		
 	}
 
 	@Override
 	public ListAIResponse listAI(int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		String[] aiType = new String[]{"LARGEST_ARMY"};
+		ListAIResponse response = new ListAIResponse(aiType,true);
+		return response;
 	}
 
 	private GameModelResponse buildGameResponse(Game game)

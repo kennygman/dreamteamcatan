@@ -24,6 +24,7 @@ public class Game
 	private Chat chat;
 	private Log log;
 	private Board map;
+	private Board initialMap;
 	private Player[] players;
 	private TradeOffer tradeOffer;
 	private TurnTracker turnTracker;
@@ -40,6 +41,7 @@ public class Game
 
 		players = new Player[4];
 		map = new Board().init(randHexes, randNumbers, randPorts);
+		initialMap = map;
 		bank = new Resources().init();
 		deck = new Developments().init();
 		chat = new Chat().init();
@@ -264,5 +266,23 @@ public class Game
 		lines.setMessage(message);
 		lines.setSource(source);
 		log.addLine(lines);
+	}
+	
+	public Game reset()
+	{
+		Player[] players = this.getPlayers();
+		for(int i=0; i<players.length;i++)
+		{
+			players[i].reset();
+		}
+		
+		setMap(initialMap);
+		
+		getBank().init();
+		getChat().init();
+		getLog().init();
+		getTurnTracker().init();
+		
+		return this;
 	}
 }

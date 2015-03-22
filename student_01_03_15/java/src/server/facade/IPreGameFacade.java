@@ -1,12 +1,10 @@
 package server.facade;
 
 import server.User;
-import shared.parameters.AddAiParam;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
 import shared.response.CreateGameResponse;
 import shared.response.GameModelResponse;
-import shared.response.ListAIResponse;
 import shared.response.ListGamesResponse;
 import shared.response.StandardResponse;
 
@@ -27,19 +25,6 @@ public interface IPreGameFacade
 	 * @param param Create Game parameters for the command
 	 */
 	CreateGameResponse create(CreateGameParam param);
-	
-	/**
-	 * This method validates the credentials through the ModelFacade then
-	 * adds an AI User to the specified Game then adds the AI to the UserManager
-	 * @param param Add AI parameters for the command
-	 * @param id the id of the game
-	 */
-	StandardResponse addAI(AddAiParam param, int id);
-        
-        /**
-	 * @param id the id of the game
-	 */
-        ListAIResponse listAI(int id);
 	
 	/**
 	 * This method returns a list of games on the server

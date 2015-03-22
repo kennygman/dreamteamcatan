@@ -14,7 +14,8 @@ public class StandardResponse
 		return isValid;
 	}
 
-	public void setValid(boolean isValid) {
+	public void setValid(boolean isValid) 
+	{
 		this.isValid = isValid;
 	}
 

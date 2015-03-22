@@ -67,6 +67,7 @@ public class Player
 		roads = 15;
 		settlements = 5;
 		cities = 4;
+		//resources.init();//is this alright to rest resources?
 	}
 
 	/**

@@ -75,6 +75,22 @@ public class Developments
 		}
 	}
 	
+	public void useCard(DevCardType type)
+	{
+		if (type != null)
+		{
+			switch (type)
+			{
+				case MONOPOLY: monopoly--;break;
+				case ROAD_BUILD: roadBuilding--; break;
+				case YEAR_OF_PLENTY: yearOfPlenty--; break;
+				case SOLDIER: soldier--; break;
+				case MONUMENT: monument--; break;
+				default: break;
+			}
+		}
+	}
+
 	/**
 	 * Checks to see if the DevCardType given is contained in the developments
 	 * 
@@ -102,6 +118,7 @@ public class Developments
 		}
 	}
 
+	
 	/**
 	 * Adds up the amount of each type of development and returns
 	 * 

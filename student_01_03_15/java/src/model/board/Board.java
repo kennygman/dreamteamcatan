@@ -17,7 +17,7 @@ import shared.locations.VertexLocation;
 public class Board extends Observable
 {
 	private transient Map<Integer, List<Hex>> hexNumbers;
-	private Map<VertexLocation, Settlement> settlementLocation;
+	private transient Map<VertexLocation, Settlement> settlementLocation;
 	private transient Map<VertexLocation, City> cityLocation;
 	private transient Map<EdgeLocation, Road> roadLocation;
 	private transient Map<Integer, Resources> playerPorts;
@@ -66,6 +66,7 @@ public class Board extends Observable
 		sortRoads();
 		sortStructures();
 		sortPorts();
+		
 	}
 
 	// --------------------------------------------------------------------------------
@@ -730,6 +731,50 @@ public class Board extends Observable
 	{
 		this.robber = loc;
 	}
+	
+	public List<Hex> getHexWithNumber(int number)
+	{
+		return hexNumbers.get(number);
+	}
 
+	/**
+	 * This method returns a list of Cities and Settlements adjacent to the hex
+	 * @param hex the hex Location
+	 * @return list of cities and settlements
+	 */
+	public List<Piece> getPieces(HexLocation hex)
+	{
+		List<Piece> pieces = new ArrayList<>();
+		List<VertexLocation> vertices = getHexVertices(hex);
+		for (VertexLocation v : vertices)
+		{
+			if (cityLocation.containsKey(v))
+			{
+				pieces.add(cityLocation.get(v));
+			}
+			else if (settlementLocation.containsKey(v))
+			{
+				pieces.add(settlementLocation.get(v));
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * This method returns a list of normalized vertex locations adjacent to the Hex Location
+	 * @param hex the hex location
+	 * @return list of vertices
+	 */
+	public List<VertexLocation> getHexVertices(HexLocation hex)
+	{
+		List<VertexLocation> vertices = new ArrayList<>();
+		vertices.add(new VertexLocation(hex, VertexDirection.NorthWest).getNormalizedLocation());
+		vertices.add(new VertexLocation(hex, VertexDirection.NorthEast).getNormalizedLocation());
+		vertices.add(new VertexLocation(hex, VertexDirection.East).getNormalizedLocation());
+		vertices.add(new VertexLocation(hex, VertexDirection.SouthEast).getNormalizedLocation());
+		vertices.add(new VertexLocation(hex, VertexDirection.SouthWest).getNormalizedLocation());
+		vertices.add(new VertexLocation(hex, VertexDirection.West).getNormalizedLocation());
+		return vertices;
+	}
 }
 

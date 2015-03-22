@@ -34,9 +34,15 @@ public class BuildSettlement implements ICommand
 			player.getResources().useResource(ResourceType.BRICK, 1);
 			player.getResources().useResource(ResourceType.SHEEP, 1);
 			player.getResources().useResource(ResourceType.WHEAT, 1);
+			game.getBank().addResource(ResourceType.WOOD, 1);
+			game.getBank().addResource(ResourceType.BRICK, 1);
+			game.getBank().addResource(ResourceType.SHEEP, 1);
+			game.getBank().addResource(ResourceType.WHEAT, 1);
 		}
 		player.setSettlements(player.getSettlements()-1);
 		game.getBoard().setSettlement(settlement);
+
+		game.addLogEntry(player.getName(), player.getName() + " built a Settlement");
 	}
 
 }

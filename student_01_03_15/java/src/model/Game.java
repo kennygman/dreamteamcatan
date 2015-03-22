@@ -2,13 +2,19 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import shared.definitions.ResourceType;
 import shared.response.GameListObject;
 import shared.response.PlayerListObject;
 import model.player.Developments;
 import model.player.Resources;
 import model.player.Player;
 import model.board.Board;
+import model.board.City;
+import model.board.Hex;
+import model.board.Piece;
+import model.board.Settlement;
 
 public class Game
 {
@@ -41,6 +47,31 @@ public class Game
 		turnTracker = new TurnTracker().init();
 		tradeOffer = null;
 		return this;
+	}
+
+	public void distribute(int number)
+	{
+		List<Hex> hexes = map.getHexWithNumber(number);
+		List<Piece> pieces;
+		for (Hex hex : hexes)
+		{
+			ResourceType resource = ResourceType.fromString(hex.getResource());
+			pieces = map.getPieces(hex.getLocation());
+			for (Piece p : pieces)
+			{
+				Player owner;
+				if (p instanceof City)
+				{
+					owner = getPlayer(((City) p).getOwner());
+					owner.getResources().addResource(resource, 2);
+				}
+				else if (p instanceof Settlement)
+				{
+					owner = getPlayer(((Settlement) p).getOwner());
+					owner.getResources().addResource(resource, 1);
+				}
+			}
+		}
 	}
 
 	public GameListObject getGameListObject()
@@ -227,4 +258,11 @@ public class Game
 				+ title + ", version=" + version + ", winner=" + winner + "]";
 	}
 	
+	public void addLogEntry(String source, String message)
+	{
+		Lines lines = new Lines();
+		lines.setMessage(message);
+		lines.setSource(source);
+		log.addLine(lines);
+	}
 }

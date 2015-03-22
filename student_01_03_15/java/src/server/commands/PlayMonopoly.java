@@ -1,6 +1,9 @@
 package server.commands;
 
 import model.Game;
+import model.player.Player;
+import shared.definitions.DevCardType;
+import shared.definitions.ResourceType;
 import shared.parameters.PlayMonopolyParam;
 
 public class PlayMonopoly implements ICommand
@@ -21,8 +24,19 @@ public class PlayMonopoly implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		ResourceType resource = ResourceType.fromString(param.getResource());
+		for (Player p : game.getPlayers())
+		{
+			if (p.getName().equals(player.getName())) continue;
+			int amount = p.getResources().getResourceAmount(resource);
+			player.getResources().addResource(resource, amount);
+			p.getResources().useResource(resource, amount);
+		}
+		player.setPlayedDevCard(true);
+		player.getOldDevCards().useCard(DevCardType.MONOPOLY);
 
+		game.addLogEntry(player.getName(), player.getName() + " played a monopoly card");
 	}
 
 }

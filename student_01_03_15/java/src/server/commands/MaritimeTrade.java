@@ -1,18 +1,20 @@
 package server.commands;
 
 import model.Game;
+import model.player.Player;
+import shared.definitions.ResourceType;
 import shared.parameters.MaritimeTradeParam;
 
 public class MaritimeTrade implements ICommand
 {
 	private MaritimeTradeParam param;
 	private Game game;
-	
+
 	public MaritimeTrade(MaritimeTradeParam param, Game game)
 	{
 		super();
 		this.param = param;
-		this.game=game;
+		this.game = game;
 	}
 
 	/**
@@ -21,8 +23,13 @@ public class MaritimeTrade implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		ResourceType give = ResourceType.fromString(param.getInputResource());
+		ResourceType get = ResourceType.fromString(param.getOutResource());
+		player.getResources().addResource(get, 1);
+		game.getBank().addResource(give, param.getRatio());
 
-	}
+		game.addLogEntry(player.getName(), player.getName() + " did a maritime trade");
+}
 
 }

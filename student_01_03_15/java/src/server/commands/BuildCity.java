@@ -31,9 +31,13 @@ public class BuildCity implements ICommand
 
 		player.getResources().useResource(ResourceType.WHEAT, 2);
 		player.getResources().useResource(ResourceType.ORE, 3);
+		game.getBank().addResource(ResourceType.WHEAT, 2);
+		game.getBank().addResource(ResourceType.ORE, 3);
 		player.setCities(player.getCities()-1);
 		player.setSettlements(player.getSettlements()+1);
 		game.getBoard().setCity(city);
+
+		game.addLogEntry(player.getName(), player.getName() + " built a City");
 	}
 
 }

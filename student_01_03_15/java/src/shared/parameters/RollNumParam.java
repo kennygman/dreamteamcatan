@@ -12,5 +12,6 @@ public class RollNumParam {
 	}
 	
 	public int getNumber() {return number;}
+	public int getPlayerIndex() {return playerIndex;}
 
 }

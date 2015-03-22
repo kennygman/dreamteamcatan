@@ -1,6 +1,8 @@
 package server.commands;
 
 import model.Game;
+import model.player.Player;
+import shared.definitions.DevCardType;
 import shared.parameters.PlayMonumentParam;
 
 public class PlayMonument implements ICommand
@@ -21,8 +23,11 @@ public class PlayMonument implements ICommand
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
+		Player player = game.getPlayer(param.getPlayerIndex());
+		player.setVictoryPoints(player.getVictoryPoints()+1);
+		player.getOldDevCards().useCard(DevCardType.MONUMENT);
 
-	}
+		game.addLogEntry(player.getName(), player.getName() + " built a monument and gained a victory point");
+}
 
 }

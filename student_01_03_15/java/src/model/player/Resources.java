@@ -1,5 +1,9 @@
 package model.player;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import shared.definitions.ResourceType;
 
 public class Resources
@@ -315,6 +319,21 @@ public class Resources
 				addResource(r, Math.abs(trade.getResourceAmount(r)) );
 			}
 		}
+	}
+	
+	public ResourceType robResource()
+	{
+		List<ResourceType> resourceList = new ArrayList<>();
+		for (ResourceType r : list)
+		{
+			int amount = getResourceAmount(r); 
+			for (int i = 0; i < amount; i++)
+				resourceList.add(r);
+		}
+		Collections.shuffle(resourceList);
+		this.useResource(resourceList.get(0), 1);
+
+		return resourceList.get(0);
 	}
 
 }

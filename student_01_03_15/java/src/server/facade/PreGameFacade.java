@@ -1,21 +1,21 @@
 package server.facade;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import model.Game;
-import model.board.Board;
 import model.player.Player;
 import server.GameManager;
 import server.User;
-import shared.parameters.AddAiParam;
+import shared.Translator;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
 import shared.response.CreateGameResponse;
 import shared.response.GameListObject;
 import shared.response.GameModelResponse;
-import shared.response.ListAIResponse;
 import shared.response.ListGamesResponse;
 import shared.response.StandardResponse;
 
@@ -38,8 +38,10 @@ public class PreGameFacade implements IPreGameFacade
 			if (players[i].equals(null))
 			{
 				Player newPlayer = new Player();
-				// TODO: set the new players color
-				// how does the player name get set?????
+				newPlayer.setColor(param.getColor());
+				newPlayer.setName(user.getName());
+				newPlayer.setPlayerIndex(i);
+				newPlayer.setPlayerID(user.getId());
 				players[i] = newPlayer;
 				game.setPlayers(players);
 				return new StandardResponse(true);
@@ -60,13 +62,6 @@ public class PreGameFacade implements IPreGameFacade
 		else
 			return new CreateGameResponse(param.getName(), -1,
 					game.getPlayers(), false);
-	}
-
-	@Override
-	public StandardResponse addAI(AddAiParam param, int id)
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -91,8 +86,14 @@ public class PreGameFacade implements IPreGameFacade
 		try
 		{
 			FileOutputStream out = new FileOutputStream(name);
+			Translator t = new Translator();
+			String gameJson = t.convert(game);
+			byte[] gameInBytes = gameJson.getBytes();
+			out.write(gameInBytes);
+			out.flush();
+			out.close();
 			response.setValid(true);
-		} catch (FileNotFoundException e)
+		} catch (IOException e)
 		{
 			response.setValid(false);
 		}
@@ -103,23 +104,23 @@ public class PreGameFacade implements IPreGameFacade
 	public GameModelResponse load(String name)
 	{
 		GameModelResponse response = new GameModelResponse();
-		Game game = new Game();
 		try
 		{
 			FileInputStream in = new FileInputStream(name);
-			// TODO: do something with the game
-			response.setValid(true);
-		} catch (FileNotFoundException e)
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(in));
+			StringBuilder out = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null)
+			{
+				out.append(line);
+			}
+			Translator t = new Translator();
+			return t.translateGetGameModel(out.toString());
+		} catch (IOException e)
 		{
 			response.setValid(false);
 		}
 		return response;
-	}
-
-	@Override
-	public ListAIResponse listAI(int id)
-	{
-		throw new UnsupportedOperationException("Not supported yet.");
-		// To change body of generated methods, choose Tools|Templates.
 	}
 }

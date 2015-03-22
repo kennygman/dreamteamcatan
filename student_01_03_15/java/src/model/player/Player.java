@@ -263,6 +263,11 @@ public class Player
 		this.playedDevCard = playedDevCard;
 	}
 
+	public void setColor(String color)
+	{
+		this.color = color;
+	}
+
 	public CatanColor getColor()
 	{
 		return CatanColor.stringToColor(color);

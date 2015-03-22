@@ -191,21 +191,9 @@ public class ServerFacade
 	}
 
 	// ---------------------------------------------------------------------------------
-	public static StandardResponse addAI(AddAiParam param, int id)
-	{
-		return pregameInstance.addAI(param, id);
-	}
-
-	// ---------------------------------------------------------------------------------
 	public static ListGamesResponse listGames()
 	{
 		return pregameInstance.listGames();
-	}
-
-	// ---------------------------------------------------------------------------------
-	public static ListAIResponse listAI(int id)
-	{
-		return pregameInstance.listAI(id);
 	}
 
 	// ---------------------------------------------------------------------------------

@@ -19,13 +19,13 @@ import model.board.Settlement;
 
 public class Game
 {
-	private int playerId;
+	private transient int playerId;
 	private Resources bank;
 	private Developments deck;
 	private Chat chat;
 	private Log log;
 	private Board map;
-	private Board initialMap;
+	private transient Board initialMap;
 	private Player[] players;
 	private TradeOffer tradeOffer;
 	private TurnTracker turnTracker;

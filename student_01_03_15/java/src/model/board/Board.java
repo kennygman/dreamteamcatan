@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 
 import model.player.Resources;
 import shared.definitions.ResourceType;
@@ -14,7 +13,7 @@ import shared.locations.HexLocation;
 import shared.locations.VertexDirection;
 import shared.locations.VertexLocation;
 
-public class Board extends Observable
+public class Board
 {
 	private transient Map<Integer, List<Hex>> hexNumbers;
 	private transient Map<VertexLocation, Settlement> settlementLocation;

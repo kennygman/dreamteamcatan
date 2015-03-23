@@ -14,7 +14,7 @@ public class Developments
 	int soldier;
 	int yearOfPlenty;
 	
-	List<DevCardType> deck;
+	private transient List<DevCardType> deck;
 	
 	public void reset()
 	{

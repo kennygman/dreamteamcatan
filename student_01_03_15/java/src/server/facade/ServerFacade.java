@@ -203,15 +203,15 @@ public class ServerFacade
 	}
 
 	// ---------------------------------------------------------------------------------
-	public static GameModelResponse save(String name, int id)
+	public static GameModelResponse save(SaveGameParam param)
 	{
-		return pregameInstance.save(name, id);
+		return pregameInstance.save(param.getName(), param.getId());
 	}
 
 	// ---------------------------------------------------------------------------------
-	public static GameModelResponse load(String name)
+	public static GameModelResponse load(LoadGameParam param)
 	{
-		return pregameInstance.load(name);
+		return pregameInstance.load(param.getName());
 	}
 
 	// ---------------------------------------------------------------------------------
@@ -233,4 +233,5 @@ public class ServerFacade
 	}
 
 	// ---------------------------------------------------------------------------------
+        
 }

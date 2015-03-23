@@ -132,7 +132,8 @@ public class Server
         server.createContext("/util/changeLogLevel", changeLogLevelHandler);
         //--------------------------------------------------------------------------------
         
-        ServerFacade.createInstance(true);
+        //ServerFacade.createInstance(true);
+        ServerFacade.createInstance(false);
         server.start();
     }
 

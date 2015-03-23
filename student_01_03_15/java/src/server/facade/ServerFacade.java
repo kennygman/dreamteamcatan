@@ -49,7 +49,7 @@ public class ServerFacade
 		{
 			userInstance = new UserFacade(users);
 			pregameInstance = new PreGameFacade(games);
-			gameInstance = new GameFacade(games);
+			gameInstance = new GameFacade(games,users);
 			movesInstance = new MovesFacade(games);
 		}
 	}

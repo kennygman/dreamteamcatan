@@ -24,10 +24,10 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler
 		Gson g = new Gson();
 		String responseBody;
 		int responseCode = 400;
-		System.out.println("CreateGameHandler-handle()");
+//		System.out.println("CreateGameHandler-handle()");
 		LoginResponse login = getLoginFromCookie(exchange.getRequestHeaders()
 				.getFirst("Cookie"));
-		 System.out.println("CreateGameHandler-login()");
+//		 System.out.println("CreateGameHandler-login()");
 
 		if (!login.isValid())
 		{

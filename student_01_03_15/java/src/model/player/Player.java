@@ -3,7 +3,6 @@ package model.player;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
-import shared.response.PlayerListObject;
 
 public class Player
 {
@@ -47,20 +46,6 @@ public class Player
 		this.playerID = playerId;
 	}
 
-	@Override
-	public String toString()
-	{
-		return "Player [name=" + name + ", playerIndex=" + playerIndex
-				+ ", playerID=" + playerID + ", isTurn=" + isTurn
-				+ ", victoryPoints=" + victoryPoints + ", soldiers=" + soldiers
-				+ ", roads=" + roads + ", settlements=" + settlements
-				+ ", cities=" + cities + ", resources=" + resources
-				+ ", discarded=" + discarded + ", playedDevCard="
-				+ playedDevCard + ", monuments=" + monuments + ", newDevCards="
-				+ newDevCards + ", oldDevCards=" + oldDevCards + ", color="
-				+ color + "]";
-	}
-
 	public void updateDevCards()
 	{
 		oldDevCards.setMonopoly(oldDevCards.getMonopoly()+newDevCards.getMonopoly());
@@ -82,9 +67,6 @@ public class Player
 		roads = 15;
 		settlements = 5;
 		cities = 4;
-		name = "";
-		color = "white";
-		playerID = -1;
 		//resources.init();//is this alright to rest resources?
 	}
 
@@ -234,7 +216,6 @@ public class Player
 
 	public String getName()
 	{
-		if (name==null) return "";
 		return name;
 	}
 
@@ -300,7 +281,6 @@ public class Player
 
 	public CatanColor getColor()
 	{
-		if (color == null) return CatanColor.WHITE;
 		return CatanColor.stringToColor(color);
 	}
 

@@ -61,27 +61,5 @@ public enum CatanColor
             }
             return cc;
         }
-        public static String asString(CatanColor cc)
-        {
-        	String s = null;
-        	if (cc != null) 
-        	{
-        		switch (cc)
-        		{
-        		case RED: s = "red";break;
-        		case ORANGE: s = "orange";break;
-        		case YELLOW: s = "yellow";break;
-        		case GREEN: s = "green";break;
-        		case BLUE: s = "blue";break;
-        		case PURPLE: s = "purple";break;
-        		case PUCE: s = "puce";break;
-        		case BROWN: s = "brown";break;
-        		case WHITE: s = "white";break;
-        		default: break;
-        		}
-        	}
-        	return s;
-        	
-        }
 }
 

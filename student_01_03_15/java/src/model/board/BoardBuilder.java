@@ -49,6 +49,7 @@ public class BoardBuilder
 			{
 				robber = hexLocations.get(i);
 			}
+			hexes.add(hex);
 		}
 	}
 	
@@ -75,6 +76,7 @@ public class BoardBuilder
 				port.setRatio(2);
 				port.setResource(PortType.asString(pt));
 			}
+			ports.add(port);
 		}
 		
 	}

@@ -12,7 +12,7 @@ public class VertexLocation
 	private int x;
 	private int y;
 	private String direction;
-	private HexLocation hexLoc;
+	private transient HexLocation hexLoc;
 	private VertexDirection dir;
 	
 	public VertexLocation(int x, int y, String direction)

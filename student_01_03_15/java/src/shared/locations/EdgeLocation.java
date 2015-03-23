@@ -11,7 +11,7 @@ public class EdgeLocation
 	private int x;
 	private int y;
 	private String direction;
-	private HexLocation hexLoc;
+	private transient HexLocation hexLoc;
 	private EdgeDirection dir;
 	
 	

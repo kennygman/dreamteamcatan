@@ -42,12 +42,12 @@ public class Game
 		winner = -1;
 
 		players = new Player[4];
-		for (int i = 0; i < players.length; i++)
+/*		for (int i = 0; i < players.length; i++)
 		{
 			players[i] = new Player();
 			players[i].setPlayerIndex(i);
 		}
-		map = new Board().init(randHexes, randNumbers, randPorts);
+*/		map = new Board().init(randHexes, randNumbers, randPorts);
 		initialMap = map;
 		bank = new Resources().init();
 		deck = new Developments().init();
@@ -96,6 +96,7 @@ public class Game
 		ArrayList<PlayerListObject> playerList = new ArrayList<>();
 		for (Player p : players)
 		{
+			if (p==null || p.getName() == null) continue;
 			try
 			{
 				CatanColor cc = p.getColor();

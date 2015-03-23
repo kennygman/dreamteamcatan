@@ -37,7 +37,7 @@ public class PreGameFacade implements IPreGameFacade
 		Player[] players = game.getPlayers();
 		for (int i = 0; i < players.length; i++)
 		{
-			if (players[i].equals(null))
+			if (players[i] == null || players[i].getName() == null)
 			{
 				Player newPlayer = new Player();
 				newPlayer.setColor(param.getColor());
@@ -55,13 +55,12 @@ public class PreGameFacade implements IPreGameFacade
 	@Override
 	public CreateGameResponse create(CreateGameParam param)
 	{
-            System.out.println("PreGameFacade-create()");
 		Game game = new Game();
 		game.initialize(param.getName(), param.isRandomTiles(),
 				param.isRandomNumbers(), param.isRandomPorts());
 		if (games.addGame(game))
 		{
-			return new CreateGameResponse(param.getName(), games.gamesSize(),
+			return new CreateGameResponse(param.getName(), games.gamesSize()-1,
 					game.getPlayers(), true);
 		} else
 		{
@@ -72,7 +71,6 @@ public class PreGameFacade implements IPreGameFacade
 	@Override
 	public ListGamesResponse listGames()
 	{
-            System.out.println("PreGameFacade-listGames()");
 		List<GameListObject> allGames = new ArrayList<>();
 		for (Game g : games.getGames())
 		{

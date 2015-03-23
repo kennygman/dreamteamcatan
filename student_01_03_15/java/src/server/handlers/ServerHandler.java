@@ -51,10 +51,9 @@ public class ServerHandler
 
 	public LoginResponse getLoginFromCookie(String cookie)
 	{
-		String formattedCookie = cookie.substring(11); // remove "catan.user="
-		if (!formattedCookie.endsWith("}")) formattedCookie = formattedCookie.substring(0, formattedCookie.length()-14);
+		String formattedCookie = cookie;
+		if (!formattedCookie.startsWith("{")) formattedCookie = formattedCookie.substring(11); // remove "catan.user="
 
-		//System.out.println(formattedCookie);
 		
 		String userInfo = null;
 		CredentialsParam loginParam = null;
@@ -66,6 +65,9 @@ public class ServerHandler
 			e1.getLocalizedMessage();
 			e1.printStackTrace();
 		}
+
+		if (!userInfo.endsWith("}")) userInfo = userInfo.substring(0, userInfo.length()-14); // remove "; catan.game=#"
+//		System.out.println(userInfo);
 
 		try
 		{

@@ -21,78 +21,80 @@ import shared.PreGameCookie;
 import shared.parameters.CredentialsParam;
 import shared.response.LoginResponse;
 
+public class ServerHandler
+{
+	Gson g = new Gson();
 
-public class ServerHandler {
-    Gson g = new Gson();
-    
-    public String read(InputStream input) throws IOException
-    {
-        StringBuilder stringBuffer = new StringBuilder();
-        InputStreamReader reader = new InputStreamReader(input);
-        BufferedReader buffRead = new BufferedReader(reader);
+	public String read(InputStream input) throws IOException
+	{
+		StringBuilder stringBuffer = new StringBuilder();
+		InputStreamReader reader = new InputStreamReader(input);
+		BufferedReader buffRead = new BufferedReader(reader);
 
-        String inputLine;
-        while((inputLine = buffRead.readLine()) != null)
-        {
-            stringBuffer.append(inputLine);
-        }
+		String inputLine;
+		while ((inputLine = buffRead.readLine()) != null)
+		{
+			stringBuffer.append(inputLine);
+		}
 
-        input.close();
-        return stringBuffer.toString();
-    }
-    
-    public void write(OutputStream output, String responseBody) throws IOException
-    {
-        OutputStreamWriter writer = new OutputStreamWriter(output);
-        writer.write(responseBody);
-        writer.close();
-    }
-    
-    public LoginResponse getLoginFromCookie(String cookie)
-    {
-    	String formattedCookie = cookie.substring(11); //remove "catan.user="
-    	
-        String userInfo = null;
-        CredentialsParam loginParam = null;
+		input.close();
+		return stringBuffer.toString();
+	}
 
-        try
-        {
-            userInfo = URLDecoder.decode(formattedCookie, "UTF-8");
-        } 
-        catch (UnsupportedEncodingException e1)
-        {
-            e1.printStackTrace();
-        }
-        
-        try
-        {
-            PreGameCookie param = g.fromJson(userInfo, PreGameCookie.class);
-            loginParam = new CredentialsParam(param.getName(), param.getPassword());
-        }
-        catch(Exception e)
-        {
-            System.err.println(e.getMessage());
-        }
-        
-        return ServerFacade.login(loginParam);
-    }
-    
-    public int getGameIdFromCookie(String cookie)
-    {
-        String formattedCookie = cookie.substring(11); //remove "catan.user="
-    	
-        String userInfo = null;
+	public void write(OutputStream output, String responseBody)
+			throws IOException
+	{
+		OutputStreamWriter writer = new OutputStreamWriter(output);
+		writer.write(responseBody);
+		writer.close();
+	}
 
-        try
-        {
-            userInfo = URLDecoder.decode(formattedCookie, "UTF-8");
-        } 
-        catch (UnsupportedEncodingException e1)
-        {
-            e1.printStackTrace();
-        }
-        String game = userInfo.substring(userInfo.indexOf("=")+1);
-        
-        return Integer.parseInt(game);
-    }
+	public LoginResponse getLoginFromCookie(String cookie)
+	{
+		String formattedCookie = cookie.substring(11); // remove "catan.user="
+		if (!formattedCookie.endsWith("}")) formattedCookie = formattedCookie.substring(0, formattedCookie.length()-14);
+
+		//System.out.println(formattedCookie);
+		
+		String userInfo = null;
+		CredentialsParam loginParam = null;
+		try
+		{
+			userInfo = URLDecoder.decode(formattedCookie, "UTF-8");
+		} catch (UnsupportedEncodingException e1)
+		{
+			e1.getLocalizedMessage();
+			e1.printStackTrace();
+		}
+
+		try
+		{
+			PreGameCookie param = g.fromJson(userInfo, PreGameCookie.class);
+			loginParam = new CredentialsParam(param.getName(),
+					param.getPassword());
+		} catch (Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+
+		return ServerFacade.login(loginParam);
+	}
+
+	public int getGameIdFromCookie(String cookie)
+	{
+		String formattedCookie = cookie.substring(11); // remove "catan.user="
+
+		String userInfo = null;
+
+		try
+		{
+			userInfo = URLDecoder.decode(formattedCookie, "UTF-8");
+		} catch (UnsupportedEncodingException e1)
+		{
+			e1.printStackTrace();
+		}
+		String game = userInfo.substring(userInfo.indexOf("=") + 1);
+
+		return Integer.parseInt(game);
+	}
 }

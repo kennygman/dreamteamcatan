@@ -1,5 +1,6 @@
 package server.facade;
 
+import client.proxy.Proxy;
 import model.Game;
 import model.ModelFacade;
 import server.GameManager;
@@ -14,6 +15,7 @@ public class MovesFacade implements IMovesFacade
 	public MovesFacade(GameManager games)
 	{
 		this.games=games;
+		ModelFacade.createInstance(new Proxy());
 	}
 
 	//------------------------------------------------------------------------------
@@ -22,7 +24,6 @@ public class MovesFacade implements IMovesFacade
 	{
 		Game game = games.getGame(id);
 		setGame(game);
-		
 		SendChat cmd = new SendChat(param, game);
 		
 		cmd.execute();
@@ -330,13 +331,22 @@ public class MovesFacade implements IMovesFacade
 	{
 		GameModelResponse response = new GameModelResponse();
 		response.setGame(games.getGame(id));
+		response.setValid(true);
 		return response;
 	}
 	
 	//------------------------------------------------------------------------------
 	private void setGame(Game game)
 	{
-		ModelFacade.getInstance().setGame(game);
+		try
+		{
+			ModelFacade.getInstance().setGame(game);
+		}
+		catch(Exception e)
+		{
+			System.err.println(e);
+			System.err.println(e.getLocalizedMessage());
+		}
 	}
 	
 	

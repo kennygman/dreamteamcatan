@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import model.Game;
 import model.player.Player;
@@ -37,7 +35,7 @@ public class PreGameFacade implements IPreGameFacade
 		Player[] players = game.getPlayers();
 		for (int i = 0; i < players.length; i++)
 		{
-			if (players[i] == null || players[i].getName() == null)
+			if (players[i].equals(null))
 			{
 				Player newPlayer = new Player();
 				newPlayer.setColor(param.getColor());
@@ -55,30 +53,34 @@ public class PreGameFacade implements IPreGameFacade
 	@Override
 	public CreateGameResponse create(CreateGameParam param)
 	{
+            System.out.println("PreGameFacade-create()");
 		Game game = new Game();
 		game.initialize(param.getName(), param.isRandomTiles(),
 				param.isRandomNumbers(), param.isRandomPorts());
-		if (games.addGame(game))
+		if (games.addGame(game)) 
 		{
-			return new CreateGameResponse(param.getName(), games.gamesSize()-1,
+			return new CreateGameResponse(param.getName(), games.gamesSize(),
 					game.getPlayers(), true);
-		} else
+		}
+		else
 		{
-			return new CreateGameResponse(false);
+			return new CreateGameResponse(param.getName(), -1,
+					game.getPlayers(), false);
 		}
 	}
 
 	@Override
 	public ListGamesResponse listGames()
 	{
-		List<GameListObject> allGames = new ArrayList<>();
-		for (Game g : games.getGames())
+            System.out.println("PreGameFacade-listGames()");
+		GameListObject[] allGames = new GameListObject[games.gamesSize()];
+		for (int i = 0; i < games.gamesSize(); i++)
 		{
-			allGames.add(new GameListObject(g.getTitle(), games.getGames()
-					.indexOf(g), g.getPlayerListObject()));
+			GameListObject game = new GameListObject(games.getGame(i)
+					.getTitle(), i, games.getGame(i).getPlayerListObject());
+			allGames[i] = game;
 		}
-		return new ListGamesResponse(allGames.toArray(new GameListObject[0]),
-				true);
+		return new ListGamesResponse(allGames, true);
 	}
 
 	@Override

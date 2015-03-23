@@ -11,8 +11,7 @@ public class main {
 //				,"test.ProxyGameStartTests","test.ProxyInGameTests",
 //				"test.ModelFacadeUnitTest"
 //				,"test.PollerUnitTests"
-//				"test.UserFacadeTests"
-				"test.MovesFacadeTests"
+				"test.UserFacadeTests"
 		};
 		org.junit.runner.JUnitCore.main(testClasses);
 	}

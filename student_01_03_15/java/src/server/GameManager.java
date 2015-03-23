@@ -3,12 +3,10 @@ package server;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 import server.commands.ICommand;
 import model.Game;
-import model.player.Player;
 
 public class GameManager
 {
@@ -140,9 +138,5 @@ public class GameManager
 			}
 		}
 		return null;
-	}
-	public List<Game> getGames()
-	{
-		return games;
 	}
 }

@@ -19,19 +19,20 @@ import model.board.Settlement;
 
 public class Game
 {
-	private transient int playerId;
+	private String title;
+	private Player[] players;
 	private Resources bank;
+	private Board map;
 	private Developments deck;
 	private Chat chat;
 	private Log log;
-	private Board map;
-	private transient Board initialMap;
-	private Player[] players;
 	private TradeOffer tradeOffer;
 	private TurnTracker turnTracker;
-	private String title;
 	private int version;
 	private int winner;
+
+	private transient Board initialMap;
+	private transient int playerId;
 
 	// Add model initialize methods here
 	public Game initialize(String title, boolean randHexes,
@@ -42,12 +43,7 @@ public class Game
 		winner = -1;
 
 		players = new Player[4];
-/*		for (int i = 0; i < players.length; i++)
-		{
-			players[i] = new Player();
-			players[i].setPlayerIndex(i);
-		}
-*/		map = new Board().init(randHexes, randNumbers, randPorts);
+		map = new Board().init(randHexes, randNumbers, randPorts);
 		initialMap = map;
 		bank = new Resources().init();
 		deck = new Developments().init();
@@ -86,17 +82,22 @@ public class Game
 	{
 		GameListObject gameObject = new GameListObject();
 		gameObject.title = title;
-		gameObject.players = getPlayerListObject();
+		ArrayList<PlayerListObject> players = new ArrayList<PlayerListObject>(
+				Arrays.asList(getPlayerListObject()));
+		gameObject.players = players;
 		return gameObject;
 	}
 
-	public ArrayList<PlayerListObject> getPlayerListObject()
+	public PlayerListObject[] getPlayerListObject()
 	{
-
 		ArrayList<PlayerListObject> playerList = new ArrayList<>();
 		for (Player p : players)
 		{
-			if (p==null || p.getName() == null) continue;
+			if (p == null || p.getName() == null)
+			{
+				playerList.add(new PlayerListObject());
+				continue;
+			}
 			try
 			{
 				CatanColor cc = p.getColor();
@@ -109,7 +110,9 @@ public class Game
 				System.err.println(e.getLocalizedMessage());
 			}
 		}
-		return playerList;
+		PlayerListObject[] arrList = new PlayerListObject[playerList.size()];
+		arrList = playerList.toArray(arrList);
+		return arrList;
 	}
 
 	public Player getPlayer(int index)

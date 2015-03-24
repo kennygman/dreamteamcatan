@@ -3,14 +3,12 @@ package model.player;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
-import shared.response.PlayerListObject;
 
 public class Player
 {
 	private String name;
 	private int playerIndex;
 	private int playerID;
-	private boolean isTurn;
 
 	private int victoryPoints;
 	private int soldiers;
@@ -47,20 +45,6 @@ public class Player
 		this.playerID = playerId;
 	}
 
-	@Override
-	public String toString()
-	{
-		return "Player [name=" + name + ", playerIndex=" + playerIndex
-				+ ", playerID=" + playerID + ", isTurn=" + isTurn
-				+ ", victoryPoints=" + victoryPoints + ", soldiers=" + soldiers
-				+ ", roads=" + roads + ", settlements=" + settlements
-				+ ", cities=" + cities + ", resources=" + resources
-				+ ", discarded=" + discarded + ", playedDevCard="
-				+ playedDevCard + ", monuments=" + monuments + ", newDevCards="
-				+ newDevCards + ", oldDevCards=" + oldDevCards + ", color="
-				+ color + "]";
-	}
-
 	public void updateDevCards()
 	{
 		oldDevCards.setMonopoly(oldDevCards.getMonopoly()+newDevCards.getMonopoly());
@@ -73,7 +57,6 @@ public class Player
 
 	public void reset()
 	{
-		isTurn = false;
 		discarded = false;
 		playedDevCard = false;
 		monuments = 0;
@@ -85,7 +68,9 @@ public class Player
 		name = "";
 		color = "white";
 		playerID = -1;
-		//resources.init();//is this alright to rest resources?
+		resources = new Resources();
+		oldDevCards = new Developments();
+		newDevCards = new Developments();
 	}
 
 	/**
@@ -144,16 +129,6 @@ public class Player
 	public void setPlayerID(int playerID)
 	{
 		this.playerID = playerID;
-	}
-
-	public boolean isTurn()
-	{
-		return isTurn;
-	}
-
-	public void setTurn(boolean isTurn)
-	{
-		this.isTurn = isTurn;
 	}
 
 	public int getVictoryPoints()

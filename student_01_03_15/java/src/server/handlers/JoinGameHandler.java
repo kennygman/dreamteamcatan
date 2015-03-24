@@ -33,10 +33,11 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler
 
 		String cookie = exchange.getRequestHeaders().getFirst("Cookie");
 		String userInfo = URLDecoder.decode(cookie, "UTF-8");
-		if (!userInfo.endsWith("}")) userInfo = userInfo.substring(0, userInfo.length()-14); // remove ; catan.gameId=0 from end of string
 
-		userInfo = userInfo.substring(11); // remove catan.user=
-		System.out.println(userInfo);
+		if (!userInfo.startsWith("{"))
+			userInfo = userInfo.substring(11);
+		if (!userInfo.endsWith("}"))
+			userInfo = userInfo.substring(0, userInfo.length() - 14);
 
 		PreGameCookie cookieParam = null; // loginParam uses username, but the
 											// cookie uses name

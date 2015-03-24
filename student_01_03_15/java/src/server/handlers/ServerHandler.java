@@ -67,7 +67,6 @@ public class ServerHandler
 		}
 
 		if (!userInfo.endsWith("}")) userInfo = userInfo.substring(0, userInfo.length()-14); // remove "; catan.game=#"
-//		System.out.println(userInfo);
 
 		try
 		{

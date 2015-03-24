@@ -95,7 +95,7 @@ public class GameFacade implements IGameFacade
 	}
 
 	@Override
-	public ListAIResponse listAI(int id)
+	public ListAIResponse listAI()
 	{
 		String[] aiType = new String[]{"LARGEST_ARMY"};
 		ListAIResponse response = new ListAIResponse(aiType,true);

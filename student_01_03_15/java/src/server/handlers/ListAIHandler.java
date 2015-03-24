@@ -15,41 +15,40 @@ import shared.response.LoginResponse;
  *
  * @author Drew
  */
-public class ListAIHandler extends ServerHandler implements HttpHandler {
+public class ListAIHandler extends ServerHandler implements HttpHandler
+{
 
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        /*Gson g = new Gson();
-        String responseBody;
-        int responseCode = 400;
-        
-        String cookie = exchange.getRequestHeaders().getFirst("Cookie");
-        LoginResponse login = getLoginFromCookie(cookie);
-        
-        if(!login.isValid())
-        {
-            responseBody = "\"Error: bad cookie\"";
-        }
-        else
-        {
-            int gameId = getGameIdFromCookie(cookie);
-            ListAIResponse response = ServerFacade.listAI(gameId);
+	@Override
+	public void handle(HttpExchange exchange) throws IOException
+	{
+		Gson g = new Gson();
+		String responseBody;
+		int responseCode = 400;
 
+		String cookie = exchange.getRequestHeaders().getFirst("Cookie");
+		LoginResponse login = getLoginFromCookie(cookie);
 
-            if(response.isValid())
-            {
-                responseBody = g.toJson(response.getAiTypes());
-                responseCode = 200;
-            }
-            else
-            {
-                responseBody = "\"Failure\"";
-            }
-        }
-        exchange.sendResponseHeaders(responseCode, 0);
-        
-        
-        write(exchange.getResponseBody(), responseBody);*/
-    }
-    
+		if (!login.isValid())
+		{
+			responseBody = "\"Error: bad cookie\"";
+		} else
+		{
+			// int gameId = getGameIdFromCookie(cookie);
+			ListAIResponse response = ServerFacade.listAi();
+
+			if (response.isValid())
+			{
+				responseBody = g.toJson(response.getAiTypes());
+				responseCode = 200;
+			} else
+			{
+				responseBody = "\"Failure\"";
+			}
+		}
+		exchange.getResponseHeaders().add("Content-Type", "application/json");
+		exchange.sendResponseHeaders(responseCode, 0);
+
+		write(exchange.getResponseBody(), responseBody);
+	}
+
 }

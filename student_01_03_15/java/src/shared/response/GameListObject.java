@@ -1,6 +1,7 @@
 package shared.response;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import client.data.GameInfo;
 import client.data.PlayerInfo;
@@ -22,11 +23,11 @@ public class GameListObject
 	 * @param players
 	 */
 	public GameListObject(String title, int id,
-			ArrayList<PlayerListObject> players)
+			PlayerListObject[] players)
 	{
 		this.title = title;
 		this.id = id;
-		this.players = players;
+		this.players = new ArrayList<PlayerListObject>(Arrays.asList(players));
 	}
 
 	public int getId()

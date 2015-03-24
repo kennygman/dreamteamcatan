@@ -233,5 +233,9 @@ public class ServerFacade
 	}
 
 	// ---------------------------------------------------------------------------------
+	public static ListAIResponse listAi()
+	{
+		return gameInstance.listAI();
+	}
         
 }

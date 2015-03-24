@@ -59,7 +59,7 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler
 			responseBody = "\"Error: bad cookie\"";
 		} else
 		{
-			User user = g.fromJson(userInfo, User.class);
+			User user = new User(loginResponse.getPlayerInfo().getId(), loginParam.getUser(), loginParam.getPassword());
 			JoinGameParam joinParam = g.fromJson(input, JoinGameParam.class);
 			StandardResponse response = ServerFacade.join(joinParam, user);
 

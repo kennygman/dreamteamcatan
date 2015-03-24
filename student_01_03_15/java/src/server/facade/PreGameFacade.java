@@ -42,20 +42,17 @@ public class PreGameFacade implements IPreGameFacade
 		else 
 		{
 			int pIndex = game.getEmptyPlayerIndex();
-			if(pIndex > 0)
-			{
-				Player[] players = new Player[4];
-				Player newPlayer = new Player();
-				newPlayer.setColor(param.getColor());
-				newPlayer.setName(user.getName());
-				newPlayer.setPlayerIndex(pIndex);
-				newPlayer.setPlayerID(user.getId());
-				players[pIndex] = newPlayer;
-				game.setPlayers(players);
-				return new StandardResponse(true);
-			}
+
+			Player[] players = new Player[4];
+			Player newPlayer = new Player();
+			newPlayer.setColor(param.getColor());
+			newPlayer.setName(user.getName());
+			newPlayer.setPlayerIndex(pIndex);
+			newPlayer.setPlayerID(user.getId());
+			players[pIndex] = newPlayer;
+			game.setPlayers(players);
+			return new StandardResponse(true);
 		}
-		return new StandardResponse(false);
 	}
 
 	@Override

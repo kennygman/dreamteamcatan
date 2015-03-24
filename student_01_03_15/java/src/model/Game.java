@@ -301,4 +301,23 @@ public class Game
 
 		return this;
 	}
+	
+	public boolean isPlayerInGame(int id)
+	{
+		for (Player p : players)
+		{
+			if (p != null && p.getPlayerID() == id) return true;
+		}
+		return false;
+	}
+	public int getEmptyPlayerIndex()
+	{
+		for (int i = 0; i < players.length; i++)
+		{
+			if (players[i] == null || players[i].getName() == null) return i;
+		}
+		
+		return -1;
+	}
+	
 }

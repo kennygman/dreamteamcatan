@@ -93,7 +93,11 @@ public class Proxy implements IProxy
 			System.err.print(e.getMessage());
 		}
 		
-		return stringBuffer.toString();
+		String input = stringBuffer.toString();
+		if (input.startsWith("\"")) input = input.substring(1);
+		if (input.endsWith("\"")) input = input.substring(0, input.length()-1);
+
+		return input;
 
 	}
 	

@@ -6,6 +6,8 @@ public class GameModelResponse
 	private boolean isValid;
 	private Game game;
 	
+	public GameModelResponse(){}
+	
 	public boolean isValid() 
 	{
 		return isValid;

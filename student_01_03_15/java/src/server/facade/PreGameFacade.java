@@ -67,7 +67,7 @@ public class PreGameFacade implements IPreGameFacade
 		if (games.addGame(game))
 		{
 			return new CreateGameResponse(param.getName(), games.gamesSize()-1,
-					game.getPlayers(), true);
+					game.getPlayerListObject(), true);
 		} else
 		{
 			return new CreateGameResponse(false);
@@ -78,13 +78,15 @@ public class PreGameFacade implements IPreGameFacade
 	public ListGamesResponse listGames()
 	{
 		List<GameListObject> allGames = new ArrayList<>();
+		GameListObject[] gamesArr = new GameListObject[games.gamesSize()];
+		
 		for (Game g : games.getGames())
 		{
 			allGames.add(new GameListObject(g.getTitle(), games.getGames()
 					.indexOf(g), g.getPlayerListObject()));
 		}
-		return new ListGamesResponse(allGames.toArray(new GameListObject[0]),
-				true);
+		gamesArr = allGames.toArray(gamesArr);
+		return new ListGamesResponse(gamesArr, true);
 	}
 
 	@Override
@@ -117,6 +119,8 @@ public class PreGameFacade implements IPreGameFacade
 		try
 		{
 			FileInputStream in = new FileInputStream(name);
+			
+			@SuppressWarnings("resource")
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(in));
 			StringBuilder out = new StringBuilder();

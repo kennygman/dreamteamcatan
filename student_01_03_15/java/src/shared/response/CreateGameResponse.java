@@ -1,17 +1,14 @@
 package shared.response;
 
-import model.player.Player;
-
-
 public class CreateGameResponse 
 {
 	private boolean isValid;
 	
 	private String title;
 	private int id;
-	private Player[] players;
+	private PlayerListObject[] players;
 	
-	public CreateGameResponse(String t, int i, Player[] p, boolean b)
+	public CreateGameResponse(String t, int i, PlayerListObject[] p, boolean b)
 	{
 		title = t;
 		id = i;

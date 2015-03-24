@@ -24,7 +24,7 @@ public class MockGameFacade implements IGameFacade
 	}
 
 	@Override
-	public ListAIResponse listAI(int id)
+	public ListAIResponse listAI()
 	{
 		// TODO Auto-generated method stub
 		return null;

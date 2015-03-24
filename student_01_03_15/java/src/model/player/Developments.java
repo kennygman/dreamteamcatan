@@ -16,6 +16,8 @@ public class Developments
 	
 	private transient List<DevCardType> deck;
 	
+	public Developments(){}
+	
 	public void reset()
 	{
 		init();

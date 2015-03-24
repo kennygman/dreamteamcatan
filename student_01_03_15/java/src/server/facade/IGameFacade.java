@@ -24,10 +24,9 @@ public interface IGameFacade
 	StandardResponse addAI(AddAiParam param, int id);
 	
 	/**
-	 * This method returns a list of AI players
-	 * @param id the id of the game
+	 * This method returns a list of AI types
 	 */
-	ListAIResponse listAI(int id);
+	ListAIResponse listAI();
 	
 	/**
 	 * This method resets the game to its initial state

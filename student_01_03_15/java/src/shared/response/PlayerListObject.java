@@ -7,10 +7,11 @@ public class PlayerListObject
 {
 	public String color;
 	public String name;
-	public int id;
+	public Integer id;
 	
 	
 
+	public PlayerListObject(){}
 	public PlayerListObject(String color, String name, int id)
 	{
 		super();

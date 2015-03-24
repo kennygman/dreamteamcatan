@@ -23,28 +23,29 @@ public class MockPreGameFacade implements IPreGameFacade
 	@Override
 	public CreateGameResponse create(CreateGameParam param)
 	{
-            System.out.println("MockPreGameFacade-create()");
 		Game game = new Game();
 		game.initialize(param.getName(), param.isRandomTiles(),
 				param.isRandomNumbers(), param.isRandomPorts());
+
+		
 		CreateGameResponse response = new CreateGameResponse(param.getName(),
-				1, game.getPlayers(), true);
-                System.out.println("MockPreGameFacade-create return");
+				1, game.getPlayerListObject(), true);
+		
 		return response;
 	}
 
 	@Override
 	public ListGamesResponse listGames()
 	{
-            //System.out.println("MockPreGameFacade-listGames()");
+		// System.out.println("MockPreGameFacade-listGames()");
 		GameListObject[] allGames = new GameListObject[1];
 		Game game = new Game();
-            //System.out.println("MockPreGameFacade-listGames init");
+		// System.out.println("MockPreGameFacade-listGames init");
 		GameListObject gameList = new GameListObject("Game Title", 0,
 				game.getPlayerListObject());
-            //System.out.println("MockPreGameFacade-listGames newList");
+		// System.out.println("MockPreGameFacade-listGames newList");
 		allGames[0] = gameList;
-            //System.out.println("MockPreGameFacade-listGames return");
+		// System.out.println("MockPreGameFacade-listGames return");
 		return new ListGamesResponse(allGames, true);
 	}
 

@@ -74,7 +74,6 @@ public class Translator
 		LoginResponse translation;
 		if (input.equals("Success"))
 		{
-
 			translation = new LoginResponse(true, playerId);
 		} else
 		{

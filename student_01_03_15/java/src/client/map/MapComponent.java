@@ -342,10 +342,11 @@ public class MapComponent extends JComponent
 	
 	public void addNumber(HexLocation hexLoc, int num)
 	{
-		
-		numbers.put(hexLoc, num);
-		
-		this.repaint();
+		if (num > 1 && num < 13)
+		{
+			numbers.put(hexLoc, num);
+			this.repaint();
+		}
 	}
 	
 	public void placeRoad(EdgeLocation edgeLoc, CatanColor color)
@@ -642,7 +643,6 @@ public class MapComponent extends JComponent
 		
 		for (Map.Entry<HexLocation, Integer> entry : numbers.entrySet())
 		{
-			
 			BufferedImage numImage = getNumberImage(entry.getValue());
 			
 			Point2D hexCenter = getHexPoint(entry.getKey());

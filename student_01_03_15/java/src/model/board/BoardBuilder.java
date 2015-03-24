@@ -32,8 +32,8 @@ public class BoardBuilder
 		hexes = new ArrayList<>();
 		List<HexLocation> hexLocations = getHexLocations();
 
-		List<HexType> hexTypes = Arrays.asList(hexList);
-		List<Integer> numbers = Arrays.asList(numberList);
+		List<HexType> hexTypes =  new ArrayList<HexType>(Arrays.asList(hexList));
+		List<Integer> numbers = new ArrayList<Integer>(Arrays.asList(numberList));
 		
 		if (randHexes) Collections.shuffle(hexTypes);
 		if (randNumbers) Collections.shuffle(numbers);
@@ -43,11 +43,17 @@ public class BoardBuilder
 			Hex hex = new Hex();
 			hex.setLocation(hexLocations.get(i));
 			hex.setResource(HexType.asString(hexTypes.get(i)));
-			hex.setNumber(i);
 			
 			if (hexTypes.get(i).equals(HexType.DESERT))
 			{
 				robber = hexLocations.get(i);
+				hex.setResource(null);
+				hex.setNumber(-1);
+			}
+			else
+			{
+				hex.setNumber(numbers.get(0));
+				numbers.remove(0);
 			}
 			hexes.add(hex);
 		}
@@ -57,8 +63,8 @@ public class BoardBuilder
 	private void initPorts(boolean randPorts)
 	{
 		ports = new ArrayList<>();
-		List<String> direction = Arrays.asList("S","S","SW","NE","N","NE","NW","SE","NW");
-		List<PortType> portTypes = Arrays.asList(portList);
+		List<String> direction =  new ArrayList<String>(Arrays.asList("S","S","SW","NE","N","NE","NW","SE","NW"));
+		List<PortType> portTypes =  new ArrayList<PortType>(Arrays.asList(portList));
 		List<HexLocation> portLocations = getPortLocations();
 		
 		if (randPorts) Collections.shuffle(portTypes);
@@ -85,8 +91,8 @@ public class BoardBuilder
 	private List<HexLocation> getHexLocations()
 	{
 		List<HexLocation> hexLocations = new ArrayList<>();
-		int[] x = {0,1,2,-1,0,1,2,-2,-1,0,1,2,-2,-1,0,1,-2,-1,0};
-		int[] y = {-2,-2,-2,-1,-1,-1,-1,0,0,0,0,0,1,1,1,1,2,2,2};
+		int[] x = { 0, 1, 2,-1, 0, 1, 2,-2,-1, 0, 1, 2,-2,-1, 0, 1,-2,-1, 0};
+		int[] y = {-2,-2,-2,-1,-1,-1,-1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2};
 		for (int i = 0; i < x.length; i++)
 		{
 			hexLocations.add(new HexLocation(x[i], y[i]));
@@ -98,8 +104,8 @@ public class BoardBuilder
 	private List<HexLocation> getPortLocations()
 	{
 		List<HexLocation> portLocations = new ArrayList<>();
-		int[] x = {0,-1,-1,1,-2,2,3,-3,-3};
-		int[] y = {-2,-3,-3,2,3,3,1,0,-1};
+		int[] x = {-3, 0,-2, 1, 3,-3, 3,-1, 2};
+		int[] y = { 2, 3, 3,-3,-1, 0,-3,-2, 1};
 		
 		for (int i = 0; i < x.length; i++)
 		{

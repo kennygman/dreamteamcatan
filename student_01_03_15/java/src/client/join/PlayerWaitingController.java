@@ -20,8 +20,6 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	
 	public PlayerWaitingController(IPlayerWaitingView view) {
             super(view);
-            ListAIResponse aiList = ModelFacade.getInstance().listAi();
-            getView().setAIChoices(aiList.getAiTypes());
             ModelFacade.getInstance().addObserver(this);
             isRunning = false;
 	}
@@ -47,9 +45,15 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
             }
 	}
 
+	private boolean first = true;
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
+		if (first) {
+	        ListAIResponse aiList = ModelFacade.getInstance().listAi();
+	        getView().setAIChoices(aiList.getAiTypes());
+	        first = false;
+		}
             refresh();
 	}
 	

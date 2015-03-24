@@ -105,6 +105,7 @@ public class GameFacade implements IGameFacade
 	private GameModelResponse buildGameResponse(Game game)
 	{
 		GameModelResponse response = new GameModelResponse();
+		
     	if (game != null)
     	{
     		 response.setGame(game);

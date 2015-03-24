@@ -6,7 +6,7 @@ public class Hex
 {
 	private String resource;
 	private HexLocation location;
-	private int number;
+	private Integer number;
 
 	public String getResource()
 	{
@@ -33,7 +33,7 @@ public class Hex
 		return number;
 	}
 
-	public void setNumber(int number)
+	public void setNumber(Integer number)
 	{
 		this.number = number;
 	}

@@ -34,17 +34,23 @@ public class PreGameFacade implements IPreGameFacade
 	public StandardResponse join(JoinGameParam param, User user)
 	{
 		Game game = games.getGame(param.getId());
-		Player[] players = game.getPlayers();
-		for (int i = 0; i < players.length; i++)
+
+		if (game.isPlayerInGame(user.getId()))
 		{
-			if (players[i] == null || players[i].getName() == null)
+			return new StandardResponse(true);
+		}
+		else 
+		{
+			int pIndex = game.getEmptyPlayerIndex();
+			if(pIndex > 0)
 			{
+				Player[] players = new Player[4];
 				Player newPlayer = new Player();
 				newPlayer.setColor(param.getColor());
 				newPlayer.setName(user.getName());
-				newPlayer.setPlayerIndex(i);
+				newPlayer.setPlayerIndex(pIndex);
 				newPlayer.setPlayerID(user.getId());
-				players[i] = newPlayer;
+				players[pIndex] = newPlayer;
 				game.setPlayers(players);
 				return new StandardResponse(true);
 			}

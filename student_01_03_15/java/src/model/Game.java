@@ -42,12 +42,10 @@ public class Game
 		winner = -1;
 
 		players = new Player[4];
-/*		for (int i = 0; i < players.length; i++)
-		{
-			players[i] = new Player();
-			players[i].setPlayerIndex(i);
-		}
-*/		map = new Board().init(randHexes, randNumbers, randPorts);
+		/*
+		 * for (int i = 0; i < players.length; i++) { players[i] = new Player();
+		 * players[i].setPlayerIndex(i); }
+		 */map = new Board().init(randHexes, randNumbers, randPorts);
 		initialMap = map;
 		bank = new Resources().init();
 		deck = new Developments().init();
@@ -96,7 +94,8 @@ public class Game
 		ArrayList<PlayerListObject> playerList = new ArrayList<>();
 		for (Player p : players)
 		{
-			if (p==null || p.getName() == null) continue;
+			if (p == null || p.getName() == null)
+				continue;
 			try
 			{
 				CatanColor cc = p.getColor();
@@ -297,5 +296,25 @@ public class Game
 		getTurnTracker().init();
 
 		return this;
+	}
+
+	public int getEmptyPlayerIndex()
+	{
+		for (int i = 0; i < this.players.length; i++)
+		{
+			if(this.players[i] == null || this.players[i].getName() == null)
+				return i;
+		}
+		return -1;
+	}
+	
+	public boolean isPlayerInGame(int playerid)
+	{
+		for(int i = 0; i < this.players.length; i++)
+		{
+			if(this.players[i].getPlayerID() == playerid)
+				return true;
+		}
+		return false;
 	}
 }

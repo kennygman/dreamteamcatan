@@ -71,5 +71,13 @@ public class UserManager
 		if (n == null || p == null) return false;
 		return !users.containsKey(n);
 	}
-	
+	public User getAi(int id)
+	{
+		User user = null;
+		int AIid = id*(-1);
+		
+		user = users.get(AIid);
+		
+		return user;
+	}
 }

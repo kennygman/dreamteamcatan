@@ -39,6 +39,7 @@ public class LoadGameHandler extends ServerHandler implements HttpHandler {
         {
             responseBody = "\"Failure\"";
         }
+        System.out.println("LoadGameHandler Response: " + responseBody);
         exchange.sendResponseHeaders(responseCode, 0);
         
         

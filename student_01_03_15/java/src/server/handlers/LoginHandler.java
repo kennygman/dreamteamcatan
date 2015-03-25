@@ -36,11 +36,13 @@ public class LoginHandler extends ServerHandler implements HttpHandler {
             cookie += URLEncoder.encode(g.toJson(u));
             cookie += ";Path=/;";
             exchange.getResponseHeaders().add("Set-cookie", cookie);
+            System.out.println("LoginHandler cookie: " + cookie);
         }
         else
         {
             responseBody = "\"Error: invalid username or password\"";
         }
+        System.out.println("LoginHandler Response: " + responseBody);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         

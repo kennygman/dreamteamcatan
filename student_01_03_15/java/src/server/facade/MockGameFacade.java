@@ -38,7 +38,7 @@ public class MockGameFacade implements IGameFacade
 	    
 	public MockGameFacade()
 	{
-		createFakeGame();
+           createFakeGame();
 	   users = new UserManager();
 	   users.initAi();
 	}
@@ -49,7 +49,7 @@ public class MockGameFacade implements IGameFacade
 			StringBuffer gameBuilder = new StringBuffer();
 
 			BufferedReader reader = new BufferedReader(new FileReader(
-					"modelJson"));
+					"modelJson.txt"));
 			String game;
 
 			while ((game = reader.readLine()) != null)

@@ -69,7 +69,8 @@ public class CommandsHandler extends ServerHandler implements HttpHandler {
         }
         
         
-		exchange.getResponseHeaders().add("Content-Type", "application/json");
+	System.out.println("CommandsHandler Response: " + responseBody);
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         write(exchange.getResponseBody(), responseBody);
     }

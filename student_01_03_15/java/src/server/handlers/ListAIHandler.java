@@ -45,6 +45,7 @@ public class ListAIHandler extends ServerHandler implements HttpHandler
 				responseBody = "\"Failure\"";
 			}
 		}
+                System.out.println("ListAIHandler Response: " + responseBody);
 		exchange.getResponseHeaders().add("Content-Type", "application/json");
 		exchange.sendResponseHeaders(responseCode, 0);
 

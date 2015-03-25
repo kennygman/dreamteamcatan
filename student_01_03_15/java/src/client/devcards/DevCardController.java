@@ -146,6 +146,7 @@ public class DevCardController extends Controller implements IDevCardController,
 			System.out.println(" soldier amount is : " + ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getSoldier());
 			System.out.println(" year amount is : " +  ModelFacade.getInstance().getGame().getPlayer().getOldDevCards().getYearOfPlenty());
 		*/
+		if (ModelFacade.getInstance().getPlayer() == null) return;
 			getPlayCardView().setCardEnabled(DevCardType.MONOPOLY, ModelFacade.getInstance().canPlayDevCard(DevCardType.MONOPOLY));
 			getPlayCardView().setCardAmount(DevCardType.MONOPOLY, ModelFacade.getInstance().getPlayer().getOldDevCards().getMonopoly());
 	

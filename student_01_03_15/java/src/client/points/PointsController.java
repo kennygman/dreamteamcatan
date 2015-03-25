@@ -59,6 +59,7 @@ public class PointsController extends Controller implements IPointsController,
 		int playerId = ModelFacade.getInstance().getPlayerInfo().getId();
 		for (Player player : players)
 		{
+			if (player==null) continue;
 			int monument = player.getNewDevCards().getMonument();
 			monument += player.getOldDevCards().getMonument();
 			if (monument < 0)

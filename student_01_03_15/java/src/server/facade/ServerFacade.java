@@ -231,7 +231,10 @@ public class ServerFacade
 	{
 		return gameInstance.commands(id);
 	}
-	
+	public static StandardResponse addAI(AddAiParam param, int id)
+	{
+		return gameInstance.addAI(param,id);
+	}
 	// ---------------------------------------------------------------------------------
 	public static ListAIResponse listAi()
 	{

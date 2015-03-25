@@ -3,8 +3,11 @@ package server.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
+
 import server.facade.ServerFacade;
+import shared.parameters.AddAiParam;
 import shared.response.LoginResponse;
 import shared.response.StandardResponse;
 
@@ -30,9 +33,10 @@ public class AddAIHandler extends ServerHandler implements HttpHandler {
         else
         {
             int gameId = getGameIdFromCookie(cookie);
+            AddAiParam param = new AddAiParam("LARGEST_ARMY");
             
-            StandardResponse response = ServerFacade.addAI(gameId);
-
+            StandardResponse response = ServerFacade.addAI(param,gameId);
+            
 
             if(response.isValid())
             {

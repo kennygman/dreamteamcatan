@@ -19,7 +19,7 @@ public class Catan extends JFrame
 {
 	private CatanPanel catanPanel;
 
-	public Catan()
+	public Catan() throws Exception
 	{
 
 		client.base.OverlayView.setWindow(this);
@@ -70,7 +70,7 @@ public class Catan extends JFrame
 		{
 			public void run()
 			{
-				new Catan();
+				//new Catan();
 
 				PlayerWaitingView playerWaitingView = new PlayerWaitingView();
 				final PlayerWaitingController playerWaitingController = new PlayerWaitingController(

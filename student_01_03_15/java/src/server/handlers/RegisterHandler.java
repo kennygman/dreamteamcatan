@@ -43,7 +43,7 @@ public class RegisterHandler extends ServerHandler implements HttpHandler {
             responseBody = "\"Error: that username is already being used\"";
         }
         
-        
+        System.out.println("RegisterHandler Response: " + responseBody);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         write(exchange.getResponseBody(), responseBody);

@@ -33,8 +33,7 @@ public class AddAIHandler extends ServerHandler implements HttpHandler {
         else
         {
             int gameId = getGameIdFromCookie(cookie);
-            AddAiParam param = new AddAiParam("LARGEST_ARMY");
-            
+            AddAiParam param = new AddAiParam("LARGEST_ARMY");        
             StandardResponse response = ServerFacade.addAI(param,gameId);
             
 
@@ -48,7 +47,7 @@ public class AddAIHandler extends ServerHandler implements HttpHandler {
                 responseBody = "\"Failure\"";
             }
         }
-        
+        System.out.println("AddAIHandler Response: " + responseBody);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         

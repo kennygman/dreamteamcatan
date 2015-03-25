@@ -51,6 +51,7 @@ public class BuildRoadHandler extends ServerHandler implements HttpHandler {
                 responseBody = "\"Failure\"";
             }
         }
+        System.out.println("BuildRoadHandler Response: " + responseBody);
         exchange.sendResponseHeaders(responseCode, 0);
         
         

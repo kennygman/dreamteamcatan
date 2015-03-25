@@ -16,7 +16,7 @@ public class AddAIHandler extends ServerHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        /*Gson g = new Gson();
+        Gson g = new Gson();
         String responseBody;
         int responseCode = 400;
         
@@ -30,6 +30,7 @@ public class AddAIHandler extends ServerHandler implements HttpHandler {
         else
         {
             int gameId = getGameIdFromCookie(cookie);
+            
             StandardResponse response = ServerFacade.addAI(gameId);
 
 
@@ -43,10 +44,12 @@ public class AddAIHandler extends ServerHandler implements HttpHandler {
                 responseBody = "\"Failure\"";
             }
         }
+        
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         
         
-        write(exchange.getResponseBody(), responseBody);*/
+        write(exchange.getResponseBody(), responseBody);
     }
     
 }

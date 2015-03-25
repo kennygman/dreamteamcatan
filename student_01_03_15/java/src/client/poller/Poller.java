@@ -55,7 +55,7 @@ public class Poller
 //		{
 
 			// If Client Game Model has been updated through ModelFacade since last Poll 
-			if (ModelFacade.getInstance().getGame().getVersion() > clientVersion)
+			if (ModelFacade.getInstance().getGame().getVersion() > clientVersion || ModelFacade.getInstance().getGame().getVersion() == 0)
 			{
 				this.serverVersion = ModelFacade.getInstance().getGame().getVersion();
 			}

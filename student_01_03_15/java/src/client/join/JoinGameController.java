@@ -167,7 +167,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	public void startJoinGame(GameInfo game) 
 	{
 		stopTimer();
-        getJoinGameView().closeModal();
+        if (getJoinGameView().isModalShowing()) getJoinGameView().closeModal();
         getSelectColorView().showModal();
         state.setGame(game);
 	}

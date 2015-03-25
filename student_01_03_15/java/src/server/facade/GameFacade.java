@@ -88,7 +88,7 @@ public class GameFacade implements IGameFacade
 			{
 				insertedAI=true;
 				Random rn = new Random();
-				for(int i= rn.nextInt(3 - 0 + 1);i<7;i++)
+				for(int i= rn.nextInt(3 - 0 + 1);i<8;i++)
 				{
 					if(currentGame.isPlayerInGame(i))
 					{

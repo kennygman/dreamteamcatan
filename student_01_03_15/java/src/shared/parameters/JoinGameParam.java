@@ -12,7 +12,7 @@ public class JoinGameParam {
         
         public String getColor()
         {
-            return this.color;
+            return this.color.toLowerCase();
         }
         public int getId()
         {

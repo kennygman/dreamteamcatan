@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Game;
+import model.ModelFacade;
 import model.player.Player;
 import server.GameManager;
 import server.User;
 import shared.Translator;
+import shared.definitions.CatanColor;
 import shared.parameters.CreateGameParam;
 import shared.parameters.JoinGameParam;
 import shared.response.CreateGameResponse;
@@ -34,9 +36,24 @@ public class PreGameFacade implements IPreGameFacade
 	public StandardResponse join(JoinGameParam param, User user)
 	{
 		Game game = games.getGame(param.getId());
-
+		Player player = null;
 		if (game.isPlayerInGame(user.getId()))
 		{
+			for (Player p : game.getPlayers())
+			{
+				if (p.getPlayerID() != user.getId())
+				{
+					if (CatanColor.asString(p.getColor()).equals(param.getColor()))
+					{
+						return new StandardResponse(false);
+					}
+				} else
+				{
+					player = p;
+				}
+			}
+			player.setColor(param.getColor());
+			games.updateGame(param.getId(), game);
 			return new StandardResponse(true);
 		}
 		else 

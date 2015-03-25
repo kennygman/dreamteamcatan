@@ -270,8 +270,9 @@ public class Player
 
 	public void setColor(String color)
 	{
-		this.color = color;
+		this.color = color.toLowerCase();
 	}
+
 
 	public CatanColor getColor()
 	{

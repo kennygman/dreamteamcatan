@@ -3,7 +3,9 @@ package server.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
+
 import server.facade.ServerFacade;
 import shared.parameters.AcceptTradeParam;
 import shared.response.CommandResponse;

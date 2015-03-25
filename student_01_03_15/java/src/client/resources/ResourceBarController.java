@@ -92,10 +92,9 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 	//--------------------------------------------------------------------------------
 	public void updateElements()
 	{
-		// WOOD, BRICK, SHEEP, WHEAT, ORE, ROAD, SETTLEMENT, CITY, BUY_CARD, PLAY_CARD, SOLDIERS
-
 		boolean valid = false;
 		Player player = ModelFacade.getInstance().getPlayer();
+		if (player == null) return;
 		Resources resources = player.getResources();
 		
 		setElement(ResourceBarElement.WOOD, resources.getResourceAmount(ResourceType.WOOD));

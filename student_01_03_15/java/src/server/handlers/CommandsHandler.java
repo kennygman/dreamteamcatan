@@ -3,7 +3,9 @@ package server.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
+
 import server.facade.ServerFacade;
 import shared.parameters.AcceptTradeParam;
 import shared.response.CommandResponse;
@@ -69,7 +71,8 @@ public class CommandsHandler extends ServerHandler implements HttpHandler {
         }
         
         
-		exchange.getResponseHeaders().add("Content-Type", "application/json");
+	System.out.println("CommandsHandler Response: " + responseBody);
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         write(exchange.getResponseBody(), responseBody);
     }

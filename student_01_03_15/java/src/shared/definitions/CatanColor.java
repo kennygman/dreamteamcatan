@@ -80,7 +80,7 @@ public enum CatanColor
         		default: break;
         		}
         	}
-        	return s;
+        	return s.toLowerCase();
         	
         }
 }

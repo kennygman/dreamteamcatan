@@ -104,6 +104,7 @@ public class Game
 				PlayerListObject playerObject = new PlayerListObject(
 						CatanColor.asString(cc), p.getName(), p.getPlayerID());
 				playerList.add(playerObject);
+				
 			} catch (Exception e)
 			{
 				System.err.println(e);
@@ -318,6 +319,13 @@ public class Game
 		}
 		
 		return -1;
+	}
+	
+	public boolean addPlayer(Player p)
+	{
+		if (p==null) return false;
+		players[p.getPlayerIndex()] = p;
+		return true;
 	}
 	
 }

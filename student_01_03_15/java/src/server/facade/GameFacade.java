@@ -73,7 +73,7 @@ public class GameFacade implements IGameFacade
 	}
 
 	@Override
-	public StandardResponse addAI(AddAiParam param, int id)
+	public StandardResponse addAI(int id)
 	{
 		StandardResponse response = new StandardResponse(false);
 		boolean insertedAI = false;

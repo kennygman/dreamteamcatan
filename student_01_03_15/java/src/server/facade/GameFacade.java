@@ -1,20 +1,31 @@
 package server.facade;
 
 import java.util.List;
+import java.util.Random;
 
 import model.Game;
 import model.player.Player;
 import server.GameManager;
+import server.User;
 import server.UserManager;
 import server.commands.ICommand;
+import shared.definitions.CatanColor;
 import shared.parameters.AddAiParam;
 import shared.response.*;
 
 public class GameFacade implements IGameFacade
 {
-    private GameManager games;
+    private static final CatanColor BLUE = null;
+	private static final CatanColor YELLOW = null;
+	private static final CatanColor WHITE = null;
+	private static final CatanColor GREEN = null;
+	private static final CatanColor ORANGE = null;
+	private static final CatanColor RED = null;
+	private static final CatanColor BROWN = null;
+	private static final CatanColor PUCE = null;
+	private static final CatanColor PURPLE = null;
+	private GameManager games;
     private UserManager users;
-
     
     public GameFacade(GameManager games, UserManager users)
     {
@@ -68,32 +79,71 @@ public class GameFacade implements IGameFacade
 		boolean insertedAI = false;
 		if(param.getType()=="LARGEST_ARMY")
 		{
-			response = new StandardResponse(true);
+			
 			Game currentGame = games.getGame(id);
-			Player[] players = currentGame.getPlayers();
 			
-			for(int i=0;i<4;i++)
+			int emptyIndex = currentGame.getEmptyPlayerIndex();
+			
+			if(emptyIndex != -1)
 			{
-				if(players[i] == null)
+				insertedAI=true;
+				Random rn = new Random();
+				for(int i= rn.nextInt(3 - 0 + 1);i<8;i++)
 				{
-					
-					insertedAI=true;
-					
-					
+					if(currentGame.isPlayerInGame(i))
+					{
+						response = new StandardResponse(insertedAI);
+						
+						Player newPlayer = new Player();
+						User currentUser = users.getAi(i);
+						
+						newPlayer.setColor(getColor(currentGame).toString());
+						newPlayer.setName(currentUser.getName());
+						newPlayer.setPlayerIndex(emptyIndex);
+						newPlayer.setPlayerID(currentUser.getId());
+						
+						currentGame.getPlayers()[emptyIndex]=newPlayer;
+						
+						return response;
+					}
 				}
+				
+				
 			}
-			
-			
-			
-			
-			
+			else
+			{
+				//insertedAI=false;
+			}
 		}
 		
-	
+		response = new StandardResponse(insertedAI);
 		return response;
 		
 	}
-
+	private CatanColor getColor(Game currentGame)
+	{
+		CatanColor[] colors = {RED, ORANGE, YELLOW, BLUE, GREEN, PURPLE, PUCE, WHITE, BROWN};//{"RED", "ORANGE", "YELLOW", "BLUE", "GREEN", "PURPLE", "PUCE", "WHITE", "BROWN"};
+		Player[] players = currentGame.getPlayers();
+		boolean noColorChosen = true;
+		for(int i=0;i<colors.length;i++)
+		{
+			for(int j=0;j<players.length;j++)
+			{
+				if(players[j].getColor().equals(colors[i]))
+				{
+					noColorChosen = false;
+				}
+			}
+			
+			if(noColorChosen)
+			{
+				return colors[i];
+			}
+		}
+		
+		return null;
+		
+	}
 	@Override
 	public ListAIResponse listAI()
 	{

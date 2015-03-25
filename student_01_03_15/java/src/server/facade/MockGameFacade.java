@@ -147,6 +147,7 @@ public class MockGameFacade implements IGameFacade
 		String commands = "whateverIwantCommand";
 		
 		CommandResponse response = new CommandResponse(commands,true);
+		
 		return response;
 	}
 

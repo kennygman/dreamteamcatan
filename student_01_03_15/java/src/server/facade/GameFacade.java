@@ -52,6 +52,8 @@ public class GameFacade implements IGameFacade
 		String commands = convertToString(games.getCommands(id));
 		
 		CommandResponse response = new CommandResponse(commands,true);
+		
+		response.setLists(games.getCommands(id));
 		return response;
 	}
 
@@ -79,7 +81,7 @@ public class GameFacade implements IGameFacade
 		boolean insertedAI = false;
 		if(param.getType()=="LARGEST_ARMY")
 		{
-			
+			System.out.println("largest army");
 			Game currentGame = games.getGame(id);
 			
 			int emptyIndex = currentGame.getEmptyPlayerIndex();
@@ -102,6 +104,8 @@ public class GameFacade implements IGameFacade
 						newPlayer.setPlayerIndex(emptyIndex);
 						newPlayer.setPlayerID(currentUser.getId());
 						
+						
+						System.out.println("AI name" + newPlayer.getName());
 						currentGame.getPlayers()[emptyIndex]=newPlayer;
 						
 						return response;
@@ -112,7 +116,7 @@ public class GameFacade implements IGameFacade
 			}
 			else
 			{
-				//insertedAI=false;
+				System.out.println("the empty Index is not working");
 			}
 		}
 		

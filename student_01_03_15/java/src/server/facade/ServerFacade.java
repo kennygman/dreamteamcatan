@@ -231,7 +231,7 @@ public class ServerFacade
 	{
 		return gameInstance.commands(id);
 	}
-
+	
 	// ---------------------------------------------------------------------------------
 	public static ListAIResponse listAi()
 	{

@@ -273,7 +273,6 @@ public class Player
 		this.color = color.toLowerCase();
 	}
 
-
 	public CatanColor getColor()
 	{
 		if (color == null) return CatanColor.WHITE;

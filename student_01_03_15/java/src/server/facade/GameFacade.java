@@ -95,30 +95,30 @@ public class GameFacade implements IGameFacade
 				System.out.println("emptyIndex is " + emptyIndex);
 				
 			
-				Random rn = new Random();
+				//Random rn = new Random();
 				for(int i=1;i<8;i++)
 				{
-					System.out.println(" number is:" + i);
+					//System.out.println(" number is:" + i);
 					
-					System.out.println(" id is:" + (i*(-1)));
+					//System.out.println(" id is:" + (i*(-1)));
 					
 					if(!currentGame.isPlayerInGame(i*(-1)))
 					{	
 						
-						System.out.println("add ai is working");
+						//System.out.println("add ai is working");
 					
 						insertedAI=true;
 						
 						Player newPlayer = new Player();
 						
-						System.out.println("getting ai");
+						//System.out.println("getting ai");
 						
 						User currentUser = users.getAi(i-1);
 						
 						System.out.println("AI name" + currentUser.getName());
 						
 						System.out.println("is about to choose a color");
-						newPlayer.setColor(getColor(currentGame).toString());
+						newPlayer.setColor(CatanColor.asString(getColor(currentGame)));
 						
 
 						
@@ -148,7 +148,7 @@ public class GameFacade implements IGameFacade
 	}
 	private CatanColor getColor(Game currentGame)
 	{
-		CatanColor[] colors = {RED, ORANGE, YELLOW, BLUE, GREEN, PURPLE, PUCE, WHITE, BROWN};//{"RED", "ORANGE", "YELLOW", "BLUE", "GREEN", "PURPLE", "PUCE", "WHITE", "BROWN"};
+		CatanColor[] colors = new CatanColor[]{BROWN, ORANGE, YELLOW, BLUE, GREEN, PURPLE, PUCE, WHITE, RED};//{"RED", "ORANGE", "YELLOW", "BLUE", "GREEN", "PURPLE", "PUCE", "WHITE", "BROWN"};
 		Player[] players = currentGame.getPlayers();
 		boolean noColorChosen = true;
 		
@@ -158,14 +158,17 @@ public class GameFacade implements IGameFacade
 			System.out.println("color length " + colors.length );
 			for(int j=0;j<players.length;j++)
 			{
-				
-				String playerColor = CatanColor.asString(players[j].getColor());
-			
-				System.out.println("comparing colors " + players[j].getColor() + "and" + CatanColor.asString(colors[i]));
-				
-				if(playerColor.equals(CatanColor.asString(colors[i])))
+				if(players[j]!=null)
 				{
-					noColorChosen = false;
+					String playerColor = CatanColor.asString(players[j].getColor());
+			
+					//System.out.println("comparing colors " + players[j].getColor());//"and" + CatanColor.asString(colors[i]));
+				
+					if(playerColor.equals(CatanColor.asString(colors[i])))
+					{
+						//"it found the color";
+						noColorChosen = false;
+					}
 				}
 			}
 			
@@ -175,7 +178,6 @@ public class GameFacade implements IGameFacade
 				return colors[i];
 			}
 		}
-		
 		System.out.println("null");
 		return null;
 		

@@ -74,10 +74,15 @@ public class UserManager
 	public User getAi(int id)
 	{
 		User user = null;
-		int AIid = id*(-1);
+		int AIid = id;
 		
-		user = users.get(AIid);
+		String[] aiNames = {"Sam", "Pete", "Sven", "Kunkka", "Ember Spirit", "Pudge", "Techies"};
 		
+		System.out.println("getting user with id: " + AIid );
+		
+		user = users.get(aiNames[id]);
+		
+		System.out.println("user name is: " + user.getName() );
 		return user;
 	}
 }

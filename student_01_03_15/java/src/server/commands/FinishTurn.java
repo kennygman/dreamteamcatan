@@ -9,6 +9,7 @@ public class FinishTurn implements ICommand
 	private FinishTurnParam param;
 	private Game game;
 	
+	public FinishTurn(){}
 	public FinishTurn(FinishTurnParam param, Game game)
 	{
 		super();
@@ -24,6 +25,7 @@ public class FinishTurn implements ICommand
 	public void execute()
 	{
 		Player player = game.getPlayer(param.getPlayerIndex());
+		if (player == null) return;
 		player.updateDevCards();
 		game.getTurnTracker().nextTurn();
 		

@@ -157,7 +157,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean isPlayerTurn()
 	{
-		if (game == null || game.getTurnTracker() == null || player == null) return false;
+		if (game == null || game.getTurnTracker() == null || player == null || player.getPlayerIndex() > 3) return false;
 		return game.getTurnTracker().getCurrentTurn() == player.getPlayerIndex();
 	}
 

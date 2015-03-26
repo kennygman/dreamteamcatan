@@ -11,6 +11,7 @@ public class BuildRoad implements ICommand
 	private BuildRoadParam param;
 	private Game game;
 
+	public BuildRoad(){}
 	public BuildRoad(BuildRoadParam param, Game game)
 	{
 		super();

@@ -360,14 +360,6 @@ public class Board
 			return;
 		VertexLocation vertex = settlement.getLocation()
 				.getNormalizedLocation();
-		if (vertex == null)
-		{
-			System.out.println("vertex is null");
-		}
-		if (settlementLocation == null)
-		{
-			System.out.println("hasMap is null");
-		}
 		settlementLocation.put(vertex, settlement);
 		List<Settlement> setList = new ArrayList<>();
 		for (Settlement s : settlements)
@@ -751,7 +743,7 @@ public class Board
 		List<Piece> pieces = new ArrayList<>();
 		try{
 		List<VertexLocation> vertices = getHexVertices(hex);
-		System.out.println("Vertices:" + vertices.size());
+
 		for (VertexLocation v : vertices)
 		{
 			if (cityLocation.containsKey(v))

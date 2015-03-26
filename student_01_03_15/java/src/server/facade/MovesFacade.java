@@ -47,6 +47,7 @@ public class MovesFacade implements IMovesFacade
 		
 		if (ModelFacade.getInstance().canAcceptTrade())
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -66,6 +67,7 @@ public class MovesFacade implements IMovesFacade
 		
 		if (ModelFacade.getInstance().CanDiscardCards(param.getDiscardCards()))
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -146,6 +148,7 @@ public class MovesFacade implements IMovesFacade
 		
 		if (ModelFacade.getInstance().canPlaceCity(param.getLocation()))
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -165,6 +168,7 @@ public class MovesFacade implements IMovesFacade
 		
 		if (ModelFacade.getInstance().CanOfferTrade(param.getOffer()))
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -185,6 +189,7 @@ public class MovesFacade implements IMovesFacade
 		if (ModelFacade.getInstance().CanMaritimeTrade(
 				param.getRatio(),param.getInputResource(),param.getOutResource()))
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -205,6 +210,7 @@ public class MovesFacade implements IMovesFacade
 		if (ModelFacade.getInstance().canRobPlayer(
 				param.getLocation(), param.getVictimIndex()))
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -244,6 +250,7 @@ public class MovesFacade implements IMovesFacade
 		
 		if (ModelFacade.getInstance().CanBuyDevCard())
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -264,6 +271,7 @@ public class MovesFacade implements IMovesFacade
 		if (ModelFacade.getInstance().CanUseSoldier(
 				param.getVictimIndex(), param.getLocation()))
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -285,6 +293,7 @@ public class MovesFacade implements IMovesFacade
 		if (ModelFacade.getInstance().CanUseYearOfPlenty(
 				param.getResource1(), param.getResource2()))
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -305,6 +314,7 @@ public class MovesFacade implements IMovesFacade
 		if (ModelFacade.getInstance().CanUseRoadBuilder(
 				param.getSpot1(), param.getSpot2()))
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -324,6 +334,7 @@ public class MovesFacade implements IMovesFacade
 		
 		if (ModelFacade.getInstance().CanUseMonopoly(param.getResource()))
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}
@@ -343,6 +354,7 @@ public class MovesFacade implements IMovesFacade
 		
 		if (ModelFacade.getInstance().CanUseMonument())
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}

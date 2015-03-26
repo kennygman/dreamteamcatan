@@ -70,10 +70,12 @@ public class Game
 				{
 					owner = getPlayer(((City) p).getOwner());
 					owner.getResources().addResource(resource, 2);
+					bank.useResource(resource, 2);
 				} else if (p instanceof Settlement)
 				{
 					owner = getPlayer(((Settlement) p).getOwner());
 					owner.getResources().addResource(resource, 1);
+					bank.useResource(resource, 1);
 				}
 			}
 		}

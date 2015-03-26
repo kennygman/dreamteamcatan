@@ -25,24 +25,23 @@ public class RollNumber implements ICommand
 	{
 		Player player = game.getPlayer(param.getPlayerIndex());
 		int number = param.getNumber();
-		String status = null;
+
+		game.getTurnTracker().setStatus(TurnTracker.PLAYING);
+		
 		if (number == 7)
 		{
+			game.getTurnTracker().setStatus(TurnTracker.ROBBING);
 			for (Player p : game.getPlayers())
 			{
 				if (p.getResources().size() > 7)
 				{
-					status = TurnTracker.DISCARDING;
+					game.getTurnTracker().setStatus(TurnTracker.DISCARDING);
 					break;
 				}
 			}
-			if (status == null)
-			{
-				status = "Robbing";
-			}
+			
 		} else
 		{
-			status = TurnTracker.PLAYING;
 			game.distribute(number);
 		}
 

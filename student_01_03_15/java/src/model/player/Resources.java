@@ -331,6 +331,7 @@ public class Resources
 				resourceList.add(r);
 		}
 		Collections.shuffle(resourceList);
+		if (resourceList.isEmpty()) return null;
 		this.useResource(resourceList.get(0), 1);
 
 		return resourceList.get(0);

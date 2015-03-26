@@ -1,6 +1,7 @@
 package server.commands;
 
 import model.Game;
+import model.TurnTracker;
 import model.player.Player;
 import shared.definitions.ResourceType;
 import shared.parameters.RobPlayerParam;
@@ -28,7 +29,12 @@ public class RobPlayer implements ICommand
 		game.getBoard().setRobber(param.getLocation());
 
 		ResourceType card = victim.getResources().robResource();
-		player.getResources().addResource(card, 1);
+		
+		if (card != null)
+		{
+			player.getResources().addResource(card, 1);
+		}
+		game.getTurnTracker().setStatus(TurnTracker.PLAYING);
 
 		game.addLogEntry(player.getName(), player.getName()
 				+ " moved the robber and robbed " + victim.getName());

@@ -749,7 +749,9 @@ public class Board
 	public List<Piece> getPieces(HexLocation hex)
 	{
 		List<Piece> pieces = new ArrayList<>();
+		try{
 		List<VertexLocation> vertices = getHexVertices(hex);
+		System.out.println("Vertices:" + vertices.size());
 		for (VertexLocation v : vertices)
 		{
 			if (cityLocation.containsKey(v))
@@ -761,7 +763,8 @@ public class Board
 				pieces.add(settlementLocation.get(v));
 			}
 		}
-		return null;
+		}catch(Exception e){e.printStackTrace();}
+		return pieces;
 	}
 	
 	/**

@@ -62,6 +62,7 @@ public class Game
 		{
 			ResourceType resource = ResourceType.fromString(hex.getResource());
 			pieces = map.getPieces(hex.getLocation());
+			if (pieces == null || pieces.size() == 0) return;
 			for (Piece p : pieces)
 			{
 				Player owner;

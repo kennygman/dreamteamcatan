@@ -1,6 +1,7 @@
 package server.commands;
 
 import model.Game;
+import model.TurnTracker;
 import model.player.Player;
 import shared.parameters.RollNumParam;
 
@@ -31,7 +32,7 @@ public class RollNumber implements ICommand
 			{
 				if (p.getResources().size() > 7)
 				{
-					status = "Discarding";
+					status = TurnTracker.DISCARDING;
 					break;
 				}
 			}
@@ -41,7 +42,7 @@ public class RollNumber implements ICommand
 			}
 		} else
 		{
-			status = "Playing";
+			status = TurnTracker.PLAYING;
 			game.distribute(number);
 		}
 

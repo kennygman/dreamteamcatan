@@ -232,11 +232,6 @@ public class MovesFacade implements IMovesFacade
 	}
 
 	//------------------------------------------------------------------------------
-	private void nextTurn()
-	{
-		
-	}
-	//------------------------------------------------------------------------------
 	@Override
 	public GameModelResponse buyDevCard(BuyDevCardParam param, int id)
 	{

@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import server.facade.ServerFacade;
 import shared.parameters.AcceptTradeParam;
+import shared.parameters.CommandsParam;
 import shared.response.CommandResponse;
 import shared.response.GameModelResponse;
 import shared.response.LoginResponse;
@@ -54,8 +55,8 @@ public class CommandsHandler extends ServerHandler implements HttpHandler {
             else if(requestType.equals("POST"))
             {
                 String input = read(exchange.getRequestBody());
-                AcceptTradeParam param = g.fromJson(input, AcceptTradeParam.class);
-                GameModelResponse response = ServerFacade.acceptTrade(param, gameId);
+                CommandsParam param = g.fromJson(input, CommandsParam.class);
+                GameModelResponse response = ServerFacade.acceptTrade(null, gameId);
 
 
                 if(response.isValid())
@@ -71,7 +72,6 @@ public class CommandsHandler extends ServerHandler implements HttpHandler {
         }
         
         
-	System.out.println("CommandsHandler Response: " + responseBody);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         write(exchange.getResponseBody(), responseBody);

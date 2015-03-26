@@ -16,15 +16,7 @@ import shared.response.*;
 
 public class GameFacade implements IGameFacade
 {
-    private static final CatanColor BLUE = null;
-	private static final CatanColor YELLOW = null;
-	private static final CatanColor WHITE = null;
-	private static final CatanColor GREEN = null;
-	private static final CatanColor ORANGE = null;
-	private static final CatanColor RED = null;
-	private static final CatanColor BROWN = null;
-	private static final CatanColor PUCE = null;
-	private static final CatanColor PURPLE = null;
+
 	private GameManager games;
     private UserManager users;
     
@@ -96,41 +88,42 @@ public class GameFacade implements IGameFacade
 			
 			if(emptyIndex != -1)
 			{
-				System.out.println("emptyIndex is " + emptyIndex);
+				//System.out.println("emptyIndex is " + emptyIndex);
 				
 			
 				Random rn = new Random();
-				for(int i=1;i<8;i++)
+				for(int i=rn.nextInt((5-0)+1);i<8;i++)
 				{
-					System.out.println(" number is:" + i);
+					//System.out.println(" number is:" + i);
 					
-					System.out.println(" id is:" + (i*(-1)));
+					//System.out.println(" id is:" + (i*(-1)));
 					
 					if(!currentGame.isPlayerInGame(i*(-1)))
 					{	
 						
-						System.out.println("add ai is working");
+						//System.out.println("add ai is working");
 					
 						insertedAI=true;
 						
 						Player newPlayer = new Player();
 						
-						System.out.println("getting ai");
+						//System.out.println("getting ai");
 						
 						User currentUser = users.getAi(i-1);
 						
-						System.out.println("AI name" + currentUser.getName());
+						//System.out.println("AI name" + currentUser.getName());
 						
-						System.out.println("is about to choose a color");
-						newPlayer.setColor(getColor(currentGame).toString());
+						//System.out.println("is about to choose a color");
 						
-
+						newPlayer.setColor(getColor(currentGame));   // "PUCE"); //CatanColor.asString(getColor(currentGame))
+					
+						//System.out.println("players color is " +CatanColor.asString(newPlayer.getColor()));
 						
 						newPlayer.setName(currentUser.getName());
 						newPlayer.setPlayerIndex(emptyIndex);
 						newPlayer.setPlayerID(currentUser.getId());
 						
-						System.out.println("AI name" + newPlayer.getName());
+						//System.out.println("AI name" + newPlayer.getName());
 						currentGame.getPlayers()[emptyIndex]=newPlayer;
 						
 						response = new StandardResponse(insertedAI);
@@ -150,37 +143,41 @@ public class GameFacade implements IGameFacade
 		return response;
 		
 	}
-	private CatanColor getColor(Game currentGame)
+	private String getColor(Game currentGame)
 	{
-		CatanColor[] colors = {RED, ORANGE, YELLOW, BLUE, GREEN, PURPLE, PUCE, WHITE, BROWN};//{"RED", "ORANGE", "YELLOW", "BLUE", "GREEN", "PURPLE", "PUCE", "WHITE", "BROWN"};
+		String[] colors = new String[]{"red", "orange", "yellow", "blue", "green", "purple", "puce", "white", "brown"};
 		Player[] players = currentGame.getPlayers();
-		boolean noColorChosen = true;
+		boolean noColorChosen;
 		
 		
 		for(int i=0;i<colors.length;i++)
 		{
-			System.out.println("color length " + colors.length );
+			noColorChosen = true;
+			//System.out.println("Catan color is " + colors[i]);
 			for(int j=0;j<players.length;j++)
 			{
-				
-				String playerColor = CatanColor.asString(players[j].getColor());
-			
-				System.out.println("comparing colors " + players[j].getColor() + "and" + CatanColor.asString(colors[i]));
-				
-				if(playerColor.equals(CatanColor.asString(colors[i])))
+				//System.out.println("index j is" + j);
+				if(players[j]!=null)
 				{
-					noColorChosen = false;
+					String playerColor = CatanColor.asString(players[j].getColor());
+			
+					//System.out.println("comparing colors " + playerColor + "and" + colors[i]);
+				
+					if(playerColor.equals(colors[i]))
+					{
+					
+						 noColorChosen = false;
+					}
 				}
 			}
 			
 			if(noColorChosen)
 			{
-				//System.out.println("it chose a color =" + colors[i]);
+				//System.out.println("it chose a color");
 				return colors[i];
 			}
 		}
-		
-		System.out.println("null");
+		//System.out.println("null");
 		return null;
 		
 	}

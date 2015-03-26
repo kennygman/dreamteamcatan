@@ -14,7 +14,6 @@ public class BuildSettlementParam {
 		this.free = free;
 	}
 	
-	
 	public int getPlayerIndex() {
 		return playerIndex;
 	}
@@ -34,4 +33,14 @@ public class BuildSettlementParam {
 		this.free = free;
 	}
 
+
+	@Override
+	public String toString()
+	{
+		return "BuildSettlementParam [playerIndex=" + playerIndex
+				+ ", vertexLocation=" + vertexLocation + ", free=" + free
+				+ ", type=" + type + "]";
+	}
+
+	
 }

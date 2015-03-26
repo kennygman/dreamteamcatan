@@ -54,19 +54,23 @@ public class GameFacade implements IGameFacade
 	@Override
 	public GameModelResponse commands(CommandsParam param, int id)
 	{
-		
-		Game game = games.getGame(id);
-
-		for (ICommand c : param.getCommands())
-		{
-			c.execute();
-		}
-		
-		games.updateGame(id, game);
-		
 		GameModelResponse response = new GameModelResponse();
-		response.setValid(true);
-		response.setGame(game);
+		
+		try {
+			Game game = games.getGame(id);
+			
+			for (ICommand cmd : param.getCommands())
+			{
+				cmd.execute();
+			}
+			response.setValid(true);
+			response.setGame(game);
+			
+		} catch (Exception e)
+			{
+				e.printStackTrace();
+				response.setValid(false);
+			}
 		
 		return response;
 	}

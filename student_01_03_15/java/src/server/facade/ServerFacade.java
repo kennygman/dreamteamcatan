@@ -88,6 +88,11 @@ public class ServerFacade
 			movesInstance = new MovesFacade(games);
 		}
 	}
+	
+	public static Game getGame(int id)
+	{
+		return games.getGame(id);
+	}
 
 	// ===============================================================================
 	// HANDLER METHODS

@@ -85,6 +85,7 @@ public class MovesFacade implements IMovesFacade
 		
 		if (ModelFacade.getInstance().CanRollNumber())
 		{
+			valid = true;
 			cmd.execute();
 			games.addCommand(id, cmd);
 		}

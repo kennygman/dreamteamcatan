@@ -1,16 +1,22 @@
 package shared.parameters;
 
+import java.util.List;
+
 import server.commands.ICommand;
 
 public class CommandsParam
 {
-	ICommand[] commands;
-	public CommandsParam(ICommand[] commands)
+	private List<ICommand> commands;
+
+	public CommandsParam(List<ICommand> commands)
 	{
-		this.commands=commands;
+		super();
+		this.commands = commands;
 	}
-	public ICommand[] getCommands()
+
+	public List<ICommand> getCommands()
 	{
 		return commands;
 	}
+	
 }

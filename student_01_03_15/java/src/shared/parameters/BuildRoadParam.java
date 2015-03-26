@@ -29,4 +29,13 @@ public class BuildRoadParam {
 	}
 	public boolean isFree(){return free;}
 
+
+	@Override
+	public String toString()
+	{
+		return "BuildRoadParam [playerIndex=" + playerIndex + ", roadLocation="
+				+ roadLocation + ", free=" + free + ", type=" + type + "]";
+	}
+
+	
 }

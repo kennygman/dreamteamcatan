@@ -81,19 +81,24 @@ public class GameFacade implements IGameFacade
 		boolean insertedAI = false;
 		if(param.getType()=="LARGEST_ARMY")
 		{
-			System.out.println("largest army");
 			Game currentGame = games.getGame(id);
 			
 			int emptyIndex = currentGame.getEmptyPlayerIndex();
 			
 			if(emptyIndex != -1)
 			{
-				insertedAI=true;
+				System.out.println("emptyIndex is " + emptyIndex);
+				
+			
 				Random rn = new Random();
-				for(int i= rn.nextInt(3 - 0 + 1);i<8;i++)
+				for(int i= rn.nextInt(4 - 0 + 1);i<8;i++)
 				{
-					if(currentGame.isPlayerInGame(i))
-					{
+					System.out.println("random number is:" + i);
+					if(!currentGame.isPlayerInGame(i*(-1)))
+					{	
+						System.out.println("add ai is working");
+					
+						insertedAI=true;
 						response = new StandardResponse(insertedAI);
 						
 						Player newPlayer = new Player();
@@ -116,7 +121,7 @@ public class GameFacade implements IGameFacade
 			}
 			else
 			{
-				System.out.println("the empty Index is not working");
+				//System.out.println("the empty Index is not working");
 			}
 		}
 		

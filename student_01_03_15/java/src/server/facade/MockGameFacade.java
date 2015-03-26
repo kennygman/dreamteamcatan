@@ -16,6 +16,7 @@ import shared.locations.HexLocation;
 import shared.locations.VertexDirection;
 import shared.locations.VertexLocation;
 import shared.parameters.AddAiParam;
+import shared.parameters.CommandsParam;
 import shared.response.CommandResponse;
 import shared.response.GameListObject;
 import shared.response.GameModelResponse;
@@ -152,7 +153,7 @@ public class MockGameFacade implements IGameFacade
 	}
 
 	@Override
-	public StandardResponse commands(int id)
+	public GameModelResponse commands(CommandsParam param, int id)
 	{
 		//We need to figure out how this function is suppose to work. I don't think is right.
 		return null;

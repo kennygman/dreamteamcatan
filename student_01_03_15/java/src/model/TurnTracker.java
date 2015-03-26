@@ -41,12 +41,28 @@ public class TurnTracker
 	
 	public void nextTurn()
 	{
-		currentTurn++;
-		if(currentTurn>3)
+		if (status.equals(FIRSTROUND))
 		{
-			currentTurn=0;
-			if (status.equals(FIRSTROUND)) status = SECONDROUND;
-			else if (status.equals(SECONDROUND)) status = ROLLING;
+			currentTurn++;
+			if(currentTurn>3)
+			{
+				currentTurn=3;
+				status = SECONDROUND;
+			}
+		}
+		else if(status.equals(SECONDROUND))
+		{
+			currentTurn--;
+			if (currentTurn < 0)
+			{
+				currentTurn=0;
+				status = ROLLING;
+			}
+		}
+		else
+		{
+			currentTurn++;
+			if(currentTurn > 3) currentTurn = 0;
 		}
 	}
 	

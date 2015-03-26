@@ -1,6 +1,7 @@
 package server.facade;
 
 import shared.parameters.AddAiParam;
+import shared.parameters.CommandsParam;
 import shared.response.CommandResponse;
 import shared.response.GameModelResponse;
 import shared.response.ListAIResponse;
@@ -44,6 +45,6 @@ public interface IGameFacade
 	 * This method executes a list of commands
 	 * @param id the id of the game
 	 */
-	StandardResponse commands(int id);
+	GameModelResponse commands(CommandsParam param, int id);
 
 }

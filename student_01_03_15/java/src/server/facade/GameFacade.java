@@ -11,6 +11,7 @@ import server.UserManager;
 import server.commands.ICommand;
 import shared.definitions.CatanColor;
 import shared.parameters.AddAiParam;
+import shared.parameters.CommandsParam;
 import shared.response.*;
 
 public class GameFacade implements IGameFacade
@@ -59,18 +60,21 @@ public class GameFacade implements IGameFacade
 	}
 
 	@Override
-	public StandardResponse commands(int id)
+	public GameModelResponse commands(CommandsParam param, int id)
 	{
 		
-		List<ICommand> commands = games.getCommands(id);
-	
-		//execute list of commands
-		for(int i=0; i<commands.size();i++)
+		Game game = games.getGame(id);
+
+		for (ICommand c : param.getCommands())
 		{
-			commands.get(i).execute();
+			c.execute();
 		}
 		
-		StandardResponse response = new StandardResponse(true);
+		games.updateGame(id, game);
+		
+		GameModelResponse response = new GameModelResponse();
+		response.setValid(true);
+		response.setGame(game);
 		
 		return response;
 	}

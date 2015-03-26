@@ -3,8 +3,10 @@ package server.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
 import java.net.URLEncoder;
+
 import server.facade.ServerFacade;
 import shared.PreGameCookie;
 import shared.parameters.CredentialsParam;
@@ -18,6 +20,7 @@ public class LoginHandler extends ServerHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+    	try{
         Gson g = new Gson();
         String responseBody;
         int responseCode = 400;
@@ -36,17 +39,21 @@ public class LoginHandler extends ServerHandler implements HttpHandler {
             cookie += URLEncoder.encode(g.toJson(u));
             cookie += ";Path=/;";
             exchange.getResponseHeaders().add("Set-cookie", cookie);
-            System.out.println("LoginHandler cookie: " + cookie);
         }
         else
         {
             responseBody = "\"Error: invalid username or password\"";
         }
-        System.out.println("LoginHandler Response: " + responseBody);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         
         write(exchange.getResponseBody(), responseBody);
+
+    	} catch (Exception e) {
+			System.err.println(e);
+		} finally {
+			exchange.getResponseBody().close();
+		}
     }
     
 }

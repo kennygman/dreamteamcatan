@@ -83,7 +83,8 @@ public class ServerHandler
 
 	public int getGameIdFromCookie(String cookie)
 	{
-		String formattedCookie = cookie.substring(11); // remove "catan.user="
+		String formattedCookie = cookie;
+		if (!formattedCookie.startsWith("{"))formattedCookie = formattedCookie.substring(11); // remove "catan.user="
 
 		String userInfo = null;
 

@@ -228,7 +228,12 @@ public class Board
 	 */
 	public boolean containsRoad(EdgeLocation edge)
 	{
-		return roadLocation.get(edge) != null;
+		try
+		{
+			if (roadLocation.containsKey(edge)) return true;
+		}
+		catch(Exception e){}
+		return false;
 	}
 
 	// --------------------------------------------------------------------------------

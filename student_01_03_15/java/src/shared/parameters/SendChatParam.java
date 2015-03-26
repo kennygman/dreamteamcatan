@@ -21,4 +21,8 @@ public class SendChatParam
 	{
 		return playerIndex;
 	}
+	public int getPlayerIndex()
+	{
+		return playerIndex;
+	}
 }

@@ -8,7 +8,9 @@ package server.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
+
 import server.facade.ServerFacade;
 import shared.parameters.FinishTurnParam;
 import shared.response.GameModelResponse;
@@ -22,6 +24,7 @@ public class FinishTurnHandler extends ServerHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+    	try{
         Gson g = new Gson();
         String responseBody = "";
         int responseCode = 400;
@@ -36,10 +39,10 @@ public class FinishTurnHandler extends ServerHandler implements HttpHandler {
         else
         {
             int gameId = getGameIdFromCookie(cookie);
+            
             String input = read(exchange.getRequestBody());
             FinishTurnParam param = g.fromJson(input, FinishTurnParam.class);
             GameModelResponse response = ServerFacade.finishTurn(param, gameId);
-
 
             if(response.isValid())
             {
@@ -51,12 +54,12 @@ public class FinishTurnHandler extends ServerHandler implements HttpHandler {
                 responseBody = "\"Failure\"";
             }
         }
-	System.out.println("FinishTurnHandler Response: " + responseBody);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         
         
         write(exchange.getResponseBody(), responseBody);
+    	}catch(Exception e){e.printStackTrace();}
     }
     
 }

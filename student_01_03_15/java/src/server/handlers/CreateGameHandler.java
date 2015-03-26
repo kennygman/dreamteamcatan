@@ -56,7 +56,6 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler
 			}
 		}
 
-                System.out.println("CreateGameHandler Response: " + responseBody);
 		exchange.getResponseHeaders().add("Content-Type", "application/json");
 		exchange.sendResponseHeaders(responseCode, 0);
 		write(exchange.getResponseBody(), responseBody);

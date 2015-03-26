@@ -157,7 +157,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean isPlayerTurn()
 	{
-            return game.getTurnTracker().getCurrentTurn() == player.getPlayerIndex();
+		if (game == null || game.getTurnTracker() == null || player == null) return false;
+		return game.getTurnTracker().getCurrentTurn() == player.getPlayerIndex();
 	}
 
 	//--------------------------------------------------------------------------------
@@ -176,7 +177,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanDiscardCards(Resources resources)
 	{
-		if (!game.getTurnTracker().getStatus().equals("Discarding")) 
+		if (!game.getTurnTracker().getStatus().equals(TurnTracker.DISCARDING)) 
 			{
 				return false;
 			}
@@ -193,16 +194,17 @@ public class ModelFacade extends Observable implements IModelFacade
 	// Playing Preconditions ================================================================================
 	private boolean canPlay()
 	{
-		boolean valid = true;
-		if (!isPlayerTurn()) valid = false;
-		if (!game.getTurnTracker().getStatus().equals("Playing")) valid = false;
-		return valid;
+		if (!isPlayerTurn()) return false;
+		if (getState().equals(TurnTracker.FIRSTROUND)) return true;
+		if (getState().equals(TurnTracker.SECONDROUND)) return true;
+		if (!game.getTurnTracker().getStatus().equals(TurnTracker.PLAYING)) return false;
+		return false;
 	}
 	//--------------------------------------------------------------------------------
 	@Override
 	public boolean CanRollNumber()
 	{
-		boolean result = (this.isPlayerTurn() && game.getTurnTracker().getStatus().equals("Rolling") && !hasRolled);
+		boolean result = (this.isPlayerTurn() && game.getTurnTracker().getStatus().equals(TurnTracker.ROLLING) && !hasRolled);
 		if(result)
 		{
 			hasRolled = true;
@@ -225,7 +227,7 @@ public class ModelFacade extends Observable implements IModelFacade
             else if (board.hasNeighborRoad(edge, player.getPlayerIndex(), getState()))  {return true;}
             else if (isRoadBuilding && firstRoadInRoadBuilding.isNeighbor(edgeLoc)) {return true;}
 			
-             return false;
+            return false;
 	}	
  		
 	//--------------------------------------------------------------------------------
@@ -356,7 +358,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean canPlayDevCard(DevCardType devCard)
 	{
 		if (!isPlayerTurn() || hasPlayedDevCard ||
-			!getState().equals("Playing")
+			!getState().equals(TurnTracker.PLAYING)
 			|| !getPlayer().getOldDevCards().hasDevCard(devCard)
 			//|| getPlayer().isPlayedDevCard()
 			) return false;
@@ -426,7 +428,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean CanUseMonument()
 	{
             if (!isPlayerTurn()) return false;
-            else if (!getState().equals("Playing")) return false;
+            else if (!getState().equals(TurnTracker.PLAYING)) return false;
             else if (!getPlayer().getOldDevCards().hasDevCard(DevCardType.MONUMENT)) return false;
             else if (getPlayer().isPlayedDevCard()) return false;
             return true;

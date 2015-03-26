@@ -53,8 +53,9 @@ public class TurnTracker
 		else if(status.equals(SECONDROUND))
 		{
 			currentTurn--;
-			if (currentTurn == 0)
+			if (currentTurn < 0)
 			{
+				currentTurn=0;
 				status = ROLLING;
 			}
 		}

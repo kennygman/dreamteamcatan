@@ -22,6 +22,8 @@ public class RollNumberHandler extends ServerHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+    	try
+    	{
         Gson g = new Gson();
         String responseBody = "";
         int responseCode = 400;
@@ -57,6 +59,7 @@ public class RollNumberHandler extends ServerHandler implements HttpHandler {
         
         
         write(exchange.getResponseBody(), responseBody);
+        } catch (Exception e){e.printStackTrace();}
     }
     
 }

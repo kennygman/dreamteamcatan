@@ -262,9 +262,9 @@ public class ServerFacade
 	}
 
 	// ---------------------------------------------------------------------------------
-	public static StandardResponse commands(int id)
+	public static GameModelResponse commands(CommandsParam param, int id)
 	{
-		return gameInstance.commands(id);
+		return gameInstance.commands(param, id);
 	}
 	public static StandardResponse addAI(AddAiParam param, int id)
 	{

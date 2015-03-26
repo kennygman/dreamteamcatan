@@ -95,7 +95,7 @@ public class GameFacade implements IGameFacade
 				System.out.println("emptyIndex is " + emptyIndex);
 				
 			
-				Random rn = new Random();
+				//Random rn = new Random();
 				for(int i=1;i<8;i++)
 				{
 					//System.out.println(" number is:" + i);

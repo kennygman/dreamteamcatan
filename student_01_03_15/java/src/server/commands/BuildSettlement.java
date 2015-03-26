@@ -11,6 +11,7 @@ public class BuildSettlement implements ICommand
 	private BuildSettlementParam param;
 	private Game game;
 	
+	public BuildSettlement(){}
 	public BuildSettlement(BuildSettlementParam param, Game game)
 	{
 		super();

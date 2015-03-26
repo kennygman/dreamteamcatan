@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 
+import server.commands.ICommand;
 import server.facade.ServerFacade;
 import shared.parameters.AcceptTradeParam;
 import shared.parameters.CommandsParam;
@@ -60,7 +61,8 @@ public class CommandsHandler extends ServerHandler implements HttpHandler {
             	
                 String input = read(exchange.getRequestBody());
                 System.out.println(input);
-                CommandsParam param = g.fromJson(input, CommandsParam.class);
+                ICommand[] commands = g.fromJson(input, ICommand[].class);
+                CommandsParam param = new CommandsParam(commands);
                 GameModelResponse response = ServerFacade.commands(param, gameId);
 
                 System.out.println(param.getCommands().length);

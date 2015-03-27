@@ -25,6 +25,7 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler
 	@Override
 	public void handle(HttpExchange exchange) throws IOException
 	{
+		try{
 		Gson g = new Gson();
 		String responseBody;
 		int responseCode = 400;
@@ -41,14 +42,7 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler
 
 		PreGameCookie cookieParam = null; // loginParam uses username, but the
 											// cookie uses name
-		try
-		{
-			cookieParam = g.fromJson(userInfo, PreGameCookie.class);
-		} catch (Exception e)
-		{
-			System.err.println(e);
-			System.err.println(e.getLocalizedMessage());
-		}
+		cookieParam = g.fromJson(userInfo, PreGameCookie.class);
 
 		CredentialsParam loginParam = new CredentialsParam(
 				cookieParam.getName(), cookieParam.getPassword());
@@ -80,6 +74,7 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler
 		exchange.getResponseHeaders().add("Content-Type", "application/json");
 		exchange.sendResponseHeaders(responseCode, 0);
 		write(exchange.getResponseBody(), responseBody);
+		}catch(Exception e){e.printStackTrace();}
 	}
 
 }

@@ -38,7 +38,6 @@ public class ModelFacade extends Observable implements IModelFacade
     private GameInfo gameInfo;
     private Poller poller;
     private boolean hasJoined = false;
-    private boolean hasPlayedDevCard;
     private boolean isRoadBuilding;
     private EdgeLocation firstRoadInRoadBuilding;
     private boolean hasRolled;
@@ -363,10 +362,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	// DevCard Preconditions ================================================================================
 	public boolean canPlayDevCard(DevCardType devCard)
 	{
-		if (!isPlayerTurn() || hasPlayedDevCard ||
-			!getState().equals(TurnTracker.PLAYING)
-			|| !getPlayer().getOldDevCards().hasDevCard(devCard)
-			//|| getPlayer().isPlayedDevCard()
+		if (!isPlayerTurn() || //hasPlayedDevCard ||
+			!getState().equals(TurnTracker.PLAYING) ||
+			!getPlayer().getOldDevCards().hasDevCard(devCard)||
+			getPlayer().isPlayedDevCard()
 			) return false;
 		return true;
 	}
@@ -375,10 +374,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean CanUseSoldier(int victimIndex, HexLocation location)
 	{
-		if (!canPlayDevCard(DevCardType.SOLDIER) ||
-			!canRobPlayer(location, victimIndex)
-			) return false;
-		return true;
+		if (	canPlayDevCard(DevCardType.SOLDIER) && 
+				canRobPlayer(location, victimIndex)
+			) return true;
+		return false;
 	}
         
         public boolean canUseSoldierOfficial()
@@ -495,7 +494,6 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     game = response.getGame();
                     update();
-                    hasPlayedDevCard = false;
                     this.hasRolled = true;
                     this.getPoller().stop();
                     //updateGameModel();
@@ -629,8 +627,6 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     game = response.getGame();
                     update();
-                    hasPlayedDevCard = true;
-                    //updateGameModel();
                 }
 	}
 
@@ -644,8 +640,6 @@ public class ModelFacade extends Observable implements IModelFacade
             {
                 game = response.getGame();
                 update();
-                hasPlayedDevCard = true;
-                //updateGameModel();
             }
 	}
 
@@ -659,10 +653,8 @@ public class ModelFacade extends Observable implements IModelFacade
                 {
                     game = response.getGame();
                     update();
-                    hasPlayedDevCard = true;
                     isRoadBuilding = false;
                     firstRoadInRoadBuilding = null;
-                    //updateGameModel();
                 }
 	}
 
@@ -676,8 +668,6 @@ public class ModelFacade extends Observable implements IModelFacade
             {
                 game = response.getGame();
                 update();
-                hasPlayedDevCard = true;
-		//updateGameModel();  
             }
 	}
 
@@ -691,7 +681,6 @@ public class ModelFacade extends Observable implements IModelFacade
             {
                 game = response.getGame();
                 update();
-                //updateGameModel();
             }
 	}
         

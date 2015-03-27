@@ -1,6 +1,7 @@
 package server.commands;
 
 import model.Game;
+import model.TurnTracker;
 import model.player.Player;
 import shared.parameters.FinishTurnParam;
 
@@ -27,6 +28,7 @@ public class FinishTurn implements ICommand
 		Player player = game.getPlayer(param.getPlayerIndex());
 		if (player == null) return;
 		player.updateDevCards();
+		
 		game.getTurnTracker().nextTurn();
 		
 		game.addLogEntry(player.getName(), player.getName() + "'s turn just ended");

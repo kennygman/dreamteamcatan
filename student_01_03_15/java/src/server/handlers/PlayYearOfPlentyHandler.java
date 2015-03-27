@@ -51,7 +51,6 @@ public class PlayYearOfPlentyHandler extends ServerHandler implements HttpHandle
                 responseBody = "\"Failure\"";
             }
         }
-	System.out.println("PlayYearOfPlentyHandler Response: " + responseBody);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         

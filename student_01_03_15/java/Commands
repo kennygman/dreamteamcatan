@@ -367,7 +367,55 @@
         "playerIndex": 0
     },
     {
+        "number": 3,
+        "type": "rollNumber",
+        "playerIndex": 1
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 1
+    },
+    {
+        "number": 3,
+        "type": "rollNumber",
+        "playerIndex": 2
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 2
+    },
+    {
+        "number": 3,
+        "type": "rollNumber",
+        "playerIndex": 3
+    },
+	{
+	  "type": "buyDevCard",
+	  "playerIndex": "3"
+    },
+	{
+	  "type": "buyDevCard",
+	  "playerIndex": "3"
+    },
+	{
+	  "type": "buyDevCard",
+	  "playerIndex": "3"
+	},
+    {
+        "type": "finishTurn",
+        "playerIndex": 3
+    },
+    {
         "number": 5,
+        "type": "rollNumber",
+        "playerIndex": 0
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 0
+    },
+    {
+        "number": 4,
         "type": "rollNumber",
         "playerIndex": 1
     },
@@ -385,7 +433,7 @@
         "playerIndex": 2
     },
     {
-        "number": 4,
+        "number": 10,
         "type": "rollNumber",
         "playerIndex": 3
     }

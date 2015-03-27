@@ -340,7 +340,7 @@ public class MockProxy implements IProxy
 		GameModelResponse result = new GameModelResponse();
 
 		Player currentPlayer = fakeGame.getPlayers()[0];
-		currentPlayer.getOldDevCards().setSolider(
+		currentPlayer.getOldDevCards().setSoldier(
 				(currentPlayer.getOldDevCards().getSoldier() - 1));
 		currentPlayer.setPlayedDevCard(true);
 		currentPlayer.getResources().addResource(

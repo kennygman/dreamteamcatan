@@ -6,6 +6,7 @@ import java.util.List;
 
 import shared.definitions.CatanColor;
 import shared.definitions.ResourceType;
+import shared.locations.VertexLocation;
 import shared.response.GameListObject;
 import shared.response.PlayerListObject;
 import model.player.Developments;
@@ -329,5 +330,22 @@ public class Game
 		if (p==null) return false;
 		players[p.getPlayerIndex()] = p;
 		return true;
+	}
+	
+	/**
+	 * Gathers resources for the player after secondRound of setup
+	 * @param index player index
+	 * @param loc location of last settlement placed on board
+	 */
+	public void setupResources(int index, VertexLocation loc)
+	{
+		Player p = getPlayer(index);
+		Resources ro = map.getSetupResources(loc);
+		for (ResourceType rt : Resources.getResourceList())
+		{
+			int amount = ro.getResourceAmount(rt);
+			p.getResources().addResource(rt, amount);
+			bank.useResource(rt, amount);
+		}
 	}
 }

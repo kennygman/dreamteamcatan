@@ -41,6 +41,7 @@ public class PreGameFacade implements IPreGameFacade
 		{
 			for (Player p : game.getPlayers())
 			{
+				if (p == null) continue;
 				if (p.getPlayerID() != user.getId())
 				{
 					if (CatanColor.asString(p.getColor()).equals(param.getColor()))

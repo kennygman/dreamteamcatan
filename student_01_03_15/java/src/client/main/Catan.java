@@ -19,7 +19,7 @@ public class Catan extends JFrame
 {
 	private CatanPanel catanPanel;
 
-	public Catan() throws Exception
+	public Catan()
 	{
 
 		client.base.OverlayView.setWindow(this);

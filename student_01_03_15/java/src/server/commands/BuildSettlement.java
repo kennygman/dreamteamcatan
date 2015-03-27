@@ -1,6 +1,7 @@
 package server.commands;
 
 import model.Game;
+import model.TurnTracker;
 import model.board.Settlement;
 import model.player.Player;
 import shared.definitions.ResourceType;
@@ -42,6 +43,12 @@ public class BuildSettlement implements ICommand
 		}
 		player.setSettlements(player.getSettlements()-1);
 		game.getBoard().setSettlement(settlement);
+		player.setVictoryPoints(player.getVictoryPoints()+1);
+		
+		if (game.getTurnTracker().getStatus().equals(TurnTracker.SECONDROUND))
+		{
+			game.setupResources(player.getPlayerIndex(), settlement.getLocation());
+		}
 
 		game.addLogEntry(player.getName(), player.getName() + " built a Settlement");
 	}

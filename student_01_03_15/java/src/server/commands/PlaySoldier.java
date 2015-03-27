@@ -44,20 +44,25 @@ public class PlaySoldier implements ICommand
 		if (!isPlayerIndex(victim.getPlayerIndex()))
 			return;
 
-		game.addLogEntry(player.getName(), player.getName()
-				+ " moved the robber and robbed " + victim.getName());
-
 		ResourceType card = victim.getResources().robResource();
 		player.getResources().addResource(card, 1);
+
+		game.addLogEntry(player.getName(), player.getName()
+				+ " moved the robber and robbed " + victim.getName());
 
 	}
 
 	private boolean isLargestArmy()
 	{
 		int index = game.getTurnTracker().getLargestArmy();
-		int largestArmy = game.getPlayer(index).getSoldiers();
+		int largestArmy = 2;
 		int playerSoldiers = game.getPlayer(param.getPlayerIndex())
 				.getSoldiers();
+
+		if (index > 0)
+		{
+			largestArmy = game.getPlayer(index).getSoldiers();
+		}
 		return playerSoldiers > largestArmy;
 	}
 

@@ -20,9 +20,18 @@ public class Developments
 	
 	public void reset()
 	{
+		clear();
 		init();
 	}
 	
+	public void clear()
+	{
+		monopoly = 0;
+		monument = 0;
+		roadBuilding = 0;
+		soldier = 0;
+		yearOfPlenty = 0;
+	}
 	public Developments init()
 	{
 		monopoly = 2;
@@ -58,6 +67,7 @@ public class Developments
 	{
 		DevCardType card = deck.get(0);
 		deck.remove(0);
+		useCard(card);
 		return card;
 	}
 	
@@ -166,7 +176,7 @@ public class Developments
 		return soldier;
 	}
 
-	public void setSolider(int soldier)
+	public void setSoldier(int soldier)
 	{
 		this.soldier = soldier;
 	}

@@ -48,10 +48,10 @@ public class Player
 	public void updateDevCards()
 	{
 		oldDevCards.setMonopoly(oldDevCards.getMonopoly()+newDevCards.getMonopoly());
-		oldDevCards.setMonument(oldDevCards.getMonument()+newDevCards.getMonument());
 		oldDevCards.setRoadBuilding(oldDevCards.getRoadBuilding()+newDevCards.getRoadBuilding());
-		oldDevCards.setMonopoly(oldDevCards.getSoldier()+newDevCards.getSoldier());
+		oldDevCards.setSoldier(oldDevCards.getSoldier()+newDevCards.getSoldier());
 		oldDevCards.setYearOfPlenty(oldDevCards.getYearOfPlenty()+newDevCards.getYearOfPlenty());
+		newDevCards.clear();
 		setPlayedDevCard(false);
 	}
 

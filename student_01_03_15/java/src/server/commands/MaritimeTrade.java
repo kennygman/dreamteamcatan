@@ -26,7 +26,10 @@ public class MaritimeTrade implements ICommand
 		Player player = game.getPlayer(param.getPlayerIndex());
 		ResourceType give = ResourceType.fromString(param.getInputResource());
 		ResourceType get = ResourceType.fromString(param.getOutResource());
+		
 		player.getResources().addResource(get, 1);
+
+		player.getResources().useResource(give, param.getRatio());
 		game.getBank().addResource(give, param.getRatio());
 
 		game.addLogEntry(player.getName(), player.getName() + " did a maritime trade");

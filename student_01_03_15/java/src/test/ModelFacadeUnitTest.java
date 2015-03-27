@@ -576,7 +576,7 @@ public class ModelFacadeUnitTest
 		boolean result = true;
 		
 		HexLocation location = new HexLocation(1,1);
-		game.getPlayers()[0].getOldDevCards().setSolider(1);
+		game.getPlayers()[0].getOldDevCards().setSoldier(1);
 		if(ModelFacade.getInstance().CanUseSoldier(1, location))
 		{
 			ModelFacade.getInstance().playSoldierCard(1, location);

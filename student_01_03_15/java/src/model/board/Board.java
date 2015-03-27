@@ -20,7 +20,6 @@ public class Board
 	private transient Map<VertexLocation, City> cityLocation;
 	private transient Map<EdgeLocation, Road> roadLocation;
 	private transient Map<Integer, Resources> playerPorts;
-
 	private Hex[] hexes;
 	private Port[] ports;
 	private Road[] roads;
@@ -774,6 +773,61 @@ public class Board
 		vertices.add(new VertexLocation(hex, VertexDirection.SouthWest).getNormalizedLocation());
 		vertices.add(new VertexLocation(hex, VertexDirection.West).getNormalizedLocation());
 		return vertices;
+	}
+	
+	/**
+	 * This method fills a resource object with resources of hexes that surround the location
+	 * @param v the location
+	 * @return resources
+	 */
+	public Resources getSetupResources(VertexLocation v)
+	{
+		Resources resources = new Resources();
+		List<Hex> hl = getHexList(v.getNormalizedLocation());
+		for (Hex h : hl)
+		{
+			resources.addResource(ResourceType.fromString(h.getResource()), 1);
+		}
+		return resources;
+	}
+	public List<Hex> getHexList(VertexLocation v)
+	{
+		List<Hex> hexList = new ArrayList<>();
+		List<HexLocation> hll = getHexLocationList(v);
+
+		for (HexLocation hl : hll)
+		{
+			Hex hex = getHex(hl);
+			if (hex != null)
+			{
+				hexList.add(hex);
+			}
+		}
+		
+		return hexList;
+	}
+	public List<HexLocation> getHexLocationList(VertexLocation v)
+	{
+		List<HexLocation> hll = new ArrayList<>();
+		HexLocation hl = v.getHexLoc();
+		hll.add(v.getHexLoc());
+		hll.add(hl.getNeighborLoc(EdgeDirection.North));
+		
+		if (v.getDir().equals(VertexDirection.NorthWest))
+		{
+			hll.add(hl.getNeighborLoc(EdgeDirection.NorthWest));
+		} else {
+			hll.add(hl.getNeighborLoc(EdgeDirection.NorthEast));
+		}
+		return hll;
+	}
+	public Hex getHex(HexLocation hl)
+	{
+		for (Hex hex : hexes)
+		{
+			if (hex.getLocation().equals(hl)) return hex;
+		}
+		return null;
 	}
 }
 

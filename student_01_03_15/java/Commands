@@ -1,271 +1,392 @@
 [
-  {
-    "roadLocation": {
-      "direction": "NW",
-      "x": 0,
-      "y": -1
+    {
+        "roadLocation": {
+            "direction": "NW",
+            "x": 0,
+            "y": -1
+        },
+        "free": true,
+        "type": "buildRoad",
+        "playerIndex": 0
     },
-    "free": true,
-    "type": "buildRoad",
-    "playerIndex": 0
-  },
-  {
-    "vertexLocation": {
-      "direction": "NW",
-      "x": 0,
-      "y": -1
+    {
+        "vertexLocation": {
+            "direction": "NW",
+            "x": 0,
+            "y": -1
+        },
+        "free": true,
+        "type": "buildSettlement",
+        "playerIndex": 0
     },
-    "free": true,
-    "type": "buildSettlement",
-    "playerIndex": 0
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 0
-  },
-  {
-    "roadLocation": {
-      "direction": "NW",
-      "x": 1,
-      "y": 0
+    {
+        "type": "finishTurn",
+        "playerIndex": 0
     },
-    "free": true,
-    "type": "buildRoad",
-    "playerIndex": 1
-  },
-  {
-    "vertexLocation": {
-      "direction": "NE",
-      "x": 0,
-      "y": 1
+    {
+        "roadLocation": {
+            "direction": "NW",
+            "x": 1,
+            "y": 0
+        },
+        "free": true,
+        "type": "buildRoad",
+        "playerIndex": 1
     },
-    "free": true,
-    "type": "buildSettlement",
-    "playerIndex": 1
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 1
-  },
-  {
-    "roadLocation": {
-      "direction": "NW",
-      "x": 1,
-      "y": 1
+    {
+        "vertexLocation": {
+            "direction": "NE",
+            "x": 0,
+            "y": 1
+        },
+        "free": true,
+        "type": "buildSettlement",
+        "playerIndex": 1
     },
-    "free": true,
-    "type": "buildRoad",
-    "playerIndex": 2
-  },
-  {
-    "vertexLocation": {
-      "direction": "NE",
-      "x": 0,
-      "y": 2
+    {
+        "type": "finishTurn",
+        "playerIndex": 1
     },
-    "free": true,
-    "type": "buildSettlement",
-    "playerIndex": 2
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 2
-  },
-  {
-    "roadLocation": {
-      "direction": "N",
-      "x": -1,
-      "y": 2
+    {
+        "roadLocation": {
+            "direction": "NW",
+            "x": 1,
+            "y": 1
+        },
+        "free": true,
+        "type": "buildRoad",
+        "playerIndex": 2
     },
-    "free": true,
-    "type": "buildRoad",
-    "playerIndex": 3
-  },
-  {
-    "vertexLocation": {
-      "direction": "NW",
-      "x": -1,
-      "y": 2
+    {
+        "vertexLocation": {
+            "direction": "NE",
+            "x": 0,
+            "y": 2
+        },
+        "free": true,
+        "type": "buildSettlement",
+        "playerIndex": 2
     },
-    "free": true,
-    "type": "buildSettlement",
-    "playerIndex": 3
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 3
-  },
-  {
-    "roadLocation": {
-      "direction": "NE",
-      "x": -2,
-      "y": 0
+    {
+        "type": "finishTurn",
+        "playerIndex": 2
     },
-    "free": true,
-    "type": "buildRoad",
-    "playerIndex": 3
-  },
-  {
-    "vertexLocation": {
-      "direction": "NW",
-      "x": -1,
-      "y": 0
+    {
+        "roadLocation": {
+            "direction": "N",
+            "x": -1,
+            "y": 2
+        },
+        "free": true,
+        "type": "buildRoad",
+        "playerIndex": 3
     },
-    "free": true,
-    "type": "buildSettlement",
-    "playerIndex": 3
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 3
-  },
-  {
-    "roadLocation": {
-      "direction": "NE",
-      "x": 1,
-      "y": -1
+    {
+        "vertexLocation": {
+            "direction": "NW",
+            "x": -1,
+            "y": 2
+        },
+        "free": true,
+        "type": "buildSettlement",
+        "playerIndex": 3
     },
-    "free": true,
-    "type": "buildRoad",
-    "playerIndex": 2
-  },
-  {
-    "vertexLocation": {
-      "direction": "NE",
-      "x": 1,
-      "y": -1
+    {
+        "type": "finishTurn",
+        "playerIndex": 3
     },
-    "free": true,
-    "type": "buildSettlement",
-    "playerIndex": 2
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 2
-  },
-  {
-    "roadLocation": {
-      "direction": "N",
-      "x": 1,
-      "y": 1
+    {
+        "roadLocation": {
+            "direction": "NE",
+            "x": -2,
+            "y": 0
+        },
+        "free": true,
+        "type": "buildRoad",
+        "playerIndex": 3
     },
-    "free": true,
-    "type": "buildRoad",
-    "playerIndex": 1
-  },
-  {
-    "vertexLocation": {
-      "direction": "NE",
-      "x": 1,
-      "y": 1
+    {
+        "vertexLocation": {
+            "direction": "NW",
+            "x": -1,
+            "y": 0
+        },
+        "free": true,
+        "type": "buildSettlement",
+        "playerIndex": 3
     },
-    "free": true,
-    "type": "buildSettlement",
-    "playerIndex": 1
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 1
-  },
-  {
-    "roadLocation": {
-      "direction": "N",
-      "x": -2,
-      "y": 2
+    {
+        "type": "finishTurn",
+        "playerIndex": 3
     },
-    "free": true,
-    "type": "buildRoad",
-    "playerIndex": 0
-  },
-  {
-    "vertexLocation": {
-      "direction": "NW",
-      "x": -2,
-      "y": 2
+    {
+        "roadLocation": {
+            "direction": "NE",
+            "x": 1,
+            "y": -1
+        },
+        "free": true,
+        "type": "buildRoad",
+        "playerIndex": 2
     },
-    "free": true,
-    "type": "buildSettlement",
-    "playerIndex": 0
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 0
-  },
-  {
-    "number": 7,
-    "type": "rollNumber",
-    "playerIndex": 0
-  },
-  {
-    "victimIndex": 1,
-    "location": {
-      "x": 1,
-      "y": 0
+    {
+        "vertexLocation": {
+            "direction": "NE",
+            "x": 1,
+            "y": -1
+        },
+        "free": true,
+        "type": "buildSettlement",
+        "playerIndex": 2
     },
-    "type": "robPlayer",
-    "playerIndex": 0
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 0
-  },
-  {
-    "number": 9,
-    "type": "rollNumber",
-    "playerIndex": 1
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 1
-  },
-  {
-    "number": 9,
-    "type": "rollNumber",
-    "playerIndex": 2
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 2
-  },
-  {
-    "number": 2,
-    "type": "rollNumber",
-    "playerIndex": 3
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 3
-  },
-  {
-    "number": 6,
-    "type": "rollNumber",
-    "playerIndex": 0
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 0
-  },
-  {
-    "number": 10,
-    "type": "rollNumber",
-    "playerIndex": 1
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 1
-  },
-  {
-    "number": 10,
-    "type": "rollNumber",
-    "playerIndex": 2
-  },
-  {
-    "type": "finishTurn",
-    "playerIndex": 2
-  },
-  {
-    "number": 11,
-    "type": "rollNumber",
-    "playerIndex": 3
-  }
+    {
+        "type": "finishTurn",
+        "playerIndex": 2
+    },
+    {
+        "roadLocation": {
+            "direction": "N",
+            "x": 1,
+            "y": 1
+        },
+        "free": true,
+        "type": "buildRoad",
+        "playerIndex": 1
+    },
+    {
+        "vertexLocation": {
+            "direction": "NE",
+            "x": 1,
+            "y": 1
+        },
+        "free": true,
+        "type": "buildSettlement",
+        "playerIndex": 1
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 1
+    },
+    {
+        "roadLocation": {
+            "direction": "N",
+            "x": -2,
+            "y": 2
+        },
+        "free": true,
+        "type": "buildRoad",
+        "playerIndex": 0
+    },
+    {
+        "vertexLocation": {
+            "direction": "NW",
+            "x": -2,
+            "y": 2
+        },
+        "free": true,
+        "type": "buildSettlement",
+        "playerIndex": 0
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 0
+    },
+    {
+        "number": 7,
+        "type": "rollNumber",
+        "playerIndex": 0
+    },
+    {
+        "victimIndex": 1,
+        "location": {
+            "x": 1,
+            "y": 0
+        },
+        "type": "robPlayer",
+        "playerIndex": 0
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 0
+    },
+    {
+        "number": 9,
+        "type": "rollNumber",
+        "playerIndex": 1
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 1
+    },
+    {
+        "number": 9,
+        "type": "rollNumber",
+        "playerIndex": 2
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 2
+    },
+    {
+        "number": 2,
+        "type": "rollNumber",
+        "playerIndex": 3
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 3
+    },
+    {
+        "number": 6,
+        "type": "rollNumber",
+        "playerIndex": 0
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 0
+    },
+    {
+        "number": 10,
+        "type": "rollNumber",
+        "playerIndex": 1
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 1
+    },
+    {
+        "number": 10,
+        "type": "rollNumber",
+        "playerIndex": 2
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 2
+    },
+    {
+        "number": 11,
+        "type": "rollNumber",
+        "playerIndex": 3
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 3
+    },
+    {
+        "type": "offerTrade",
+        "playerIndex": "0",
+        "offer": {
+            "brick": "0",
+            "ore": "0",
+            "sheep": "0",
+            "wheat": "1",
+            "wood": "-1"
+        },
+        "receiver": "1"
+    },
+    {
+        "type": "acceptTrade",
+        "playerIndex": "1",
+        "willAccept": "false"
+    },
+    {
+        "type": "offerTrade",
+        "playerIndex": "0",
+        "offer": {
+            "brick": "0",
+            "ore": "0",
+            "sheep": "0",
+            "wheat": "1",
+            "wood": "-1"
+        },
+        "receiver": "1"
+    },
+    {
+        "type": "acceptTrade",
+        "playerIndex": "1",
+        "willAccept": "true"
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 0
+    },
+    {
+        "number": 6,
+        "type": "rollNumber",
+        "playerIndex": 1
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 1
+    },
+    {
+        "number": 8,
+        "type": "rollNumber",
+        "playerIndex": 2
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 2
+    },
+    {
+        "number": 8,
+        "type": "rollNumber",
+        "playerIndex": 3
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 3
+    },
+    {
+        "number": 7,
+        "type": "rollNumber",
+        "playerIndex": 0
+    },
+    {
+        "type": "discardCards",
+        "playerIndex": "1",
+        "discardedCards": {
+            "brick": "0",
+            "ore": "0",
+            "sheep": "0",
+            "wheat": "3",
+            "wood": "3"
+        }
+    },
+    {
+        "victimIndex": 1,
+        "location": {
+            "x": 1,
+            "y": 0
+        },
+        "type": "robPlayer",
+        "playerIndex": 0
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 0
+    },
+    {
+        "number": 5,
+        "type": "rollNumber",
+        "playerIndex": 1
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 1
+    },
+    {
+        "number": 9,
+        "type": "rollNumber",
+        "playerIndex": 2
+    },
+    {
+        "type": "finishTurn",
+        "playerIndex": 2
+    },
+    {
+        "number": 4,
+        "type": "rollNumber",
+        "playerIndex": 3
+    }
 ]

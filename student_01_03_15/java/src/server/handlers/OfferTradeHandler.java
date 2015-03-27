@@ -51,7 +51,6 @@ public class OfferTradeHandler extends ServerHandler implements HttpHandler {
                 responseBody = "\"Failure\"";
             }
         }
-	System.out.println("OfferTradeHandler Response: " + responseBody);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         

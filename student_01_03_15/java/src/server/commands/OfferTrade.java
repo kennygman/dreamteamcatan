@@ -2,6 +2,7 @@ package server.commands;
 
 import model.Game;
 import model.TradeOffer;
+import model.TurnTracker;
 import model.player.Player;
 import shared.parameters.OfferTradeParam;
 
@@ -31,6 +32,7 @@ public class OfferTrade implements ICommand
 						param.getOffer()
 						)
 				);
+		game.getTurnTracker().setStatus(TurnTracker.TRADING);
 		game.addLogEntry(player.getName(), player.getName() + " has made a trade offer");
 	}
 

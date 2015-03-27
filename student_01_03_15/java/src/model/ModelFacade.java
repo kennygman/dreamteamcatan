@@ -157,7 +157,12 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public boolean isPlayerTurn()
 	{
-		if (game == null || game.getTurnTracker() == null || player == null || player.getPlayerIndex() > 3) return false;
+		if (
+				game == null ||
+				game.getTurnTracker() == null ||
+				player == null ||
+				player.getPlayerIndex() > 3
+			) return false;
 		return game.getTurnTracker().getCurrentTurn() == player.getPlayerIndex();
 	}
 
@@ -195,9 +200,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	private boolean canPlay()
 	{
 		if (!isPlayerTurn()) return false;
-		if (getState().equals(TurnTracker.FIRSTROUND)) return true;
-		if (getState().equals(TurnTracker.SECONDROUND)) return true;
-		if (!game.getTurnTracker().getStatus().equals(TurnTracker.PLAYING)) return false;
+		if (	getState().equals(TurnTracker.FIRSTROUND) ||
+				getState().equals(TurnTracker.SECONDROUND) ||
+				getState().equals(TurnTracker.PLAYING)
+			) return true;
 		return false;
 	}
 	//--------------------------------------------------------------------------------

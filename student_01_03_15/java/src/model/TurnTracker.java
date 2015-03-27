@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TurnTracker
 {
 	public static String PLAYING = "Playing";
@@ -10,6 +13,8 @@ public class TurnTracker
 	public static String ROLLING = "Rolling";
 	public static String DISCARDING = "Discarding";
 	
+	private transient List<Integer> discarding; 
+
 	private int currentTurn;
 	private String status;
 	int longestRoad;
@@ -36,6 +41,7 @@ public class TurnTracker
 		status = FIRSTROUND;
 		longestRoad = -1;
 		largestArmy = -1;
+		discarding = new ArrayList<>();
 		return this;
 	}
 	
@@ -63,6 +69,7 @@ public class TurnTracker
 		{
 			currentTurn++;
 			if(currentTurn > 3) currentTurn = 0;
+			status = ROLLING;
 		}
 	}
 	
@@ -106,4 +113,21 @@ public class TurnTracker
 		this.largestArmy = largestArmy;
 	}
 
+	public void setDiscarding(int i)
+	{
+		discarding.add(i);
+	}
+
+	public boolean discarded(int i)
+	{
+		try{
+			if (discarding.contains(i))
+			{
+				discarding.remove(discarding.indexOf(i));
+			}
+			
+		} catch(Exception e){e.printStackTrace();}
+		
+		return discarding.isEmpty();
+	}
 }

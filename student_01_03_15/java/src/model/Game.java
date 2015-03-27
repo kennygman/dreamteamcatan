@@ -330,5 +330,4 @@ public class Game
 		players[p.getPlayerIndex()] = p;
 		return true;
 	}
-	
 }

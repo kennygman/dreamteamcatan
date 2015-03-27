@@ -1,6 +1,7 @@
 package server.commands;
 
 import model.Game;
+import model.TurnTracker;
 import model.player.Player;
 import model.player.Resources;
 import shared.parameters.AcceptTradeParam;
@@ -30,7 +31,9 @@ public class AcceptTrade implements ICommand
 		Resources offer = game.getTradeOffer().getOffer();
 		if (param.isWillAccept())
 		{
+			//System.out.println("AcceptTrade (sender): " + sender.getName());
 			sender.getResources().doTrade(offer);
+			//System.out.println("AcceptTrade (receiver): " + receiver.getName());
 			receiver.getResources().doTrade(offer.invert());
 
 			game.addLogEntry(receiver.getName(), receiver.getName() + " has accepted the trade");
@@ -40,6 +43,8 @@ public class AcceptTrade implements ICommand
 			game.addLogEntry(receiver.getName(), receiver.getName() + " has declined the trade");
 		}
 		game.setTradeOffer(null);
+		game.getTurnTracker().setStatus(TurnTracker.PLAYING);
+
 	}
 
 }

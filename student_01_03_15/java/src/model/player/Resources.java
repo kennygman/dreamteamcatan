@@ -308,17 +308,21 @@ public class Resources
 	
 	public void doTrade(Resources trade)
 	{
+		//System.out.println("Resources(doTrade) BEFORE: " + this);
 		for (ResourceType r : list)
 		{
 			if (trade.getResourceAmount(r) > 0)
 			{
-				useResource(r, Math.abs(trade.getResourceAmount(r)) );
+				int give = trade.getResourceAmount(r);
+				useResource(r, give);
 			}
 			else if (trade.getResourceAmount(r) < 0)
 			{
-				addResource(r, Math.abs(trade.getResourceAmount(r)) );
+				int get = Math.abs(trade.getResourceAmount(r));
+				addResource(r, get);
 			}
 		}
+		//System.out.println("Resources(doTrade) AFTER: " + this);
 	}
 	
 	public ResourceType robResource()

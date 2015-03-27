@@ -27,7 +27,7 @@ public class ServerFacade
 	}
 	private static void initDefault()
 	{
-		Game game = new Game().initialize("Default", true, true, true);
+		Game game = new Game().initialize("Default", false, false, false);
 		
 		Player p1 = new Player();
 		p1.setName("Sam");

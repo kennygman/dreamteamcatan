@@ -95,6 +95,7 @@ public class Board
 		for (Hex hex : hexes)
 		{
 			int hexNum = hex.getNumber();
+			if (hexNum < 2) continue;
 			hexList = hexNumbers.get(hexNum);
 			if (hexList == null)
 				hexList = new ArrayList<>();
@@ -174,8 +175,8 @@ public class Board
 		int index = -1;
 		for (Port port : ports)
 		{
-			EdgeLocation portEdge = new EdgeLocation(port.getLocation(),
-					EdgeLocation.getEdgeDirection(port.getDirection()))
+			port.getEdgeLocation();
+			EdgeLocation portEdge = new EdgeLocation(port.getLocation(), EdgeLocation.getEdgeDirection(port.getDirection()))
 					.getNormalizedLocation();
 
 			List<VertexLocation> neighbors = portEdge.getAdjacentVertices();

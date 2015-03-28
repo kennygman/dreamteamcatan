@@ -70,7 +70,7 @@ public class Catan extends JFrame
 		{
 			public void run()
 			{
-				//new Catan();
+				new Catan();
 
 				PlayerWaitingView playerWaitingView = new PlayerWaitingView();
 				final PlayerWaitingController playerWaitingController = new PlayerWaitingController(

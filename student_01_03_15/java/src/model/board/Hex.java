@@ -6,7 +6,7 @@ public class Hex
 {
 	private String resource;
 	private HexLocation location;
-	private Integer number;
+	private int number;
 
 	public String getResource()
 	{
@@ -37,4 +37,13 @@ public class Hex
 	{
 		this.number = number;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Hex [resource=" + resource + ", location=" + location
+				+ ", number=" + number + "]";
+	}
+
+	
 }

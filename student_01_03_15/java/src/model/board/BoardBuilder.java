@@ -47,8 +47,8 @@ public class BoardBuilder
 			if (hexTypes.get(i).equals(HexType.DESERT))
 			{
 				robber = hexLocations.get(i);
-				hex.setResource(null);
-				hex.setNumber(-1);
+				hex.setResource("");
+				hex.setNumber(0);
 			}
 			else
 			{
@@ -104,8 +104,8 @@ public class BoardBuilder
 	private List<HexLocation> getPortLocations()
 	{
 		List<HexLocation> portLocations = new ArrayList<>();
-		int[] x = {-3, 0,-2, 1, 3,-3, 3,-1, 2};
-		int[] y = { 2, 3, 3,-3,-1, 0,-3,-2, 1};
+		int[] x = {-2, 0, 3,-1, 1,-3,-3, 3, 2};
+		int[] y = { 3, 3,-3,-2,-3, 0, 2,-1, 1};
 		
 		for (int i = 0; i < x.length; i++)
 		{

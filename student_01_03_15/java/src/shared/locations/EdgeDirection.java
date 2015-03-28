@@ -2,11 +2,11 @@ package shared.locations;
 
 public enum EdgeDirection
 {
-	
+
 	NorthWest, North, NorthEast, SouthEast, South, SouthWest;
-	
+
 	private EdgeDirection opposite;
-	
+
 	static
 	{
 		NorthWest.opposite = SouthEast;
@@ -16,10 +16,9 @@ public enum EdgeDirection
 		South.opposite = North;
 		SouthWest.opposite = NorthEast;
 	}
-	
+
 	public EdgeDirection getOppositeDirection()
 	{
 		return opposite;
 	}
 }
-

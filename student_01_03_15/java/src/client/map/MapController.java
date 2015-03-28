@@ -111,7 +111,7 @@ public class MapController extends Controller implements IMapController , Observ
         for (Hex hex : board.getHexes())
         {
             getView().addHex(hex.getLocation(), HexType.fromString(hex.getResource()));
-            if(hex.getNumber() != 0)
+            if(hex.getNumber() > 1)
             {
                 getView().addNumber(hex.getLocation(), hex.getNumber());
             }

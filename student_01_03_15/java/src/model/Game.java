@@ -20,7 +20,6 @@ import model.board.Settlement;
 
 public class Game
 {
-	private String title;
 	private Player[] players;
 	private Resources bank;
 	private Board map;
@@ -32,6 +31,7 @@ public class Game
 	private int version;
 	private int winner;
 
+	private transient String title;
 	private transient Board initialMap;
 	private transient int playerId;
 

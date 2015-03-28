@@ -50,11 +50,10 @@ public class GameModelHandler extends ServerHandler implements HttpHandler {
                 responseBody = "\"Failure\"";
             }
         }
-	//System.out.println("GameModelHandler Response: " + responseBody);
+        System.out.println("GameModelHandler Response: " + "");
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
-        
-        
+                
         write(exchange.getResponseBody(), responseBody);
     	}catch(Exception e){e.printStackTrace();}
     }

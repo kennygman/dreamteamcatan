@@ -51,7 +51,6 @@ public class SendChatHandler extends ServerHandler implements HttpHandler {
                 responseBody = "\"Failure\"";
             }
         }
-	System.out.println("SendChatHandler Response: " + responseBody);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.sendResponseHeaders(responseCode, 0);
         

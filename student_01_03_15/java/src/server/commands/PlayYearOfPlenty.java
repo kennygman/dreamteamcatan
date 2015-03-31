@@ -33,6 +33,7 @@ public class PlayYearOfPlenty implements ICommand
 		player.getResources().addResource(r2, 1);
 		game.getBank().useResource(r1, 1);
 		game.getBank().useResource(r2, 1);
+		game.increment();
 
 		game.addLogEntry(player.getName(), player.getName() + " gained two resources from year of plenty");
 	}

@@ -58,6 +58,7 @@ public class ServerFacade
 		game.addPlayer(p4);
 
 		games.addGame(game);
+		
 	}
 	// ---------------------------------------------------------------------------------
 	/*public static void createInstance()
@@ -281,4 +282,9 @@ public class ServerFacade
 		return gameInstance.listAI();
 	}
         
+	// ---------------------------------------------------------------------------------
+	public static StandardResponse changeLogLevel(ChangeLogLevelParam param)
+	{
+		return null;
+	}
 }

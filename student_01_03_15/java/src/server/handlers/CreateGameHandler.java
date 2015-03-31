@@ -9,7 +9,6 @@ import java.io.IOException;
 import server.facade.ServerFacade;
 import shared.parameters.CreateGameParam;
 import shared.response.CreateGameResponse;
-import shared.response.LoginResponse;
 
 /**
  *
@@ -20,29 +19,15 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException
-        {
+	{
 		Gson g = new Gson();
-		String responseBody;
+		String responseBody = "\"Error: invalid request\"";
+		;
 		int responseCode = 400;
-                
-                
-                //The demo-client does not send a cookie for this method...
-                
-                /*System.out.println("CreateGameHandler cookie: " + exchange.getRequestHeaders().getFirst("Cookie"));
-		LoginResponse login = getLoginFromCookie(exchange.getRequestHeaders()
-				.getFirst("Cookie"));
-                System.out.println("CreateGameHandler logged in");
 
-		if (!login.isValid())
-		{
-			responseBody = "\"Error: bad cookie\"";
-		} else*/
-                
-                
-                
+		try
 		{
 			String input = read(exchange.getRequestBody());
-                        System.out.println("CreateGameHandler Request: " + input);
 			CreateGameParam param = g.fromJson(input, CreateGameParam.class);
 			CreateGameResponse response = ServerFacade.create(param);
 
@@ -50,15 +35,23 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler
 			{
 				responseBody = g.toJson(response);
 				responseCode = 200;
-			} else
-			{
-				responseBody = "\"Error: invalid request\"";
 			}
-		}
 
-		exchange.getResponseHeaders().add("Content-Type", "application/json");
-		exchange.sendResponseHeaders(responseCode, 0);
-		write(exchange.getResponseBody(), responseBody);
+		} catch (com.google.gson.JsonSyntaxException e1)
+		{
+			responseBody = "\"Error: invalid json format\"";
+			// e1.printStackTrace();
+		} catch (Exception e)
+		{
+			//e.printStackTrace();
+		} finally
+		{
+			exchange.getResponseHeaders().add("Content-Type",
+					"application/json");
+			exchange.sendResponseHeaders(responseCode, 0);
+			write(exchange.getResponseBody(), responseBody);
+
+		}
 	}
 
 }

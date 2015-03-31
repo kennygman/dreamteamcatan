@@ -26,7 +26,7 @@ public enum CatanColor
 		return color;
 	}
 	
-        public static CatanColor stringToColor(String color)
+        public static CatanColor fromString(String color)
         {
             CatanColor cc;
             switch(color)

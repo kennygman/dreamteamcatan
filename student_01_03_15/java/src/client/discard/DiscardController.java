@@ -296,7 +296,7 @@ public class DiscardController extends Controller implements
 				{
                                         if(!ModelFacade.getInstance().isPlayerTurn())
                                         {
-                                            ModelFacade.getInstance().getPoller().stop();
+//                                            ModelFacade.getInstance().getPoller().stop();
                                         }
 					this.getDiscardView().showModal();
 				}

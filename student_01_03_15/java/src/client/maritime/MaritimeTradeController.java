@@ -74,7 +74,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 		resources = ModelFacade.getInstance().getPlayer().getResources();
 		portList = ModelFacade.getInstance().getPorts();
 		
-			for (ResourceType type : Resources.getResourceList())
+			for (ResourceType type : ResourceType.list)
 			{
 				if (resources.getResourceAmount(type) >= portList.getResourceAmount(type) )
 				{
@@ -133,7 +133,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 		List<ResourceType> getList = new ArrayList<ResourceType>();
 		Resources bank = ModelFacade.getInstance().getGame().getBank();
 
-		for (ResourceType r : Resources.getResourceList())
+		for (ResourceType r : ResourceType.list)
 		{
 			if (bank.getResourceAmount(r) > 0) getList.add(r);
 		}

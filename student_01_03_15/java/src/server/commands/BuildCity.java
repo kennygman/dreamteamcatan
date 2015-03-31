@@ -37,6 +37,7 @@ public class BuildCity implements ICommand
 		player.setSettlements(player.getSettlements()+1);
 		game.getBoard().setCity(city);
 		player.setVictoryPoints(player.getVictoryPoints()+1);
+		game.increment();
 
 		game.addLogEntry(player.getName(), player.getName() + " built a City");
 	}

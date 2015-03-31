@@ -20,6 +20,7 @@ public class Board
 	private transient Map<VertexLocation, City> cityLocation;
 	private transient Map<EdgeLocation, Road> roadLocation;
 	private transient Map<Integer, Resources> playerPorts;
+	
 	private Hex[] hexes;
 	private Port[] ports;
 	private Road[] roads;
@@ -38,7 +39,7 @@ public class Board
 		settlements = new Settlement[0];
 		cities = new City[0];
 		robber = bb.getRobber();
-		radius = 0;
+		radius = 3;
 		sort();
 		return this;
 	}
@@ -154,7 +155,7 @@ public class Board
 
 		if (port.getResource() == null) // 3 for 1
 		{
-			for (ResourceType r : Resources.getResourceList())
+			for (ResourceType r : ResourceType.list)
 			{
 				resources.setResource(r, 3);
 			}
@@ -210,7 +211,7 @@ public class Board
 	public boolean hasPort(int index, String resource, int ratio)
 	{
 		Resources resources = playerPorts.get(index);
-		return resources.getResourceAmount(resource) == ratio;
+		return resources.getResourceAmount(ResourceType.fromString(resource)) == ratio;
 	}
 
 	// --------------------------------------------------------------------------------

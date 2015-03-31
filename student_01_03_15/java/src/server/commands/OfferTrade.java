@@ -33,6 +33,7 @@ public class OfferTrade implements ICommand
 						)
 				);
 		game.getTurnTracker().setStatus(TurnTracker.TRADING);
+		game.increment();
 		game.addLogEntry(player.getName(), player.getName() + " has made a trade offer");
 	}
 

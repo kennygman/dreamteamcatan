@@ -346,7 +346,7 @@ public class MockProxy implements IProxy
 		currentPlayer.getResources().addResource(
 				ResourceType.WOOD,
 				fakeGame.getPlayers()[input.getVictimIndex()].getResources()
-						.getResourceAmount("wood"));
+						.getResourceAmount(ResourceType.fromString("wood")));
 		currentPlayer.playDevcard(DevCardType.SOLDIER);
 		fakeGame.getBoard().setRobber(input.getLocation());
 		fakeGame.getPlayers()[0] = currentPlayer;
@@ -369,11 +369,11 @@ public class MockProxy implements IProxy
 		currentPlayer.getOldDevCards().setMonopoly(
 				currentPlayer.getOldDevCards().getMonopoly() - 1);
 
-		currentPlayer.getResources().addResource(ResourceType.WOOD,
-				opponent.getResources().getResourceAmount(input.getResource()));
+		int amount = opponent.getResources().getResourceAmount(ResourceType.fromString(input.getResource()));
+		currentPlayer.getResources().addResource(ResourceType.WOOD, amount);
 
-		opponent.getResources().useResource(ResourceType.WOOD,
-				opponent.getResources().getResourceAmount(input.getResource()));
+		amount = opponent.getResources().getResourceAmount(ResourceType.fromString(input.getResource())); 
+		opponent.getResources().useResource(ResourceType.WOOD,amount);
 
 		fakeGame.getPlayers()[input.getPlayerIndex()] = currentPlayer;
 		fakeGame.getPlayers()[1] = opponent;

@@ -26,50 +26,56 @@ public class BuildRoadHandler extends ServerHandler implements HttpHandler
 	@Override
 	public void handle(HttpExchange exchange) throws IOException
 	{
-		try
-		{
 		Gson g = new Gson();
 		String responseBody = "";
 		int responseCode = 400;
 
-		String cookie = exchange.getRequestHeaders().getFirst("Cookie");
-
-		LoginResponse login = getLoginFromCookie(cookie);
-
-		if (!login.isValid())
+		try
 		{
-			responseBody = "\"Error: bad cookie\"";
-		} else
-		{
+			String cookie = exchange.getRequestHeaders().getFirst("Cookie");
 
-			int gameId = getGameIdFromCookie(cookie);
-			String input = read(exchange.getRequestBody());
+			LoginResponse login = getLoginFromCookie(cookie);
 
-			BuildRoadParam param = null;
-			param = g.fromJson(input, BuildRoadParam.class);
-			
-			GameModelResponse response = null;
-			
-			response = ServerFacade.buildRoad(param, gameId);
-
-			if (response.isValid())
+			if (!login.isValid())
 			{
-				responseBody = g.toJson(response.getGame());
-				responseCode = 200;
+				responseBody = "\"Error: bad cookie\"";
 			} else
 			{
-				responseBody = "\"Failure\"";
-			}
-		}
 
-		exchange.getResponseHeaders().add("Content-Type", "application/json");
-		exchange.sendResponseHeaders(responseCode, 0);
-		write(exchange.getResponseBody(), responseBody);
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			exchange.getResponseBody().close();
+				int gameId = getGameIdFromCookie(cookie);
+				String input = read(exchange.getRequestBody());
+
+				BuildRoadParam param = null;
+				param = g.fromJson(input, BuildRoadParam.class);
+
+				GameModelResponse response = null;
+
+				response = ServerFacade.buildRoad(param, gameId);
+
+				if (response.isValid())
+				{
+					responseBody = g.toJson(response.getGame());
+					responseCode = 200;
+				} else
+				{
+					responseBody = "\"Failure\"";
+				}
+			}
+
+		} catch (com.google.gson.JsonSyntaxException e1)
+		{
+			responseBody = "\"Error: invalid json format\"";
+			// e1.printStackTrace();
+		} catch (Exception e)
+		{
+			//e.printStackTrace();
+		} finally
+		{
+			exchange.getResponseHeaders().add("Content-Type",
+					"application/json");
+			exchange.sendResponseHeaders(responseCode, 0);
+			write(exchange.getResponseBody(), responseBody);
+
 		}
 	}
 }

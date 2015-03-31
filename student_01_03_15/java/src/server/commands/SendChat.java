@@ -26,6 +26,7 @@ public class SendChat implements ICommand
 		line.setMessage(param.getMessae());
 		line.setSource(game.getPlayer(param.getSource()).getName());
 		game.getChat().addLine(line);
+		game.increment();
 	}
 
 }

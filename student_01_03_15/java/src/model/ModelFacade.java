@@ -314,7 +314,7 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean CanMaritimeTrade(int ratio, String inputResource, String outResource)
 	{
 		if (!canPlay()) return false;
-		if (getPlayer().getResources().getResourceAmount(inputResource) < ratio) return false;
+		if (getPlayer().getResources().getResourceAmount(ResourceType.fromString(inputResource)) < ratio) return false;
 		if (game.getBoard().hasPort(player.getPlayerIndex(), inputResource, ratio)) return true;
 
 		return false;
@@ -390,8 +390,8 @@ public class ModelFacade extends Observable implements IModelFacade
 	public boolean CanUseYearOfPlenty(String resource1, String resource2)
 	{
 		if (!canPlayDevCard(DevCardType.YEAR_OF_PLENTY)) return false;
-		if (game.getBank().getResourceAmount(resource1) > 0 &&
-			game.getBank().getResourceAmount(resource2) > 0
+		if (game.getBank().getResourceAmount(ResourceType.fromString(resource1)) > 0 &&
+			game.getBank().getResourceAmount(ResourceType.fromString(resource2)) > 0
 			) return true;
 		return false;
 	}
@@ -495,7 +495,6 @@ public class ModelFacade extends Observable implements IModelFacade
                     game = response.getGame();
                     update();
                     this.hasRolled = true;
-                    this.getPoller().stop();
                     //updateGameModel();
                 }     
 	}
@@ -590,12 +589,10 @@ public class ModelFacade extends Observable implements IModelFacade
 	@Override
 	public void finishTurn()
 	{
-		
         GameModelResponse response = proxy.finishTurn(
         		new FinishTurnParam(player.getPlayerIndex()));
 		if (response.isValid())
                 {
-					poller.pollerStart();
                     game = response.getGame();
                     update();
                     //updateGameModel();
@@ -719,13 +716,13 @@ public class ModelFacade extends Observable implements IModelFacade
 	//--------------------------------------------------------------------------------
 	public StandardResponse joinGame(JoinGameParam params)
 	{
-            StandardResponse response = proxy.joinGame(params);
-            if(response.isValid())
-            {
-                this.player.setColor(CatanColor.stringToColor(params.getColor()));
-                this.hasJoined = true;
-            }
-                    return response;
+		StandardResponse response = proxy.joinGame(params);
+		if (response.isValid())
+		{
+			this.player.setColor(CatanColor.fromString(params.getColor()));
+			this.hasJoined = true;
+		}
+		return response;
 	}
 
 	public boolean isHasJoined()
@@ -781,8 +778,7 @@ public class ModelFacade extends Observable implements IModelFacade
             if(response.isValid())
             {
                 game = response.getGame();
-                game.getBoard().sort();
-                this.modelChanged();
+                update();
             }
 	}
         
@@ -925,7 +921,8 @@ public class ModelFacade extends Observable implements IModelFacade
 		ListGamesResponse response = proxy.listGames();
 		if (!response.isValid()) return null;
 		setGameInfo(response.getGameListObject(gameInfo.getId()));
-		players = gameInfo.getPlayers().toArray(new PlayerInfo[0]);
+		List<PlayerInfo> playerList = response.getGameListObject(gameInfo.getId()).getPlayers(); 
+		players = playerList.toArray(new PlayerInfo[0]);
 		return players;
 
 		
@@ -973,7 +970,9 @@ public class ModelFacade extends Observable implements IModelFacade
 	{
 		ListGamesResponse response = proxy.listGames();
 		if (!response.isValid()) return false;
+
 		setGameInfo(response.getGameListObject(gameInfo.getId()));
+
 		return gameInfo.getPlayers().size()==4;
 	}
 	//---------------------------------------------------------------------------------

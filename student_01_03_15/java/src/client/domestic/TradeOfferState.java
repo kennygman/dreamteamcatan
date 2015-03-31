@@ -112,7 +112,7 @@ public class TradeOfferState
 	//---------------------------------------------------------------------------------
 	public void setTradableResources(ResourceType resource)
 	{
-		for (ResourceType type : Resources.getResourceList())
+		for (ResourceType type : ResourceType.list)
 		{
 			if (!type.equals(resource))
 				tradeOverlay.setResourceAmountChangeEnabled(type, false, false);
@@ -161,13 +161,13 @@ public class TradeOfferState
 	{
 		boolean give = false;
 		boolean get = false;
-		for (ResourceType r : Resources.getResourceList())
+		for (ResourceType r : ResourceType.list)
 		{
 			if (offer.getResourceAmount(r) > 0) {
 				give = true; break; 
 			}
 		}
-		for (ResourceType r : Resources.getResourceList())
+		for (ResourceType r : ResourceType.list)
 		{
 			if (offer.getResourceAmount(r) < 0) {
 				get = true; break; 

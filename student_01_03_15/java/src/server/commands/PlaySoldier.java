@@ -46,6 +46,7 @@ public class PlaySoldier implements ICommand
 
 		ResourceType card = victim.getResources().robResource();
 		player.getResources().addResource(card, 1);
+		game.increment();
 
 		game.addLogEntry(player.getName(), player.getName()
 				+ " moved the robber and robbed " + victim.getName());

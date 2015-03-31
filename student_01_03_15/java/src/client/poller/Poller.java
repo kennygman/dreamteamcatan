@@ -21,15 +21,7 @@ public class Poller
 	private int timeDelay;
 	private boolean isRunning;
 
-//	/**
-//	 * Default constructor. Creates a new updatedModelGson object
-//	 */
-//	public Poller()
-//	{
-//		this.serverModel = new Game();
-//		this.timer = new Timer();
-//		this.timesTimerRan = 0;
-//	}
+	private static int SPEED = 3000;
 
 	/**
 	 * @param clientModelGson
@@ -44,35 +36,18 @@ public class Poller
 		this.timesTimerRan = 0;
 		this.isRunning = false;
 	}
-	
 
 	/**
 	 * Gets the Game Model from the server and saves it to serverModel
 	 */
 	public void pollServer()
 	{
-//		if(ModelFacade.getInstance().isHasJoined())
-//		{
-
-			// If Client Game Model has been updated through ModelFacade since last Poll 
-			if (ModelFacade.getInstance().getGame().getVersion() > clientVersion || ModelFacade.getInstance().getGame().getVersion() == 0)
-			{
-				this.serverVersion = ModelFacade.getInstance().getGame().getVersion();
-			}
-			
-			else
-			{
-				GameModelResponse game = proxyServer.getGameModel();
-				if(game.isValid())
-				{
-					this.serverVersion = game.getGame().getVersion();
-				}
-			}
-
-			ModelFacade.getInstance().modelChanged(); // Call every time
+		GameModelResponse game = proxyServer.getGameModel();
+		if (game.isValid())
+		{
+			this.serverVersion = game.getGame().getVersion();
 		}
-		
-//	}
+	}
 
 	/**
 	 * @param oldModel
@@ -94,8 +69,6 @@ public class Poller
 	 */
 	public void pollerStart()
 	{
-		this.isRunning = true;
-		//System.out.println("I AM Started!!!!");
 		timer = new Timer();
 		setTimesTimerRan(1);
 		timer.schedule(new TimerTask()
@@ -103,15 +76,21 @@ public class Poller
 			@Override
 			public void run()
 			{
-				setTimesTimerRan(getTimesTimerRan() + 1);
-				pollServer();
-				if (serverVersion > clientVersion)
+				try
 				{
-					if(ModelFacade.getInstance().isHasJoined())
-					updateModel();
-				}
+					setTimesTimerRan(getTimesTimerRan() + 1);
+					pollServer();
+					if (serverVersion > clientVersion)
+					{
+						updateModel();
+					} else if (!ModelFacade.getInstance().isGameFull())
+					{
+						updateModel();
+					}
+					ModelFacade.getInstance().modelChanged();
+				} catch (Exception e){e.printStackTrace();}
 			}
-		}, 0, 3000);
+		}, 0, SPEED);
 	}
 
 	public boolean isRunning()
@@ -119,27 +98,9 @@ public class Poller
 		return isRunning;
 	}
 
-
 	public void setRunning(boolean isRunning)
 	{
 		this.isRunning = isRunning;
-	}
-
-
-	/**
-	 * Stops the polling service
-	 */
-	public void stop()
-	{
-		//System.out.println("I AM IN THE STOPPING METHOD");
-		if(this.isRunning == true)
-		{
-			//System.out.println("I AM STOPPED");
-			this.isRunning = false;
-			timer.cancel();
-			timer.purge();
-			setTimesTimerRan(0);
-		}
 	}
 
 	public int getServerVersion()
@@ -192,12 +153,10 @@ public class Poller
 		this.timesTimerRan = timesTimerRan;
 	}
 
-
 	public int getTimeDelay()
 	{
 		return timeDelay;
 	}
-
 
 	public void setTimeDelay(int timeDelay)
 	{

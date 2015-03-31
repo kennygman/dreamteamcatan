@@ -14,12 +14,19 @@ public class Resources
 	private int wheat;
 	private int brick;
 	private int ore;
-	static ResourceType[] list = { ResourceType.WHEAT, ResourceType.WOOD,
-			ResourceType.BRICK, ResourceType.ORE, ResourceType.SHEEP };
-
+	
 	public Resources()
 	{
 		wood = wheat = sheep = brick = ore = 0;
+	}
+
+	public Resources(int wood, int sheep, int wheat, int brick, int ore)
+	{
+		this.wood = wood;
+		this.sheep = sheep;
+		this.wheat = wheat;
+		this.brick = brick;
+		this.ore = ore;
 	}
 
 	public Resources init()
@@ -32,20 +39,6 @@ public class Resources
 		return this;
 	}
 	
-	public Resources(int wood, int sheep, int wheat, int brick, int ore)
-	{
-		this.wood = wood;
-		this.sheep = sheep;
-		this.wheat = wheat;
-		this.brick = brick;
-		this.ore = ore;
-	}
-
-	public static ResourceType[] getResourceList()
-	{
-		return list;
-	}
-
 	/**
 	 * Updates exisiting resources with new resources
 	 * 
@@ -216,40 +209,6 @@ public class Resources
 	}
 
 	/**
-	 * Returns how many of a specific resource there is
-	 * 
-	 * @param type
-	 *            Which resource it is you are trying to get the amount of
-	 * @return amount of that resource there is
-	 */
-	public int getResourceAmount(String type)
-	{
-		int amount = 0;
-		switch (type)
-		{
-		case "wood":
-			amount = wood;
-			break;
-		case "brick":
-			amount = brick;
-			break;
-		case "wheat":
-			amount = wheat;
-			break;
-		case "sheep":
-			amount = sheep;
-			break;
-		case "ore":
-			amount = ore;
-			break;
-		default:
-			break;
-		}
-		return amount;
-
-	}
-
-	/**
 	 * Sets a specific resource to 0 amount
 	 * 
 	 * @param type
@@ -290,7 +249,7 @@ public class Resources
 	 */
 	public boolean contains(Resources r)
 	{
-		for (ResourceType res : list)
+		for (ResourceType res : ResourceType.list)
 		{
 			int amount = r.getResourceAmount(res);
 			if (amount > 0 && this.getResourceAmount(res) < amount)
@@ -299,17 +258,10 @@ public class Resources
 		return true;
 	}
 
-	@Override
-	public String toString()
-	{
-		return "Resources [wood=" + wood + ", sheep=" + sheep + ", wheat="
-				+ wheat + ", brick=" + brick + ", ore=" + ore + "]";
-	}
-	
 	public void doTrade(Resources trade)
 	{
 		//System.out.println("Resources(doTrade) BEFORE: " + this);
-		for (ResourceType r : list)
+		for (ResourceType r : ResourceType.list)
 		{
 			if (trade.getResourceAmount(r) > 0)
 			{
@@ -328,7 +280,7 @@ public class Resources
 	public ResourceType robResource()
 	{
 		List<ResourceType> resourceList = new ArrayList<>();
-		for (ResourceType r : list)
+		for (ResourceType r : ResourceType.list)
 		{
 			int amount = getResourceAmount(r); 
 			for (int i = 0; i < amount; i++)
@@ -339,6 +291,13 @@ public class Resources
 		this.useResource(resourceList.get(0), 1);
 
 		return resourceList.get(0);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Resources [wood=" + wood + ", sheep=" + sheep + ", wheat="
+				+ wheat + ", brick=" + brick + ", ore=" + ore + "]";
 	}
 
 }

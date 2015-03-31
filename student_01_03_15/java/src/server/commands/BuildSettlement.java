@@ -44,6 +44,7 @@ public class BuildSettlement implements ICommand
 		player.setSettlements(player.getSettlements()-1);
 		game.getBoard().setSettlement(settlement);
 		player.setVictoryPoints(player.getVictoryPoints()+1);
+		game.increment();
 		
 		if (game.getTurnTracker().getStatus().equals(TurnTracker.SECONDROUND))
 		{

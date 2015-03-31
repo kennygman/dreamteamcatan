@@ -37,6 +37,7 @@ public class PlayRoadBuilding implements ICommand
 			game.getTurnTracker().setLongestRoad(player.getPlayerIndex());
 			game.addLogEntry(player.getName(), player.getName() + " has the longest road");
 		}
+		game.increment();
 
 }
 

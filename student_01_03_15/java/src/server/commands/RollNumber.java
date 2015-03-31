@@ -45,6 +45,7 @@ public class RollNumber implements ICommand
 		{
 			game.distribute(number);
 		}
+		game.increment();
 
 		game.addLogEntry(player.getName(), player.getName() + " rolled a "
 				+ param.getNumber());

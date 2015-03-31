@@ -124,7 +124,6 @@ public class RollController extends Controller implements IRollController,
 		{
 			if (!getRollView().isModalShowing())
 			{
-				ModelFacade.getInstance().getPoller().stop();
 				this.getRollView().showModal();
 				this.runRollTimer();
 			}

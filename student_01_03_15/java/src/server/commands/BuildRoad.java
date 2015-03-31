@@ -39,6 +39,7 @@ public class BuildRoad implements ICommand
 		}
 		player.setRoads(player.getRoads()-1);
 		game.getBoard().setRoad(road);
+		game.increment();
 		if (isLongestRoad()) game.getTurnTracker().setLongestRoad(player.getPlayerIndex());
 
 		game.addLogEntry(player.getName(), player.getName() + " built a Road");
@@ -46,10 +47,13 @@ public class BuildRoad implements ICommand
 
 	private boolean isLongestRoad()
 	{
+		int longestRoad = 2;
 		int index = game.getTurnTracker().getLongestRoad();
-		if (index<0) return true;
-		int longestRoad = game.getPlayer(index).getRoads();
 		int playerRoads = game.getPlayer(param.getPlayerIndex()).getRoads();
+		if (index >= 0)
+		{
+			longestRoad = game.getPlayer(index).getRoads();
+		}
 		return playerRoads > longestRoad;
 	}
 }

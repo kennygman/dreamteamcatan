@@ -6,25 +6,20 @@ import shared.definitions.ResourceType;
 
 public class Player
 {
-	private String name;
-	private int playerIndex;
-	private int playerID;
-
-	private int victoryPoints;
-	private int soldiers;
-
-	private int roads;
-	private int settlements;
-	private int cities;
-
 	private Resources resources;
-
-	private boolean discarded;
-	private boolean playedDevCard;
-	private int monuments;
-
-	private Developments newDevCards;
 	private Developments oldDevCards;
+	private Developments newDevCards;
+	private int roads;
+	private int cities;
+	private int settlements;
+	private int soldiers;
+	private int victoryPoints;
+	private int monuments;
+	private boolean playedDevCard;
+	private boolean discarded;
+	private int playerID;
+	private int playerIndex;
+	private String name;
 	private String color;
 
 	/**
@@ -276,11 +271,26 @@ public class Player
 	public CatanColor getColor()
 	{
 		if (color == null) return CatanColor.WHITE;
-		return CatanColor.stringToColor(color);
+		return CatanColor.fromString(color);
 	}
 
 	public void playDevcard(DevCardType soldier)
 	{
 		// this is empty, but the mockproxy calls it
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Player [resources=" + resources + ", oldDevCards="
+				+ oldDevCards + ", newDevCards=" + newDevCards + ", roads="
+				+ roads + ", cities=" + cities + ", settlements=" + settlements
+				+ ", soldiers=" + soldiers + ", victoryPoints=" + victoryPoints
+				+ ", monuments=" + monuments + ", playedDevCard="
+				+ playedDevCard + ", discarded=" + discarded + ", playerID="
+				+ playerID + ", playerIndex=" + playerIndex + ", name=" + name
+				+ ", color=" + color + "]";
+	}
+	
+	
 }

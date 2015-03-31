@@ -8,9 +8,10 @@ package server.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
+
 import server.facade.ServerFacade;
-import shared.parameters.BuildCityParam;
 import shared.response.GameModelResponse;
 import shared.response.LoginResponse;
 
@@ -18,44 +19,53 @@ import shared.response.LoginResponse;
  *
  * @author Drew
  */
-public class GameModelHandler extends ServerHandler implements HttpHandler {
+public class GameModelHandler extends ServerHandler implements HttpHandler
+{
 
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
-    	try{
-        Gson g = new Gson();
-        String responseBody = "";
-        int responseCode = 400;
-        
-        String cookie = exchange.getRequestHeaders().getFirst("Cookie");
-        LoginResponse login = getLoginFromCookie(cookie);
-        
-        if(!login.isValid())
-        {
-            responseBody = "\"Error: bad cookie\"";
-        }
-        else
-        {
-            int gameId = getGameIdFromCookie(cookie);
-            GameModelResponse response = ServerFacade.getGameModel(gameId);
+	@Override
+	public void handle(HttpExchange exchange) throws IOException
+	{
+		Gson g = new Gson();
+		String responseBody = "";
+		int responseCode = 400;
 
+		try
+		{
 
-            if(response.isValid())
-            {
-                responseBody = g.toJson(response.getGame());
-                responseCode = 200;
-            }
-            else
-            {
-                responseBody = "\"Failure\"";
-            }
-        }
-        System.out.println("GameModelHandler Response: " + "");
-        exchange.getResponseHeaders().add("Content-Type", "application/json");
-        exchange.sendResponseHeaders(responseCode, 0);
-                
-        write(exchange.getResponseBody(), responseBody);
-    	}catch(Exception e){e.printStackTrace();}
-    }
-    
+			String cookie = exchange.getRequestHeaders().getFirst("Cookie");
+			LoginResponse login = getLoginFromCookie(cookie);
+
+			if (!login.isValid())
+			{
+				responseBody = "\"Error: bad cookie\"";
+			} else
+			{
+				int gameId = getGameIdFromCookie(cookie);
+				GameModelResponse response = ServerFacade.getGameModel(gameId);
+
+				if (response.isValid())
+				{
+					responseBody = g.toJson(response.getGame());
+					responseCode = 200;
+				} else
+				{
+					responseBody = "\"Failure\"";
+				}
+			}
+		} catch (com.google.gson.JsonSyntaxException e1)
+		{
+			 responseBody = "\"Error: invalid json format\"";
+			 //e1.printStackTrace();
+		} catch (Exception e)
+		{
+			//e.printStackTrace();
+		} finally {
+			exchange.getResponseHeaders().add("Content-Type",
+					"application/json");
+			exchange.sendResponseHeaders(responseCode, 0);
+			write(exchange.getResponseBody(), responseBody);
+
+		}
+	}
+
 }

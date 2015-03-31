@@ -24,6 +24,7 @@ public class JoinGameState
 	{
 		IJoinGameView view = controller.getJoinGameView();
 		GameInfo[] games = ModelFacade.getInstance().listGames().getGameListObject();
+		if (games == null) return;
 		
 		PlayerInfo player =  ModelFacade.getInstance().getPlayerInfo();
 		
@@ -66,25 +67,27 @@ public class JoinGameState
 		disableColors();
 	}
 
-	//--------------------------------------------------------------------------------
+	// --------------------------------------------------------------------------------
 	public void setGameInfo()
 	{
-            GameInfo joinedGame = ModelFacade.getInstance().listGames().getGameListObject(game.getId());
-            if(joinedGame != null)
-            {
-                ModelFacade.getInstance().setGameInfo(joinedGame);
+		GameInfo joinedGame = ModelFacade.getInstance().listGames()
+				.getGameListObject(game.getId());
 
-                PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
-                for (PlayerInfo p : joinedGame.getPlayers())
-                {
-                        if (p.getId() == player.getId())
-                        {
-                                player.setPlayerIndex(joinedGame.getPlayers().indexOf(p));
-                                player = p;
-                                return;
-                        }
-                }
-            }
+		if (joinedGame != null)
+		{
+			ModelFacade.getInstance().setGameInfo(joinedGame);
+
+			PlayerInfo player = ModelFacade.getInstance().getPlayerInfo();
+			for (PlayerInfo p : joinedGame.getPlayers())
+			{
+				if (p.getId() == player.getId())
+				{
+					player.setPlayerIndex(joinedGame.getPlayers().indexOf(p));
+					player = p;
+					return;
+				}
+			}
+		}
 	}
 
 	//--------------------------------------------------------------------------------

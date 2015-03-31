@@ -20,16 +20,16 @@ import model.board.Settlement;
 
 public class Game
 {
-	private Player[] players;
-	private Resources bank;
-	private Board map;
 	private Developments deck;
-	private Chat chat;
+	private Board map;
+	private Player[] players;
 	private Log log;
+	private Chat chat;
+	private Resources bank;
 	private TradeOffer tradeOffer;
 	private TurnTracker turnTracker;
-	private int version;
 	private int winner;
+	private int version;
 
 	private transient String title;
 	private transient Board initialMap;
@@ -271,16 +271,6 @@ public class Game
 		this.deck = deck;
 	}
 
-	@Override
-	public String toString()
-	{
-		return "Game [playerId=" + playerId + ", bank=" + bank + ", deck="
-				+ deck + ", chat=" + chat + ", log=" + log + ", map=" + map
-				+ ", players=" + Arrays.toString(players) + ", tradeOffer="
-				+ tradeOffer + ", turnTracker=" + turnTracker + ", title="
-				+ title + ", version=" + version + ", winner=" + winner + "]";
-	}
-
 	public void addLogEntry(String source, String message)
 	{
 		Lines lines = new Lines();
@@ -341,11 +331,27 @@ public class Game
 	{
 		Player p = getPlayer(index);
 		Resources ro = map.getSetupResources(loc);
-		for (ResourceType rt : Resources.getResourceList())
+		for (ResourceType rt : ResourceType.list)
 		{
 			int amount = ro.getResourceAmount(rt);
 			p.getResources().addResource(rt, amount);
 			bank.useResource(rt, amount);
 		}
 	}
+
+	public void increment()
+	{
+		version++;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Game [deck=" + deck + ", map=" + map + ", players="
+				+ Arrays.toString(players) + ", log=" + log + ", chat=" + chat
+				+ ", bank=" + bank + ", tradeOffer=" + tradeOffer
+				+ ", turnTracker=" + turnTracker + ", winner=" + winner
+				+ ", version=" + version + "]";
+	}
+	
 }

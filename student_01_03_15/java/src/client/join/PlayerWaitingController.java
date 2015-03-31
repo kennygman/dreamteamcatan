@@ -2,114 +2,79 @@ package client.join;
 
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import shared.parameters.AddAiParam;
 import shared.response.ListAIResponse;
 import model.ModelFacade;
 import client.base.*;
+import client.data.PlayerInfo;
 
 /**
  * Implementation for the player waiting controller
  */
-public class PlayerWaitingController extends Controller implements IPlayerWaitingController, Observer {
+public class PlayerWaitingController extends Controller implements
+		IPlayerWaitingController, Observer
+{
 
-	public Timer timer = new Timer();
-	public boolean isRunning;
-	
-	public PlayerWaitingController(IPlayerWaitingView view) {
-            super(view);
-            ModelFacade.getInstance().addObserver(this);
-            isRunning = false;
+	public PlayerWaitingController(IPlayerWaitingView view)
+	{
+		super(view);
+		ModelFacade.getInstance().addObserver(this);
 	}
 
 	@Override
-	public IPlayerWaitingView getView() {
-            return (IPlayerWaitingView)super.getView();
+	public IPlayerWaitingView getView()
+	{
+		return (IPlayerWaitingView) super.getView();
 	}
 
 	@Override
-	public void start() {aiRefresh();}
+	public void start()
+	{
+	}
 
-	
-	
 	@Override
-	public void addAI() {
-			
-            AddAiParam param = new AddAiParam(getView().getSelectedAI());
-            if (ModelFacade.getInstance().addAi(param).isValid())
-            {
-            	
-                refresh();
-            }
+	public void addAI()
+	{
+		AddAiParam param = new AddAiParam(getView().getSelectedAI());
+		if (ModelFacade.getInstance().addAi(param).isValid())
+		{
+			refresh();
+		}
 	}
 
 	private boolean first = true;
+
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
-		if (first) {
-	        ListAIResponse aiList = ModelFacade.getInstance().listAi();
-	        getView().setAIChoices(aiList.getAiTypes());
-	        first = false;
-		}
-            refresh();
-	}
-	
-	private void aiRefresh()
-	{
-		this.isRunning = true;
-		timer = new Timer();
-		timer.schedule(new TimerTask()
+		if (first)
 		{
-			@Override
-			public void run()
-			{
-				refresh();
-			}
-		}, 0, 1500);
-	}
-	private void stopTimer()
-	{
-		if(this.isRunning == true)
-		{
-			this.isRunning = false;
-			timer.cancel();
-			timer.purge();
+			ListAIResponse aiList = ModelFacade.getInstance().listAi();
+			getView().setAIChoices(aiList.getAiTypes());
+			first = false;
 		}
-		
+
+		if (ModelFacade.getInstance().getGameInfo().getPlayers().size() > size)
+		{
+			refresh();
+		}
 	}
-	
-	
-	
+
 	public void refresh()
 	{
-
-		int t = ModelFacade.getInstance().getGameInfo().getPlayers().size();
-		if (t >= size && t != 4) {
-			size = t;
-			refresh = true;
-		}
-
-		if (refresh)
+		if (getView().isModalShowing())
+			getView().closeModal();
+		if (!ModelFacade.getInstance().isGameFull())
 		{
-			if (getView().isModalShowing()) getView().closeModal();
-			getView().setPlayers(ModelFacade.getInstance().getPlayerInfoList());
+			PlayerInfo[] players = ModelFacade.getInstance()
+					.getPlayerInfoList();
+			size = players.length;
+			getView().setPlayers(players);
 			getView().showModal();
-			refresh = false;
 		}
 
-		if (ModelFacade.getInstance().isGameFull() && getView().isModalShowing())
-		{
-					stopTimer();
-                    getView().closeModal();
-                    ModelFacade.getInstance().updateGameModel();
-		}
-		
 	}
-	
-	private int size = -1;
-	private boolean refresh = true;
-}
 
+	private int size = -1;
+
+}

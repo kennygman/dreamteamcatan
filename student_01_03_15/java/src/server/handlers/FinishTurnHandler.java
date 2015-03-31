@@ -44,6 +44,7 @@ public class FinishTurnHandler extends ServerHandler implements HttpHandler
 				int gameId = getGameIdFromCookie(cookie);
 
 				String input = read(exchange.getRequestBody());
+				
 				FinishTurnParam param = g
 						.fromJson(input, FinishTurnParam.class);
 				GameModelResponse response = ServerFacade.finishTurn(param,

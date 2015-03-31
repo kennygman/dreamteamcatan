@@ -207,7 +207,7 @@ public class MovesFacade implements IMovesFacade
 		
 		RobPlayer cmd = new RobPlayer(param, game);
 		
-		if (ModelFacade.getInstance().canRobPlayer(
+	if (ModelFacade.getInstance().canRobPlayer(
 				param.getLocation(), param.getVictimIndex()))
 		{
 			valid = true;
@@ -387,8 +387,7 @@ public class MovesFacade implements IMovesFacade
 		}
 		catch(Exception e)
 		{
-			System.err.println(e);
-			System.err.println(e.getLocalizedMessage());
+			e.printStackTrace();
 		}
 	}
 	

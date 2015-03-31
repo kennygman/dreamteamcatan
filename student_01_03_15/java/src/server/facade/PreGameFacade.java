@@ -36,6 +36,8 @@ public class PreGameFacade implements IPreGameFacade
 	public StandardResponse join(JoinGameParam param, User user)
 	{
 		Game game = games.getGame(param.getId());
+		if (game == null) return new StandardResponse(false);
+		
 		Player player = null;
 		if (game.isPlayerInGame(user.getId()))
 		{

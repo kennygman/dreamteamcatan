@@ -44,6 +44,7 @@ public class AcceptTrade implements ICommand
 		}
 		game.setTradeOffer(null);
 		game.getTurnTracker().setStatus(TurnTracker.PLAYING);
+		game.increment();
 
 	}
 

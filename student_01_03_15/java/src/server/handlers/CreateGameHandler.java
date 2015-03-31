@@ -21,6 +21,7 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler
 	@Override
 	public void handle(HttpExchange exchange) throws IOException
         {
+		try {
 		Gson g = new Gson();
 		String responseBody;
 		int responseCode = 400;
@@ -59,6 +60,7 @@ public class CreateGameHandler extends ServerHandler implements HttpHandler
 		exchange.getResponseHeaders().add("Content-Type", "application/json");
 		exchange.sendResponseHeaders(responseCode, 0);
 		write(exchange.getResponseBody(), responseBody);
+		}catch(Exception e){e.printStackTrace();}
 	}
 
 }

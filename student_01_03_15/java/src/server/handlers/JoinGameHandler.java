@@ -74,7 +74,10 @@ public class JoinGameHandler extends ServerHandler implements HttpHandler
 		exchange.getResponseHeaders().add("Content-Type", "application/json");
 		exchange.sendResponseHeaders(responseCode, 0);
 		write(exchange.getResponseBody(), responseBody);
-		}catch(Exception e){e.printStackTrace();}
+		}catch(Exception e){e.printStackTrace();
+		} finally {
+			exchange.close();
+		}
 	}
 
 }

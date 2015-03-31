@@ -191,4 +191,14 @@ public class Developments
 		this.yearOfPlenty = yearOfPlenty;
 	}
 
+	@Override
+	public String toString()
+	{
+		return "Developments [monopoly=" + monopoly + ", monument=" + monument
+				+ ", roadBuilding=" + roadBuilding + ", soldier=" + soldier
+				+ ", yearOfPlenty=" + yearOfPlenty + "]";
+	}
+	
+	
+
 }

@@ -3,6 +3,7 @@ package shared.response;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import shared.definitions.CatanColor;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
 
@@ -12,10 +13,7 @@ public class GameListObject
 	public int id;
 	public ArrayList<PlayerListObject> players;
 
-	public GameListObject()
-	{
-
-	}
+	public GameListObject(){}
 
 	/**
 	 * @param title
@@ -43,9 +41,12 @@ public class GameListObject
 
 		for (int i = 0; i < players.size(); i++)
 		{
-			if (players.get(i).name != null)
+			String name = players.get(i).name;
+			String color = players.get(i).color;
+			if (name != null && !name.equals(""))
 			{
 				PlayerInfo info = players.get(i).getPlayerInfo();
+				info.setColor(CatanColor.fromString(color.toLowerCase()));
 				info.setPlayerIndex(i);
 				game.addPlayer(info);
 			}

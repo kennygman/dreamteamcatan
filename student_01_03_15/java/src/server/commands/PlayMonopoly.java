@@ -35,6 +35,7 @@ public class PlayMonopoly implements ICommand
 		}
 		player.setPlayedDevCard(true);
 		player.getOldDevCards().useCard(DevCardType.MONOPOLY);
+		game.increment();
 
 		game.addLogEntry(player.getName(), player.getName() + " played a monopoly card");
 	}

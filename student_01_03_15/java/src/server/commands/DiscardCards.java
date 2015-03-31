@@ -34,6 +34,7 @@ public class DiscardCards implements ICommand
 		{
 			game.getTurnTracker().setStatus(TurnTracker.ROBBING);
 		}
+		game.increment();
 
 		game.addLogEntry(player.getName(), player.getName() + " has discarded");
 	}

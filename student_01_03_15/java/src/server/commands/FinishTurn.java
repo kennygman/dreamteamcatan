@@ -30,6 +30,7 @@ public class FinishTurn implements ICommand
 		player.updateDevCards();
 		
 		game.getTurnTracker().nextTurn();
+		game.increment();
 		
 		game.addLogEntry(player.getName(), player.getName() + "'s turn just ended");
 	}

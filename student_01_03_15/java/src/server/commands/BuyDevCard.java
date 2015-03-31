@@ -40,6 +40,7 @@ public class BuyDevCard implements ICommand
 		game.getBank().addResource(ResourceType.ORE, 1);
 		game.getBank().addResource(ResourceType.SHEEP, 1);
 		game.getBank().addResource(ResourceType.WHEAT, 1);
+		game.increment();
 		
 		game.addLogEntry(player.getName(), player.getName() + " bought a development card");
 

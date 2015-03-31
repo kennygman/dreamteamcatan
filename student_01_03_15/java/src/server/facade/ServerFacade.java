@@ -58,6 +58,7 @@ public class ServerFacade
 		game.addPlayer(p4);
 
 		games.addGame(game);
+		
 	}
 	// ---------------------------------------------------------------------------------
 	/*public static void createInstance()

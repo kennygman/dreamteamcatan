@@ -31,6 +31,7 @@ public class MaritimeTrade implements ICommand
 
 		player.getResources().useResource(give, param.getRatio());
 		game.getBank().addResource(give, param.getRatio());
+		game.increment();
 
 		game.addLogEntry(player.getName(), player.getName() + " did a maritime trade");
 }

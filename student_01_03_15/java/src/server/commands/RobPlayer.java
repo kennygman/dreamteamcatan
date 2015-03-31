@@ -35,6 +35,7 @@ public class RobPlayer implements ICommand
 			player.getResources().addResource(card, 1);
 		}
 		game.getTurnTracker().setStatus(TurnTracker.PLAYING);
+		game.increment();
 
 		game.addLogEntry(player.getName(), player.getName()
 				+ " moved the robber and robbed " + victim.getName());

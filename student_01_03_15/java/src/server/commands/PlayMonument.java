@@ -26,6 +26,7 @@ public class PlayMonument implements ICommand
 		Player player = game.getPlayer(param.getPlayerIndex());
 		player.setVictoryPoints(player.getVictoryPoints()+1);
 		player.getOldDevCards().useCard(DevCardType.MONUMENT);
+		game.increment();
 
 		game.addLogEntry(player.getName(), player.getName() + " built a monument and gained a victory point");
 }

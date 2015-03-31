@@ -19,6 +19,7 @@ public class ListGamesResponse {
 	
 	public GameInfo[] getGameListObject()
 	{
+		if (games == null) return null;
 		GameInfo[] gi = new GameInfo[games.length];
 		for (int i = 0; i < games.length; i++)
 		{
@@ -29,15 +30,15 @@ public class ListGamesResponse {
         
         public GameInfo getGameListObject(int gameId)
 	{
-            for (int i = 0; i < games.length; i++)
+        for (int i = 0; i < games.length; i++)
+        {
+            GameInfo gi = games[i].getGameInfo();
+            if(gi.getId() == gameId)
             {
-                GameInfo gi = games[i].getGameInfo();
-                if(gi.getId() == gameId)
-                {
-                    return gi;
-                }
+                return gi;
             }
-            return null;
+        }
+        return null;
 	}
 	
 	public boolean isValid()

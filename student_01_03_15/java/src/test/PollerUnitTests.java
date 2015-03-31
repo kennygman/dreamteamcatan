@@ -28,7 +28,7 @@ public class PollerUnitTests
 	@After
 	public void teardown()
 	{
-		poller.stop();
+//		poller.stop();
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class PollerUnitTests
 	@Test
 	public void testStop()
 	{
-		poller.stop();
+//		poller.stop();
 		assertTrue(poller.getTimesTimerRan() == 0);
 	}
 }

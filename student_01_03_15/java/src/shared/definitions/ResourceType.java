@@ -4,7 +4,10 @@ public enum ResourceType
 {
 	WOOD, BRICK, SHEEP, WHEAT, ORE;
         
-        @Override
+	public static ResourceType[] list = { ResourceType.WHEAT, ResourceType.WOOD,
+		ResourceType.BRICK, ResourceType.ORE, ResourceType.SHEEP };
+
+	@Override
         public String toString()
         {
             String resource = "";

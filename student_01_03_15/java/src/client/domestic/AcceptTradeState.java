@@ -3,7 +3,6 @@ package client.domestic;
 import shared.definitions.ResourceType;
 import model.ModelFacade;
 import model.TradeOffer;
-import model.player.Resources;
 
 public class AcceptTradeState
 {
@@ -25,7 +24,7 @@ public class AcceptTradeState
 		controller.getAcceptOverlay().setAcceptEnabled(canAccept);
 		controller.getAcceptOverlay().setPlayerName(offer.getSenderName());
 		
-		for (ResourceType resource : Resources.getResourceList())
+		for (ResourceType resource : ResourceType.list)
 		{
 			int amount = offer.getOffer().getResourceAmount(resource);
 			if (amount > 0) {

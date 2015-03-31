@@ -43,6 +43,7 @@ public class RobPlayerHandler extends ServerHandler implements HttpHandler
 			{
 				int gameId = getGameIdFromCookie(cookie);
 				String input = read(exchange.getRequestBody());
+
 				RobPlayerParam param = g.fromJson(input, RobPlayerParam.class);
 				GameModelResponse response = ServerFacade.robPlayer(param,
 						gameId);
@@ -59,10 +60,10 @@ public class RobPlayerHandler extends ServerHandler implements HttpHandler
 		} catch (com.google.gson.JsonSyntaxException e1)
 		{
 			responseBody = "\"Error: invalid json format\"";
-			// e1.printStackTrace();
+			e1.printStackTrace();
 		} catch (Exception e)
 		{
-			//e.printStackTrace();
+			e.printStackTrace();
 		} finally
 		{
 			exchange.getResponseHeaders().add("Content-Type",

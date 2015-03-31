@@ -69,6 +69,9 @@ public class Poller
 	 */
 	public void pollerStart()
 	{
+		if (isRunning) return;
+		System.out.println("Poller started");
+		this.isRunning = true;
 		timer = new Timer();
 		setTimesTimerRan(1);
 		timer.schedule(new TimerTask()
@@ -93,6 +96,22 @@ public class Poller
 		}, 0, SPEED);
 	}
 
+	/**
+	 * Stops the polling service
+	 */
+	public void stop()
+	{
+		if (!isRunning) return;
+		if (this.isRunning == true)
+		{
+			System.out.println("Poller stopped");
+			this.isRunning = false;
+			timer.cancel();
+			timer.purge();
+			setTimesTimerRan(0);
+		}
+	}
+	
 	public boolean isRunning()
 	{
 		return isRunning;

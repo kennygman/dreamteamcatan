@@ -27,7 +27,7 @@ public class MapController extends Controller implements IMapController,
 
 	private HexLocation robberLocation;
 	private String state;
-	
+
 	public MapController(IMapView view, IRobView robView)
 	{
 		super(view);
@@ -49,38 +49,28 @@ public class MapController extends Controller implements IMapController,
 	{
 		this.robView = robView;
 	}
-	
+
 	/**
-	 * Check if the map overlay modal is NOT open--the player is NOT currently placing a piece,
-	 * The turn belongs to the client,
-	 * The game is full
+	 * Check if the map overlay modal is NOT open--the player is NOT currently
+	 * placing a piece, The turn belongs to the client, The game is full
+	 * 
 	 * @return true if all valid, false otherwise
 	 */
 	private boolean canPlacePiece()
 	{
-		if (	!isOpen &&
-				ModelFacade.getInstance().isPlayerTurn() &&
-				ModelFacade.getInstance().isGameFull() &&
-				isSetupRound()
-			) return true;
-
+		if (!getRobView().isModalShowing() && !isOpen
+				&& ModelFacade.getInstance().isPlayerTurn()
+				&& ModelFacade.getInstance().isGameFull())
+			return true;
 		return false;
 	}
 
 	private boolean isSetupRound()
 	{
-		return state.equals(TurnTracker.FIRSTROUND) || state.equals(TurnTracker.SECONDROUND);
+		return state.equals(TurnTracker.FIRSTROUND)
+				|| state.equals(TurnTracker.SECONDROUND);
 	}
-	
-	private boolean hasPlacedRoad()
-	{
-		Player player = ModelFacade.getInstance().getPlayer();
-		int roads = player.getRoads();
-		int settlements = player.getSettlements();
-		
-		return (roads == 14 && settlements == 5 || roads == 13 && settlements == 4);
-	}
-	
+
 	private void placePieces()
 	{
 		if (canPlacePiece())
@@ -89,18 +79,37 @@ public class MapController extends Controller implements IMapController,
 			{
 			case "Robbing":
 			{
-				startMove(PieceType.ROBBER, true, false);
+				if (state.equals(TurnTracker.ROBBING))
+				{
+					startMove(PieceType.ROBBER, true, false);
+				}
 				break;
 			}
 			case "FirstRound":
 			case "SecondRound":
 			{
-				if (hasPlacedRoad())
+				Player player = ModelFacade.getInstance().getPlayer();
+				int roads = player.getRoads();
+				int settlements = player.getSettlements();
+
+				if (state.equals(TurnTracker.FIRSTROUND))
 				{
-					startMove(PieceType.SETTLEMENT, true, false);
-				} else
+					if (roads == 15 && settlements == 5)
+					{
+						startMove(PieceType.ROAD, true, false);
+					} else if (roads == 14 && settlements == 5)
+					{
+						startMove(PieceType.SETTLEMENT, true, false);
+					}
+				} else if (state.equals(TurnTracker.SECONDROUND))
 				{
-					startMove(PieceType.ROAD, true, false);
+					if (roads == 14 && settlements == 4)
+					{
+						startMove(PieceType.ROAD, true, false);
+					} else if (roads == 13 && settlements == 4)
+					{
+						startMove(PieceType.SETTLEMENT, true, false);
+					}
 				}
 				break;
 			}
@@ -109,7 +118,7 @@ public class MapController extends Controller implements IMapController,
 			}
 		}
 	}
-	
+
 	private void drawPieces()
 	{
 		Game game = ModelFacade.getInstance().getGame();
@@ -119,7 +128,7 @@ public class MapController extends Controller implements IMapController,
 		drawWaterHexes(board);
 		getView().placeRobber(board.getRobber());
 	}
-	
+
 	private void drawHexes(Game game, Board board)
 	{
 		for (Hex hex : board.getHexes())
@@ -327,7 +336,7 @@ public class MapController extends Controller implements IMapController,
 	public void update(Observable o, Object o1)
 	{
 		state = ModelFacade.getInstance().getState();
-		//System.out.println("MapController (Setup): " + state);
+		//System.out.println("MapController(state): " + state);
 		initFromModel();
 	}
 }

@@ -36,6 +36,8 @@ public class RegisterHandler extends ServerHandler implements HttpHandler
 
 				responseBody = "\"Success\"";
 				responseCode = 200;
+				// Clears out the game
+				exchange.getResponseHeaders().add("Set-cookie", "catan.game=;Path=/;Expires=Wed, 02 Mar 2011 00:00:00 GMT;");
 				PreGameCookie user = new PreGameCookie(response.getPlayerInfo()
 						.getId(), param.getUser(), param.getPassword());
 				String cookie = "catan.user=";

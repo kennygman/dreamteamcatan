@@ -282,4 +282,9 @@ public class ServerFacade
 		return gameInstance.listAI();
 	}
         
+	// ---------------------------------------------------------------------------------
+	public static StandardResponse changeLogLevel(ChangeLogLevelParam param)
+	{
+		return null;
+	}
 }

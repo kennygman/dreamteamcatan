@@ -8,9 +8,10 @@ package server.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
+
 import server.facade.ServerFacade;
-import shared.parameters.BuildCityParam;
 import shared.response.GameModelResponse;
 import shared.response.LoginResponse;
 
@@ -24,11 +25,12 @@ public class GameModelHandler extends ServerHandler implements HttpHandler
 	@Override
 	public void handle(HttpExchange exchange) throws IOException
 	{
+		Gson g = new Gson();
+		String responseBody = "";
+		int responseCode = 400;
+
 		try
 		{
-			Gson g = new Gson();
-			String responseBody = "";
-			int responseCode = 400;
 
 			String cookie = exchange.getRequestHeaders().getFirst("Cookie");
 			LoginResponse login = getLoginFromCookie(cookie);
@@ -50,19 +52,19 @@ public class GameModelHandler extends ServerHandler implements HttpHandler
 					responseBody = "\"Failure\"";
 				}
 			}
+		} catch (com.google.gson.JsonSyntaxException e1)
+		{
+			 responseBody = "\"Error: invalid json format\"";
+			 //e1.printStackTrace();
+		} catch (Exception e)
+		{
+			//e.printStackTrace();
+		} finally {
 			exchange.getResponseHeaders().add("Content-Type",
 					"application/json");
 			exchange.sendResponseHeaders(responseCode, 0);
-			System.out.println(exchange.getRequestMethod() + " "
-					+ exchange.getRequestURI() + " "
-					+ exchange.getResponseCode());
-
 			write(exchange.getResponseBody(), responseBody);
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		} finally {
-			exchange.close();
+
 		}
 	}
 

@@ -3,12 +3,11 @@ package server.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.URLDecoder;
+
 import server.facade.ServerFacade;
 import shared.response.ListAIResponse;
-import shared.response.ListGamesResponse;
 import shared.response.LoginResponse;
 
 /**
@@ -22,34 +21,45 @@ public class ListAIHandler extends ServerHandler implements HttpHandler
 	public void handle(HttpExchange exchange) throws IOException
 	{
 		Gson g = new Gson();
-		String responseBody;
+		String responseBody = "";
 		int responseCode = 400;
 
-		String cookie = exchange.getRequestHeaders().getFirst("Cookie");
-		LoginResponse login = getLoginFromCookie(cookie);
-
-		if (!login.isValid())
+		try
 		{
-			responseBody = "\"Error: bad cookie\"";
-		} else
-		{
-			// int gameId = getGameIdFromCookie(cookie);
-			ListAIResponse response = ServerFacade.listAi();
+			String cookie = exchange.getRequestHeaders().getFirst("Cookie");
+			LoginResponse login = getLoginFromCookie(cookie);
 
-			if (response.isValid())
+			if (!login.isValid())
 			{
-				responseBody = g.toJson(response.getAiTypes());
-				responseCode = 200;
+				responseBody = "\"Error: bad cookie\"";
 			} else
 			{
-				responseBody = "\"Failure\"";
+				// int gameId = getGameIdFromCookie(cookie);
+				ListAIResponse response = ServerFacade.listAi();
+
+				if (response.isValid())
+				{
+					responseBody = g.toJson(response.getAiTypes());
+					responseCode = 200;
+				} else
+				{
+					responseBody = "\"Failure\"";
+				}
 			}
+		} catch (com.google.gson.JsonSyntaxException e1)
+		{
+			responseBody = "\"Error: invalid json format\"";
+			// e1.printStackTrace();
+		} catch (Exception e)
+		{
+			//e.printStackTrace();
+		} finally
+		{
+			exchange.getResponseHeaders().add("Content-Type",
+					"application/json");
+			exchange.sendResponseHeaders(responseCode, 0);
+			write(exchange.getResponseBody(), responseBody);
+
 		}
-		System.out.println("ListAIHandler Response: " + responseBody);
-		exchange.getResponseHeaders().add("Content-Type", "application/json");
-		exchange.sendResponseHeaders(responseCode, 0);
-
-		write(exchange.getResponseBody(), responseBody);
 	}
-
 }

@@ -52,10 +52,15 @@ public class UserManager
 	public User getUser(CredentialsParam param)
 	{
 		User user = null;
-		if (param.getUser() != null && param.getPassword() != null && users.containsKey(param.getUser()))
+		if (param.getUser() != null && param.getPassword() != null)
 		{
-			User query = users.get(param.getUser());
-			if (query.getPassword().equals(param.getPassword())) user = query;
+			try {
+				if (users.containsKey(param.getUser()))
+				{
+					User query = users.get(param.getUser());
+					if (query.getPassword().equals(param.getPassword())) user = query;
+				}
+			} catch (Exception e) { e.printStackTrace(); }
 		}
 		return user;
 	}

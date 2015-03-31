@@ -33,35 +33,35 @@ public class CommandsHandler extends ServerHandler implements HttpHandler
 		String responseBody = "";
 		int responseCode = 400;
 
-		String requestType = exchange.getRequestMethod();
-		String cookie = exchange.getRequestHeaders().getFirst("Cookie");
-		LoginResponse login = getLoginFromCookie(cookie);
-
-		if (!login.isValid())
+		try
 		{
-			responseBody = "\"Error: bad cookie\"";
-		} else
-		{
-			int gameId = getGameIdFromCookie(cookie);
-			if (requestType.equals("GET"))
+
+			String requestType = exchange.getRequestMethod();
+			String cookie = exchange.getRequestHeaders().getFirst("Cookie");
+			LoginResponse login = getLoginFromCookie(cookie);
+
+			if (!login.isValid())
 			{
-				CommandResponse response = ServerFacade.getCommands(gameId);
-
-				if (response.isValid())
-				{
-					responseBody = g.toJson(response.getCommands());
-					responseCode = 200;
-				} else
-				{
-					responseBody = "\"Failure\"";
-				}
-
-			} else if (requestType.equals("POST"))
+				responseBody = "\"Error: bad cookie\"";
+			} else
 			{
-				String input = read(exchange.getRequestBody());
-
-				try
+				int gameId = getGameIdFromCookie(cookie);
+				if (requestType.equals("GET"))
 				{
+					CommandResponse response = ServerFacade.getCommands(gameId);
+
+					if (response.isValid())
+					{
+						responseBody = g.toJson(response.getCommands());
+						responseCode = 200;
+					} else
+					{
+						responseBody = "\"Failure\"";
+					}
+
+				} else if (requestType.equals("POST"))
+				{
+					String input = read(exchange.getRequestBody());
 
 					JsonParser jsonParser = new JsonParser();
 					JsonArray jsonArr = (JsonArray) jsonParser.parse(input);
@@ -74,13 +74,14 @@ public class CommandsHandler extends ServerHandler implements HttpHandler
 					{
 						ICommand cmd = CommandFactory.buildCommand(
 								jo.get("type").getAsString(), jo);
-						if (cmd == null) throw new Exception("BAD COMMAND");
+						if (cmd == null)
+							throw new Exception("BAD COMMAND");
 						commands.add(cmd);
 					}
 
 					CommandsParam param = new CommandsParam(commands);
-					GameModelResponse response = ServerFacade.commands(
-							param, gameId);
+					GameModelResponse response = ServerFacade.commands(param,
+							gameId);
 
 					if (response.isValid())
 					{
@@ -90,15 +91,23 @@ public class CommandsHandler extends ServerHandler implements HttpHandler
 					{
 						responseBody = "\"Failure\"";
 					}
-
-				} catch (Exception e){e.printStackTrace();}
+				}
 			}
-				
-		}
+		} catch (com.google.gson.JsonSyntaxException e1)
+		{
+			responseBody = "\"Error: invalid json format\"";
+			// e1.printStackTrace();
+		} catch (Exception e)
+		{
+			//e.printStackTrace();
+		} finally
+		{
+			exchange.getResponseHeaders().add("Content-Type",
+					"application/json");
+			exchange.sendResponseHeaders(responseCode, 0);
+			write(exchange.getResponseBody(), responseBody);
 
-		exchange.getResponseHeaders().add("Content-Type", "application/json");
-		exchange.sendResponseHeaders(responseCode, 0);
-		write(exchange.getResponseBody(), responseBody);
+		}
 	}
 
 }

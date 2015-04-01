@@ -4,11 +4,12 @@ import model.Game;
 import model.TurnTracker;
 import model.player.Player;
 import shared.parameters.DiscardCardsParam;
+import shared.parameters.ICommandParam;
 
 public class DiscardCards implements ICommand
 {
 	private DiscardCardsParam param;
-	private Game game;
+	private transient Game game;
 
 	public DiscardCards(DiscardCardsParam param, Game game)
 	{
@@ -38,5 +39,11 @@ public class DiscardCards implements ICommand
 
 		game.addLogEntry(player.getName(), player.getName() + " has discarded");
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

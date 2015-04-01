@@ -10,6 +10,8 @@ import model.player.Player;
 import server.GameManager;
 import server.User;
 import server.UserManager;
+import server.commands.ICommand;
+import server.commands.SendChat;
 import shared.Translator;
 import shared.definitions.CatanColor;
 import shared.locations.HexLocation;
@@ -17,6 +19,8 @@ import shared.locations.VertexDirection;
 import shared.locations.VertexLocation;
 import shared.parameters.AddAiParam;
 import shared.parameters.CommandsParam;
+import shared.parameters.ICommandParam;
+import shared.parameters.SendChatParam;
 import shared.response.CommandResponse;
 import shared.response.GameListObject;
 import shared.response.GameModelResponse;
@@ -145,8 +149,7 @@ public class MockGameFacade implements IGameFacade
 	@Override
 	public CommandResponse getCommands(int id)
 	{
-		String commands = "whateverIwantCommand";
-		
+		ICommandParam[] commands = {new SendChatParam(0, "blah")};
 		CommandResponse response = new CommandResponse(commands,true);
 		
 		return response;

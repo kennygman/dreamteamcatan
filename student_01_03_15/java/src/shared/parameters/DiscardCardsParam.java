@@ -2,7 +2,7 @@ package shared.parameters;
 
 import model.player.Resources;
 
-public class DiscardCardsParam 
+public class DiscardCardsParam implements ICommandParam 
 {
 	private int playerIndex;
 	private Resources discardedCards;

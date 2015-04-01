@@ -2,7 +2,7 @@ package shared.parameters;
 
 import shared.locations.HexLocation;
 
-public class PlaySoldierParam {
+public class PlaySoldierParam implements ICommandParam {
 	private int playerIndex;
 	private int victimIndex;
 	private HexLocation location;

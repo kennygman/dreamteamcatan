@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class PlayMonumentParam {
+public class PlayMonumentParam implements ICommandParam {
 	private int playerIndex;
 	private String type = "Monument";
 

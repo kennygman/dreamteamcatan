@@ -5,14 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import server.commands.ICommand;
+import shared.parameters.ICommandParam;
 import model.Game;
 
 public class GameManager
 {
 	private List<Game> games;
-	private Map<Integer, List<ICommand>> commands;
-
+	private Map<Integer, List<ICommandParam>> commands;
 	public GameManager()
 	{
 		games = new ArrayList<>();
@@ -74,12 +73,13 @@ public class GameManager
 	 * @param command
 	 *            the command
 	 */
-	public void addCommand(int id, ICommand command)
+	
+	public void addCommand(int id, ICommandParam param)
 	{
-		List<ICommand> list = commands.get(id);
+		List<ICommandParam> list = commands.get(id);
 		if (list == null)
-			list = new ArrayList<ICommand>();
-		list.add(command);
+			list = new ArrayList<ICommandParam>();
+		list.add(param);
 		commands.put(id, list);
 	}
 
@@ -90,7 +90,7 @@ public class GameManager
 	 *            the game's id
 	 * @return the list
 	 */
-	public List<ICommand> getCommands(int id)
+	public List<ICommandParam> getCommands(int id)
 	{
 		return commands.get(id);
 	}

@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class PlayMonopolyParam {
+public class PlayMonopolyParam implements ICommandParam {
 	private int playerIndex;
 	private String resource;
 	private String type = "Monopoly";

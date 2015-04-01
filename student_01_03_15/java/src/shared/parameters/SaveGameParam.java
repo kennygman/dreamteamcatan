@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class SaveGameParam {
+public class SaveGameParam implements ICommandParam {
 	private int id;
 	private String name;
 	

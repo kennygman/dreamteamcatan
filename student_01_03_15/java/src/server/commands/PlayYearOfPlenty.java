@@ -4,12 +4,13 @@ import model.Game;
 import model.player.Player;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
+import shared.parameters.ICommandParam;
 import shared.parameters.PlayYearOfPlentyParam;
 
 public class PlayYearOfPlenty implements ICommand
 {
 	private PlayYearOfPlentyParam param;
-	private Game game;
+	private transient Game game;
 	
 	public PlayYearOfPlenty(PlayYearOfPlentyParam param, Game game)
 {
@@ -37,5 +38,11 @@ public class PlayYearOfPlenty implements ICommand
 
 		game.addLogEntry(player.getName(), player.getName() + " gained two resources from year of plenty");
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

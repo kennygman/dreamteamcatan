@@ -4,7 +4,7 @@ import java.util.List;
 
 import server.commands.ICommand;
 
-public class CommandsParam
+public class CommandsParam implements ICommandParam 
 {
 	private List<ICommand> commands;
 

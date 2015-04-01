@@ -2,7 +2,7 @@ package shared.parameters;
 
 import shared.locations.VertexLocation;
 
-public class BuildCityParam {
+public class BuildCityParam implements ICommandParam {
 	private int playerIndex;
 	private VertexLocation vertexLocation;
 	private String type = "buildCity";

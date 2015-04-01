@@ -58,6 +58,7 @@ public class ResetHandler extends ServerHandler implements HttpHandler
 			// e1.printStackTrace();
 		} catch (Exception e)
 		{
+			responseBody = "\"The HTTP cookie is missing.  You must login and join a game before calling this method.\"";
 			//e.printStackTrace();
 		} finally
 		{

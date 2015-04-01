@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class ChangeLogLevelParam 
+public class ChangeLogLevelParam implements ICommandParam 
 {
 	private String logLevel;
 	

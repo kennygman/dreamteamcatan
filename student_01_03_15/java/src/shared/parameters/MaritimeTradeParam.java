@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class MaritimeTradeParam 
+public class MaritimeTradeParam implements ICommandParam 
 {
 	private int playerIndex;
 	private int ratio;

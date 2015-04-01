@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class AcceptTradeParam {
+public class AcceptTradeParam implements ICommandParam {
 	private int playerIndex;
 	private boolean willAccept;
 	private String type = "acceptTrade";

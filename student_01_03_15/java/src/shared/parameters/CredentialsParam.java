@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class CredentialsParam {
+public class CredentialsParam implements ICommandParam {
 	private String username;
 	private String password;
 	

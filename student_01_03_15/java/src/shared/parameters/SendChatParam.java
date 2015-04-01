@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class SendChatParam 
+public class SendChatParam implements ICommandParam 
 {
 	private String content;
 	private int playerIndex;

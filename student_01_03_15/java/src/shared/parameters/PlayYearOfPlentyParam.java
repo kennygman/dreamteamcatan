@@ -1,9 +1,6 @@
 package shared.parameters;
 
-import shared.definitions.ResourceType;
-
-
-public class PlayYearOfPlentyParam {
+public class PlayYearOfPlentyParam implements ICommandParam {
 	private int playerIndex;
 	private String resource1;
 	private String resource2;

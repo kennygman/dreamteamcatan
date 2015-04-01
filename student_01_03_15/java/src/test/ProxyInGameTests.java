@@ -91,7 +91,7 @@ public class ProxyInGameTests
 	{
 		CommandResponse r1 = proxy.getGameCommands();
 		assertEquals(true, r1.isValid());
-		test_postGameCommands(r1.getCommands());
+		//test_postGameCommands(r1.getCommands());
 	}
 
 

@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class LoadGameParam 
+public class LoadGameParam implements ICommandParam 
 {
 	private String name;
 	

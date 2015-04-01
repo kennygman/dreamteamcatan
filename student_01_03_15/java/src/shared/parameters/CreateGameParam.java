@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class CreateGameParam {
+public class CreateGameParam implements ICommandParam {
 	private boolean randomTiles;
 	private boolean randomNumbers;
 	private boolean randomPorts;

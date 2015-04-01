@@ -30,7 +30,7 @@ public class CommandsHandler extends ServerHandler implements HttpHandler
 	public void handle(HttpExchange exchange) throws IOException
 	{
 		Gson g = new Gson();
-		String responseBody = "";
+		String responseBody = "[]";
 		int responseCode = 400;
 
 		try
@@ -52,7 +52,10 @@ public class CommandsHandler extends ServerHandler implements HttpHandler
 
 					if (response.isValid())
 					{
-						responseBody = g.toJson(response.getCommands());
+						if (response.getCommands()!=null)
+						{
+							responseBody = g.toJson(response.getCommands());
+						}
 						responseCode = 200;
 					} else
 					{

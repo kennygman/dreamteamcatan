@@ -37,7 +37,7 @@ public class GameModelHandler extends ServerHandler implements HttpHandler
 
 			if (!login.isValid())
 			{
-				responseBody = "\"Error: bad cookie\"";
+				responseBody = "\"The catan.user HTTP cookie is missing.  You must login before calling this method.\"";
 			} else
 			{
 				int gameId = getGameIdFromCookie(cookie);
@@ -58,6 +58,7 @@ public class GameModelHandler extends ServerHandler implements HttpHandler
 			 //e1.printStackTrace();
 		} catch (Exception e)
 		{
+			responseBody = "\"The HTTP cookie is missing.  You must login and join a game before calling this method.\"";
 			//e.printStackTrace();
 		} finally {
 			exchange.getResponseHeaders().add("Content-Type",

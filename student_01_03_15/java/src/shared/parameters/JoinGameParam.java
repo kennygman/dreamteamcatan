@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class JoinGameParam {
+public class JoinGameParam implements ICommandParam {
 	private int id;
 	private String color;
 	

@@ -2,7 +2,7 @@ package shared.parameters;
 
 import shared.locations.VertexLocation;
 
-public class BuildSettlementParam {
+public class BuildSettlementParam implements ICommandParam {
 	private int playerIndex;
 	private VertexLocation vertexLocation;
 	private boolean free;

@@ -5,11 +5,12 @@ import model.board.City;
 import model.player.Player;
 import shared.definitions.ResourceType;
 import shared.parameters.BuildCityParam;
+import shared.parameters.ICommandParam;
 
 public class BuildCity implements ICommand
 {
 	private BuildCityParam param;
-	private Game game;
+	private transient Game game;
 	
 	public BuildCity(BuildCityParam param, Game game)
 	{
@@ -41,5 +42,11 @@ public class BuildCity implements ICommand
 
 		game.addLogEntry(player.getName(), player.getName() + " built a City");
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

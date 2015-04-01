@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class PostCommandsParam {
+public class PostCommandsParam implements ICommandParam {
 	// For testing
 	private String commands;
 	

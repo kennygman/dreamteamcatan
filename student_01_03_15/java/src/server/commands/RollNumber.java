@@ -3,12 +3,13 @@ package server.commands;
 import model.Game;
 import model.TurnTracker;
 import model.player.Player;
+import shared.parameters.ICommandParam;
 import shared.parameters.RollNumParam;
 
 public class RollNumber implements ICommand
 {
 	private RollNumParam param;
-	private Game game;
+	private transient Game game;
 
 	public RollNumber(RollNumParam param, Game game)
 	{
@@ -50,5 +51,11 @@ public class RollNumber implements ICommand
 		game.addLogEntry(player.getName(), player.getName() + " rolled a "
 				+ param.getNumber());
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

@@ -301,7 +301,8 @@ public class Proxy implements IProxy
 	@Override
 	public CommandResponse getGameCommands() 
 	{
-		return translator.translateCommands(doGet("/game/commands"));
+		//return translator.translateCommands(doGet("/game/commands"));
+		return null;
 	}
 
 	@Override

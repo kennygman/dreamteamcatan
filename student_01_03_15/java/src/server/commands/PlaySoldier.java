@@ -4,12 +4,13 @@ import model.Game;
 import model.player.Player;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
+import shared.parameters.ICommandParam;
 import shared.parameters.PlaySoldierParam;
 
 public class PlaySoldier implements ICommand
 {
 	private PlaySoldierParam param;
-	private Game game;
+	private transient Game game;
 
 	public PlaySoldier(PlaySoldierParam param, Game game)
 	{
@@ -71,5 +72,11 @@ public class PlaySoldier implements ICommand
 	{
 		return index >= 0 && index <= 3 && index != param.getPlayerIndex();
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

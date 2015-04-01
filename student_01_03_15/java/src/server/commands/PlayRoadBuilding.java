@@ -4,12 +4,13 @@ import model.Game;
 import model.board.Road;
 import model.player.Player;
 import shared.definitions.DevCardType;
+import shared.parameters.ICommandParam;
 import shared.parameters.PlayRoadBuildingParam;
 
 public class PlayRoadBuilding implements ICommand
 {
 	private PlayRoadBuildingParam param;
-	private Game game;
+	private transient Game game;
 	
 	public PlayRoadBuilding(PlayRoadBuildingParam param, Game game)
 	{
@@ -48,4 +49,10 @@ public class PlayRoadBuilding implements ICommand
 		int playerRoads = game.getPlayer(param.getPlayerIndex()).getRoads();
 		return playerRoads > longestRoad;
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 }

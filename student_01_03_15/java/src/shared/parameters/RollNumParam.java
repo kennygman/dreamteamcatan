@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class RollNumParam {
+public class RollNumParam implements ICommandParam {
 	private int playerIndex;
 	private int number;
 	private String type = "rollNumber";

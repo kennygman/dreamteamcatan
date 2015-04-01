@@ -5,11 +5,12 @@ import model.board.Road;
 import model.player.Player;
 import shared.definitions.ResourceType;
 import shared.parameters.BuildRoadParam;
+import shared.parameters.ICommandParam;
 
 public class BuildRoad implements ICommand
 {
 	private BuildRoadParam param;
-	private Game game;
+	private transient Game game;
 
 	public BuildRoad(){}
 	public BuildRoad(BuildRoadParam param, Game game)
@@ -56,4 +57,11 @@ public class BuildRoad implements ICommand
 		}
 		return playerRoads > longestRoad;
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
+
 }

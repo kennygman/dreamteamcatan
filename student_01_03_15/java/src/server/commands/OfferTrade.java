@@ -4,12 +4,13 @@ import model.Game;
 import model.TradeOffer;
 import model.TurnTracker;
 import model.player.Player;
+import shared.parameters.ICommandParam;
 import shared.parameters.OfferTradeParam;
 
 public class OfferTrade implements ICommand
 {
 	private OfferTradeParam param;
-	private Game game;
+	private transient Game game;
 	
 	public OfferTrade(OfferTradeParam param, Game game)
 	{
@@ -36,5 +37,11 @@ public class OfferTrade implements ICommand
 		game.increment();
 		game.addLogEntry(player.getName(), player.getName() + " has made a trade offer");
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

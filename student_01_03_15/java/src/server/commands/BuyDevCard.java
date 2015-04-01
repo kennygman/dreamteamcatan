@@ -5,11 +5,12 @@ import model.player.Player;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.parameters.BuyDevCardParam;
+import shared.parameters.ICommandParam;
 
 public class BuyDevCard implements ICommand
 {
 	private BuyDevCardParam param;
-	private Game game;
+	private transient Game game;
 	
 	public BuyDevCard(BuyDevCardParam param, Game game)
 	{
@@ -45,5 +46,11 @@ public class BuyDevCard implements ICommand
 		game.addLogEntry(player.getName(), player.getName() + " bought a development card");
 
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

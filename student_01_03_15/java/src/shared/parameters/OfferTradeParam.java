@@ -2,7 +2,7 @@ package shared.parameters;
 
 import model.player.Resources;
 
-public class OfferTradeParam 
+public class OfferTradeParam implements ICommandParam 
 {
 	private int playerIndex;
 	private int receiver;

@@ -2,7 +2,7 @@ package shared.parameters;
 
 import shared.locations.EdgeLocation;
 
-public class PlayRoadBuildingParam {
+public class PlayRoadBuildingParam implements ICommandParam {
 	private int playerIndex;
 	private EdgeLocation spot1;
 	private EdgeLocation spot2;

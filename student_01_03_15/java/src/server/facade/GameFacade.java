@@ -12,6 +12,7 @@ import server.commands.ICommand;
 import shared.definitions.CatanColor;
 import shared.parameters.AddAiParam;
 import shared.parameters.CommandsParam;
+import shared.parameters.ICommandParam;
 import shared.response.*;
 
 public class GameFacade implements IGameFacade
@@ -41,14 +42,9 @@ public class GameFacade implements IGameFacade
 	@Override
 	public CommandResponse getCommands(int id)
 	{
-			
-		String commands = convertToString(games.getCommands(id));
-		
-		CommandResponse response = new CommandResponse(commands,true);
-		
-		response.setLists(games.getCommands(id));
-		
-		return response;
+		ICommandParam[] commands = games.getCommands(id).toArray(new ICommandParam[0]);
+		//ICommand[] commands = games.getCommands(id).toArray(new ICommand[0]);
+		return new CommandResponse(commands,true);
 	}
 
 	@Override
@@ -62,6 +58,7 @@ public class GameFacade implements IGameFacade
 			for (ICommand cmd : param.getCommands())
 			{
 				cmd.execute();
+				games.addCommand(id, cmd.getParam());
 			}
 			response.setValid(true);
 			response.setGame(game);

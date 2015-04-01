@@ -6,11 +6,12 @@ import model.board.Settlement;
 import model.player.Player;
 import shared.definitions.ResourceType;
 import shared.parameters.BuildSettlementParam;
+import shared.parameters.ICommandParam;
 
 public class BuildSettlement implements ICommand
 {
 	private BuildSettlementParam param;
-	private Game game;
+	private transient Game game;
 	
 	public BuildSettlement(){}
 	public BuildSettlement(BuildSettlementParam param, Game game)
@@ -53,5 +54,11 @@ public class BuildSettlement implements ICommand
 
 		game.addLogEntry(player.getName(), player.getName() + " built a Settlement");
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

@@ -1,5 +1,6 @@
 package server.commands;
 
+import shared.parameters.ICommandParam;
 import shared.parameters.SendChatParam;
 import model.Game;
 import model.Lines;
@@ -7,7 +8,7 @@ import model.Lines;
 public class SendChat implements ICommand
 {
 	private SendChatParam param;
-	private Game game;
+	private transient Game game;
 
 	public SendChat(SendChatParam param, Game game)
 	{
@@ -28,5 +29,11 @@ public class SendChat implements ICommand
 		game.getChat().addLine(line);
 		game.increment();
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

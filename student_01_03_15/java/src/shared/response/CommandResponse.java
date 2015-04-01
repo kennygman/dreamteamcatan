@@ -1,39 +1,24 @@
 package shared.response;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import server.commands.ICommand;
+import shared.parameters.ICommandParam;
 
 public class CommandResponse 
 {
 	private boolean isValid;
-	private String commands;
-	private List<ICommand> lists;
-	
-	public CommandResponse(String a, boolean b)
+	private ICommandParam[] commands;
+	public CommandResponse(ICommandParam[] commands, boolean isValid)
 	{
-		commands = a;
-		isValid = b;
+		super();
+		this.isValid = isValid;
+		this.commands = commands;
 	}
-	
 	public boolean isValid()
 	{
 		return isValid;
 	}
-	
-	public String getCommands()
+	public ICommandParam[] getCommands()
 	{
 		return commands;
 	}
 
-	public List<ICommand> getLists() 
-	{
-		return lists;
-	}
-
-	public void setLists(List<ICommand> lists)
-	{
-		this.lists = lists;
-	}
 }

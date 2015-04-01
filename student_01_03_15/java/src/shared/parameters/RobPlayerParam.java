@@ -2,7 +2,7 @@ package shared.parameters;
 
 import shared.locations.HexLocation;
 
-public class RobPlayerParam {
+public class RobPlayerParam implements ICommandParam {
 	private int playerIndex;
 	private int victimIndex;
 	private HexLocation location;

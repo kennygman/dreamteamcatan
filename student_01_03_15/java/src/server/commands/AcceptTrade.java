@@ -5,12 +5,13 @@ import model.TurnTracker;
 import model.player.Player;
 import model.player.Resources;
 import shared.parameters.AcceptTradeParam;
+import shared.parameters.ICommandParam;
 
 public class AcceptTrade implements ICommand
 {
 
 	private AcceptTradeParam param;
-	private Game game;
+	private transient Game game;
 	
 	public AcceptTrade(AcceptTradeParam param, Game game)
 	{
@@ -47,5 +48,11 @@ public class AcceptTrade implements ICommand
 		game.increment();
 
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

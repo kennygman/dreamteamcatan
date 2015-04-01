@@ -4,12 +4,13 @@ import model.Game;
 import model.player.Player;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
+import shared.parameters.ICommandParam;
 import shared.parameters.PlayMonopolyParam;
 
 public class PlayMonopoly implements ICommand
 {
 	private PlayMonopolyParam param;
-	private Game game;
+	private transient Game game;
 	
 	public PlayMonopoly(PlayMonopolyParam param, Game game)
 	{
@@ -39,5 +40,11 @@ public class PlayMonopoly implements ICommand
 
 		game.addLogEntry(player.getName(), player.getName() + " played a monopoly card");
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

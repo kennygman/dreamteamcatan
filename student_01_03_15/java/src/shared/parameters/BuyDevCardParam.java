@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class BuyDevCardParam {
+public class BuyDevCardParam implements ICommandParam {
 	private int playerIndex;
 	private String type = "buyDevCard";
 	

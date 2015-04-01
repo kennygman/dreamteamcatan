@@ -97,7 +97,7 @@ public class Translator
 		return translation;
 	}
 
-	public CommandResponse translateCommands(String input)
+/*	public CommandResponse translateCommands(String input)
 	{
 
 		boolean valid = true;
@@ -110,7 +110,7 @@ public class Translator
 
 		return translation;
 	}
-
+*/
 	public ListGamesResponse translateListGames(String input)
 	{
 		boolean valid = true;

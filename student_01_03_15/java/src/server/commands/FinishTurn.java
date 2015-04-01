@@ -1,14 +1,14 @@
 package server.commands;
 
 import model.Game;
-import model.TurnTracker;
 import model.player.Player;
 import shared.parameters.FinishTurnParam;
+import shared.parameters.ICommandParam;
 
 public class FinishTurn implements ICommand
 {
 	private FinishTurnParam param;
-	private Game game;
+	private transient Game game;
 	
 	public FinishTurn(){}
 	public FinishTurn(FinishTurnParam param, Game game)
@@ -33,6 +33,11 @@ public class FinishTurn implements ICommand
 		game.increment();
 		
 		game.addLogEntry(player.getName(), player.getName() + "'s turn just ended");
+	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
 	}
 
 }

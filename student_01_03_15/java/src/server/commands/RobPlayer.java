@@ -4,12 +4,13 @@ import model.Game;
 import model.TurnTracker;
 import model.player.Player;
 import shared.definitions.ResourceType;
+import shared.parameters.ICommandParam;
 import shared.parameters.RobPlayerParam;
 
 public class RobPlayer implements ICommand
 {
 	private RobPlayerParam param;
-	private Game game;
+	private transient Game game;
 	
 	public RobPlayer(RobPlayerParam param, Game game)
 	{
@@ -40,5 +41,11 @@ public class RobPlayer implements ICommand
 		game.addLogEntry(player.getName(), player.getName()
 				+ " moved the robber and robbed " + victim.getName());
 	}
+	@Override
+	public ICommandParam getParam()
+	{
+		return param;
+	}
+
 
 }

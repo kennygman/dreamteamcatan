@@ -1,6 +1,6 @@
 package shared.parameters;
 
-public class FinishTurnParam {
+public class FinishTurnParam implements ICommandParam {
 	private int playerIndex;
 	private String type = "finishTurn";
 	

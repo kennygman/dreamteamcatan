@@ -36,14 +36,14 @@ public class ChangeLogLevelHandler extends ServerHandler implements HttpHandler
 			ChangeLogLevelParam param = g.fromJson(input,
 					ChangeLogLevelParam.class);
 			StandardResponse response = ServerFacade.changeLogLevel(param);
-
 			if (response.isValid())
 			{
 				responseBody = "\"Success\"";
 				responseCode = 200;
 			} else
 			{
-				responseBody = "\"Failure\"";
+				responseBody = "\"Invalid log level: " + param.getLogLevel()
+						+ "\"";
 			}
 
 		} catch (com.google.gson.JsonSyntaxException e1)
@@ -52,7 +52,7 @@ public class ChangeLogLevelHandler extends ServerHandler implements HttpHandler
 			// e1.printStackTrace();
 		} catch (Exception e)
 		{
-			//e.printStackTrace();
+			// e.printStackTrace();
 		} finally
 		{
 			exchange.getResponseHeaders().add("Content-Type",

@@ -8,12 +8,11 @@ public class main
 		{
 		 //"test.ProxyRegisterTests","test.ProxyLoginTests"
 		 //,"test.ProxyGameStartTests","test.ProxyInGameTests",
-		 //"test.ModelFacadeUnitTest",
-		 //"test.PollerUnitTests",
-		 //"test.UserFacadeTests"};
-		//"test.MovesFacadeTests" };
-		//org.junit.runner.JUnitCore.main(testClasses);
-		};
+		 "test.ModelFacadeUnitTest",
+		 "test.PollerUnitTests",
+		 "test.UserFacadeTests",
+		"test.MovesFacadeTests" };
+		org.junit.runner.JUnitCore.main(testClasses);
 		
 	}
 }

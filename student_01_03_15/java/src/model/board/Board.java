@@ -341,6 +341,7 @@ public class Board
 	{
 		EdgeLocation edge = road.getEdgeLocation().getNormalizedLocation();
 		roadLocation.put(edge, road);
+		System.out.println("SetRoad(edge): " + edge);
 		List<Road> roadList = new ArrayList<>();
 		for (Road r : roads)
 			roadList.add(r);
@@ -497,10 +498,12 @@ public class Board
 		List<EdgeLocation> edgeLoc = location.getAdjacentEdges();
 		for (EdgeLocation edge : edgeLoc)
 		{
-			if (roadLocation.containsKey(edge)
-					&& (roadLocation.get(edge).getOwner() == playerIndex))
+			if (roadLocation.containsKey(edge))
 			{
-				return true;
+				if ( roadLocation.get(edge).getOwner() == playerIndex)
+				{
+					return true;
+				}
 			}
 		}
 		return false;

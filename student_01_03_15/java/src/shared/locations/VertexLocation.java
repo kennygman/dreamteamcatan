@@ -125,13 +125,13 @@ public class VertexLocation
             {
                 edges.add(new EdgeLocation(hex, EdgeDirection.North));
                 edges.add(new EdgeLocation(hex, EdgeDirection.NorthWest));
-                edges.add(new EdgeLocation(new HexLocation(hex.getX() - 1, hex.getY()), EdgeDirection.NorthEast));
+                edges.add(new EdgeLocation(hex.getNeighborLoc(EdgeDirection.NorthWest), EdgeDirection.NorthWest));
             }
             else if (dir.equals(NorthEast))
             {
                 edges.add(new EdgeLocation(hex, EdgeDirection.North));
                 edges.add(new EdgeLocation(hex, EdgeDirection.NorthEast));
-                edges.add(new EdgeLocation(new HexLocation(hex.getX() + 1, hex.getY() - 1), EdgeDirection.NorthWest));
+                edges.add(new EdgeLocation(hex.getNeighborLoc(EdgeDirection.NorthEast), EdgeDirection.NorthEast));
             }
             else
             {

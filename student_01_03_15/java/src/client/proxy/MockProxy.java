@@ -409,6 +409,8 @@ public class MockProxy implements IProxy
 
 		currentPlayer.getResources().useResource(ResourceType.BRICK, 1);
 		currentPlayer.getResources().useResource(ResourceType.WOOD, 1);
+		
+		fakeGame.getBoard().setRoad(new Road(input.getPlayerIndex(), input.getRoadLocation()));
 
 		fakeGame.getPlayers()[0] = currentPlayer;
 		result.setGame(fakeGame);
@@ -429,6 +431,8 @@ public class MockProxy implements IProxy
 		currentPlayer.getResources().useResource(ResourceType.SHEEP, 1);
 		currentPlayer.getResources().useResource(ResourceType.BRICK, 1);
 		currentPlayer.getResources().useResource(ResourceType.WOOD, 1);
+
+		fakeGame.getBoard().setSettlement(new Settlement(input.getPlayerIndex(), input.getLocation()));
 
 		fakeGame.getPlayers()[0] = currentPlayer;
 		result.setGame(fakeGame);

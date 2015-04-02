@@ -67,6 +67,20 @@ public class Player
 		oldDevCards = new Developments();
 		newDevCards = new Developments();
 	}
+	public void gameReset()
+	{
+		discarded = false;
+		playedDevCard = false;
+		monuments = 0;
+		victoryPoints = 0;
+		soldiers = 0;
+		roads = 15;
+		settlements = 5;
+		cities = 4;
+		resources = new Resources();
+		oldDevCards = new Developments();
+		newDevCards = new Developments();
+	}
 
 	/**
 	 * Updates the current player by using the passed in player

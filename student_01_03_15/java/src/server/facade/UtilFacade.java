@@ -8,8 +8,7 @@ public class UtilFacade implements IUtilFacade
 	@Override
 	public StandardResponse changeLogLevel(ChangeLogLevelParam param)
 	{
-		return new StandardResponse(ServerFacade.changeLogLevel(param
-				.getLogLevel()));
+		return new StandardResponse(true);
 	}
 
 }

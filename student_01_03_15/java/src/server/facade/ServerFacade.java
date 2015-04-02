@@ -14,6 +14,7 @@ public class ServerFacade
 	private static IPreGameFacade pregameInstance;
 	private static IGameFacade gameInstance;
 	private static IMovesFacade movesInstance;
+	private static UtilFacade utilInstance;
 
 	private static UserManager users;
 	private static GameManager games;
@@ -25,31 +26,32 @@ public class ServerFacade
 		games = new GameManager();
 		initDefault();
 	}
+
 	private static void initDefault()
 	{
 		Game game = new Game().initialize("Default", false, false, false);
-		
+
 		Player p1 = new Player();
 		p1.setName("Sam");
 		p1.setColor("red");
 		p1.setPlayerID(-1);
 		p1.setPlayerIndex(0);
 		game.addPlayer(p1);
-		
+
 		Player p2 = new Player();
 		p2.setName("Pete");
 		p2.setColor("blue");
 		p2.setPlayerID(-2);
 		p2.setPlayerIndex(1);
 		game.addPlayer(p2);
-		
+
 		Player p3 = new Player();
 		p3.setName("Sven");
 		p3.setColor("green");
 		p3.setPlayerID(-3);
 		p3.setPlayerIndex(2);
 		game.addPlayer(p3);
-		
+
 		Player p4 = new Player();
 		p4.setName("Kunkka");
 		p4.setColor("orange");
@@ -58,38 +60,37 @@ public class ServerFacade
 		game.addPlayer(p4);
 
 		games.addGame(game);
-		
+
 	}
+
 	// ---------------------------------------------------------------------------------
-	/*public static void createInstance()
-	{
-		init();
-		userInstance = new UserFacade(users);
-		pregameInstance = new PreGameFacade(games);
-		gameInstance = new GameFacade(games);
-		movesInstance = new MovesFacade(games);
-	}*/
+	/*
+	 * public static void createInstance() { init(); userInstance = new
+	 * UserFacade(users); pregameInstance = new PreGameFacade(games);
+	 * gameInstance = new GameFacade(games); movesInstance = new
+	 * MovesFacade(games); }
+	 */
 
 	// ---------------------------------------------------------------------------------
 	public static void createInstance(boolean testing)
 	{
 		init();
-		 if(testing)
-		 {
-			 userInstance = new MockUserFacade();
-			 pregameInstance =new MockPreGameFacade();
-			 gameInstance = new MockGameFacade();
-			 movesInstance = new MockMovesFacade();
-		 }
-		 else
+		if (testing)
+		{
+			userInstance = new MockUserFacade();
+			pregameInstance = new MockPreGameFacade();
+			gameInstance = new MockGameFacade();
+			movesInstance = new MockMovesFacade();
+		} else
 		{
 			userInstance = new UserFacade(users);
 			pregameInstance = new PreGameFacade(games);
-			gameInstance = new GameFacade(games,users);
+			gameInstance = new GameFacade(games, users);
 			movesInstance = new MovesFacade(games);
+			utilInstance = new UtilFacade();
 		}
 	}
-	
+
 	public static Game getGame(int id)
 	{
 		return games.getGame(id);
@@ -272,19 +273,24 @@ public class ServerFacade
 	{
 		return gameInstance.commands(param, id);
 	}
+
+	// ---------------------------------------------------------------------------------
 	public static StandardResponse addAI(AddAiParam param, int id)
 	{
-		return gameInstance.addAI(param,id);
+		return gameInstance.addAI(param, id);
 	}
+
 	// ---------------------------------------------------------------------------------
 	public static ListAIResponse listAi()
 	{
 		return gameInstance.listAI();
 	}
-        
+
 	// ---------------------------------------------------------------------------------
 	public static StandardResponse changeLogLevel(ChangeLogLevelParam param)
 	{
-		return null;
+		return utilInstance.changeLogLevel(param);
 	}
+
+	// ---------------------------------------------------------------------------------
 }

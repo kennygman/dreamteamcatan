@@ -286,6 +286,11 @@ public class DiscardController extends Controller implements
 	@Override
 	public void update(Observable o, Object arg)
 	{
+		if(this.getDiscardView().isModalShowing())
+		{
+			return;
+		}
+		
 		if (ModelFacade.getInstance().getState().equals("Discarding"))// .getStatus().equals("Discarding"))
 		{
 			initDiscardValues();

@@ -341,7 +341,6 @@ public class Board
 	{
 		EdgeLocation edge = road.getEdgeLocation().getNormalizedLocation();
 		roadLocation.put(edge, road);
-		System.out.println("SetRoad(edge): " + edge);
 		List<Road> roadList = new ArrayList<>();
 		for (Road r : roads)
 			roadList.add(r);

@@ -79,7 +79,7 @@ public class MapController extends Controller implements IMapController,
 			{
 			case "Robbing":
 			{
-				if (state.equals(TurnTracker.ROBBING))
+				if (state.equals(TurnTracker.ROBBING) && !this.getRobView().isModalShowing())
 				{
 					startMove(PieceType.ROBBER, true, false);
 				}

@@ -8,21 +8,44 @@ public class Database
 	private static final String DATABASE_FILE = "db.sqlite";
 	private static final String DATABASE_URL = "jdbc:sqlite:" + DATABASE_FILE;
 	
+	private static IUserDAO userDAO;
+	private static IGameDAO gameDAO;
+	private static ICommandsDAO commandsDAO;
+	
+	
 	static 
 	{
 		logger = Logger.getLogger("usermanager");
 	}
 
 
-	public static void initialize() throws DatabaseException 
+	public static void initialize(String chosenDriver) throws DatabaseException 
 	{
 		
 		logger.entering("server.database.Database", "initialize");
 
 		try 
 		{
-			final String driver = "org.sqlite.JDBC";
-			Class.forName(driver);
+			if(chosenDriver == "sqlite")
+			{
+				userDAO = new SqlUserDAO();
+				gameDAO = new SqlGameDAO();
+				commandsDAO = new SqlCommandsDAO();
+				
+				final String driver = "org.sqlite.JDBC"; // chosenDriver string from server Args parameters
+				Class.forName(driver);
+			}
+			else
+			{
+				userDAO = new MongoUserDAO();
+				gameDAO = new MongoGameDAO();
+				commandsDAO = new MongoCommandsDAO();
+				
+				final String driver = "org.sqlite.JDBC"; // chosenDriver string from server Args parameters mongo driver
+				Class.forName(driver);
+			}
+			
+			
 		}
 		catch(ClassNotFoundException e)
 		{	
@@ -36,7 +59,7 @@ public class Database
 		logger.exiting("server.database.Database", "initialize");
 	}
         
-        /*public static boolean setLogLevel(String level)
+        public static boolean setLogLevel(String level)
         {
             switch(level)
             {
@@ -52,5 +75,17 @@ public class Database
                 default:        return false;
             }
             return true;
-        }*/
+        }
+       public IUserDAO getUserDAO()
+       {
+    	   return userDAO;
+       }
+       public IGameDAO getGameDAO()
+       {
+    	   return gameDAO;
+       }
+       public ICommandsDAO getCommandsDAO()
+       {
+    	   return commandsDAO;
+       }
 }

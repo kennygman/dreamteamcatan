@@ -70,12 +70,14 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	//---------------------------------------------------------------------------------
 	public void updatePlayers()
 	{
+		System.out.println("Updating player status");
             Player[] players = ModelFacade.getInstance().getGame().getPlayers();
             TurnTracker tracker = ModelFacade.getInstance().getGame().getTurnTracker();
             for (Player p : players)
             {
                 if (p != null && p.getName() != null)
                 {
+                	System.out.println("Updating player:" + p.getName());
                     getView().updatePlayer(
                             p.getPlayerIndex(),
                             p.getVictoryPoints(),
@@ -88,10 +90,12 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 
             if (tracker.getStatus().equals(TurnTracker.PLAYING))
             {
+            	System.out.println("Status is playing");
                 getView().updateGameState(tracker.getStatus(), true);
             }
             else
             {
+            	System.out.println("Status is not playing");
                 getView().updateGameState(tracker.getStatus(), false);
             }
 	}
@@ -106,6 +110,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
+		System.out.println("Turn tracker controller is updating");
 		initFromModel();
 	}
 

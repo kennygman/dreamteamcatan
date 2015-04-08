@@ -1,23 +1,29 @@
 package server.database;
 
-public class MongoUserDAO implements IUserDAO {
+import server.User;
+
+public class MongoUserDAO implements IUserDAO 
+{
 
 	@Override
-	public void update() {
+	public boolean update(User user) 
+	{
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override
-	public void get() {
+	public User get() 
+	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 	@Override
-	public void delete() {
+	public boolean insert(User user) 
+	{
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 }

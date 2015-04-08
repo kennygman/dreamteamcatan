@@ -1,20 +1,20 @@
 package server.database;
 
+import server.User;
+
 public interface IUserDAO 
 {
 	/**update user table
 	 *  
 	 */
-	void update();
-	
+	boolean update(User user);
 	/**
 	 * get informations from user table
 	 */
-	void get();
+	boolean insert(User user);
 	
-
 	/**
-	 * delete specific user
+	 * getUser from user table
 	 */
-	void delete();
+	User get();
 }

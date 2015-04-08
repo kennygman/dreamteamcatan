@@ -82,6 +82,8 @@
 			<packageset dir="${java.src.dir}">
 				<include name="client/**"/>
 				<include name="shared/**"/>
+				<include name="model/**"/>
+				<include name="server/**"/>
 			</packageset>
 		</javadoc>
    </target>

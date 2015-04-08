@@ -17,7 +17,7 @@
 	<property name="port.arg" value="8081"/>
     <property name="web.arg" value="gameplay"/>
     <property name="options.arg" value="ug"/>
-    <property name="database.arg"/>
+    <property name="database.arg" value=""/>
     <property name="numCmds.arg" value="5"/>
      
     <!-- Input folders -->

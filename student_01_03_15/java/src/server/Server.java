@@ -5,6 +5,8 @@ import java.net.*;
 
 import com.sun.net.httpserver.*;
 
+import server.database.Database;
+import server.database.DatabaseFacade;
 import server.facade.ServerFacade;
 import server.handlers.*;
 
@@ -72,10 +74,22 @@ public class Server
 
 	private Server(String[] args)
 	{
-		if(args.length == 1)
-			SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
-		else
-			SERVER_PORT_NUMBER = 8081;
+		try {
+			
+			if(args.length == 3) {
+				SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
+				Database.initialize(args[1]);
+				
+			} else {
+				SERVER_PORT_NUMBER = 8081;
+			}
+			
+			DatabaseFacade.initialize();
+			
+		} catch (Exception e)
+		{
+			System.out.println("INVALID ARGUMENTS.  USAGE: our-server <PORT: 0-99999> <DB: sqlite, mongo> <COMMAND-LENGTH: 0-99>");
+		}
 	}
 
 	private void run()

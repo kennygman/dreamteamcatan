@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import server.database.DatabaseFacade;
 import shared.parameters.ICommandParam;
 import model.Game;
 
@@ -12,12 +13,32 @@ public class GameManager
 {
 	private List<Game> games;
 	private Map<Integer, List<ICommandParam>> commands;
+	private int limit;
+	
 	public GameManager()
 	{
 		games = new ArrayList<>();
 		commands = new HashMap<>();
 	}
 
+	public void setLimit(int i)
+	{
+		limit = i;
+	}
+	
+	/**
+	 * This method synchronizes recent commands with the database. If the list is a multiple
+	 * of the set limit then synchronize the latest commands in the list
+	 * @param id the game id
+	 * @param cl the command list
+	 */
+	public void synch(int id, List<ICommandParam> cl)
+	{
+		if (cl.size() % limit != 0) return; 
+		String data = "";
+		DatabaseFacade.getInstance().insertCommand(id, data);
+	}
+	
 	/**
 	 * This method is used for updating the game after a reset
 	 * 
@@ -67,6 +88,7 @@ public class GameManager
 
 	/**
 	 * Appends command to list for the specified game
+	 * Send the list of commands off for synchronization
 	 * 
 	 * @param id
 	 *            the game's id
@@ -81,6 +103,8 @@ public class GameManager
 			list = new ArrayList<ICommandParam>();
 		list.add(param);
 		commands.put(id, list);
+		
+		synch(id, list);
 	}
 
 	/**

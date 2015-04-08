@@ -1,5 +1,6 @@
 package server.database;
 
+import java.util.List;
 import model.Game;
 
 
@@ -12,10 +13,14 @@ public interface IGameDAO
 	boolean update(Game game);
 	
 	/**
-	 * get informations from game table
+	 * get games from game table
 	 */
-	Game get();
+	List<Game> getGames();
 	
+        /**
+	 * get games from game table
+	 */
+        Game getInitalGame(int gameId);
 
 	/**
 	 * delete specific game

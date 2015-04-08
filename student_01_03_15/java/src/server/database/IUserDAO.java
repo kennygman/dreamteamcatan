@@ -4,10 +4,6 @@ import server.User;
 
 public interface IUserDAO 
 {
-	/**update user table
-	 *  
-	 */
-	boolean update(User user);
 	/**
 	 * get informations from user table
 	 */
@@ -16,5 +12,5 @@ public interface IUserDAO
 	/**
 	 * getUser from user table
 	 */
-	User get();
+	User get(String username);
 }

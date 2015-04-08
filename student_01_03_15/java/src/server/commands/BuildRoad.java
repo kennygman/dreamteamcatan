@@ -48,12 +48,12 @@ public class BuildRoad implements ICommand
 
 	private boolean isLongestRoad()
 	{
-		int longestRoad = 2;
+		int longestRoad = 4;
 		int index = game.getTurnTracker().getLongestRoad();
-		int playerRoads = game.getPlayer(param.getPlayerIndex()).getRoads();
+		int playerRoads = 15 - game.getPlayer(param.getPlayerIndex()).getRoads();
 		if (index >= 0)
 		{
-			longestRoad = game.getPlayer(index).getRoads();
+			longestRoad = 15 - game.getPlayer(index).getRoads();
 		}
 		return playerRoads > longestRoad;
 	}

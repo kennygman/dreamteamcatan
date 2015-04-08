@@ -284,9 +284,10 @@ public class Game
 		Player[] players = this.getPlayers();
 		for (int i = 0; i < players.length; i++)
 		{
-			players[i].reset();
+			players[i].gameReset();
+			//System.out.println("reseting player :" + players[i].getName());
 		}
-
+		
 		setMap(initialMap);
 
 		getBank().init();

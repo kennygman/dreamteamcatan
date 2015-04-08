@@ -42,13 +42,26 @@ public class Proxy implements IProxy
 			//String UrlString = "http://" + host + ":" + PortNumber + path;  
 			String UrlString = "http://localhost:8081" + path;
 			URL url = new URL(UrlString);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			OutputStreamWriter writer = null;
+			HttpURLConnection connection = null;
+			try {
+			
+			connection = (HttpURLConnection) url.openConnection();
 			setHeader(path,connection);
 			connection.setDoOutput(true);
 			connection.setRequestMethod("POST");
-			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+			writer = new OutputStreamWriter(connection.getOutputStream());
 			writer.write(info);
-			writer.close();
+			
+			} catch (java.io.IOException e1) 
+			{
+				System.out.println("Connection closed");
+			}
+				
+			finally
+			{
+				writer.close();
+			}
 			
 			
 		

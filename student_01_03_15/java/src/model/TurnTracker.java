@@ -29,6 +29,7 @@ public class TurnTracker
 	 */
 	public void update(TurnTracker t)
 	{
+		System.out.println("Turn tracker is updating");
 		this.setCurrentTurn(t.getCurrentTurn());
 		this.setStatus(t.getStatus());
 		this.setLongestRoad(t.getLongestRoad());

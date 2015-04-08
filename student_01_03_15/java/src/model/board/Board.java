@@ -497,10 +497,12 @@ public class Board
 		List<EdgeLocation> edgeLoc = location.getAdjacentEdges();
 		for (EdgeLocation edge : edgeLoc)
 		{
-			if (roadLocation.containsKey(edge)
-					&& (roadLocation.get(edge).getOwner() == playerIndex))
+			if (roadLocation.containsKey(edge))
 			{
-				return true;
+				if ( roadLocation.get(edge).getOwner() == playerIndex)
+				{
+					return true;
+				}
 			}
 		}
 		return false;

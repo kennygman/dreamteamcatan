@@ -1,13 +1,5 @@
 package server.facade;
 
-import java.io.IOException;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
 import model.Game;
 import model.player.Player;
 import server.GameManager;
@@ -22,21 +14,13 @@ public class ServerFacade
 	private static IPreGameFacade pregameInstance;
 	private static IGameFacade gameInstance;
 	private static IMovesFacade movesInstance;
-	private static IUtilFacade utilInstance;
+	private static UtilFacade utilInstance;
 
 	private static UserManager users;
 	private static GameManager games;
-	private static Logger logger;
 
 	private static void init()
 	{
-		try
-		{
-			initLog();
-		} catch (IOException e)
-		{
-			System.out.println("Could not initialize log: " + e.getMessage());
-		}
 		users = new UserManager();
 		users.initAi();
 		games = new GameManager();
@@ -79,26 +63,6 @@ public class ServerFacade
 
 	}
 
-	private static void initLog() throws IOException
-	{
-
-		Level logLevel = Level.FINE;
-
-		logger = Logger.getLogger("catan");
-		logger.setLevel(logLevel);
-		logger.setUseParentHandlers(false);
-
-		Handler consoleHandler = new ConsoleHandler();
-		consoleHandler.setLevel(logLevel);
-		consoleHandler.setFormatter(new SimpleFormatter());
-		logger.addHandler(consoleHandler);
-
-		FileHandler fileHandler = new FileHandler("log.txt", false);
-		fileHandler.setLevel(logLevel);
-		fileHandler.setFormatter(new SimpleFormatter());
-		logger.addHandler(fileHandler);
-	}
-
 	// ---------------------------------------------------------------------------------
 	/*
 	 * public static void createInstance() { init(); userInstance = new
@@ -108,43 +72,6 @@ public class ServerFacade
 	 */
 
 	// ---------------------------------------------------------------------------------
-	public static boolean changeLogLevel(String logLevel)
-	{
-		switch (logLevel)
-		{
-			case "SEVERE":
-				logger.setLevel(Level.SEVERE);
-				break;
-			case "WARNING":
-				logger.setLevel(Level.WARNING);
-				break;
-			case "INFO":
-				logger.setLevel(Level.INFO);
-				break;
-			case "CONFIG":
-				logger.setLevel(Level.CONFIG);
-				break;
-			case "FINE":
-				logger.setLevel(Level.FINE);
-				break;
-			case "FINER":
-				logger.setLevel(Level.FINER);
-				break;
-			case "FINEST":
-				logger.setLevel(Level.FINEST);
-				break;
-			case "OFF":
-				logger.setLevel(Level.OFF);
-				break;
-			case "ALL":
-				logger.setLevel(Level.ALL);
-				break;
-			default:
-				return false;
-		}
-		return true;
-	}
-
 	public static void createInstance(boolean testing)
 	{
 		init();
@@ -154,7 +81,6 @@ public class ServerFacade
 			pregameInstance = new MockPreGameFacade();
 			gameInstance = new MockGameFacade();
 			movesInstance = new MockMovesFacade();
-			utilInstance = new MockUtilFacade();
 		} else
 		{
 			userInstance = new UserFacade(users);
@@ -348,6 +274,7 @@ public class ServerFacade
 		return gameInstance.commands(param, id);
 	}
 
+	// ---------------------------------------------------------------------------------
 	public static StandardResponse addAI(AddAiParam param, int id)
 	{
 		return gameInstance.addAI(param, id);
@@ -364,4 +291,6 @@ public class ServerFacade
 	{
 		return utilInstance.changeLogLevel(param);
 	}
+
+	// ---------------------------------------------------------------------------------
 }

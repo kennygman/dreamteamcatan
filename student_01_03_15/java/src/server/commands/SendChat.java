@@ -14,9 +14,9 @@ public class SendChat implements ICommand
 	{
 		super();
 		this.param = param;
-		this.game=game;
+		this.game = game;
 	}
-	
+
 	/**
 	 * Sends a chat message
 	 */
@@ -29,11 +29,10 @@ public class SendChat implements ICommand
 		game.getChat().addLine(line);
 		game.increment();
 	}
+
 	@Override
 	public ICommandParam getParam()
 	{
 		return param;
 	}
-
-
 }

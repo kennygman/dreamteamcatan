@@ -1,24 +1,29 @@
 package server.database;
 
+import model.Game;
+
 public class MongoGameDAO implements IGameDAO
 {
 
 	@Override
-	public void update() {
+	public boolean update(Game game) 
+	{
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override
-	public void get() {
+	public Game get()
+	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 	@Override
-	public void delete() {
+	public boolean insert(Game game) 
+	{
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 }

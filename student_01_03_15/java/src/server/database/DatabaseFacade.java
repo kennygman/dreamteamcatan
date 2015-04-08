@@ -71,7 +71,9 @@ public class DatabaseFacade implements IDatabaseFacade
 	@Override
 	public void updateGame(int id, String blob)
 	{
-		Database.getInstance().getGameDAO().update();
+		
+		Game game = new Game ();
+		Database.getInstance().getGameDAO().update(game);
 		// TODO Auto-generated method stub
 
 	}

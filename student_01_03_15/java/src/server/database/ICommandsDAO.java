@@ -1,21 +1,22 @@
 package server.database;
 
+import shared.parameters.ICommandParam;
+
 public interface ICommandsDAO 
 {
-	/**update commands table
-	 *  
+	/**
+	 * inser specific commands
 	 */
-	void update();
+	boolean insert(ICommandParam command);
 	
 	/**
-	 * get informations from commands table
+	 * get Commands from Table
 	 */
-	void get();
+	ICommandParam get();
 	
 
 	/**
-	 * delete specific commands
+	 *  delete commands from command table
 	 */
-	void delete();
-
+	boolean delete(ICommandParam command);
 }

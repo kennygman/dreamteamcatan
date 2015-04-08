@@ -12,6 +12,7 @@ public class Database
 	private static IGameDAO gameDAO;
 	private static ICommandsDAO commandsDAO;
 	
+	private static Database instance;
 	
 	static 
 	{
@@ -19,8 +20,14 @@ public class Database
 	}
 
 
+	public static Database getInstance()
+	{
+		return instance;
+	}
+	
 	public static void initialize(String chosenDriver) throws DatabaseException 
 	{
+		instance = new Database();
 		
 		logger.entering("server.database.Database", "initialize");
 

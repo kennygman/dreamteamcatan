@@ -1,6 +1,7 @@
 package server.facade;
 
 import java.util.List;
+
 import java.util.Random;
 
 import model.Game;

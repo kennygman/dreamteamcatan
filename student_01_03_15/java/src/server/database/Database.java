@@ -1,4 +1,5 @@
 package server.database;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +14,7 @@ public class Database
 	private static ICommandsDAO commandsDAO;
 	
 	private static Database instance;
+	private Connection connection;
 	
 	static 
 	{
@@ -25,6 +27,11 @@ public class Database
 		return instance;
 	}
 	
+	/**
+	 * 
+	 * @param chosenDriver
+	 * @throws DatabaseException
+	 */
 	public static void initialize(String chosenDriver) throws DatabaseException 
 	{
 		instance = new Database();
@@ -95,4 +102,120 @@ public class Database
        {
     	   return commandsDAO;
        }
+       public void startTransaction() throws DatabaseException 
+   	{
+   		//System.out.print("start\n");
+   		logger.entering("server.database.Database", "startTransaction");
+   		
+   		try 
+   		{
+   			assert (connection == null);			
+   			connection = DriverManager.getConnection(DATABASE_URL);
+   			connection.setAutoCommit(false);
+   		}
+   		catch (SQLException e) 
+   		{
+   			throw new DatabaseException("Could not connect to database. Make sure " + 
+   				DATABASE_FILE + " is available in ./", e);
+   		}
+   		
+   		logger.exiting("server.database.Database", "startTransaction");
+   	}
+   	
+   	public void endTransaction(boolean commit) 
+   	{
+   		
+   		logger.entering("server.database.Database", "endTransaction");
+   		//System.out.print("end\n");
+   		if (connection != null) 
+   		{		
+   			try 
+   			{
+   				if (commit) {
+   					connection.commit();
+   				}
+   				else 
+   				{
+   					connection.rollback();
+   				}
+   			
+   			}
+   			catch (SQLException e)
+   			{
+   				System.out.println("Could not end transaction");
+   				e.printStackTrace();
+   			}
+   			
+   			finally 
+   			
+   			{
+   				safeClose(connection);
+   				connection = null;
+   			}
+   		}
+   	
+   		
+   		logger.exiting("server.database.Database", "endTransaction");
+   	}
+	public static void safeClose(Connection conn) 
+	{
+		if (conn != null) 
+		{
+			try 
+			{
+				conn.close();
+			}
+			catch (SQLException e) 
+			{
+				System.out.print("Something is wrong with safeClose connection");
+			}
+		}
+	}
+   	public static void safeClose(Statement stmt) 
+	{
+		if (stmt != null) 
+		
+		{
+			try 
+			{
+				stmt.close();
+			}
+			
+			catch (SQLException e) 
+			{
+				System.out.print("Something is wrong with safeClose stmt");
+			}
+		}
+	}
+	
+	public static void safeClose(PreparedStatement stmt) 
+	{
+		if (stmt != null) 
+		{
+			try {
+				stmt.close();
+			}
+			catch (SQLException e) 
+			{
+				System.out.print("Something is wrong with safeClose prepares stmt");
+			}
+		}
+	}
+	
+	public static void safeClose(ResultSet rs) 
+	
+	{
+		if (rs != null) 
+		{
+			try 
+			{
+				rs.close();
+			}
+			catch (SQLException e) 
+			{
+				System.out.print("Something is wrong with safeClose result");
+			}
+		}
+	}
+
 }

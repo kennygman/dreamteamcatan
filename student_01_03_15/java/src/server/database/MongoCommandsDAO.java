@@ -1,24 +1,29 @@
 package server.database;
 
+import shared.parameters.ICommandParam;
+
 public class MongoCommandsDAO implements ICommandsDAO
 {
 
 	@Override
-	public void update() {
+	public boolean insert(ICommandParam command) 
+	{
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override
-	public void get() {
+	public ICommandParam get() 
+	{
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 	@Override
-	public void delete() {
+	public boolean delete(ICommandParam command) 
+	{
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 }

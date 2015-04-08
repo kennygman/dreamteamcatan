@@ -1,20 +1,24 @@
 package server.database;
 
+import model.Game;
+
+
+
 public interface IGameDAO 
 {
 	/**update game table
 	 *  
 	 */
-	void update();
+	boolean update(Game game);
 	
 	/**
 	 * get informations from game table
 	 */
-	void get();
+	Game get();
 	
 
 	/**
 	 * delete specific game
 	 */
-	void delete();
+	boolean insert(Game game);
 }

@@ -17,6 +17,8 @@
 	<property name="port.arg" value="8081"/>
     <property name="web.arg" value="gameplay"/>
     <property name="options.arg" value="ug"/>
+    <property name="database.arg"/>
+    <property name="numCmds.arg" value="5"/>
      
     <!-- Input folders -->
     <property name="java.dir" value="java"/>
@@ -180,6 +182,8 @@
 		</copy>
 		<java jar="${java.dist}/catan-server.jar" dir="${java.dist}" fork="yes">
 			<arg value="${port.arg}"/>
+			<arg value="${database.arg}"/>
+			<arg value="${numCmds.arg}"/>
 			<sysproperty key="com.sun.management.jmxremote" value=""/>
 			<assertions>
 				<enable/>

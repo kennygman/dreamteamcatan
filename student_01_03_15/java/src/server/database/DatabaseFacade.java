@@ -17,6 +17,18 @@ public class DatabaseFacade implements IDatabaseFacade
 	}
 
 	/**
+	 * This method loads the Database plugin of the specified type
+	 * 
+	 * @param type either 'mongo' or 'sqlite' database
+	 * @throws Exception if the specified type is invalid or if there is an error
+	 * loading the plugin
+	 */
+	public static void load(String type) throws Exception
+	{
+
+	}
+
+	/**
 	 * This method returns the singleton instance of the DatabaseFacade
 	 * 
 	 * @return the instance
@@ -71,8 +83,8 @@ public class DatabaseFacade implements IDatabaseFacade
 	@Override
 	public void updateGame(int id, String blob)
 	{
-		
-		Game game = new Game ();
+
+		Game game = new Game();
 		Database.getInstance().getGameDAO().update(game);
 		// TODO Auto-generated method stub
 

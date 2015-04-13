@@ -76,15 +76,17 @@ public class Server
 	{
 		try {
 			
+			DatabaseFacade.initialize();
+
 			if(args.length == 3) {
 				SERVER_PORT_NUMBER = Integer.valueOf(args[0]);
-				Database.initialize(args[1]);
+				DatabaseFacade.load(args[1].toLowerCase());
 				
 			} else {
+				DatabaseFacade.load("sqlite");
 				SERVER_PORT_NUMBER = 8081;
 			}
 			
-			DatabaseFacade.initialize();
 			
 		} catch (Exception e)
 		{

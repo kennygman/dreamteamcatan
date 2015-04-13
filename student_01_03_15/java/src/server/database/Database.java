@@ -149,7 +149,7 @@ public class Database
    			finally 
    			
    			{
-   				safeClose(connection);
+   				safeClose();
    				connection = null;
    			}
    		}
@@ -157,65 +157,12 @@ public class Database
    		
    		logger.exiting("server.database.Database", "endTransaction");
    	}
-	public static void safeClose(Connection conn) 
+	public static void safeClose() 
 	{
-		if (conn != null) 
-		{
-			try 
-			{
-				conn.close();
-			}
-			catch (SQLException e) 
-			{
-				System.out.print("Something is wrong with safeClose connection");
-			}
-		}
-	}
-   	public static void safeClose(Statement stmt) 
-	{
-		if (stmt != null) 
-		
-		{
-			try 
-			{
-				stmt.close();
-			}
-			
-			catch (SQLException e) 
-			{
-				System.out.print("Something is wrong with safeClose stmt");
-			}
-		}
-	}
 	
-	public static void safeClose(PreparedStatement stmt) 
-	{
-		if (stmt != null) 
-		{
-			try {
-				stmt.close();
-			}
-			catch (SQLException e) 
-			{
-				System.out.print("Something is wrong with safeClose prepares stmt");
-			}
-		}
 	}
-	
-	public static void safeClose(ResultSet rs) 
-	
-	{
-		if (rs != null) 
-		{
-			try 
-			{
-				rs.close();
-			}
-			catch (SQLException e) 
-			{
-				System.out.print("Something is wrong with safeClose result");
-			}
-		}
-	}
+
+
+
 
 }
